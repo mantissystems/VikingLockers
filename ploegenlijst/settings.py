@@ -26,12 +26,11 @@ SECRET_KEY = 'django-insecure-)r2waboda$o)g39!ap!l7dx$numws6k7zi9=m*3e1hbudc!2&r
 DEBUG = True
 
 ALLOWED_HOSTS = ['*', '127.0.0.1',
-'https://ploegenlijst.up.railway.app/',]
+'https://ploegenlijst.up.railway.app/*',]
 ALLOWED_ORIGINS = ['http://*', 'https://*',
-'https://ploegenlijst.up.railway.app/admin/*',
-'https://ploegenlijst.up.railway.app/register/*',]
+'https://ploegenlijst.up.railway.app/*'],
 CSRF_TRUSTED_ORIGINS = ['http://*', 'https://*',
-'https://ploegenlijst.up.railway.app/viking/',
+'https://ploegenlijst.up.railway.app/*/',
 ]
 
 
