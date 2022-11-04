@@ -116,22 +116,26 @@ def home(request):
         ).exclude(participants=None) # search 
     topcs = Topic.objects.all()
     rms = Room.objects.all().exclude(id__in=(87,88))
-    kst = Kluis.objects.all()
-    room_count = rooms.count()
-    room_messages = Message.objects.filter(Q(room__topic__name__icontains=q))
     participants_count=0
     kastjes_count=0
+    if q=='kluisjes' :
+        # print(q)
+        kstn = Kluis.objects.all()
+        for k in kstn:
+            kk=k.owners.all()
+            kastjes_count+=kk.count()
+
+    else:
+        kstn = Kluis.objects.none
+    room_count = rooms.count()
+    room_messages = Message.objects.filter(Q(room__topic__name__icontains=q))
     for rm in rms:
         rr=rm.participants.all()
-        # print(rr.count())
         participants_count+=rr.count()
-    for k in kst:
-        kk=k.owners.all()
-        kastjes_count+=kk.count()
-
+    # print(kstn)
     context = {
         'rooms': rooms, 
-        'kluisjes': kst, 
+        'kluisjes': kstn, 
         'topics': topcs, 
         'room_count': room_count, 
         'participants_count': participants_count, 

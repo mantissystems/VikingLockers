@@ -1,0 +1,9 @@
+{% for kluis in kluisjes %}
+<div class="roomListRoom">
+    <div class="roomListRoom__content">
+        <a href="{% url 'kluis' kluis.id %}">{{kluis.location}} 
+            <!-- {{room.participants.all.count}} teamleden ({{room.topic.name}}) -->
+        </a>
+    </div>
+</div>
+{% endfor %}    
