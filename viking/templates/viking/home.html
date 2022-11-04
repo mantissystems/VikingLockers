@@ -23,7 +23,7 @@
           </label>
         </form>
         <div class="mobile-menuItems">
-          <a class="btn btn--main btn--pill" href="{% url 'kluisbeheer' %}">Schema</a>
+          <!-- <a class="btn btn--main btn--pill" href="{% url 'kluisbeheer' %}">Schema</a> -->
           <!-- <a class="btn btn--main btn--pill" href="{% url 'activity' %}">Aanmeldingen</a> -->
           <!-- <a class="btn btn--main btn--pill" href="{% url 'ploegbeheer' %}">Aanmelden</a> -->
         </div>
@@ -47,7 +47,7 @@
         </a>
         {% endif %}
       </div>
-      {% if request.user.is_authenticated %}
+      <!-- {% if request.user.is_authenticated %}
       {% if kluisjes  %}
       {% include 'viking/kluis_component.html' %}
       
@@ -55,7 +55,7 @@
       {% include 'viking/feed_component.html' %}
       {% endif %}
 
-      {% endif %}
+      {% endif %} -->
     </div>
     <!-- Room List End -->
 
