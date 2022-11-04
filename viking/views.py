@@ -709,7 +709,7 @@ def vote(request, room_id):
 def kluis(request, kluis_id):
     kluis = get_object_or_404(Kluis, pk=kluis_id)
     zoeknaam = request.POST.get('zoeknaam') if request.POST.get('zoeknaam') != None else 'sc'
-    print('kluis: ', kluis,'zoeknaam: ', zoeknaam)
+    # print('kluis: ', kluis,'zoeknaam: ', zoeknaam)
 
     leden = []
     afmeldingen=[]
@@ -720,13 +720,13 @@ def kluis(request, kluis_id):
     personen=User.objects.all()
     kandidaten = User.objects.all().filter(
         Q(last_name__icontains = zoeknaam) | 
-        Q(first_name__icontains = zoeknaam) |
-        Q(person__pos1__icontains=zoeknaam) |
-        Q(person__pos1__icontains='sc') |
-        Q(person__pos2__icontains=zoeknaam) |
-        Q(person__pos3__icontains=zoeknaam) |
-        Q(person__pos4__icontains=zoeknaam) |
-        Q(person__pos5__icontains=zoeknaam)
+        Q(first_name__icontains = zoeknaam) 
+        # Q(person__pos1__icontains=zoeknaam) |
+        # Q(person__pos1__icontains='sc') |
+        # Q(person__pos2__icontains=zoeknaam) |
+        # Q(person__pos3__icontains=zoeknaam) |
+        # Q(person__pos4__icontains=zoeknaam) |
+        # Q(person__pos5__icontains=zoeknaam)
         ) # search 
     aangemeld=kluis.owners.all()
     aanwezigen=User.objects.all().filter(id__in=aangemeld)
