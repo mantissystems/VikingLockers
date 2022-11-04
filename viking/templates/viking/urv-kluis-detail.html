@@ -1,0 +1,149 @@
+{% extends 'base.html' %}
+{% block content %}
+<main class="layout layout--3">
+  {% comment %} 31 okt 2022 {% endcomment %}
+  <div class="container">
+    
+    <form action="{% url 'kluis' kluis.id %}" method="post">
+      {% csrf_token %}
+      <div class="phone">
+        <div class="phone-mirror">
+        <li><a href="/" class="btn btn-warning btn-sm">Home</a></li>
+        <div class="layout__boxTitle">
+          <a href="{{request.META.HTTP_REFERER}}">
+            <svg
+              version="1.1"
+              xmlns="http://www.w3.org/2000/svg"
+              width="32"
+              height="32"
+              viewBox="0 0 32 32"
+            >
+              <title>Terug</title>
+              <path
+                d="M13.723 2.286l-13.723 13.714 13.719 13.714 1.616-1.611-10.96-10.96h27.625v-2.286h-27.625l10.965-10.965-1.616-1.607z"
+              ></path>
+            </svg>
+          </a>
+          <h3>
+            KLUIS --{{kluis.location}}
+          </h3>
+        </div>
+
+        <table class="viking-table">
+          <thead>
+            <hr>
+            <tr>
+              <th>Roeiers:</th>
+              <th><input type="submit" value="Meld Af "> </th>
+              <th></th>
+              <th></th>
+              <th></th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for aa in aanwezig %}
+            <tr>
+
+            <td>{{t.id }}</td>
+            <td>{{aa.id}}. {{aa.last_name}}</td>
+            <td>
+              <input type="checkbox" name="afmelding" id="host{{ forloop.counter }}" value="{{ aa.id }}">
+            </td>
+            <td> </td>
+            <!-- <td>
+              <input type="checkbox" name="hoofdhost" id="host{{ forloop.counter }}" value="{{ aa.id }}">
+            </td> -->
+            </td>
+
+            {% endfor %}
+            </tr>
+          </tbody>
+        </table>
+        <table class='viking-table'>
+          <thead>
+            <hr>
+            <tr>
+              <th> <input id="search-input" name="zoeknaam" class="form-control" type="text" placeholder='@vind kandidaat'></th>
+              <th><input type="submit" value="Meld Aan"> </th>
+              <th>Vind Leden uit ( {{users.count}}) voor {{event.name}}</th>
+          </thead>
+          </tr>
+
+          <tbody id=myTable>
+            <td>{% for t in kandidaten %}
+            </td>
+            <tr>
+              
+              <td>{{t.id}}.{{t.last_name}}</td>
+
+              <td>  </td>
+              <td> <input type="checkbox" name="aanmelding" id="host{{ forloop.counter }}" value="{{ t.id }}"> </td>
+              {% endfor %}
+            </tr>
+          </tbody>
+        </table>
+        </div>
+        </div>
+        </div>
+</form>
+</div>
+</div>
+</div>
+</main>
+<script>
+
+
+$('#search-input').on('keyup',function(){
+    var value = $(this).val()
+    console.log('Value:', value)
+     var data = searchTable(value,myArray)
+     console.log(data)
+    buildTable(data)
+})
+
+$.ajax({
+    method:'GET',
+    url:'http://127.0.0.1:8000/api/person/',
+    success:function(response){
+        myArray = response
+        buildTable(myArray)
+        // console.log(myArray)
+    }
+})
+
+function searchTable(value, data){
+    var filteredData =[]
+    for (var i = 0; i < data.length; i++){
+        value=value.toLowerCase()
+        var name = data[i].name.toLowerCase()
+        if (name.includes(value)){
+            filteredData.push(data[i])
+        }
+    }
+    return filteredData
+}
+
+function buildTable(data){
+  
+var table = document.getElementById('myTable')
+table.innerHTML=``
+for (var i = 0; i < data.length;i++){
+      var row = `<tr> 
+    <td> ${data[i].id} </td> 
+    <td> ${data[i].name} </td> 
+    <td> <label> <input type="checkbox" value="${data[i].id}" onchange="Check(this)" /> </label> <td id="mantis"> </td>
+    </tr>`
+  table.innerHTML += row
+}
+}
+
+function Check(value) {
+    console.log('Value:', value)
+    // var testid = $(this).val(testid)
+     console.log('Value:', value.parentelement)
+      document.getElementById('mantis').innerHTML = value.checked;
+      console.log('Value:', value.checked)
+    };
+  
+</script>
+{% endblock %}

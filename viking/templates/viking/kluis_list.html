@@ -1,0 +1,12 @@
+{% extends 'base.html' %} {% block content %}
+<li><a href="/" class="btn btn-warning btn-sm">Home</a></li>
+{% for kluis in kluisjes %}
+<div class="roomListRoom">
+    <div class="roomListRoom__content">
+        <a href="{% url 'kluis' kluis.id %}">{{kluis.location}}: {{kluis.owners.all.count}} &ensp; owner &ensp; 
+            <!-- ({{room.topic.name}}) -->
+        </a>
+    </div>
+</div>
+{% endfor %}    
+{% endblock %}

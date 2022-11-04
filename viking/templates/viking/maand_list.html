@@ -1,0 +1,11 @@
+{% extends 'base.html' %} {% block content %}
+<li><a href="/" class="btn btn-warning btn-sm">Home</a></li>
+{% for room in rooms %}
+<div class="roomListRoom">
+    <div class="roomListRoom__content">
+        <a href="{% url 'vote' room.id %}">{{room.name}}: {{room.participants.all.count}} &ensp; teamleden &ensp; ({{room.topic.name}})
+        </a>
+    </div>
+</div>
+{% endfor %}    
+{% endblock %}
