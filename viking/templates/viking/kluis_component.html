@@ -1,9 +1,12 @@
 {% for kluis in kluisjes %}
 <div class="roomListRoom">
     <div class="roomListRoom__content">
+        {% if request.user.is_superuser %}
+
         <a href="{% url 'kluis' kluis.id %}">{{kluis.location}} 
             <!-- {{room.participants.all.count}} teamleden ({{room.topic.name}}) -->
         </a>
+        {% endif %}
     </div>
 </div>
 {% endfor %}    
