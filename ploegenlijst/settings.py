@@ -23,7 +23,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-)r2waboda$o)g39!ap!l7dx$numws6k7zi9=m*3e1hbudc!2&r'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
 ALLOWED_HOSTS = []
 
@@ -43,13 +43,13 @@ INSTALLED_APPS = [
     'corsheaders',
 
 ]
-INTERNAL_IPS = [
-    # ...
-    "127.0.0.1",
-    # ...
-]
+# INTERNAL_IPS = [
+#     # ...
+#     "127.0.0.1",
+#     # ...
+# ]
 MIDDLEWARE = [
-    'debug_toolbar.middleware.DebugToolbarMiddleware', ## tijdens debug 
+    # 'debug_toolbar.middleware.DebugToolbarMiddleware', ## tijdens debug 
     'django.middleware.security.SecurityMiddleware',
     "corsheaders.middleware.CorsMiddleware",  #29-10-2022
     "whitenoise.middleware.WhiteNoiseMiddleware",  #29-10-22
