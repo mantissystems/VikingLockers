@@ -3,10 +3,19 @@
     <div class="roomListRoom__content">
         {% if request.user.is_superuser %}
 
-        <a href="{% url 'kluis' kluis.id %}">{{kluis.location}} 
+        <a href="{% url 'kluis' kluis.id %}">{{kluis.location}} {{kluis.name}} 
             <!-- {{room.participants.all.count}} teamleden ({{room.topic.name}}) -->
         </a>
         {% endif %}
+    </div>
+</div>
+{% endfor %}    
+=====
+{% for kluis in legen_onnodig %}
+<div class="roomListRoom">
+    <div class="roomListRoom__content">
+        <a href="{% url 'kluis' kluis.id %}">{{kluis.location}}
+        </a>
     </div>
 </div>
 {% endfor %}    

@@ -116,8 +116,14 @@ def home(request):
         ).exclude(participants=None) # search 
     topcs = Topic.objects.all()
     rms = Room.objects.all().exclude(id__in=(87,88))
+    legen = Kluis.objects.filter(owners=None) 
     participants_count=0
     kastjes_count=0
+    try:
+        gebruiker=User.objects.get(id=request.user.id) ## request.user
+    except:
+        messages.error(request, '.Niet ingelogd. Gegevens worden niet getoond')
+
     if q=='kluisjes' :
         # print(q)
         kstn = Kluis.objects.all()
@@ -126,7 +132,14 @@ def home(request):
             kastjes_count+=kk.count()
 
     else:
+        # legen = Kluis.objects.filter(owners=None) 
+        # print(q)
         kstn = Kluis.objects.none
+        kstn = Kluis.objects.filter(
+        Q(name__icontains = q) | 
+        Q(location__icontains = q) 
+        # Q(name__icontains = q) 
+        ) #.exclude(owners=None) # search 
     room_count = rooms.count()
     room_messages = Message.objects.filter(Q(room__topic__name__icontains=q))
     for rm in rms:
@@ -136,6 +149,7 @@ def home(request):
     context = {
         'rooms': rooms, 
         'kluisjes': kstn, 
+        # 'legen': legen, 
         'topics': topcs, 
         'room_count': room_count, 
         'participants_count': participants_count, 
@@ -204,6 +218,10 @@ def room(request, pk):
     room = Room.objects.get(id=pk)
     room_messages = room.message_set.all()
     participants = room.participants.all()
+    try:
+        gebruiker=User.objects.get(id=request.user.id) ## request.user
+    except:
+        messages.error(request, '.You are not logged in')
 
     if request.method == 'POST':
         message = Message.objects.create(
