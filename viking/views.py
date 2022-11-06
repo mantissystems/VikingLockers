@@ -24,7 +24,7 @@ from django.contrib.auth.models import User
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.forms import UserCreationForm
 
-from viking.serializers import FlexrecurrentSerializer, PersoonSerializer, TopicSerializer 
+from viking.serializers import FlexrecurrentSerializer, PersoonSerializer, TopicSerializer ,GebruikerSerializer
 from .models import Bericht, Flexrecurrent, Message, Room, Topic,Kluis
 from .forms import RoomForm,UserForm, erv_RoomForm
 
@@ -603,6 +603,13 @@ class FlexeventsView(ListView):
 def personenlijst(request):
     deelnemers=Person.objects.all()
     serializer=PersoonSerializer(deelnemers,many=True)
+
+    return Response(serializer.data)
+
+@api_view(['GET'])
+def gebruikerslijst(request):
+    gebruikers=User.objects.all()
+    serializer=GebruikerSerializer(gebruikers,many=True)
 
     return Response(serializer.data)
 
