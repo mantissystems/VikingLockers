@@ -916,6 +916,7 @@ def apiOverview(request):
     api_urls={
     'api/':'api-overview',    
     'api/person':'api/person',    
+    'api/gebruikers':'gebruikerslijst',    
     'flexevents/':'flexevents',    
     'flexeventsbeheer/':'flexeventsbeheer',    
 

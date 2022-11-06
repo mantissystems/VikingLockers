@@ -24,3 +24,19 @@ class GebruikerSerializer(serializers.ModelSerializer):
     class Meta:
         model = User 
         fields = ('id', 'last_name')
+
+# importing the module
+import json
+
+# opening the JSON file
+# data = open('file.json',)
+
+# print("Datatype before deserialization : "
+# 	+ str(type(data)))
+	
+# # deserializing the data
+# data = json.load(data)
+
+# print("Datatype after deserialization : "
+# 	+ str(type(data)))
+
