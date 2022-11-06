@@ -126,19 +126,20 @@ def home(request):
 
     if q=='kluisjes' :
         # print(q)
+        lijst='kluisjes'
         kstn = Kluis.objects.all()
         for k in kstn:
             kk=k.owners.all()
             kastjes_count+=kk.count()
 
     else:
-        # legen = Kluis.objects.filter(owners=None) 
-        # print(q)
+        lijst='ploegen'
         kstn = Kluis.objects.none
         kstn = Kluis.objects.filter(
         Q(name__icontains = q) | 
-        Q(location__icontains = q) 
-        # Q(name__icontains = q) 
+        Q(location__icontains = q) |
+        Q(location__icontains = 'dames') |
+        Q(location__icontains = 'heren') 
         ) #.exclude(owners=None) # search 
     room_count = rooms.count()
     room_messages = Message.objects.filter(Q(room__topic__name__icontains=q))
@@ -149,7 +150,7 @@ def home(request):
     context = {
         'rooms': rooms, 
         'kluisjes': kstn, 
-        # 'legen': legen, 
+        'lijst': lijst, 
         'topics': topcs, 
         'room_count': room_count, 
         'participants_count': participants_count, 

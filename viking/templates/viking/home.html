@@ -48,7 +48,7 @@
         {% endif %}
       </div>
       {% if request.user.is_authenticated %}
-      {% if kluisjes  %}
+      {% if lijst == "kluisjes"  %}
       {% include 'viking/kluis_component.html' %}
       
       {% else %}
