@@ -110,14 +110,16 @@ def registerPage(request):
 
 def home(request):
     q = request.GET.get('q') if request.GET.get('q') != None else ''
-    rooms = Room.objects.filter(
-        Q(topic__name__icontains = q) | 
-        Q(name__icontains = q) | 
-        Q(description__icontains = q) 
-        ) #.exclude(participants=None) # search 
+    where1=Q(topic__name__icontains = q)
+    where2=Q(topic__name__icontains = q)
+    where3=Q(name__icontains = q)
+    where4=Q(description__icontains = q)
+    where5=Q(host__last_name__icontains = q) 
+    # if q!='': where1=Q(participants__last_name__icontains = q)
+    rooms = Room.objects.filter(where1|where2|where3|where4|where5)
+        # ) #.exclude(participants=None) # search 
     topcs = Topic.objects.all()
     rms = Room.objects.all().exclude(id__in=(87,88))
-    legen = Kluis.objects.filter(owners=None) 
     participants_count=0
     kastjes_count=0
     try:
