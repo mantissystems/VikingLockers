@@ -31,6 +31,7 @@ topicsPage, updateRoom, updateUser, userProfile,
 vote, kluis,
 DetailView,
 aantalregels,
+ploeg_participants
 )
 
 urlpatterns = [
@@ -73,6 +74,7 @@ urlpatterns = [
     path('api/gebruikers/', gebruikerslijst,name='api-gebruikers'),    
     path('api/', apiOverview,name='api-overview'),    
     path('api/aantalregels/', aantalregels,name='api-aantalregels'),    
+    path('ploegparticipants/', ploeg_participants,name='ploegparticipants'),    
     path('activiteit/<str:pk>/', activiteit,name='activiteit'),    
     ]
 # https://docs.djangoproject.com/en/3.1/topics/http/urls/

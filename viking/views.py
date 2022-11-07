@@ -11,7 +11,8 @@ from django.shortcuts import get_object_or_404, render
 from django.urls import reverse,reverse_lazy
 from viking.models import( Flexevent,Flexlid,
 Person,)
-
+from collections import namedtuple
+from django.db import connection
 from django.views.generic import(ListView,UpdateView,DetailView)
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
@@ -113,7 +114,7 @@ def home(request):
         Q(topic__name__icontains = q) | 
         Q(name__icontains = q) | 
         Q(description__icontains = q) 
-        ).exclude(participants=None) # search 
+        ) #.exclude(participants=None) # search 
     topcs = Topic.objects.all()
     rms = Room.objects.all().exclude(id__in=(87,88))
     legen = Kluis.objects.filter(owners=None) 
@@ -930,3 +931,110 @@ def apiOverview(request):
     }
     # return JsonResponse("API BASE POINT",safe=False)
     return Response(api_urls)
+
+def namedtuplefetchall(cursor):
+    "Return all rows from a cursor as a namedtuple"
+    desc = cursor.description
+    nt_result = namedtuple('Result', [col[0] for col in desc])
+    return [nt_result(*row) for row in cursor.fetchall()]
+
+def ploeg_participants(request):
+        
+        sql="select * from ploeg_participants"
+        cursor = connection.cursor() 
+        cursor.execute(sql)
+        results = namedtuplefetchall(cursor)
+        print('===== ploeg-participants =====')
+        for r in results:
+            # if 'field' in r:
+            # print(r.Naamploeg)
+            room=Room.objects.get(name=r.Naamploeg)
+            # print(room) 
+            if r.Ploegleden!=None:
+                try:
+                    usr=User.objects.get(last_name=r.Ploegleden)
+                    room.participants.add(usr)
+                except:
+                    print(r.Ploegleden)
+            if r.field3!=None:
+                try:
+                    usr=User.objects.get(last_name=r.field3)
+                    room.participants.add(usr)                    
+                except:
+                    context={}
+            if r.field4!=None:
+                try:
+                    usr=User.objects.get(last_name=r.field4)
+                    room.participants.add(usr)                    
+                except:
+                    context={}
+            if r.field5!=None:
+                try:
+                    usr=User.objects.get(last_name=r.field5)
+                    room.participants.add(usr)                    
+                except:
+                    context={}
+            if r.field6!=None:
+                try:
+                    usr=User.objects.get(last_name=r.field6)
+                    room.participants.add(usr)                    
+                except:
+                    context={}
+            if r.field7!=None:
+                try:
+                    usr=User.objects.get(last_name=r.field7)
+                    room.participants.add(usr)                    
+                except:
+                    context={}
+            if r.field8!=None:
+                try:
+                    usr=User.objects.get(last_name=r.field8)
+                    room.participants.add(usr)                    
+                except:
+                    context={}
+            if r.field9!=None:
+                try:
+                    usr=User.objects.get(last_name=r.field9)
+                    room.participants.add(usr)                    
+                except:
+                    context={}
+            if r.field10!=None:
+                try:
+                    usr=User.objects.get(last_name=r.field10)
+                    room.participants.add(usr)                    
+                except:
+                    context={}
+            if r.field11!=None:
+                try:
+                    usr=User.objects.get(last_name=r.field11)
+                    room.participants.add(usr)                    
+                except:
+                    context={}
+            if r.field12!=None:
+                try:
+                    usr=User.objects.get(last_name=r.field12)
+                    room.participants.add(usr)                    
+                except:
+                    context={}
+            if r.field13!=None:
+                try:
+                    usr=User.objects.get(last_name=r.field13)
+                    room.participants.add(usr)                    
+                except:
+                    context={}
+            if r.field14!=None:
+                try:
+                    usr=User.objects.get(last_name=r.field14)
+                    room.participants.add(usr)                    
+                except:
+                    context={}
+            if r.field15!=None:
+                try:
+                    usr=User.objects.get(last_name=r.field15)
+                    room.participants.add(usr)                    
+                except:
+                    context={}
+    #     'hoofdletters':results,
+    #     'object_list':results,
+    #    }
+        return HttpResponse('done')
