@@ -706,14 +706,14 @@ def vote(request, room_id):
     personen=User.objects.all()
     kandidaten = User.objects.all().filter(
         Q(last_name__icontains = zoeknaam) | 
-        Q(first_name__icontains = zoeknaam) |
-        Q(person__pos1__icontains=zoeknaam) |
-        Q(person__pos1__icontains='sc') |
-        Q(person__pos2__icontains=zoeknaam) |
-        Q(person__pos3__icontains=zoeknaam) |
-        Q(person__pos4__icontains=zoeknaam) |
-        Q(person__pos5__icontains=zoeknaam)
-        ) # search 
+        Q(first_name__icontains = zoeknaam) 
+        ).order_by('last_name') # search 
+        # Q(person__pos1__icontains=zoeknaam) |
+        # Q(person__pos1__icontains='sc') |
+        # Q(person__pos2__icontains=zoeknaam) |
+        # Q(person__pos3__icontains=zoeknaam) |
+        # Q(person__pos4__icontains=zoeknaam) |
+        # Q(person__pos5__icontains=zoeknaam)
     aangemeld=event.participants.all()
     aanwezigen=User.objects.all().filter(id__in=aangemeld)
     roeiers=Person.objects.filter(
