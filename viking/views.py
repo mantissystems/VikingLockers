@@ -9,7 +9,7 @@ from django.contrib.sessions.models import Session
 from django.http import HttpResponseRedirect
 from django.shortcuts import get_object_or_404, render
 from django.urls import reverse,reverse_lazy
-from viking.models import( Flexevent,Flexlid,
+from viking.models import( Flexevent,Flexlid,Instromer,
 Person,)
 from collections import namedtuple
 from django.db import connection
@@ -563,7 +563,7 @@ def PloegPage(request):
     rooms=Room.objects.all().filter(name__contains=q) #.exclude(participants=None)
     # topcs = Topic.objects.all().filter(id__in=tops)
     # topics = Topic.objects.filter(name__icontains=q)[0:5]
-    return render(request, 'viking/maand_list.html', {'rooms': rooms})
+    return render(request, 'viking/ploeg_list.html', {'rooms': rooms})
 
 def KluisPage(request):
     q = request.GET.get('q') if request.GET.get('q') != None else ''
@@ -690,7 +690,7 @@ class ResultsView(DetailView):
 def vote(request, room_id):
     event = get_object_or_404(Room, pk=room_id)
     zoeknaam = request.POST.get('zoeknaam') if request.POST.get('zoeknaam') != None else 'sc'
-    print('event: ', event,'zoeknaam: ', zoeknaam)
+    # print('event: ', event,'zoeknaam: ', zoeknaam)
 
     leden = []
     afmeldingen=[]
@@ -944,95 +944,119 @@ def ploeg_participants(request):
         cursor = connection.cursor() 
         cursor.execute(sql)
         results = namedtuplefetchall(cursor)
+        usr=User.objects.first()
         print('===== ploeg-participants =====')
         for r in results:
-            # if 'field' in r:
             # print(r.Naamploeg)
             room=Room.objects.get(name=r.Naamploeg)
+            instroom=Instromer.objects.none()
             # print(room) 
             if r.Ploegleden!=None:
                 try:
                     usr=User.objects.get(last_name=r.Ploegleden)
                     room.participants.add(usr)
                 except:
-                    print(r.Ploegleden)
+                    Instromer.objects.update_or_create(name=r.Ploegleden)
+
             if r.field3!=None:
                 try:
                     usr=User.objects.get(last_name=r.field3)
                     room.participants.add(usr)                    
                 except:
+                    Instromer.objects.update_or_create(name=r.field3)
+
                     context={}
             if r.field4!=None:
                 try:
                     usr=User.objects.get(last_name=r.field4)
                     room.participants.add(usr)                    
                 except:
+                    Instromer.objects.update_or_create(name=r.field4)
+
                     context={}
             if r.field5!=None:
                 try:
                     usr=User.objects.get(last_name=r.field5)
                     room.participants.add(usr)                    
                 except:
+                    Instromer.objects.update_or_create(name=r.field5)
+
                     context={}
             if r.field6!=None:
                 try:
                     usr=User.objects.get(last_name=r.field6)
                     room.participants.add(usr)                    
                 except:
+                    Instromer.objects.update_or_create(name=r.field6)
+
                     context={}
             if r.field7!=None:
                 try:
                     usr=User.objects.get(last_name=r.field7)
                     room.participants.add(usr)                    
                 except:
+                    Instromer.objects.update_or_create(name=r.field7)
+
                     context={}
             if r.field8!=None:
                 try:
                     usr=User.objects.get(last_name=r.field8)
                     room.participants.add(usr)                    
                 except:
+                    Instromer.objects.update_or_create(name=r.field8)
+
                     context={}
             if r.field9!=None:
                 try:
                     usr=User.objects.get(last_name=r.field9)
                     room.participants.add(usr)                    
                 except:
+                    Instromer.objects.update_or_create(name=r.field9)
                     context={}
             if r.field10!=None:
                 try:
                     usr=User.objects.get(last_name=r.field10)
                     room.participants.add(usr)                    
                 except:
+                    Instromer.objects.update_or_create(name=r.field10)
                     context={}
             if r.field11!=None:
                 try:
                     usr=User.objects.get(last_name=r.field11)
                     room.participants.add(usr)                    
                 except:
+                    Instromer.objects.update_or_create(name=r.field11)
+
                     context={}
             if r.field12!=None:
                 try:
                     usr=User.objects.get(last_name=r.field12)
                     room.participants.add(usr)                    
                 except:
+                    Instromer.objects.update_or_create(name=r.field12)
+
                     context={}
             if r.field13!=None:
                 try:
                     usr=User.objects.get(last_name=r.field13)
                     room.participants.add(usr)                    
                 except:
+                    Instromer.objects.update_or_create(name=r.field13)
+
                     context={}
             if r.field14!=None:
                 try:
                     usr=User.objects.get(last_name=r.field14)
                     room.participants.add(usr)                    
                 except:
+                    Instromer.objects.update_or_create(name=r.field14)
                     context={}
             if r.field15!=None:
                 try:
                     usr=User.objects.get(last_name=r.field15)
                     room.participants.add(usr)                    
                 except:
+                    Instromer.objects.update_or_create(name=r.field15)
                     context={}
     #     'hoofdletters':results,
     #     'object_list':results,

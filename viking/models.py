@@ -138,3 +138,26 @@ class Flexrecurrent(models.Model):
 
 class Dataimport(models.Model):
     regel = models.TextField(max_length=540,default='-')
+
+class Instromer(models.Model):
+    # user = models.OneToOneField(User, on_delete=models.CASCADE)    
+    name = models.CharField(max_length=100)
+    # avatar=models.ImageField(null=True,default="avatar.svg")      # install Pillow is needed
+    # email = models.CharField(max_length=100,blank=True)
+    # is_flex = models.BooleanField(default=True)        #wil ingedeeld worden in flexpoule
+    # is_host = models.BooleanField(default=False)        #kan flexhost zijn
+    # keuzes = models.IntegerField(default=0) #aantal keren als host gekozen
+    # roeileeftijd = models.CharField(max_length=20,blank=True)
+    # is_lid= models.BooleanField(default=True)           #is roeiend lid;member
+    # in_poule = models.BooleanField(default=False)       #wil flexibel roeiern
+    # vaart = models.BooleanField(default=False)          #zit in ingedeelde boot op het water
+    # pos1 = models.CharField(max_length=18, choices=SCULL,default='sc1')  #aanbod vaardigheid om voorstel te berekenen voor wat nodig is aan in te delen boten
+    # pos2 = models.CharField(max_length=18, choices=SCULL,default='sc1') 
+    # pos3 = models.CharField(max_length=18, choices=SCULL,default='sc1') 
+    # pos4 = models.CharField(max_length=18, choices=SCULL,default='sc1') 
+    # pos5 = models.CharField(max_length=318, choices=SCULL,default='st1') 
+    # coach = models.CharField(max_length=18, choices=SCULL,default='st1')     
+    # keuzes = models.IntegerField(default=0) #aantal keren als host gekozen
+
+    def __str__(self):
+        return self.name
