@@ -69,6 +69,24 @@
               </select>
             </datalist>
           </div>
+          <div class="form__group">
+            <label for="room_topic">Ploegleider</label>
+            <input
+              required
+              type="text"
+              value="{{room.host}}"
+              name="ploegleider"
+              id="room_ploegleider"
+              list="ploegleider-list"
+            />
+            <datalist id="ploegleider-list">
+              <select id="room_ploegleider">
+                {% for pl in ploegleiders %}
+                <option value="{{pl.last_name}}">{{pl.last_name}}</option>
+                {% endfor %}
+              </select>
+            </datalist>
+          </div>
 
           <div class="form__group">
             <label for="room_name">Naam van de Ploeg</label>

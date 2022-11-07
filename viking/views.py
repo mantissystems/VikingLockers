@@ -353,6 +353,7 @@ def updateRoom(request, pk):
     room = Room.objects.get(id=pk)
     form = RoomForm(instance=room)
     topics = Topic.objects.all()
+    ploegleiders=User.objects.all()
     # if request.user != room.host:
         # return HttpResponse('Your are not allowed here!!')
 
@@ -360,18 +361,24 @@ def updateRoom(request, pk):
         topic_name = request.POST.get('topic')
         topic, created = Topic.objects.get_or_create(name=topic_name)
         room.name = request.POST.get('name')
+        ploegleider=request.POST.get('ploegleider')
+        try:
+            host=User.objects.get(last_name=ploegleider)
+        except:
+            host=User.objects.get(is_superuser=True)
+        room.host = host
         room.topic = topic
         room.description = request.POST.get('description')
         room.save()
         return redirect('home')
 
-    context = {'form': form, 'topics': topics, 'room': room}
+    context = {'form': form, 'topics': topics, 'room': room,'ploegleiders':ploegleiders}
     return render(request, 'viking/room_form.html', context)
 
 @login_required(login_url='login')
 def erv_updateRoom(request, pk):
     room = Flexevent.objects.get(id=pk)
-    form = erv_RoomForm(instance=room)
+    form = RoomForm(instance=room)
     topics = Topic.objects.all()
     if request.user != room.host:
         return HttpResponse('Your are not allowed here!!')

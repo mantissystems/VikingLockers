@@ -3,7 +3,7 @@
     <div class="roomListRoom__content">
         {% if request.user.is_authenticated %}
 
-        <a href="{% url 'kluis' kluis.id %}">{{kluis.location}} {{kluis.name}} 
+        <a href="{% url 'kluis' kluis.id %}">{{kluis.location}} - {{kluis.owners.count}} 
             <!-- {{room.participants.all.count}} teamleden ({{room.topic.name}}) -->
         </a>
         {% endif %}
