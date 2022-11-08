@@ -125,7 +125,7 @@ def home(request):
     try:
         gebruiker=User.objects.get(id=request.user.id) ## request.user
     except:
-        messages.error(request, '.Niet ingelogd. Gegevens worden niet getoond')
+        messages.error(request, '.U bent niet ingelogd waardoor gegevens niet getoond worden')
 
     if q=='kluisjes' :
         # print(q)
