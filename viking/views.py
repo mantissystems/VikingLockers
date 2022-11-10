@@ -27,7 +27,7 @@ from django.contrib.auth.forms import UserCreationForm
 
 from viking.serializers import FlexrecurrentSerializer, PersoonSerializer, TopicSerializer ,GebruikerSerializer
 from .models import Bericht, Flexrecurrent, Message, Room, Topic,Kluis
-from .forms import RoomForm,UserForm, erv_RoomForm
+from .forms import RoomForm,UserForm,Urv_KluisForm
 
 def loginPage(request):
 
@@ -321,7 +321,7 @@ def createRoom(request):
 
 @login_required(login_url='login')
 def erv_createRoom(request):
-    form = erv_RoomForm()
+    form = RoomForm()
     topics = Topic.objects.all()
     datums=Flexevent.objects.all() ###values_list('datum',flat=True)
     # print(datums.datum)
@@ -379,26 +379,26 @@ def updateRoom(request, pk):
     return render(request, 'viking/room_form.html', context)
 
 @login_required(login_url='login')
-def erv_updateRoom(request, pk):
-    room = Flexevent.objects.get(id=pk)
-    form = RoomForm(instance=room)
+def urv_updateKluis(request, pk):
+    kluis = Kluis.objects.get(id=pk)
+    form = Urv_KluisForm(instance=kluis)
     topics = Topic.objects.all()
-    if request.user != room.host:
-        return HttpResponse('Your are not allowed here!!')
+    # if request.user != kluis.user:
+    #     return HttpResponse('Your are not allowed here!!')
 
     if request.method == 'POST':
-        topic_name = request.POST.get('topic')
-        topic, created = Topic.objects.get_or_create(name=topic_name)
-        room.name = request.POST.get('name')
-        room.datum = request.POST.get('datum')
-        room.pub_time = request.POST.get('tijdstip')
-        room.topic = topic
-        room.description = request.POST.get('description')
-        room.save()
+        # topic_name = request.POST.get('topic')
+        # topic, created = Topic.objects.get_or_create(name=topic_name)
+        # kluis.created=date.today()
+        kluis.name = request.POST.get('name')
+        kluis.code = request.POST.get('code')
+        kluis.slot = request.POST.get('slot')
+        kluis.description = request.POST.get('description')
+        kluis.save()
         return redirect('home')
 
-    context = {'form': form, 'topics': topics, 'room': room}
-    return render(request, 'viking/room_form.html', context)
+    context = {'form': form, 'topics': topics, 'kluis': kluis}
+    return render(request, 'viking/kluis_form.html', context)
 
 @login_required(login_url='login')
 def erv_deleteRoom(request, pk):
@@ -745,7 +745,6 @@ def vote(request, room_id):
 def kluis(request, kluis_id):
     kluis = get_object_or_404(Kluis, pk=kluis_id)
     zoeknaam = request.POST.get('zoeknaam') if request.POST.get('zoeknaam') != None else 'sc'
-    # print('kluis: ', kluis,'zoeknaam: ', zoeknaam)
 
     leden = []
     afmeldingen=[]
@@ -757,13 +756,7 @@ def kluis(request, kluis_id):
     kandidaten = User.objects.all().filter(
         Q(last_name__icontains = zoeknaam) | 
         Q(first_name__icontains = zoeknaam) 
-        # Q(person__pos1__icontains=zoeknaam) |
-        # Q(person__pos1__icontains='sc') |
-        # Q(person__pos2__icontains=zoeknaam) |
-        # Q(person__pos3__icontains=zoeknaam) |
-        # Q(person__pos4__icontains=zoeknaam) |
-        # Q(person__pos5__icontains=zoeknaam)
-        ) # search 
+        ) 
     aangemeld=kluis.owners.all()
     aanwezigen=User.objects.all().filter(id__in=aangemeld)
     roeiers=Person.objects.filter(
