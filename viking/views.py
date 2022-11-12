@@ -115,7 +115,7 @@ def home(request):
     where3=Q(name__icontains = q)
     where4=Q(description__icontains = q)
     where5=Q(host__last_name__icontains = q) 
-    # if q!='': where1=Q(participants__last_name__icontains = q)
+    # where1=Q(participants__last_name__icontains = q)
     rooms = Room.objects.filter(where1|where2|where3|where4|where5)
         # ) #.exclude(participants=None) # search 
     topcs = Topic.objects.all()
@@ -130,7 +130,7 @@ def home(request):
     if q=='kluisjes' :
         # print(q)
         lijst='kluisjes'
-        kstn = Kluis.objects.all()
+        kstn = Kluis.objects.all().filter(owners=None)
         for k in kstn:
             kk=k.owners.all()
             kastjes_count+=kk.count()
@@ -722,6 +722,7 @@ def vote(request, room_id):
         Q(id__in=aanwezigen) &
         Q(pos1__icontains=zoeknaam)
         )
+    aantalregels=4
     # except (KeyError, Flexlid.DoesNotExist):
         # print(len(kandidaten)) ###regel niet verwijderen ###
     return render(request, 'viking/urv-detail.html', {
@@ -730,6 +731,7 @@ def vote(request, room_id):
             'roeiers': roeiers,
             'kandidaten':kandidaten,
             'aanwezig':aanwezigen, 
+            'aantalregels':aantalregels,            
             'error_message': "Er is geen keuze gemaakt.",
         })
     print('vote room_id, else')

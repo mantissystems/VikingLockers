@@ -19,7 +19,7 @@ class Urv_KluisForm(ModelForm):
     class Meta:
         model = Kluis
         fields = '__all__'
-        # exclude = ['host', 'lid']
+        exclude = ['host','owners']
 
 class UserForm(ModelForm):
     class Meta:

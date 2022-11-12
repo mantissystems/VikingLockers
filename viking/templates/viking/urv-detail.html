@@ -90,9 +90,9 @@
 </div>
 </div>
 </main>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<script id="aantalregels" type="application/json">{{aantalregels}}</script>
 <script>
-
-
 $('#search-input').on('keyup',function(){
     var value = $(this).val()
     console.log('Value:', value)
@@ -124,7 +124,8 @@ function searchTable(value, data){
 }
 
 function buildTable(data){
-  
+const regels = JSON.parse(document.getElementById('aantalregels').textContent);
+console.log(regels)
 var table = document.getElementById('myTable')
 table.innerHTML=``
 for (var i = 0; i < data.length;i++){
