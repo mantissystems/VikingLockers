@@ -121,7 +121,8 @@ def home(request):
     topcs = Topic.objects.all()
     rms = Room.objects.all().exclude(id__in=(87,88))
     participants_count=0
-    kastjes_count=0
+    kluizen=Kluis.objects.all().filter(owners=None)
+    kastjes_count=kluizen.count()
     try:
         gebruiker=User.objects.get(id=request.user.id) ## request.user
     except:
@@ -130,10 +131,10 @@ def home(request):
     if q=='kluisjes' :
         # print(q)
         lijst='kluisjes'
-        kstn = Kluis.objects.all().filter(owners=None)
-        for k in kstn:
-            kk=k.owners.all()
-            kastjes_count+=kk.count()
+        # kstn = Kluis.objects.all().filter(owners=None)
+        # for k in kstn:
+        #     kk=k.owners.all()
+        #     kastjes_count+=kk.count()
 
     else:
         lijst='ploegen'
@@ -152,7 +153,7 @@ def home(request):
     # print(kstn)
     context = {
         'rooms': rooms, 
-        'kluisjes': kstn, 
+        'kluisjes': kluizen, 
         'lijst': lijst, 
         'topics': topcs, 
         'room_count': room_count, 
