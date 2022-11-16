@@ -627,7 +627,7 @@ def gebruikerslijst(request):
 
 @api_view(['GET'])
 def aantalregels(request):
-    regels=Flexrecurrent.objects.all()
+    regels=Room.objects.all()
     serializer=FlexrecurrentSerializer(regels,many=True)
 
     return Response(serializer.data)
@@ -923,7 +923,7 @@ def apiOverview(request):
     'api/':'api-overview',    
     'api/person':'api/person',    
     'api/gebruikers':'gebruikerslijst',    
-    'flexevents/':'flexevents',    
+    'ploegen/':'ploegen',    
     'flexeventsbeheer/':'flexeventsbeheer',    
 
     }
