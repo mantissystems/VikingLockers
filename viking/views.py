@@ -1,7 +1,10 @@
+import random
+from array import *
 from time import strftime
 from urllib import request
 from django.shortcuts import render
 import datetime
+import itertools
 from datetime import date
 from django.utils import timezone
 from django.http import HttpResponse,JsonResponse
@@ -26,7 +29,7 @@ from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.forms import UserCreationForm
 
 from viking.serializers import FlexrecurrentSerializer, PersoonSerializer, TopicSerializer ,GebruikerSerializer
-from .models import Bericht, Flexrecurrent, Message, Room, Topic,Kluis
+from .models import Bericht, Flexrecurrent, Message, Room, Topic,Kluis,Rooster
 from .forms import RoomForm,UserForm,Urv_KluisForm
 
 def loginPage(request):
@@ -782,8 +785,6 @@ def kluis(request, kluis_id):
         # user hits the Back button.
     return HttpResponseRedirect(reverse('kluis', args=(kluis_id,)))
 
-
-
 class AanmeldView(ListView):
     template_name='viking/aanmeldview.html'
     # print('aanmelden')
@@ -813,45 +814,154 @@ class AanmeldView(ListView):
         } 
         return context
 
+def personen():
+    persoon=Person.objects.none()
+    # rooster=Rooster.objects.all().update(rnr=0) #zet alle rangnummers op nul
+    rooster=Rooster.objects.all().exclude(rnr=0)
+    print(rooster.count())
+    for dag in rooster:
+            rangnr=getattr(dag, 'rnr')
+            try:
+                p=Person.objects.get(lnr=rangnr)
+                uid=getattr(p, 'user_id')
+                gebruiker=User.objects.get(id=uid)
+                userid=getattr(p, 'user_id')
+                try:
+                    user=User.objects.get(id=userid)
+                    dag.lid.add(user)
+                except:
+                    print()
+                # print(gebruiker)
+            except:
+                print()
+                # p=Person.objects.get(lnr=rangnr)
+                # uid=getattr(p, 'user_id')
+
+    return
+def randomiseren():
+    members=Person.objects.values_list('lnr','name','user_id')
+    T=members
+    lotingen=[]
+    # rooster=Rooster.objects.all().update(rnr=0) #zet alle rangnummers op nul
+    rooster=Rooster.objects.all()
+    num1 =365 ## 54  ;aantal roosterregels 
+    # num2 =members.count() ## 24  ;aantal members
+    num3=136145  #lcm of num1 and num2; GGV van rooster en members
+    # num4=random.randint(0, num1)
+    # ======== 10 passes needed ============
+    # for xx in range(12):
+    for r in T:
+        lot=random.randint(0, num1)
+        # print(lot,r[0])
+        try:
+            rr=Rooster.objects.filter(
+                Q(id=lot) &
+                Q(rnr=0)).update(rnr=r[0]) #geef het rangnummer een gerandomiseerd nummer
+            error: KeyError
+            continue
+        except:
+            rr=Rooster.objects.filter(
+                Q(id=lot) &
+                Q(rnr=0)).update(rnr=r[0]) #geef het rangnummer een gerandomiseerd nummer    # start===== generate UNIQUE numbers and store once in PERSON ============ start
+
+            # rr.lid.add(persoon)
+    # Generate unique random numbers within a range (recordcount of rooster)
+    # num_list = random.sample(range(0, recordcount-of-rooster), 10)
+    # num_list = random.sample(range(0, num3), num2)
+    # for i in range(1,num2,1):
+    #     try:
+    #         Person.objects.filter(id=i).update(lnr=num_list[i])
+    #         error:KeyError
+    #         continue
+    #     except:
+    #         Person.objects.filter(id=i).update(lnr=num_list[i])
+    # end======= generate UNIQUE numbers and store once in PERSON ============ end
+    # for ix, lnr in enumerate(members, start=1): 
+        # lotingen.append(lnr[0])
+        # T.insert(lnr[0], lnr[1])
+        # print(lnr[0],lnr[1],lnr[2])
+    # T.insert(2, [0,5,11,13,6])
+    # print(T)
+    # for m in members:
+    # lnr=getattr(members, 'lnr') #to get the value from the model.
+    # ===================== array start
+    # ===================== array end
+    return
 
 def events(request):
-    q1 = Flexevent.objects.all()
-    print('events')
-    # fp = Flexevent.objects.filter(id=1).values('flexpoule')[0:1]
-    r = q1
-    template_name = 'viking/maand_list.html'
-    aanwezigen = Flexlid.objects.all() #values_list('member_id', flat=True).filter(is_present=True)
-    events = Flexevent.objects.all() #.filter(flexhost='',flexhost2='')
-    rowers = Person.objects.all() #.filter(is_present=True)
-    hosts = Person.objects.all() #.filter(is_host=True)
-    rowers = rowers | hosts  # voeg hosts en roeiers samen
-    results=Flexevent.objects.all()
-    year=int(date.today().strftime('%Y'))
-    month = int(date.today().strftime('%m'))
-    monthend=[0,31,28,31,30,31,30,31,31,30,31,30,31]
-    einde=monthend[month]
-    start=date(year,month,1)
-    end=date(year,month,einde)
-    namen=Person.objects.all()
-    rooster=Flexevent.objects.filter(datum__range=[start, end])
-    print(month,einde,start,end,rooster)
+    # personen()
+    # for xx in range(12):
+    #     randomiseren()
+
+    members=Person.objects.values_list('lnr','name','user_id')
+    # T=members
+    # # T= [[1],['wb']]
+    # lotingen=[]
+    # rooster=Rooster.objects.all().update(rnr=0) #zet alle rangnummers op nul
+    rooster=Rooster.objects.all()
+    # num1 =365 ## 54  ;aantal roosterregels 
+    # num2 =members.count() ## 24  ;aantal members
+    # num3=136145  #lcm of num1 and num2; GGV van rooster en members
+    # num4=random.randint(0, num1)
+    # ======== 10 passes needed ============
+    # for xx in range(12):
+    #     for r in T:
+    #         lot=random.randint(0, num1)
+    #         # print(lot,r[0])
+    #         try:
+    #             rr=Rooster.objects.filter(
+    #                 Q(id=lot) &
+    #                 Q(rnr=0)).update(rnr=r[0]) #geef het rangnummer een gerandomiseerd nummer
+    #             error: KeyError
+    #             continue
+    #         except:
+    #             rr=Rooster.objects.filter(
+    #                 Q(id=lot) &
+    #                 Q(rnr=0)).update(rnr=r[0]) #geef het rangnummer een gerandomiseerd nummer    # start===== generate UNIQUE numbers and store once in PERSON ============ start
+
+            # rr.lid.add(persoon)
+    # Generate unique random numbers within a range (recordcount of rooster)
+    # num_list = random.sample(range(0, recordcount-of-rooster), 10)
+    # num_list = random.sample(range(0, num3), num2)
+    # for i in range(1,num2,1):
+    #     try:
+    #         Person.objects.filter(id=i).update(lnr=num_list[i])
+    #         error:KeyError
+    #         continue
+    #     except:
+    #         Person.objects.filter(id=i).update(lnr=num_list[i])
+    # end======= generate UNIQUE numbers and store once in PERSON ============ end
+    # for ix, lnr in enumerate(members, start=1): 
+        # lotingen.append(lnr[0])
+        # T.insert(lnr[0], lnr[1])
+        # print(lnr[0],lnr[1],lnr[2])
+    # T.insert(2, [0,5,11,13,6])
+    # print(T)
+    # for m in members:
+    # lnr=getattr(members, 'lnr') #to get the value from the model.
+    # ===================== array start
+    # ===================== array end
+    template_name='viking/rooster_list.html'
     context={
         # 'object_list':results,
         'rooster':rooster,
-        'namen':namen,
+        'namen':members,
        }
     return render(request, template_name, context)
 
 
 
+@login_required(login_url='login')
 def recurrent_event(request):
-    template_name = 'viking/home.html'
-
-    # Topic.objects.all().delete()
-    # Flexevent.objects.all().delete()
-    # maak_activiteiten() #flexevents; houd tijdelijk niet qctief
-    # update_ploegen()
-    return render(request, template_name, {})
+    template_name = 'viking/event_list.html'
+    print('============ recurrent ============')
+    # resetsequence('beatrix_flexevent')  # bestandsbeheer: zet sequence op nul; kan niet gelijktijdig
+    # maak_activiteiten()
+    maak_rooster()
+    events=Flexevent.objects.all()
+    events=Rooster.objects.all()
+    context={'events':events}
+    return render(request, template_name, context)
 
 def update_ploegen():
     room=Room.objects.get(pk='93')
@@ -865,58 +975,98 @@ def update_ploegen():
                 
     return
 
-def maak_rooms(tekst,gebruiker):
-        eerste=Topic.objects.all().first()
-        start_date = datetime.date.today()
-        Flexevent.objects.all().update_or_create(
-        host=gebruiker,
-        topic=eerste,
-        name=tekst,
-        description='omschrijving',
-        created=start_date,
+def maak_rooster():
+    print('====== start rooster ===========')
+    Rooster.objects.all().delete()
+    resetsequence('viking_rooster')  # bestandsbeheer: zet sequence op nul;
+    start_date = datetime.date.today()
+    user=User.objects.all().first()         ## -- de beheerder en superuser
+    dagvandeweek=['maandag','dinsdag','woensdag','donderdag','vrijdag','zaterdag','zondag']
+    for d in range(0,365,1):
+        event_date = start_date + datetime.timedelta(days=d)       
+            # Rooster.objects.all().update_or_create(
+        Rooster.objects.all().create(
+        host=user,
+        datum=event_date,
+        name=dagvandeweek[event_date.weekday()],
+        description=dagvandeweek[event_date.weekday()],
+        created=event_date,
+        rnr=d,
+        lnr=d,  #lotnummer wordt later toegekend
         )
-        return
+    print('====== einde rooster ===========')
+    return
 
 def maak_activiteiten():
     start_date = datetime.date.today()
-    # tomorrow = start_date + datetime.timedelta(days=1)
+    tomorrow = start_date + datetime.timedelta(days=1)
+    #hier moet het array komen met de voorkeur weekdagen; bijvoorbeeld maandag woensdag vrijdag
+    #het schema alleen op de voorkeurdagen aanmaken
+    #het eventuele bestaande schema op de voorkeurdagen aanpassen; dus datums manipuleren van alle regels
+    # in het voorbeeld wil ik alleen op woensdag en vrijdag middag flexevents maken
+    # de dagen zijn verdeeld in o en m en iederee o of m in twee blokken van 2 uur beginnend om 09 en om 13
+    #0=monday
+    #6=sunday
+    # instellingen = Recurrent.objects.all().first()
     dagnaam=datetime.datetime.now().strftime('%A')
     weekdag=datetime.datetime.now().strftime('%w')
     dagnummer=int(weekdag)
+    # model._meta.get_all_field_names()     will give you all the model's field names, then you can use 
+    # dvdw=Recurrent._meta.get_field('dagvandeweek') #to work your way to the verbose name, and 
+    blok=1 #getattr(instellingen, 'blok') #to get the value from the model.
+    dvdw=6 #getattr(instellingen, 'dagvandeweek')
+    bool0= False #getattr(instellingen, 'verwijder_oude_flexevents')
+    bool1=False #getattr(instellingen, 'verwijder_oude_onderwerpen')
+    bool2=True #getattr(instellingen, 'resetsequence')
+    trw=4 #getattr(instellingen, 'trainingsweken')
+    # print(blok,dvdw,trw,bool0,bool1,bool2)
+    # return
+    maak_alle_users_lid=False
+    verwijder_oude_flexevents=True
+    verwijder_oude_onderwerpen=False
     day_delta = datetime.timedelta(days=1)
-    for d in range(7):
-        tomorrow = start_date + datetime.timedelta(days=d)
-    weekdag=int(start_date.strftime('%w'))
-    trainingsweken=4 ####45
-    for j in range(trainingsweken):
-        day_delta = datetime.timedelta(days=7) 
-        datum2=start_date + j * day_delta   
-        weekdag=datum2.strftime('%w')
-        activiteit='training_' + str(j)
-        week=datum2.strftime('%W')
-        datum = datum2.strftime("%m/%d/%Y")
-        user=User.objects.all().first()
-        for t in range(1,7,1):
-            topc=Topic.objects.create(name='training_' + str(t))
-            tijd2="20:30"
-            Flexevent.objects.all().update_or_create(
-            event_text='training_' + str(t),
-            name='training_' + str(t),
-            description=dagnaam + '; ' + weekdag + '; ' + datum , 
-            created=datum2,
-            pub_time=tijd2,
-            datum=datum2,
-            host=user,
-            topic=topc,
-            )
-        events=Flexevent.objects.all()
-        gebruikers=User.objects.all()
-
-        for f in events:
-            for p in gebruikers:
-                f.lid.add(p)
-
+    day_delta = datetime.timedelta(days=7) 
+    year=int(date.today().strftime('%Y'))
+    month = int(date.today().strftime('%m'))
+    monthend=[0,31,28,31,30,31,30,31,31,30,31,30,31]
+    einde=monthend[month]
+    start=date(year,month,1)
+    end=date(year,month,einde)
+    trainingsweken=4 #kijk 4 weken vooruit - eigenlijk 45 trainingsweken
+    user=User.objects.all().first()         ## -- de beheerder en superuser
+    onderwerp='flexroeien: '
+    week=[1,2,3,4,5,6,7]
+    week=[1]
+    dagvandeweek=['maandag','dinsdag','woensdag','donderdag','vrijdag','zaterdag','zondag','7----','8====''maandag','dinsdag','woensdag','donderdag','vrijdag','zaterdag','zondag','16----','17====']
+    blok=[0,1]                              #ochtend middag
+    tijdblok=[' 09:00',' 13:00',' 17:30',' 09:00',' 13:00',' 17:30',' 09:00',' 13:00',' 17:30']   # 1x ochtend 2x middag
+    if verwijder_oude_flexevents: Flexevent.objects.all().delete()
+    if verwijder_oude_onderwerpen: Topic.objects.all().delete()
+        # resetsequence('beatrix_flexevent')  # bestandsbeheer: zet sequence op nul; kan niet gelijktijdig meet topics
+    print('====== start ===========')
+    i=1
+    j=1
     return
+
+def taak_rooster(request):
+    template_name = 'viking/rooster_list.html'
+    # print('============ recurrent ============')
+    num1 =365 ## 54
+    num2 =373 ## 24
+    num3=136145  #lcm of num1 and num2
+    num4=random.randint(0, num3)
+    # Generate 10 unique random numbers within a range
+    # num_list = random.sample(range(0, 1000), 10)
+    # Generate unique random numbers within a range (recordcount of rooster)
+    num_list = random.sample(range(0, num3), 365)
+    print(num_list)
+    # Output [499, 580, 735, 784, 574, 511, 704, 637, 472, 211]    
+    print("The L.C.M. is", compute_lcm(num1, num2),num4)
+    events=Flexevent.objects.all()
+    events=Rooster.objects.all().filter(name__in=('zaterdag','zondag'))
+    context={'rooster':events}
+    return render(request, template_name, context)
+
 @api_view(['GET'])
 def apiOverview(request):
     api_urls={
@@ -1060,3 +1210,27 @@ def ploeg_participants(request):
     #     'object_list':results,
     #    }
         return HttpResponse('done')
+def resetsequence(*args):        
+    cursor = connection.cursor() 
+    cursor.execute("SELECT * FROM sqlite_sequence");
+    results = namedtuplefetchall(cursor)
+    tabel='viking_rooster'
+    sql="UPDATE sqlite_sequence SET seq =0 where name='" + tabel + "'"
+    cursor.execute(sql)
+
+# Python Program to find the L.C.M. of two input number
+def compute_lcm(x, y):
+   # choose the greater number
+   if x > y:
+       greater = x
+   else:
+       greater = y
+   while(True):
+       if((greater % x == 0) and (greater % y == 0)):
+           lcm = greater
+           break
+       greater += 1
+   return lcm
+# num1 = 54
+# num2 = 24
+# print("The L.C.M. is", compute_lcm(num1, num2))

@@ -79,6 +79,7 @@ class Person(models.Model):
     pos5 = models.CharField(max_length=318, choices=SCULL,default='st1') 
     coach = models.CharField(max_length=18, choices=SCULL,default='st1')     
     keuzes = models.IntegerField(default=0) #aantal keren als host gekozen
+    lnr = models.IntegerField(default=0) #lotingnummer 
 
     def __str__(self):
         return self.name
@@ -101,6 +102,22 @@ class Flexevent(models.Model):
 
     def __str__(self):
         return "%s" % (self.event_text)               
+class Rooster(models.Model):
+    host = models.ForeignKey(User, on_delete=models.SET_NULL, null=True)
+    name = models.CharField(max_length=200)
+    description = models.TextField(null=True, blank=True) # database field (can Empty), form field (can Empty)
+    datum = models.DateField(auto_now=False)
+    pub_time = models.CharField(max_length=35, default='10:00')
+    lid = models.ManyToManyField(User, related_name='taak', blank=True)
+    created = models.DateTimeField(default=datetime.now, blank=True)
+    lnr = models.IntegerField(default=0) #loting nummer
+    rnr = models.IntegerField(default=0) #rangnummer
+
+
+
+    def __str__(self):
+        return "%s" % (self.name)               
+
 class Flexlid(models.Model):
     flexevent = models.ForeignKey(Flexevent, on_delete=models.CASCADE,null=True)
     member = models.ForeignKey(User, on_delete=models.CASCADE,null=True)
