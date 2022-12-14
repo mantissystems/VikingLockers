@@ -1059,11 +1059,11 @@ def taak_rooster(request):
     # num_list = random.sample(range(0, 1000), 10)
     # Generate unique random numbers within a range (recordcount of rooster)
     num_list = random.sample(range(0, num3), 365)
-    print(num_list)
+    # print(num_list)
     # Output [499, 580, 735, 784, 574, 511, 704, 637, 472, 211]    
-    print("The L.C.M. is", compute_lcm(num1, num2),num4)
-    events=Flexevent.objects.all()
-    events=Rooster.objects.all().filter(name__in=('zaterdag','zondag'))
+    # print("The L.C.M. is", compute_lcm(num1, num2),num4)
+    # events=Flexevent.objects.all()
+    events=Rooster.objects.all() ##.filter(name__in=('zaterdag','zondag'))
     context={'rooster':events}
     return render(request, template_name, context)
 
