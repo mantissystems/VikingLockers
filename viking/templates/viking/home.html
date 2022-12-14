@@ -47,11 +47,18 @@
         </a>
         {% endif %}
       </div>
+      {% if lijst == "Kluisjes-bezet"  %}
       {% if request.user.is_authenticated %}
-      {% if lijst == "kluisjes"  %}
+      {{lijst}}
       {% include 'viking/kluis_component.html' %}
+      {% endif %}
       
+      {% endif %}
+      {{lijst}}
+      {% if lijst == "Lege-kluisjes"  %}      
+      {% include 'viking/kluis_component.html' %}
       {% else %}
+      {% if request.user.is_authenticated %}
       {% include 'viking/feed_component.html' %}
       {% endif %}
 

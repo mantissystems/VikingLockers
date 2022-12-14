@@ -121,10 +121,12 @@ def home(request):
     # where1=Q(participants__last_name__icontains = q)
     rooms = Room.objects.filter(where1|where2|where3|where4|where5)
         # ) #.exclude(participants=None) # search 
+    lijst='ploegen'
     topcs = Topic.objects.all()
     rms = Room.objects.all().exclude(id__in=(87,88))
     participants_count=0
     kluizen=Kluis.objects.all().filter(owners=None)
+    kstn=kluizen
     kastjes_count=kluizen.count()
     try:
         gebruiker=User.objects.get(id=request.user.id) ## request.user
@@ -133,14 +135,14 @@ def home(request):
 
     if q=='kluisjes' :
         # print(q)
-        lijst='kluisjes'
-        # kstn = Kluis.objects.all().filter(owners=None)
-        # for k in kstn:
-        #     kk=k.owners.all()
-        #     kastjes_count+=kk.count()
+        lijst='Lege-kluisjes'
+    if q=='Kluisjes-bezet' :
+        # print(q)
+        lijst='Kluisjes-bezet'
+        kstn = Kluis.objects.all().exclude(owners=None)
 
-    else:
-        lijst='ploegen'
+    if q=='viking' :
+        lijst='Lege-kluisjes'
         kstn = Kluis.objects.none
         kstn = Kluis.objects.filter(
         Q(name__icontains = q) | 
@@ -148,6 +150,7 @@ def home(request):
         Q(location__icontains = 'dames') |
         Q(location__icontains = 'heren') 
         ) #.exclude(owners=None) # search 
+        kstn = Kluis.objects.all().filter(owners=None)
     room_count = rooms.count()
     room_messages = Message.objects.filter(Q(room__topic__name__icontains=q))
     for rm in rms:
@@ -156,7 +159,7 @@ def home(request):
     # print(kstn)
     context = {
         'rooms': rooms, 
-        'kluisjes': kluizen, 
+        'kluisjes': kstn, 
         'lijst': lijst, 
         'topics': topcs, 
         'room_count': room_count, 
@@ -852,7 +855,6 @@ def randomiseren():
     # for xx in range(12):
     for r in T:
         lot=random.randint(0, num1)
-        # print(lot,r[0])
         try:
             rr=Rooster.objects.filter(
                 Q(id=lot) &
