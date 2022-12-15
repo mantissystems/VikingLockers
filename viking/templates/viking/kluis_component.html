@@ -1,9 +1,8 @@
+{% load static %}
 {% for kluis in kluisjes %}
 <div class="roomListRoom">
     <div class="roomListRoom__content">
-        
-        <a href="{% url 'kluis' kluis.id %}">{{kluis.location}} - {{kluis.slot}} - {{kluis.owners.count}} 
-            <!-- {{room.participants.all.count}} teamleden ({{room.topic.name}}) -->
+        <a href="{% url 'kluis' kluis.id %}"> {{kluis.location}} {{kluis.slot}} {{kluis.owners.count}} 
         </a>
         {% if request.user.is_authenticated %}
         {% endif %}
@@ -14,7 +13,7 @@
 {% for kluis in legen_onnodig %}
 <div class="roomListRoom">
     <div class="roomListRoom__content">
-        <a href="{% url 'kluis' kluis.id %}">{{kluis.location}}
+        <a href="{% url 'kluis' kluis.id %}">{{kluis.location}} 
         </a>
     </div>
 </div>
