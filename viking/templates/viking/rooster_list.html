@@ -2,6 +2,8 @@
 {% csrf_token %} 
 
   </head>
+  <li><a href="/" class="btn btn-warning btn-sm">Home</a></li>
+
   <body>
   
   
@@ -17,25 +19,25 @@
 
       <thead>
         <tr>
-          <th >#</th>
+          <!-- <th >#</th> -->
           <th >Datum</th>
           <th >Dag</th>
           <th >Taak</th>
           <th >Tijdstip</th>
-          <th >lnr</th>
-          <th >rnr</th>
+          <!-- <th >lnr</th> -->
+          <!-- <th >rnr</th> -->
         </tr>
       </thead>
       <tbody>
       {% for p in rooster %}
       <tr>
-        <td > {{p.id}}</td>
+        <!-- <td > {{p.id}}</td> -->
         <td >{{p.datum}}</td>
         <td >{{p.name}}</td>
         <td >{{p.description}}</td>
         <td >{{p.pub_time}}</td>
-        <td >{{p.lnr}}</td>
-        <td >{{p.rnr}}</td>
+        <!-- <td >{{p.lnr}}</td> -->
+        <!-- <td >{{p.rnr}}</td> -->
         <td>{% for t in p.lid.all %}{{ t.username }}<br>{% endfor %}</td>
       {% endfor %}   
       </tr>
