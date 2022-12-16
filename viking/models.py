@@ -72,11 +72,6 @@ class Person(models.Model):
     is_lid= models.BooleanField(default=True)           #is roeiend lid;member
     in_poule = models.BooleanField(default=False)       #wil flexibel roeiern
     vaart = models.BooleanField(default=False)          #zit in ingedeelde boot op het water
-    pos1 = models.CharField(max_length=18, choices=SCULL,default='sc1')  #aanbod vaardigheid om voorstel te berekenen voor wat nodig is aan in te delen boten
-    pos2 = models.CharField(max_length=18, choices=SCULL,default='sc1') 
-    pos3 = models.CharField(max_length=18, choices=SCULL,default='sc1') 
-    pos4 = models.CharField(max_length=18, choices=SCULL,default='sc1') 
-    pos5 = models.CharField(max_length=318, choices=SCULL,default='st1') 
     coach = models.CharField(max_length=18, choices=SCULL,default='st1')     
     keuzes = models.IntegerField(default=0) #aantal keren als host gekozen
     lnr = models.IntegerField(default=0) #lotingnummer 
@@ -84,21 +79,6 @@ class Person(models.Model):
     def __str__(self):
         return self.name
 
-class Flexevent(models.Model):
-    host = models.ForeignKey(User, on_delete=models.SET_NULL, null=True)
-    # host = models.ManyToManyField(User,through='Hosts')  ##, on_delete=models.SET_NULL, null=True)
-    id = models.AutoField(primary_key=True)
-    topic = models.ForeignKey(Topic, on_delete=models.SET_NULL, null=True)
-    event_text = models.CharField(max_length=200)
-    name = models.CharField(max_length=200)
-    description = models.TextField(null=True, blank=True) # database field (can Empty), form field (can Empty)
-    pub_date = models.CharField(max_length=35)
-    datum = models.DateField(auto_now=False)
-    pub_time = models.CharField(max_length=35, default='10:00')
-    # flexhost = models.CharField(max_length=135, default='-')
-    # lid = models.ManyToManyField(User,through='Flexlid')  ##, on_delete=models.SET_NULL, null=True)
-    lid = models.ManyToManyField(User, related_name='deelnemer', blank=True)
-    created = models.DateTimeField(default=datetime.now, blank=True)
 
     def __str__(self):
         return "%s" % (self.event_text)               
@@ -118,35 +98,13 @@ class Rooster(models.Model):
     def __str__(self):
         return "%s" % (self.name)               
 
-class Flexlid(models.Model):
-    flexevent = models.ForeignKey(Flexevent, on_delete=models.CASCADE,null=True)
-    member = models.ForeignKey(User, on_delete=models.CASCADE,null=True)
-    is_host = models.BooleanField(default=False)
-
-    class Meta:
-        ordering = ('member',)    
-    def __str__(self):
-        return "%s" % (self.flexevent)        
-
-
-class Bericht(models.Model):
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
-    event = models.ForeignKey(Flexevent, on_delete=models.CASCADE) # when room delete, delete all chiled messages
-    body = models.TextField()
-    updated = models.DateTimeField(auto_now=True)
-    created = models.DateTimeField(auto_now_add=True)     
-
-    class Meta:
-        ordering = ['-updated', '-created']
-
-    def __str__(self):
-        return self.body[0:50]
 
 class Kluis(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     body = models.TextField()
     name = models.CharField(max_length=200)
     location = models.TextField(null=True, blank=True)
+    topic = models.ForeignKey(Topic, on_delete=models.SET_NULL, null=True)
     updated = models.DateTimeField(auto_now=True)
     created = models.DateTimeField(auto_now_add=True)     
     owners = models.ManyToManyField(User, related_name='owner', blank=True)
@@ -164,9 +122,6 @@ class Kluis(models.Model):
 # python .\manage.py migrate
 class Flexrecurrent(models.Model):
     regels = models.CharField(max_length=18,default='30')
-
-# class Dataimport(models.Model):
-#     regel = models.TextField(max_length=540,default='-')
 
 class Instromer(models.Model):
     # user = models.OneToOneField(User, on_delete=models.CASCADE)    

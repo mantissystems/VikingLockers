@@ -1,11 +1,9 @@
 from django.urls import path
 
 from viking.views import( 
-AanmeldView,
-FlexeventsView,
-ResultsView,
+AanmeldView ,
 activiteit,
-activityPage,
+activityPage ,
 apiOverview, 
 createRoom, deleteMessage, deleteRoom,
 KluisPage,
@@ -59,7 +57,6 @@ urlpatterns = [
     path('ploegbeheer/',PloegPage , name="ploegbeheer"),
     path('kluisbeheer/',KluisPage , name="kluisbeheer"),
     path('<int:pk>/', DetailView.as_view(), name='detail'),
-    path('<int:pk>/results/', ResultsView.as_view(), name='results'),
     path('api/person/', personenlijst,name='api-person'),    
     path('api/gebruikers/', gebruikerslijst,name='api-gebruikers'),    
     path('api/', apiOverview,name='api-overview'),    
@@ -69,6 +66,7 @@ urlpatterns = [
     path('taakrooster/', taak_rooster, name='taakrooster'),
     path('events/', events, name='events'),
     ]
+    # path('<int:pk>/results/', ResultsView.as_view(), name='results'),
     # path('erv_activity/', erv_activityPage, name="urv-activity"),
     # path('urv-topics/', erv_topicsPage, name="urv-topics"),
     # path('urv-delete-room/<str:pk>/', erv_deleteRoom, name='urv-delete-room'),

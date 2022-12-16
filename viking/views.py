@@ -12,8 +12,7 @@ from django.contrib.sessions.models import Session
 from django.http import HttpResponseRedirect
 from django.shortcuts import get_object_or_404, render
 from django.urls import reverse,reverse_lazy
-from viking.models import( Flexevent,Flexlid,Instromer,
-Person,)
+from viking.models import( Instromer,Person,)
 from collections import namedtuple
 from django.db import connection
 from django.views.generic import(ListView,UpdateView,DetailView)
@@ -28,8 +27,8 @@ from django.contrib.auth.models import User
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.forms import UserCreationForm
 
-from viking.serializers import FlexrecurrentSerializer, PersoonSerializer, TopicSerializer ,GebruikerSerializer
-from .models import Bericht, Flexrecurrent, Message, Room, Topic,Kluis,Rooster
+from viking.serializers import FlexrecurrentSerializer, PersoonSerializer,  GebruikerSerializer
+from .models import Flexrecurrent, Message, Room, Topic,Kluis,Rooster
 from .forms import RoomForm,UserForm,Urv_KluisForm
 
 def loginPage(request):
@@ -133,7 +132,7 @@ def home(request):
     except:
         messages.error(request, '.U bent niet ingelogd waardoor gegevens niet getoond worden')
 
-    if q=='kluisjes' :
+    if q=='Kluisjes-leeg' :
         # print(q)
         lijst='Lege-kluisjes'
     if q=='Kluisjes-bezet' :
@@ -394,10 +393,12 @@ def urv_updateKluis(request, pk):
     #     return HttpResponse('Your are not allowed here!!')
 
     if request.method == 'POST':
-        # topic_name = request.POST.get('topic')
-        # topic, created = Topic.objects.get_or_create(name=topic_name)
+        topic = request.POST.get('topic')
+        print(topic)
+        topic_name = Topic.objects.get(id=topic)
         # kluis.created=date.today()
-        kluis.name = request.POST.get('name')
+        kluis.name = kluis.location
+        kluis.topic = topic_name
         kluis.code = request.POST.get('code')
         kluis.slot = request.POST.get('slot')
         kluis.description = request.POST.get('description')
@@ -579,42 +580,42 @@ def KluisPage(request):
     kluisjes=Kluis.objects.all().filter(name__contains=q) #.exclude(participants=None)
     return render(request, 'viking/kluis_list.html', {'kluisjes': kluisjes})
 
-class FlexeventsView(ListView):
-    queryset=Flexevent.objects.all()
+# class FlexeventsView(ListView):
+#     queryset=Flexevent.objects.all()
     
-    def get_context_data(self, **kwargs):
+#     def get_context_data(self, **kwargs):
 
-        sl_ = self.kwargs.get("slug")
-        year=int(date.today().strftime('%Y'))
-        month = int(date.today().strftime('%m'))
-        beginmonth = 1 #int(date.today().strftime('%m'))
-        endmonth = 12 # int(date.today().strftime('%m'))
-        # if beginmonth != 12:endmonth=beginmonth+1
-        print(beginmonth,endmonth)
-        monthend=[0,31,28,31,30,31,30,31,31,30,31,30,31] #jfmamjjasond
-        einde=monthend[endmonth]
-        x=0
-        start=date(year,beginmonth,1)
-        end=date(year,month,einde)
-        x=10
-        # rooster=Flexevent.objects.filter(pub_date__range=[start, end])[:x]
-        rooster=Flexevent.objects.all()[:x]
-        # print(rooster)
-        for r in rooster:
-            aanwezig=Flexlid.objects.all().filter(flexevent_id=r.id)
-            ingedeelden=aanwezig.values_list('member_id', flat=True)
-            # print(len(aanwezig))
-            x+=len(aanwezig)
-        y=int(x/4)
-            # y=8
-        roostergedeeltelijk=Flexevent.objects.filter(pub_date__range=[start, end])[:x]
-        context = {
-        'rooster': rooster,
-        'roostergedeelte': roostergedeeltelijk,
-        'events': roostergedeeltelijk,
-        'regels':y,
-        } 
-        return context
+#         sl_ = self.kwargs.get("slug")
+#         year=int(date.today().strftime('%Y'))
+#         month = int(date.today().strftime('%m'))
+#         beginmonth = 1 #int(date.today().strftime('%m'))
+#         endmonth = 12 # int(date.today().strftime('%m'))
+#         # if beginmonth != 12:endmonth=beginmonth+1
+#         print(beginmonth,endmonth)
+#         monthend=[0,31,28,31,30,31,30,31,31,30,31,30,31] #jfmamjjasond
+#         einde=monthend[endmonth]
+#         x=0
+#         start=date(year,beginmonth,1)
+#         end=date(year,month,einde)
+#         x=10
+#         # rooster=Flexevent.objects.filter(pub_date__range=[start, end])[:x]
+#         rooster=Flexevent.objects.all()[:x]
+#         # print(rooster)
+#         for r in rooster:
+#             aanwezig=Flexlid.objects.all().filter(flexevent_id=r.id)
+#             ingedeelden=aanwezig.values_list('member_id', flat=True)
+#             # print(len(aanwezig))
+#             x+=len(aanwezig)
+#         y=int(x/4)
+#             # y=8
+#         roostergedeeltelijk=Flexevent.objects.filter(pub_date__range=[start, end])[:x]
+#         context = {
+#         'rooster': rooster,
+#         'roostergedeelte': roostergedeeltelijk,
+#         'events': roostergedeeltelijk,
+#         'regels':y,
+#         } 
+#         return context
 
 
 @api_view(['GET'])
@@ -662,39 +663,39 @@ def activiteit(request,pk):
 #     return Response('boot verwijderd uit de werf')
 
 
-class DetailView(DetailView):
-    model = Flexevent
-    template_name = 'viking/detail.html'
-    def get_context_data(self, **kwargs):
+# class DetailView(DetailView):
+#     model = Flexevent
+#     template_name = 'viking/detail.html'
+#     def get_context_data(self, **kwargs):
 
-        sl_ = self.kwargs.get("pk")
-        zoeknaam=self.kwargs.get("zoeknaam")
-        event=Flexevent.objects.get(id=sl_)
-        aanwezig=Flexlid.objects.all().filter(flexevent_id=event.id)
-        aangemeld=event.lid.all()
-        # ingedeelden=aanwezig.values_list('member_id', flat=True)
-        kandidaten=User.objects.all().exclude(id__in=aangemeld)
-        aanwezigen=User.objects.all().filter(id__in=aangemeld)
-        print(sl_,zoeknaam)
-        context = {
-            'event':event,
-        # 'aanwezig': ingedeelden,
-        'kandidaten': kandidaten,
-        'aanwezig': aanwezigen,
-        } 
-        return context
+#         sl_ = self.kwargs.get("pk")
+#         zoeknaam=self.kwargs.get("zoeknaam")
+#         event=Flexevent.objects.get(id=sl_)
+#         aanwezig=Flexlid.objects.all().filter(flexevent_id=event.id)
+#         aangemeld=event.lid.all()
+#         # ingedeelden=aanwezig.values_list('member_id', flat=True)
+#         kandidaten=User.objects.all().exclude(id__in=aangemeld)
+#         aanwezigen=User.objects.all().filter(id__in=aangemeld)
+#         print(sl_,zoeknaam)
+#         context = {
+#             'event':event,
+#         # 'aanwezig': ingedeelden,
+#         'kandidaten': kandidaten,
+#         'aanwezig': aanwezigen,
+#         } 
+#         return context
 
-class ResultsView(DetailView):
-    model = Flexevent
-    template_name = 'viking/room.html'
-    def get_context_data(self, **kwargs):
-        sl_ = self.kwargs.get("pk")
-        flexevent=Flexevent.objects.filter(id=sl_)
-        # print(flexevent)
-        context = {
-        'flexevent':flexevent,
-        } 
-        return context
+# class ResultsView(DetailView):
+#     model = Flexevent
+#     template_name = 'viking/room.html'
+#     def get_context_data(self, **kwargs):
+#         sl_ = self.kwargs.get("pk")
+#         flexevent=Flexevent.objects.filter(id=sl_)
+#         # print(flexevent)
+#         context = {
+#         'flexevent':flexevent,
+#         } 
+#         return context
 
 def vote(request, room_id):
     event = get_object_or_404(Room, pk=room_id)
@@ -769,8 +770,8 @@ def kluis(request, kluis_id):
     aangemeld=kluis.owners.all()
     aanwezigen=User.objects.all().filter(id__in=aangemeld)
     roeiers=Person.objects.filter(
-        Q(id__in=aanwezigen) &
-        Q(pos1__icontains=zoeknaam)
+        Q(id__in=aanwezigen)
+        # Q(pos1__icontains=zoeknaam)
         )
     return render(request, 'viking/urv-kluis-detail.html', {
             'kluis': kluis,
@@ -791,7 +792,7 @@ def kluis(request, kluis_id):
 class AanmeldView(ListView):
     template_name='viking/aanmeldview.html'
     # print('aanmelden')
-    queryset=Flexevent.objects.all()
+    # queryset=Flexevent.objects.all()
     def get_context_data(self, **kwargs):
         x=0
         year=int(date.today().strftime('%Y'))
@@ -810,10 +811,10 @@ class AanmeldView(ListView):
         start=date(year,beginmonth,1)
         end=date(year,endmonth,einde)
         start=date(year,beginmonth,1)
-        rooster=Flexevent.objects.filter(datum__range=[start, end])
-        roostergedeeltelijk=Flexevent.objects.filter(datum__range=[start, end])
+        # rooster=Flexevent.objects.filter(datum__range=[start, end])
+        # roostergedeeltelijk=Flexevent.objects.filter(datum__range=[start, end])
         context = {
-        'rooster': rooster,
+        # 'rooster': rooster,
         } 
         return context
 

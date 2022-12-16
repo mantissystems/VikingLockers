@@ -28,11 +28,9 @@ INSTALLED_APPS = [
     'rest_framework',
     'corsheaders',
 ]
-# INTERNAL_IPS = [
+INTERNAL_IPS = ["127.0.0.1",]
 #     # ...
-#     "127.0.0.1",
 #     # ...
-# ]
 MIDDLEWARE = [
     # 'debug_toolbar.middleware.DebugToolbarMiddleware', ## tijdens debug 
     'django.middleware.security.SecurityMiddleware',
