@@ -504,69 +504,6 @@ def activityPage(request):
     room_messages = Message.objects.all()
     return render(request, 'viking/activity.html', {'room_messages': room_messages})
 
-def erv_activityPage(request):
-    tops=Flexevent.objects.values_list('topic', flat=True)
-    topcs = Topic.objects.all().filter(id__in=tops)
-    room_messages = Bericht.objects.all() ##filter(Q(room__topic__name__icontains=q))
-    year=int(date.today().strftime('%Y'))
-    month = int(date.today().strftime('%m'))
-    beginmonth = 1 #int(date.today().strftime('%m'))
-    endmonth = 12 # int(date.today().strftime('%m'))
-    monthend=[0,31,28,31,30,31,30,31,31,30,31,30,31] #jfmamjjasond
-    einde=monthend[endmonth]
-    start=date(year,beginmonth,1)
-    end=date(year,month,einde)
-    usr=request.user
-    users=User.objects.all()
-    aangemelden=Person.objects.all().filter(id__in=users)
-
-    flexevents = Flexevent.objects.all().filter(
-        Q(datum__range=[start, end]) 
-        ) # search 
-    ff=Flexevent.objects.none()
-    for fl in flexevents:
-        ff = fl.lid.all()
-        ff | ff
-    deelnemers = ff
-    aangemeld=deelnemers
-    skills=Person.objects.all().filter(
-        Q(id__in=aangemeld) &
-        Q(pos1__in=['sc1','sc2','sc3'])&
-        Q(pos2__in=['sc1','sc2','sc3'])&
-        Q(pos3__in=['sc1','sc2','sc3'])&
-        Q(pos4__in=['sc1','sc2','sc3'])&
-        Q(pos5__in=['st1','st2','st3'])  #pos5 = stuur
-        )
-    room_count = flexevents.count()
-    sc1=Person.objects.all().filter(
-        Q(id__in=aangemeld) &
-        Q(pos1__in=['sc1'])&
-        Q(pos2__in=['sc1'])&
-        Q(pos3__in=['sc1'])&
-        Q(pos4__in=['sc1'])&
-        Q(pos5__in=['st1','st2','st3'])  #pos5 = stuur
-        )
-    room_count = flexevents.count()
-    rooster=Flexevent.objects.all().filter(datum__range=[start, end])
-
-    context = {
-        'events': flexevents,
-        'rooms': flexevents, 
-        'personen':skills,
-        'topics': topcs, 
-        'room_count': room_count, 
-        'sc1':aangemelden,
-        'room_messages': room_messages
-        }
-
-    return render(request, 'viking/activity.html', context)
-
-def erv_topicsPage(request):
-    q = request.GET.get('q') if request.GET.get('q') != None else ''
-    topics=Flexevent.objects.filter(name__contains=q)[0:6] ##.values_list('topic', flat=True)
-    # topcs = Topic.objects.all().filter(id__in=tops)
-    # topics = Topic.objects.filter(name__icontains=q)[0:5]
-    return render(request, 'viking/topics.html', {'topics': topics})
 
 def PloegPage(request):
     q = request.GET.get('q') if request.GET.get('q') != None else ''
@@ -579,44 +516,6 @@ def KluisPage(request):
     q = request.GET.get('q') if request.GET.get('q') != None else ''
     kluisjes=Kluis.objects.all().filter(name__contains=q) #.exclude(participants=None)
     return render(request, 'viking/kluis_list.html', {'kluisjes': kluisjes})
-
-# class FlexeventsView(ListView):
-#     queryset=Flexevent.objects.all()
-    
-#     def get_context_data(self, **kwargs):
-
-#         sl_ = self.kwargs.get("slug")
-#         year=int(date.today().strftime('%Y'))
-#         month = int(date.today().strftime('%m'))
-#         beginmonth = 1 #int(date.today().strftime('%m'))
-#         endmonth = 12 # int(date.today().strftime('%m'))
-#         # if beginmonth != 12:endmonth=beginmonth+1
-#         print(beginmonth,endmonth)
-#         monthend=[0,31,28,31,30,31,30,31,31,30,31,30,31] #jfmamjjasond
-#         einde=monthend[endmonth]
-#         x=0
-#         start=date(year,beginmonth,1)
-#         end=date(year,month,einde)
-#         x=10
-#         # rooster=Flexevent.objects.filter(pub_date__range=[start, end])[:x]
-#         rooster=Flexevent.objects.all()[:x]
-#         # print(rooster)
-#         for r in rooster:
-#             aanwezig=Flexlid.objects.all().filter(flexevent_id=r.id)
-#             ingedeelden=aanwezig.values_list('member_id', flat=True)
-#             # print(len(aanwezig))
-#             x+=len(aanwezig)
-#         y=int(x/4)
-#             # y=8
-#         roostergedeeltelijk=Flexevent.objects.filter(pub_date__range=[start, end])[:x]
-#         context = {
-#         'rooster': rooster,
-#         'roostergedeelte': roostergedeeltelijk,
-#         'events': roostergedeeltelijk,
-#         'regels':y,
-#         } 
-#         return context
-
 
 @api_view(['GET'])
 def personenlijst(request):
@@ -638,64 +537,6 @@ def aantalregels(request):
     serializer=FlexrecurrentSerializer(regels,many=True)
 
     return Response(serializer.data)
-
-#     if serializer.is_valid():
-#         serializer.save()
-
-#     return Response(serializer.data)
-
-
-@api_view(['GET'])
-def activiteit(request,pk):
-    topic=Flexevent.objects.get(id=pk)
-
-    serializer=TopicSerializer(topic,many=False)
-    # if serializer.is_valid():
-    #     serializer.save()
-
-    return Response(serializer.data)
-
-# @api_view(['DELETE'])
-# def bootWerfuit(request,pk):
-#     boot=Boot.objects.get(id=pk)
-#     boot.delete()
-    
-#     return Response('boot verwijderd uit de werf')
-
-
-# class DetailView(DetailView):
-#     model = Flexevent
-#     template_name = 'viking/detail.html'
-#     def get_context_data(self, **kwargs):
-
-#         sl_ = self.kwargs.get("pk")
-#         zoeknaam=self.kwargs.get("zoeknaam")
-#         event=Flexevent.objects.get(id=sl_)
-#         aanwezig=Flexlid.objects.all().filter(flexevent_id=event.id)
-#         aangemeld=event.lid.all()
-#         # ingedeelden=aanwezig.values_list('member_id', flat=True)
-#         kandidaten=User.objects.all().exclude(id__in=aangemeld)
-#         aanwezigen=User.objects.all().filter(id__in=aangemeld)
-#         print(sl_,zoeknaam)
-#         context = {
-#             'event':event,
-#         # 'aanwezig': ingedeelden,
-#         'kandidaten': kandidaten,
-#         'aanwezig': aanwezigen,
-#         } 
-#         return context
-
-# class ResultsView(DetailView):
-#     model = Flexevent
-#     template_name = 'viking/room.html'
-#     def get_context_data(self, **kwargs):
-#         sl_ = self.kwargs.get("pk")
-#         flexevent=Flexevent.objects.filter(id=sl_)
-#         # print(flexevent)
-#         context = {
-#         'flexevent':flexevent,
-#         } 
-#         return context
 
 def vote(request, room_id):
     event = get_object_or_404(Room, pk=room_id)
@@ -751,7 +592,7 @@ def vote(request, room_id):
     return HttpResponseRedirect(reverse('vote', args=(room_id,)))
 
 
-
+@login_required(login_url='login')
 def kluis(request, kluis_id):
     kluis = get_object_or_404(Kluis, pk=kluis_id)
     zoeknaam = request.POST.get('zoeknaam') if request.POST.get('zoeknaam') != None else 'sc'
