@@ -1,5 +1,6 @@
 from rest_framework import serializers
-from .models import Room, Person, Topic
+from rest_framework.serializers import ModelSerializer
+from .models import Room, Person, Topic,Note
 from django.contrib.auth.models import User
 
 class PersoonSerializer(serializers.ModelSerializer):
@@ -7,18 +8,15 @@ class PersoonSerializer(serializers.ModelSerializer):
         model = Person
         fields = ('id', 'name', 'email')
 
-# class FlexeventSerializer(serializers.ModelSerializer):
-#     class Meta:
-#         model = Flexevent
-#         fields='__all__'
+class NoteSerializer(ModelSerializer):
+    class Meta:
+        model = Note
+        fields = '__all__'
+
 class FlexrecurrentSerializer(serializers.ModelSerializer):
     class Meta:
         model = Room
         fields='__all__'        
-# class TopicSerializer(serializers.ModelSerializer):
-#     class Meta:
-#         model = Flexevent
-#         fields='__all__'                
 
 class GebruikerSerializer(serializers.ModelSerializer):
     class Meta:

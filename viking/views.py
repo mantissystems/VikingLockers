@@ -30,6 +30,7 @@ from django.contrib.auth.forms import UserCreationForm
 from viking.serializers import FlexrecurrentSerializer, PersoonSerializer,  GebruikerSerializer
 from .models import Flexrecurrent, Message, Room, Topic,Kluis,Rooster
 from .forms import RoomForm,UserForm,Urv_KluisForm
+from .utils import updateNote, getNoteDetail, deleteNote, getNotesList, createNote
 
 def loginPage(request):
 
@@ -1078,3 +1079,24 @@ def compute_lcm(x, y):
 # num1 = 54
 # num2 = 24
 # print("The L.C.M. is", compute_lcm(num1, num2))
+@api_view(['GET', 'POST'])
+def getNotes(request):
+
+    if request.method == 'GET':
+        return getNotesList(request)
+
+    if request.method == 'POST':
+        return createNote(request)
+
+
+@api_view(['GET', 'PUT', 'DELETE'])
+def getNote(request, pk):
+
+    if request.method == 'GET':
+        return getNoteDetail(request, pk)
+
+    if request.method == 'PUT':
+        return updateNote(request, pk)
+
+    if request.method == 'DELETE':
+        return deleteNote(request, pk)
