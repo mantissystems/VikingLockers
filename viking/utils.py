@@ -1,6 +1,6 @@
 from rest_framework.response import Response
-from .models import Note
-from .serializers import NoteSerializer
+from .models import Note,Kluis
+from .serializers import NoteSerializer,KluisSerializer
 
 
 def getNotesList(request):
@@ -38,3 +38,8 @@ def deleteNote(request, pk):
     note = Note.objects.get(id=pk)
     note.delete()
     return Response('Note was deleted!')
+
+def getKluizenList(request):
+    kluisjes = Kluis.objects.all()
+    serializer = KluisSerializer(kluisjes, many=True)
+    return Response(serializer.data)

@@ -2,10 +2,10 @@
 {% for kluis in kluisjes %}
 <div class="roomListRoom">
     <div class="roomListRoom__content">
-        <a href="{% url 'kluis' kluis.id %}"> {{kluis.location}} {{kluis.slot}} {{kluis.owners.count}} 
+        <a href="{% url 'kluis' kluis.id %}"> {{kluis.location}} {{kluis.slot}} {{kluis.owners.count}} {{kluis.sleutels}}
+            <!-- {{kluis.owners.all}} -->
+            {% for t in kluis.owners.all %} {{t.last_name}} |{% endfor %}
         </a>
-        {% if request.user.is_authenticated %}
-        {% endif %}
     </div>
 </div>
 {% endfor %}    
