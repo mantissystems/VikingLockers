@@ -9,11 +9,11 @@ SECRET_KEY = 'django-insecure-)r2waboda$o)g39!ap!l7dx$numws6k7zi9=m*3e1hbudc!2&r
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False
 ALLOWED_HOSTS = ['*', '127.0.0.1',
-'https://ploegenlijst.up.railway.app/*',]
+'https://kluisjeslijst.up.railway.app/*',]
 ALLOWED_ORIGINS = ['http://*', 'https://*',
-'https://ploegenlijst.up.railway.app/*'],
+'https://kluisjeslijst.up.railway.app/*'],
 CSRF_TRUSTED_ORIGINS = ['http://*', 'https://*',
-'https://ploegenlijst.up.railway.app/*/',
+'https://kluisjeslijst.up.railway.app/*/',
 ]
 # Application definition
 INSTALLED_APPS = [
