@@ -30,7 +30,7 @@
       <div class="roomList__header">
         <div>
           <h2>KLUISJES</h2>
-          <p>{{room_count}} Kluisjes</p>
+          <p>{{kastjes_count}} Kluisjes</p>
         </div>
         {% if request.user.is_authenticated %}
 
@@ -48,7 +48,7 @@
       {% if lijst == "Kluisjes-bezet"  %}
       {% if request.user.is_authenticated %}
       {{lijst}}
-      <!-- {% include 'viking/kluis_component.html' %} -->
+      {% include 'viking/kluis_component.html' %}
       {% endif %}
       
       {% endif %}
@@ -57,7 +57,7 @@
       {% include 'viking/kluis_component.html' %}
       {% else %}
       {% if request.user.is_authenticated %}
-      {% include 'viking/feed_component.html' %}
+      <!-- {% include 'viking/feed_component.html' %} -->
       {% endif %}
 
       {% endif %}

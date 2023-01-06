@@ -112,47 +112,36 @@ def registerPage(request):
     return render(request, 'viking/login_register.html', context)
 
 def home(request):
-    q = request.GET.get('q') if request.GET.get('q') != None else 'Kluisjes-leeg'
-    where6=Q(body__icontains = q)
-    where7=Q(owners__icontains = q)
-    rooms = Kluis.objects.filter(where6)
+    q = request.GET.get('q') if request.GET.get('q') != None else ''
     lijst='Kluisjes-leeg' # was ploegen
+    where7=Q(user__username__icontains = q)
+    where1=Q(body__icontains = q)
+    where2=Q(location__icontains = q)
+    rooms = Kluis.objects.filter(where1|where2|where7)
     topcs = Topic.objects.all()
     rms = Kluis.objects.all() #.exclude(id__in=(87,88))
     participants_count=0
     owner_count=0
     for r in rms:
         owner_count+=r.owners.count()
-    # kluizen=Kluis.objects.all().filter(owners=None)
-    # kstn=kluizen
-    # kastjes_count=kluizen.count()
+    lege_kastjes = Kluis.objects.none
+    lege_kastjes_count=rooms.count()
     kastjes_count=rooms.count()
-    if q=='Kluisjes-leeg' : lijst='Kluisjes-leeg'
-    if q=='Kluisjes-bezet' : lijst='Kluisjes-bezet'
-    kstn = Kluis.objects.all().exclude(owners=None)
+    if q=='Kluisjes-leeg' : 
+        lijst='Kluisjes-leeg'
+        rooms = Kluis.objects.all().filter(owners=None)
+        lege_kastjes_count=rooms.count()
+    if q=='Kluisjes-bezet' : 
+        lijst='Kluisjes-bezet'
+        rooms = Kluis.objects.all() #.exclude(owners=None)
+        kastjes_count = rooms.count()
 
-    # if q=='viking' :
-    #     lijst='Lege-kluisjes'
-    kstn = Kluis.objects.none
-    # kstn = Kluis.objects.filter(
-    # Q(name__icontains = q) | 
-    # Q(location__icontains = q) |
-    # Q(location__icontains = 'dames') |
-    # Q(location__icontains = 'heren') 
-    # ) #.exclude(owners=None) # search 
-    kstn = Kluis.objects.all() #.filter(owners=None)
-    # participants = kstn.owners.all()
-    room_count = kstn.count()
-    room_count=kastjes_count
-    print(owner_count,room_count)
     room_messages = [] #Message.objects.filter(Q(room__topic__name__icontains=q))
     context = {
-        'rooms': rooms, 
-        'kluisjes': kstn, 
+        'kluisjes': rooms, 
         'lijst': lijst, 
         'topics': topcs, 
-        'room_count': room_count, 
-        'participants_count': participants_count, 
+        'lege_kastjes_count': lege_kastjes_count, 
         'participants_count': owner_count, 
         'kastjes_count': kastjes_count, 
         'room_messages': room_messages

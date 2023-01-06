@@ -1,12 +1,11 @@
-{% for room in rooms %}
+{% load static %}
+{% for room in kluisjes %}
 <div class="roomListRoom">
     <div class="roomListRoom__content">
-        <a>{% for t in room.owner.all %}{{ t.user_id }}<hr>{% endfor %}</a>
         <a href="{% url 'kluis' room.id %}"> {{kluis.location}} {{kluis.slot}} {{kluis.owners.count}} 
         </a>
 
         <a href="{% url 'room' room.id %}">{{room.name}} 
-            {{room.participants.all.count}} teamleden ({{room.topic.name}})
         </a>
     </div>
 </div>
