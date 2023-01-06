@@ -112,51 +112,40 @@ def registerPage(request):
     return render(request, 'viking/login_register.html', context)
 
 def home(request):
-    q = request.GET.get('q') if request.GET.get('q') != None else ''
-    where1=Q(topic__name__icontains = q)
-    where2=Q(topic__name__icontains = q)
-    where3=Q(name__icontains = q)
-    where4=Q(description__icontains = q)
-    where5=Q(host__last_name__icontains = q) 
-    # where1=Q(participants__last_name__icontains = q)
-    rooms = Room.objects.filter(where1|where2|where3|where4|where5)
-        # ) #.exclude(participants=None) # search 
-    lijst='ploegen'
+    q = request.GET.get('q') if request.GET.get('q') != None else 'Kluisjes-leeg'
+    where6=Q(body__icontains = q)
+    where7=Q(owners__icontains = q)
+    rooms = Kluis.objects.filter(where6)
+    lijst='Kluisjes-leeg' # was ploegen
     topcs = Topic.objects.all()
-    rms = Room.objects.all().exclude(id__in=(87,88))
+    rms = Kluis.objects.all() #.exclude(id__in=(87,88))
     participants_count=0
-    kluizen=Kluis.objects.all().filter(owners=None)
-    kstn=kluizen
-    kastjes_count=kluizen.count()
-    try:
-        gebruiker=User.objects.get(id=request.user.id) ## request.user
-    except:
-        messages.error(request, '.U bent niet ingelogd waardoor gegevens niet getoond worden')
+    owner_count=0
+    for r in rms:
+        owner_count+=r.owners.count()
+    # kluizen=Kluis.objects.all().filter(owners=None)
+    # kstn=kluizen
+    # kastjes_count=kluizen.count()
+    kastjes_count=rooms.count()
+    if q=='Kluisjes-leeg' : lijst='Kluisjes-leeg'
+    if q=='Kluisjes-bezet' : lijst='Kluisjes-bezet'
+    kstn = Kluis.objects.all().exclude(owners=None)
 
-    if q=='Kluisjes-leeg' :
-        # print(q)
-        lijst='Lege-kluisjes'
-    if q=='Kluisjes-bezet' :
-        # print(q)
-        lijst='Kluisjes-bezet'
-        kstn = Kluis.objects.all().exclude(owners=None)
-
-    if q=='viking' :
-        lijst='Lege-kluisjes'
-        kstn = Kluis.objects.none
-        kstn = Kluis.objects.filter(
-        Q(name__icontains = q) | 
-        Q(location__icontains = q) |
-        Q(location__icontains = 'dames') |
-        Q(location__icontains = 'heren') 
-        ) #.exclude(owners=None) # search 
-        kstn = Kluis.objects.all().filter(owners=None)
-    room_count = rooms.count()
-    room_messages = Message.objects.filter(Q(room__topic__name__icontains=q))
-    for rm in rms:
-        rr=rm.participants.all()
-        participants_count+=rr.count()
-    # print(kstn)
+    # if q=='viking' :
+    #     lijst='Lege-kluisjes'
+    kstn = Kluis.objects.none
+    # kstn = Kluis.objects.filter(
+    # Q(name__icontains = q) | 
+    # Q(location__icontains = q) |
+    # Q(location__icontains = 'dames') |
+    # Q(location__icontains = 'heren') 
+    # ) #.exclude(owners=None) # search 
+    kstn = Kluis.objects.all() #.filter(owners=None)
+    # participants = kstn.owners.all()
+    room_count = kstn.count()
+    room_count=kastjes_count
+    print(owner_count,room_count)
+    room_messages = [] #Message.objects.filter(Q(room__topic__name__icontains=q))
     context = {
         'rooms': rooms, 
         'kluisjes': kstn, 
@@ -164,71 +153,21 @@ def home(request):
         'topics': topcs, 
         'room_count': room_count, 
         'participants_count': participants_count, 
+        'participants_count': owner_count, 
         'kastjes_count': kastjes_count, 
         'room_messages': room_messages
         }
     return render(request, 'viking/home.html', context)
 
-def erv_home(request):
-    q = request.GET.get('q') if request.GET.get('q') != None else ''
-    tops=Flexevent.objects.values_list('topic', flat=True)
-    topcs = Topic.objects.all() ##.filter(id__in=tops)
-    room_messages = Bericht.objects.all() ##filter(Q(room__topic__name__icontains=q))
-    year=int(date.today().strftime('%Y'))
-    month = int(date.today().strftime('%m'))
-    beginmonth = 1 #int(date.today().strftime('%m'))
-    endmonth = month # int(date.today().strftime('%m'))
-    monthend=[0,31,28,31,30,31,30,31,31,30,31,30,31] #jfmamjjasond
-    einde=monthend[endmonth]
-    start=date(year,beginmonth,1)
-    end=date(year,month,einde)
-    usr=request.user
-    users=User.objects.all()
-    aangemelden=Person.objects.all().filter(id__in=users)
-    flexevents = Flexevent.objects.all().filter(
-        Q(lid__count__gt=0) & 
-        # Q(datum__range=[start, end]) & 
-        Q(topic__name__icontains = q) | 
-        Q(name__icontains = q) | 
-        Q(event_text__icontains = q) | 
-        Q(description__icontains = q) 
-        ) # search 
-    d=[]
-    ll=[]
-    sc1=[]
-    sc2=[]
-    sc3=[]
-    for fl in flexevents:
-        ll=fl.lid.all()
-        ll | ll
-    aangemeld=ll
-    # print(ll)
-    aangemeld=User.objects.all().filter(
-    Q(id__in=aangemeld)
-        )
-    room_count = flexevents.count()
-    # namen=Person.objects.all()
-    rooster=Flexevent.objects.all().filter(created__range=[start, end])
-    context = {
-        'rooster':rooster,
-        'events': flexevents[0:6],   #te saneren in 3 templates
-        'rooms': flexevents.all(), #[0:6],    #te saneren in 3 templates
-        'deelnemers':aangemeld,    #alle deelnemers en hun skills
-        'topics': topcs [0:6], 
-        'room_count': room_count, #te saneren in 3 templates
-        'room_messages': room_messages, #te saneren in 3 templates
-        'sc1':aangemelden,
-        }
-    if 'viking' in q:
-        redirect('aanmelden')            
-        return render(request, 'viking/maand_list.html', context)
 
-    return render(request, 'viking/home.html', context)
 
 def room(request, pk):
     room = Room.objects.get(id=pk)
     room_messages = room.message_set.all()
+    kluis = Kluis.objects.get(id=pk)
     participants = room.participants.all()
+    owners=kluis.owners.all()
+
     try:
         gebruiker=User.objects.get(id=request.user.id) ## request.user
     except:
@@ -243,7 +182,7 @@ def room(request, pk):
         room.participants.add(request.user)
         return redirect('room', pk=room.id)
 
-    context = {'room': room, 'room_messages': room_messages, 'participants': participants}
+    context = {'room': room, 'room_messages': room_messages, 'participants': participants,'owners': owners}
     return render(request, 'viking/room.html', context)
     
 def erv_room(request, pk):

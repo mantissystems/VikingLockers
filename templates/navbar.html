@@ -4,7 +4,7 @@
     <a href="{% url 'home' %}" class="header__logo">
       <img src="{% static 'images/logo-mantisbv.png' %}" />
       <!-- <img src="{% static 'images/logo.svg' %}" /> -->
-      <h1>Ploegen en Kluizen</h1>
+      <h1>Kluisjes</h1>
     </a>
     <form class="header__search" method="GET" action="{% url 'home' %}">
       <label>
@@ -110,7 +110,7 @@
           Logout</a
         >
         {% if request.user.is_active and request.user.is_staff %}
-        <a href="{% url 'ploegbeheer' %}" class="dropdown-link"
+        <!-- <a href="{% url 'ploegbeheer' %}" class="dropdown-link"
           ><svg
             version="1.1"
             xmlns="http://www.w3.org/2000/svg"
@@ -127,7 +127,7 @@
           ></path>
         </svg>
         Ploegbeheer</a
-        >
+        > -->
         {% endif %}
         <a href="{% url 'taakrooster' %}" class="dropdown-link"
         ><svg

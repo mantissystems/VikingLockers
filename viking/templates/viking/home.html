@@ -23,16 +23,14 @@
           </label>
         </form>
         <div class="mobile-menuItems">
-          <!-- <a class="btn btn--main btn--pill" href="{% url 'kluisbeheer' %}">Schema</a> -->
           <a class="btn btn--main btn--pill" href="{% url 'topics' %}">Rubrieken</a>
-          <!-- <a class="btn btn--main btn--pill" href="{% url 'ploegbeheer' %}">Aanmelden</a> -->
         </div>
       </div>
 
       <div class="roomList__header">
         <div>
-          <h2>PLOEGEN</h2>
-          <p>{{room_count}} Ploegen</p>
+          <h2>KLUISJES</h2>
+          <p>{{room_count}} Kluisjes</p>
         </div>
         {% if request.user.is_authenticated %}
 
@@ -50,12 +48,12 @@
       {% if lijst == "Kluisjes-bezet"  %}
       {% if request.user.is_authenticated %}
       {{lijst}}
-      {% include 'viking/kluis_component.html' %}
+      <!-- {% include 'viking/kluis_component.html' %} -->
       {% endif %}
       
       {% endif %}
+      {% if lijst == "Kluisjes-leeg"  %}      
       {{lijst}}
-      {% if lijst == "Lege-kluisjes"  %}      
       {% include 'viking/kluis_component.html' %}
       {% else %}
       {% if request.user.is_authenticated %}
