@@ -2,7 +2,7 @@
 {% for kluis in kluisjes %}
 <div class="roomListRoom">
     <div class="roomListRoom__content">
-        <a href="{% url 'kluis' kluis.id %}"> {{kluis.location}} {{kluis.slot}}
+        <a href="{% url 'kluis' kluis.id %}">{{ forloop.counter }} {{kluis.location}} {{kluis.slot}}
             <!-- {{kluis.owners.all}} -->
             {% for t in kluis.owners.all %} {{t.last_name}} |{% endfor %}
         </a>
