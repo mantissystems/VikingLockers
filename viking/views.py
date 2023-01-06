@@ -844,10 +844,10 @@ def taak_rooster(request):
 def apiOverview(request):
     api_urls={
     'api/':'api-overview',    
-    'api/person':'api/person',    
-    'api/gebruikers':'gebruikerslijst',    
-    'ploegen/':'ploegen',    
-    'flexeventsbeheer/':'flexeventsbeheer',    
+    # 'api/person':'api/person',    
+    '/kluizen':'kluizen',    
+    '/notes/':'notes',    
+    # 'flexeventsbeheer/':'flexeventsbeheer',    
 
     }
     # return JsonResponse("API BASE POINT",safe=False)

@@ -54,8 +54,6 @@ urlpatterns = [
     path('ploegbeheer/',PloegPage , name="ploegbeheer"),
     path('kluisbeheer/',KluisPage , name="kluisbeheer"),
     path('<int:pk>/', DetailView.as_view(), name='detail'),
-    path('api/person/', personenlijst,name='api-person'),    
-    path('api/gebruikers/', gebruikerslijst,name='api-gebruikers'),    
     path('api/', apiOverview,name='api-overview'),    
     path('api/aantalregels/', aantalregels,name='api-aantalregels'),    
     path('ploegparticipants/', ploeg_participants,name='ploegparticipants'),    
@@ -67,3 +65,5 @@ urlpatterns = [
 
     ]
 # https://docs.djangoproject.com/en/3.1/topics/http/urls/
+    # path('api/person/', personenlijst,name='api-person'),    
+    # path('api/gebruikers/', gebruikerslijst,name='api-gebruikers'),    
