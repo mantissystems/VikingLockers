@@ -113,7 +113,7 @@ def registerPage(request):
 
 def home(request):
     q = request.GET.get('q') if request.GET.get('q') != None else ''
-    lijst='Kluisjes-leeg' # was ploegen
+    lijst='Kluisjes-bezet' # was ploegen
     where7=Q(user__username__icontains = q)
     where1=Q(body__icontains = q)
     where2=Q(location__icontains = q)
