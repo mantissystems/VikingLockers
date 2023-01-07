@@ -844,13 +844,9 @@ def taak_rooster(request):
 def apiOverview(request):
     api_urls={
     'api/':'api-overview',    
-    # 'api/person':'api/person',    
     '/kluizen':'kluizen',    
     '/notes/':'notes',    
-    # 'flexeventsbeheer/':'flexeventsbeheer',    
-
     }
-    # return JsonResponse("API BASE POINT",safe=False)
     return Response(api_urls)
 
 def namedtuplefetchall(cursor):
@@ -868,10 +864,8 @@ def ploeg_participants(request):
         usr=User.objects.first()
         print('===== ploeg-participants =====')
         for r in results:
-            # print(r.Naamploeg)
             room=Room.objects.get(name=r.Naamploeg)
             instroom=Instromer.objects.none()
-            # print(room) 
             if r.Ploegleden!=None:
                 try:
                     usr=User.objects.get(last_name=r.Ploegleden)

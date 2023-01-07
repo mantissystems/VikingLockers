@@ -4,13 +4,13 @@
     <div class="roomListRoom__content">
         <a href="{% url 'kluis' kluis.id %}">{{ forloop.counter }} {{kluis.location}} {{kluis.slot}}
             <!-- {{kluis.owners.all}} -->
-            {% for t in kluis.owners.all %} {{t.last_name}} |{% endfor %}
+            {% for t in kluis.owners.all %} -- {{t.last_name}} <br>{% endfor %} 
         </a>
     </div>
 </div>
 {% endfor %}    
 =====>
-totaal 120 <hr>
+max 120 <hr>
 heren 8x6 48
 <img src="{% static '/images/heren1.JPG' %}" alt="Heren"> <br>          
 dames1 6x4 24
