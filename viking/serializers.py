@@ -21,6 +21,11 @@ class FlexrecurrentSerializer(serializers.ModelSerializer):
     class Meta:
         model = Room
         fields='__all__'        
+        
+class KluisSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Kluis
+        fields='__all__'        
 
 class GebruikerSerializer(serializers.ModelSerializer):
     class Meta:

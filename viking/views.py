@@ -27,7 +27,7 @@ from django.contrib.auth.models import User
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.forms import UserCreationForm
 
-from viking.serializers import FlexrecurrentSerializer, PersoonSerializer,  GebruikerSerializer
+from viking.serializers import FlexrecurrentSerializer, PersoonSerializer,  GebruikerSerializer,KluisSerializer
 from .models import Flexrecurrent, Message, Room, Topic,Kluis,Rooster
 from .forms import RoomForm,UserForm,Urv_KluisForm
 from .utils import updateNote, getNoteDetail, deleteNote, getNotesList, createNote,getKluizenList
@@ -461,9 +461,9 @@ def gebruikerslijst(request):
     return Response(serializer.data)
 
 @api_view(['GET'])
-def aantalregels(request):
-    regels=Room.objects.all()
-    serializer=FlexrecurrentSerializer(regels,many=True)
+def kluisjes(request):
+    kluizen=Kluis.objects.all()
+    serializer=KluisSerializer(kluizen,many=True)
 
     return Response(serializer.data)
 

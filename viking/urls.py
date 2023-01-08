@@ -26,7 +26,6 @@ registerPage, room,
 topicsPage, updateRoom, updateUser, userProfile,
 vote, kluis,
 DetailView,
-aantalregels,
 ploeg_participants
 )
 
@@ -55,7 +54,7 @@ urlpatterns = [
     path('kluisbeheer/',KluisPage , name="kluisbeheer"),
     path('<int:pk>/', DetailView.as_view(), name='detail'),
     path('api/', apiOverview,name='api-overview'),    
-    path('api/aantalregels/', aantalregels,name='api-aantalregels'),    
+    path('api/kluisjes/', views.kluisjes,name='api-kluisjes'),    
     path('ploegparticipants/', ploeg_participants,name='ploegparticipants'),    
     path('taakrooster/', taak_rooster, name='taakrooster'),
     path('events/', events, name='events'),
