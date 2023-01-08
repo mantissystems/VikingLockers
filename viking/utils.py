@@ -25,7 +25,7 @@ def createNote(request):
 
 def updateNote(request, pk):
     data = request.data
-    note = Note.objects.get(id=pk)
+    note = Kluis.objects.get(id=pk)
     serializer = NoteSerializer(instance=note, data=data)
 
     if serializer.is_valid():
@@ -35,7 +35,7 @@ def updateNote(request, pk):
 
 
 def deleteNote(request, pk):
-    note = Note.objects.get(id=pk)
+    note = Kluis.objects.get(id=pk)
     note.delete()
     return Response('Note was deleted!')
 
@@ -43,3 +43,33 @@ def getKluizenList(request):
     kluisjes = Kluis.objects.all()
     serializer = KluisSerializer(kluisjes, many=True)
     return Response(serializer.data)
+
+def getKluisDetail(request, pk):
+    notes = Kluis.objects.get(id=pk)
+    serializer = KluisSerializer(notes, many=False)
+    return Response(serializer.data)
+
+
+def createKluis(request):
+    data = request.data
+    note = Kluis.objects.create(
+        body=data['body']
+    )
+    serializer = KluisSerializer(note, many=False)
+    return Response(serializer.data)
+
+def updateKluis(request, pk):
+    data = request.data
+    note = Kluis.objects.get(id=pk)
+    serializer = KluisSerializer(instance=note, data=data)
+
+    if serializer.is_valid():
+        serializer.save()
+
+    return serializer.data
+
+
+def deleteKluis(request, pk):
+    note = Kluis.objects.get(id=pk)
+    note.delete()
+    return Response('Kluis was deleted!')

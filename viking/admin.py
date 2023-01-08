@@ -2,7 +2,7 @@ from django.contrib import admin
 # from django.contrib.auth.admin import UserAdmin
 from .models import  User
 from .models import  Person, Topic
-from .models import Room, Message,Person,Kluis,Instromer
+from .models import Room, Message,Person,Kluis,Instromer,Note
 
 @admin.register(Person)
 class PersonAdmin(admin.ModelAdmin):
@@ -25,6 +25,6 @@ class KluisAdmin(admin.ModelAdmin):
 admin.site.register(Topic)
 admin.site.register(Message)
 
-# admin.site.register(Flexevent)
+admin.site.register(Note)
 admin.site.register(Instromer)
 admin.register(User)

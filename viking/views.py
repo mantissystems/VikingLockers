@@ -7,7 +7,7 @@ import datetime
 import itertools
 from datetime import date
 from django.utils import timezone
-from django.http import HttpResponse,JsonResponse
+from django.http import HttpResponse,JsonResponse,response
 from django.contrib.sessions.models import Session
 from django.http import HttpResponseRedirect
 from django.shortcuts import get_object_or_404, render
@@ -30,7 +30,11 @@ from django.contrib.auth.forms import UserCreationForm
 from viking.serializers import FlexrecurrentSerializer, PersoonSerializer,  GebruikerSerializer,KluisSerializer
 from .models import Flexrecurrent, Message, Room, Topic,Kluis,Rooster
 from .forms import RoomForm,UserForm,Urv_KluisForm
-from .utils import updateNote, getNoteDetail, deleteNote, getNotesList, createNote,getKluizenList
+from .utils import (updateNote, getNoteDetail, deleteNote, getNotesList, createNote,getKluizenList,
+getKluisDetail,
+updateKluis,
+deleteKluis,
+createKluis,)
 
 def loginPage(request):
 
@@ -1001,6 +1005,43 @@ def compute_lcm(x, y):
 # num1 = 54
 # num2 = 24
 # print("The L.C.M. is", compute_lcm(num1, num2))
+@api_view(['GET'])
+def getRoutes(request):
+
+    routes = [
+        {
+            'Endpoint': '/notes/',
+            'method': 'GET',
+            'body': None,
+            'description': 'Returns an array of notes'
+        },
+        {
+            'Endpoint': '/notes/id',
+            'method': 'GET',
+            'body': None,
+            'description': 'Returns a single note object'
+        },
+        {
+            'Endpoint': '/notes/create/',
+            'method': 'POST',
+            'body': {'body': ""},
+            'description': 'Creates new note with data sent in post request'
+        },
+        {
+            'Endpoint': '/notes/id/update/',
+            'method': 'PUT',
+            'body': {'body': ""},
+            'description': 'Creates an existing note with data sent in post request'
+        },
+        {
+            'Endpoint': '/notes/id/delete/',
+            'method': 'DELETE',
+            'body': None,
+            'description': 'Deletes and exiting note'
+        },
+    ]
+    return Response(routes)
+
 @api_view(['GET', 'POST'])
 def getNotes(request):
 
@@ -1030,3 +1071,15 @@ def getNote(request, pk):
 
     if request.method == 'DELETE':
         return deleteNote(request, pk)
+
+@api_view(['GET', 'PUT', 'DELETE'])
+def getKluis(request, pk):
+
+    if request.method == 'GET':
+        return getKluis(request, pk)
+
+    if request.method == 'PUT':
+        return updateKluis(request, pk)
+
+    if request.method == 'DELETE':
+        return deleteKluis(request, pk)
