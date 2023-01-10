@@ -10,8 +10,8 @@ def getNotesList(request):
 
 
 def getNoteDetail(request, pk):
-    notes = Note.objects.get(id=pk)
-    serializer = NoteSerializer(notes, many=False)
+    notes = Kluis.objects.get(id=pk)
+    serializer = KluisSerializer(notes, many=False)
     return Response(serializer.data)
 
 
@@ -26,7 +26,7 @@ def createNote(request):
 def updateNote(request, pk):
     data = request.data
     note = Kluis.objects.get(id=pk)
-    serializer = NoteSerializer(instance=note, data=data)
+    serializer = KluisSerializer(instance=note, data=data)
 
     if serializer.is_valid():
         serializer.save()

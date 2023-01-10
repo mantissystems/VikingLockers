@@ -4,6 +4,8 @@ import Header from "./components/Header";
 import kluisHeader from "./components/KluisHeader"
 import NotesListPage from "./pages/NotesListPage";
 import NotePage from "./pages/NotePage";
+// import {Nav,Navbar} from 'react-bootstrap';
+// import Button from 'react-bootstrap/Button';
 // import KluisjesPage from "./pages/KluisjesPage"
 // import KluisjesListPage from "./pages/KluisjesListPage"
 import './App.css';
@@ -17,8 +19,8 @@ function App() {
       <BrowserRouter>
         <Routes>
           <Route path="/" element={<NotesListPage />} />
-          <Route path="note/:id" element={<NotePage />} />
-          <Route path="kluisje/:id" element={<NotePage />} />
+          {/* <Route path="note/:id" element={<NotePage />} /> */}
+          <Route path="notes/:id" element={<NotePage />} />
           {/* <Route path="/k" element={<KluisjesListPage />} /> */}
         </Routes>
       </BrowserRouter>
