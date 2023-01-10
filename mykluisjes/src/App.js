@@ -1,6 +1,7 @@
 import "./App.css";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Header from "./components/Header";
+import kluisHeader from "./components/KluisHeader"
 import NotesListPage from "./pages/NotesListPage";
 import NotePage from "./pages/NotePage";
 // import KluisjesPage from "./pages/KluisjesPage"
@@ -11,7 +12,7 @@ function App() {
   return (
     <div className="container dark">
       <div className="app">
-      <Header />
+      <kluisHeader />
 
       <BrowserRouter>
         <Routes>

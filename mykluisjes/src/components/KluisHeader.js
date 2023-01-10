@@ -1,6 +1,6 @@
 
 
-const Header = () => {
+const kluisHeader = () => {
     return (
         <div className="app-header">
             <h1>Kluisjes Lijst</h1>
@@ -8,4 +8,4 @@ const Header = () => {
     )
 }
 
-export default Header;
+export default kluisHeader;
