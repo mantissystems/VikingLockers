@@ -48,7 +48,7 @@ ROOT_URLCONF = 'ploegenlijst.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS':[ BASE_DIR / 'templates'
+        'DIRS':[ BASE_DIR / 'mykluisjes/build','templates'
         ],
         'APP_DIRS': True,
         'OPTIONS': {
@@ -105,22 +105,17 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.1/howto/static-files/
 
-STATIC_URL = 'static/'
 STATIC_URL = '/static/'
 MEDIA_URL='/images/'
 STATICFILES_DIRS = [
-    BASE_DIR / 'static'
-    
-]
+    BASE_DIR / 'mykluisjes/build/static']
 
 # LOGIN_REDIRECT_URL = '/'
 # LOGOUT_REDIRECT_URL = '/' # new
 STATIC_ROOT = BASE_DIR.joinpath('staticfiles')
 DEFAULT_AUTO_FIELD = 'django.db.models.AutoField'
-STATIC_FILES_DIR='/static'
 MEDIA_ROOT= BASE_DIR / 'static/images'
-FIXTURE_DIRS = [BASE_DIR / 'static'
-]
+# FIXTURE_DIRS = [BASE_DIR / 'static']
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.1/ref/settings/#default-auto-field
