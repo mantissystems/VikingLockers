@@ -6,7 +6,6 @@ const NotePage = ({  history }) => {
     const params = useParams(); // vervanger van match.params.id
     let noteId = params.id;
     let [note, setNote] = useState(null)
-
     useEffect(() => {
         getNote();
       }, [noteId]);
@@ -17,11 +16,13 @@ const NotePage = ({  history }) => {
 
         let response = await fetch(`api/kluisjes/${noteId}/`)
         let data = await response.json()
+        console.log(noteId,data);
+
         setNote(data)
     }
 
     let createNote = async () => {
-        fetch(`api/kluisjes`, {
+        fetch(`api/kluisjes/`, {
             method: "POST",
             headers: {
                 'Content-Type': 'application/json'
@@ -32,7 +33,7 @@ const NotePage = ({  history }) => {
 
 
     let updateNote = async () => {
-        fetch(`api//kluisjes/${noteId}/`, {
+        fetch(`api/kluisjes/${noteId}/`, {
             method: "PUT",
             headers: {
                 'Content-Type': 'application/json'
@@ -43,7 +44,7 @@ const NotePage = ({  history }) => {
 
 
     let deleteNote = async () => {
-        fetch(`api//kluisjes/${noteId}/`, {
+        fetch(`api/kluisjes/${noteId}/`, {
             method: 'DELETE',
             'headers': {
                 'Content-Type': 'application/json'

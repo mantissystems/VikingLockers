@@ -22,11 +22,6 @@ class FlexrecurrentSerializer(serializers.ModelSerializer):
         model = Room
         fields='__all__'        
         
-# class KluisSerializer(serializers.ModelSerializer):
-#     class Meta:
-#         model = Kluis
-#         fields='__all__'        
-
 class GebruikerSerializer(serializers.ModelSerializer):
     class Meta:
         model = User 

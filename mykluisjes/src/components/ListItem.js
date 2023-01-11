@@ -22,8 +22,9 @@ let getTitle = (note) => {
 
 let getContent = (note) => {
     //Get content after title
-    // let title = getTitle(note)
-    let content = note.body.replaceAll('\n', ' ')
+    let title = getTitle(note)
+    // let content = note.body.replaceAll('\n', ' ')
+    let content = note.body
     // content = content.replaceAll(title, '') +"\n"
 
     //Slice content and add three dots in over 45 characters to show there is more
@@ -57,7 +58,7 @@ let getContent = (note) => {
 
 const ListItem = ({ note }) => {
     return (
-        <Link to={`api/kluisjes/${note.id}`}>
+        <Link to={`/note/${note.id}`}>
             <div className="notes-list-item">
                 <h3>{getTitle(note)}</h3>
                 <p><span>{getTime(note)}</span>{getContent(note)}</p>

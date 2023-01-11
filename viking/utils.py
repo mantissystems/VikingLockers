@@ -4,8 +4,8 @@ from .serializers import NoteSerializer,KluisSerializer
 
 
 def getNotesList(request):
-    notes = Note.objects.all().order_by('-updated')
-    serializer = NoteSerializer(notes, many=True)
+    notes = Kluis.objects.all().order_by('-updated')
+    serializer = KluisSerializer(notes, many=True)
     return Response(serializer.data)
 
 
@@ -17,10 +17,10 @@ def getNoteDetail(request, pk):
 
 def createNote(request):
     data = request.data
-    note = Note.objects.create(
+    note = Kluis.objects.create(
         body=data['body']
     )
-    serializer = NoteSerializer(note, many=False)
+    serializer = KluisSerializer(note, many=False)
     return Response(serializer.data)
 
 def updateNote(request, pk):
@@ -39,37 +39,37 @@ def deleteNote(request, pk):
     note.delete()
     return Response('Note was deleted!')
 
-def getKluizenList(request):
-    kluisjes = Kluis.objects.all()
-    serializer = KluisSerializer(kluisjes, many=True)
-    return Response(serializer.data)
+# def getKluizenList(request):
+#     kluisjes = Kluis.objects.all()
+#     serializer = KluisSerializer(kluisjes, many=True)
+#     return Response(serializer.data)
 
-def getKluisDetail(request, pk):
-    notes = Kluis.objects.get(id=pk)
-    serializer = KluisSerializer(notes, many=False)
-    return Response(serializer.data)
-
-
-def createKluis(request):
-    data = request.data
-    note = Kluis.objects.create(
-        body=data['body']
-    )
-    serializer = KluisSerializer(note, many=False)
-    return Response(serializer.data)
-
-def updateKluis(request, pk):
-    data = request.data
-    note = Kluis.objects.get(id=pk)
-    serializer = KluisSerializer(instance=note, data=data)
-
-    if serializer.is_valid():
-        serializer.save()
-
-    return serializer.data
+# def getKluisDetail(request, pk):
+#     notes = Kluis.objects.get(id=pk)
+#     serializer = KluisSerializer(notes, many=False)
+#     return Response(serializer.data)
 
 
-def deleteKluis(request, pk):
-    note = Kluis.objects.get(id=pk)
-    note.delete()
-    return Response('Kluis was deleted!')
+# def createKluis(request):
+#     data = request.data
+#     note = Kluis.objects.create(
+#         body=data['body']
+#     )
+#     serializer = KluisSerializer(note, many=False)
+#     return Response(serializer.data)
+
+# def updateKluis(request, pk):
+#     data = request.data
+#     note = Kluis.objects.get(id=pk)
+#     serializer = KluisSerializer(instance=note, data=data)
+
+#     if serializer.is_valid():
+#         serializer.save()
+
+#     return serializer.data
+
+
+# def deleteKluis(request, pk):
+#     note = Kluis.objects.get(id=pk)
+#     note.delete()
+#     return Response('Kluis was deleted!')

@@ -4,6 +4,7 @@ from viking.views import(
 AanmeldView ,
  activityPage ,
 apiOverview, 
+getRoutes,
 createRoom, deleteMessage, deleteRoom,
 KluisPage,
 erv_createRoom,
@@ -53,16 +54,13 @@ urlpatterns = [
     path('ploegbeheer/',PloegPage , name="ploegbeheer"),
     path('kluisbeheer/',KluisPage , name="kluisbeheer"),
     path('<int:pk>/', DetailView.as_view(), name='detail'),
-    path('api/', apiOverview,name='api-overview'),    
-    path('api/kluisjes/', views.kluisjes,name='api-kluisjes'),    
+    path('api/', getRoutes,name='api-overview'),    
     path('ploegparticipants/', ploeg_participants,name='ploegparticipants'),    
     path('taakrooster/', taak_rooster, name='taakrooster'),
     path('events/', events, name='events'),
-    path('notes/', views.getNotes, name="notes"),
+    path('notes/', views.kluisjes, name="notes"),
     path('notes/<str:pk>/', views.getNote, name="note"),
-    path('kluisjes/<str:pk>/', views.getKluis, name="kluisje"),
-
+    path('kluisjes/<str:pk>/', views.getNote, name="kluisje"),
+    path('kluisjes/', views.kluisjes, name="kluisjes"),
     ]
 # https://docs.djangoproject.com/en/3.1/topics/http/urls/
-    # path('api/person/', personenlijst,name='api-person'),    
-    # path('api/gebruikers/', gebruikerslijst,name='api-gebruikers'),    

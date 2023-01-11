@@ -27,14 +27,11 @@ from django.contrib.auth.models import User
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.forms import UserCreationForm
 
-from viking.serializers import FlexrecurrentSerializer, PersoonSerializer,  GebruikerSerializer,KluisSerializer
+from viking.serializers import FlexrecurrentSerializer, PersoonSerializer,  GebruikerSerializer,KluisSerializer,NoteSerializer
 from .models import Flexrecurrent, Message, Room, Topic,Kluis,Rooster
 from .forms import RoomForm,UserForm,Urv_KluisForm
-from .utils import (updateNote, getNoteDetail, deleteNote, getNotesList, createNote,getKluizenList,
-getKluisDetail,
-updateKluis,
-deleteKluis,
-createKluis,)
+from .utils import (updateNote, getNoteDetail, deleteNote, getNotesList, createNote
+,)
 
 def loginPage(request):
 
@@ -142,8 +139,7 @@ def home(request):
 
     room_messages = [] #Message.objects.filter(Q(room__topic__name__icontains=q))
     context = {
-        'kluisjes': rooms, 
-        'lijst': lijst, 
+        # 'kluisjes': rooms, Notes List
         'topics': topcs, 
         'lege_kastjes_count': lege_kastjes_count, 
         'participants_count': owner_count, 
@@ -1005,6 +1001,7 @@ def compute_lcm(x, y):
 # num1 = 54
 # num2 = 24
 # print("The L.C.M. is", compute_lcm(num1, num2))
+
 @api_view(['GET'])
 def getRoutes(request):
 
@@ -1043,43 +1040,28 @@ def getRoutes(request):
     return Response(routes)
 
 @api_view(['GET', 'POST'])
-def getNotes(request):
+def getNote(request,pk):
+    notes = Kluis.objects.get(id=pk)
+    serializer = KluisSerializer(notes, many=False)
+    return Response(serializer.data)
 
-    if request.method == 'GET':
-        return getNotesList(request)
+    # if request.method == 'GET':
+    #     return getNoteDetail(request, pk)
 
-    if request.method == 'POST':
-        return createNote(request)
+    # if request.method == 'PUT':
+    #     return updateNote(request, pk)
 
-@api_view(['GET', 'POST'])
-def getKluizen(request):
+    # if request.method == 'DELETE':
+    #     return deleteNote(request, pk)
 
-    if request.method == 'GET':
-        return getKluizenList(request)
+# @api_view(['GET', 'PUT', 'DELETE'])
+# def getKluis(request, pk):
 
-    if request.method == 'POST':
-        return createNote(request)
+#     if request.method == 'GET':
+#         return getKluis(request, pk)
 
-@api_view(['GET', 'PUT', 'DELETE'])
-def getNote(request, pk):
+#     if request.method == 'PUT':
+#         return updateKluis(request, pk)
 
-    if request.method == 'GET':
-        return getNoteDetail(request, pk)
-
-    if request.method == 'PUT':
-        return updateNote(request, pk)
-
-    if request.method == 'DELETE':
-        return deleteNote(request, pk)
-
-@api_view(['GET', 'PUT', 'DELETE'])
-def getKluis(request, pk):
-
-    if request.method == 'GET':
-        return getKluis(request, pk)
-
-    if request.method == 'PUT':
-        return updateKluis(request, pk)
-
-    if request.method == 'DELETE':
-        return deleteKluis(request, pk)
+#     if request.method == 'DELETE':
+#         return deleteKluis(request, pk)
