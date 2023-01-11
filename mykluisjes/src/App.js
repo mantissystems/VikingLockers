@@ -15,6 +15,7 @@ function App() {
         <Routes>
           <Route path="/" element={<NotesListPage />} />
           <Route path="note/:id" element={<NotePage />} />
+          <Route path="kluisje/:id" element={<NotePage />} />
         </Routes>
       </BrowserRouter>
     </div>

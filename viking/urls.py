@@ -60,7 +60,5 @@ urlpatterns = [
     path('events/', events, name='events'),
     path('notes/', views.getNotes, name="notes"),
     path('notes/<str:pk>/', views.getNote, name="note"),
-    # path('kluisjes/<str:pk>/', views.getNote, name="kluisje"),
-    # path('kluisjes/', views.kluisjes, name="kluisjes"),
     ]
 # https://docs.djangoproject.com/en/3.1/topics/http/urls/
