@@ -58,9 +58,9 @@ urlpatterns = [
     path('ploegparticipants/', ploeg_participants,name='ploegparticipants'),    
     path('taakrooster/', taak_rooster, name='taakrooster'),
     path('events/', events, name='events'),
-    path('notes/', views.kluisjes, name="notes"),
+    path('notes/', views.getNotes, name="notes"),
     path('notes/<str:pk>/', views.getNote, name="note"),
-    path('kluisjes/<str:pk>/', views.getNote, name="kluisje"),
-    path('kluisjes/', views.kluisjes, name="kluisjes"),
+    # path('kluisjes/<str:pk>/', views.getNote, name="kluisje"),
+    # path('kluisjes/', views.kluisjes, name="kluisjes"),
     ]
 # https://docs.djangoproject.com/en/3.1/topics/http/urls/

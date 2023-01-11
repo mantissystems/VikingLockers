@@ -28,7 +28,7 @@ from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.forms import UserCreationForm
 
 from viking.serializers import FlexrecurrentSerializer, PersoonSerializer,  GebruikerSerializer,KluisSerializer,NoteSerializer
-from .models import Flexrecurrent, Message, Room, Topic,Kluis,Rooster
+from .models import Flexrecurrent, Message, Room, Topic,Kluis,Rooster,Note
 from .forms import RoomForm,UserForm,Urv_KluisForm
 from .utils import (updateNote, getNoteDetail, deleteNote, getNotesList, createNote
 ,)
@@ -459,6 +459,15 @@ def gebruikerslijst(request):
     serializer=GebruikerSerializer(gebruikers,many=True)
 
     return Response(serializer.data)
+
+@api_view(['GET', 'POST'])
+def getNotes(request):
+
+    if request.method == 'GET':
+        return getNotesList(request)
+
+    if request.method == 'POST':
+        return createNote(request)
 
 @api_view(['GET'])
 def kluisjes(request):
@@ -1041,8 +1050,8 @@ def getRoutes(request):
 
 @api_view(['GET', 'POST'])
 def getNote(request,pk):
-    notes = Kluis.objects.get(id=pk)
-    serializer = KluisSerializer(notes, many=False)
+    notes = Note.objects.get(id=pk)
+    serializer = NoteSerializer(notes, many=False)
     return Response(serializer.data)
 
     # if request.method == 'GET':

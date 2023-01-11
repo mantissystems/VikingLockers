@@ -4,29 +4,29 @@ from .serializers import NoteSerializer,KluisSerializer
 
 
 def getNotesList(request):
-    notes = Kluis.objects.all().order_by('-updated')
-    serializer = KluisSerializer(notes, many=True)
+    notes = Note.objects.all().order_by('-updated')
+    serializer = NoteSerializer(notes, many=True)
     return Response(serializer.data)
 
 
 def getNoteDetail(request, pk):
-    notes = Kluis.objects.get(id=pk)
-    serializer = KluisSerializer(notes, many=False)
+    notes = Note.objects.get(id=pk)
+    serializer = NoteSerializer(notes, many=False)
     return Response(serializer.data)
 
 
 def createNote(request):
     data = request.data
-    note = Kluis.objects.create(
+    note = Note.objects.create(
         body=data['body']
     )
-    serializer = KluisSerializer(note, many=False)
+    serializer = NoteSerializer(note, many=False)
     return Response(serializer.data)
 
 def updateNote(request, pk):
     data = request.data
-    note = Kluis.objects.get(id=pk)
-    serializer = KluisSerializer(instance=note, data=data)
+    note = Note.objects.get(id=pk)
+    serializer = NoteSerializer(instance=note, data=data)
 
     if serializer.is_valid():
         serializer.save()
@@ -35,7 +35,7 @@ def updateNote(request, pk):
 
 
 def deleteNote(request, pk):
-    note = Kluis.objects.get(id=pk)
+    note = Note.objects.get(id=pk)
     note.delete()
     return Response('Note was deleted!')
 
