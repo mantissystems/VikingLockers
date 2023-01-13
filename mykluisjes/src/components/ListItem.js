@@ -3,6 +3,9 @@ import React from 'react'
 import {Link} from 'react-router-dom'
 =======
 import { Link } from 'react-router-dom'
+<<<<<<< HEAD
+>>>>>>> 74067c0 (v13-1-08)
+=======
 >>>>>>> 74067c0 (v13-1-08)
 
 let getTime = (note) => {

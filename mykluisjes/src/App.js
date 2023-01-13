@@ -11,11 +11,14 @@ function App() {
       <div className="app">
       <Header />
 <<<<<<< HEAD
+<<<<<<< HEAD
       <BrowserRouter>
         <Routes>
           <Route path="/" element={<NotesListPage />} />
           <Route path="/note/:id" element={<NotePage />} />
 =======
+=======
+>>>>>>> 74067c0 (v13-1-08)
 
       <BrowserRouter>
         <Routes>

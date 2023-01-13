@@ -15,7 +15,11 @@ const NotesListPage = () => {
     let getNotes = async () => {
 
 <<<<<<< HEAD
+<<<<<<< HEAD
         let response = await fetch('/notes')
+=======
+        let response = await fetch('notes')
+>>>>>>> 74067c0 (v13-1-08)
 =======
         let response = await fetch('notes')
 >>>>>>> 74067c0 (v13-1-08)
@@ -27,7 +31,11 @@ const NotesListPage = () => {
         <div className="notes">
             <div className="notes-header">
 <<<<<<< HEAD
+<<<<<<< HEAD
                 <h2 className="notes-title">&#9782; Notes-local</h2>
+=======
+                <h2 className="notes-title">&#9782; NotesPage</h2>
+>>>>>>> 74067c0 (v13-1-08)
 =======
                 <h2 className="notes-title">&#9782; NotesPage</h2>
 >>>>>>> 74067c0 (v13-1-08)
