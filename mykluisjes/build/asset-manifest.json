@@ -3,7 +3,11 @@
     "main.css": "/static/css/main.7a5fb7f2.css",
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
     "main.js": "/static/js/main.380ddc0b.js",
+=======
+    "main.js": "/static/js/main.b0bedc9c.js",
+>>>>>>> 74067c0 (v13-1-08)
 =======
     "main.js": "/static/js/main.b0bedc9c.js",
 >>>>>>> 74067c0 (v13-1-08)
@@ -16,11 +20,19 @@
     "main.7a5fb7f2.css.map": "/static/css/main.7a5fb7f2.css.map",
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
     "main.380ddc0b.js.map": "/static/js/main.380ddc0b.js.map"
   },
   "entrypoints": [
     "static/css/main.7a5fb7f2.css",
     "static/js/main.380ddc0b.js"
+=======
+    "main.b0bedc9c.js.map": "/static/js/main.b0bedc9c.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.7a5fb7f2.css",
+    "static/js/main.b0bedc9c.js"
+>>>>>>> 74067c0 (v13-1-08)
 =======
     "main.b0bedc9c.js.map": "/static/js/main.b0bedc9c.js.map"
   },

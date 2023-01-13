@@ -17,7 +17,11 @@ const NotePage = ({  history }) => {
 
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
         let response = await fetch(`/notes/${noteId}/`)
+=======
+        let response = await fetch(`notes/${noteId}/`)
+>>>>>>> 74067c0 (v13-1-08)
 =======
         let response = await fetch(`notes/${noteId}/`)
 >>>>>>> 74067c0 (v13-1-08)
@@ -31,7 +35,11 @@ const NotePage = ({  history }) => {
     let createNote = async () => {
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
         fetch(`/notes/create/`, {
+=======
+        fetch(`notes/`, {
+>>>>>>> 74067c0 (v13-1-08)
 =======
         fetch(`notes/`, {
 >>>>>>> 74067c0 (v13-1-08)
@@ -50,7 +58,11 @@ const NotePage = ({  history }) => {
     let updateNote = async () => {
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
         fetch(`/notes/${noteId}/update/`, {
+=======
+        fetch(`notes/${noteId}/`, {
+>>>>>>> 74067c0 (v13-1-08)
 =======
         fetch(`notes/${noteId}/`, {
 >>>>>>> 74067c0 (v13-1-08)
@@ -69,7 +81,11 @@ const NotePage = ({  history }) => {
     let deleteNote = async () => {
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
         fetch(`/notes/${noteId}/delete/`, {
+=======
+        fetch(`notes/${noteId}/`, {
+>>>>>>> 74067c0 (v13-1-08)
 =======
         fetch(`notes/${noteId}/`, {
 >>>>>>> 74067c0 (v13-1-08)
