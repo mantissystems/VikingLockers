@@ -30,8 +30,7 @@ from django.contrib.auth.forms import UserCreationForm
 from viking.serializers import FlexrecurrentSerializer, PersoonSerializer,  GebruikerSerializer,KluisSerializer,NoteSerializer
 from .models import Flexrecurrent, Message, Room, Topic,Kluis,Rooster,Note
 from .forms import RoomForm,UserForm,Urv_KluisForm
-from .utils import (updateNote, getNoteDetail, deleteNote, getNotesList, createNote
-,)
+from .utils import (getNoteDetail, getNotesList,)
 
 def loginPage(request):
 
@@ -1054,12 +1053,41 @@ def getNote(request,pk):
     serializer = NoteSerializer(notes, many=False)
     return Response(serializer.data)
 
+@api_view(['GET', 'POST'])
+def getNotes(request):
+    notes = Note.objects.all().order_by('-updated')
+    serializer = NoteSerializer(notes, many=True)
+    return Response(serializer.data)
+
+@api_view(['GET', 'PUT', 'DELETE'])
+def updateNote(request, pk):
+    data = request.data
+    note = Note.objects.get(id=pk)
+    serializer = NoteSerializer(instance=note, data=data)
+
+    if serializer.is_valid():
+        serializer.save()
+
+    return serializer.data
+@api_view(['GET', 'PUT', 'DELETE'])
+def deleteNote(request, pk):
+    note = Note.objects.get(id=pk)
+    note.delete()
+    return Response('Note was deleted!')
+
+@api_view(['POST'])
+def createNote(request):
+    data = request.data
+    note = Note.objects.create(
+        body=data['body']
+    )
+    serializer = NoteSerializer(note, many=False)
+    return Response(serializer.data)
+
     # if request.method == 'GET':
     #     return getNoteDetail(request, pk)
-
     # if request.method == 'PUT':
     #     return updateNote(request, pk)
-
     # if request.method == 'DELETE':
     #     return deleteNote(request, pk)
 

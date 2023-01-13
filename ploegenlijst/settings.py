@@ -7,7 +7,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = 'django-insecure-)r2waboda$o)g39!ap!l7dx$numws6k7zi9=m*3e1hbudc!2&r'
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 ALLOWED_HOSTS = ['*', '127.0.0.1',
 'https://kluisjeslijst.up.railway.app/*',]
 ALLOWED_ORIGINS = ['http://*', 'https://*',
@@ -34,7 +34,6 @@ MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     "corsheaders.middleware.CorsMiddleware",  #29-10-2022
     "whitenoise.middleware.WhiteNoiseMiddleware",  #29-10-22
-    # 'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -115,10 +114,11 @@ STATICFILES_DIRS = [
 STATIC_ROOT = BASE_DIR.joinpath('staticfiles')
 DEFAULT_AUTO_FIELD = 'django.db.models.AutoField'
 MEDIA_ROOT= BASE_DIR / 'static/images'
+DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+CORS_ALLOW_ALL_ORIGINS=True
+
 # FIXTURE_DIRS = [BASE_DIR / 'static']
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.1/ref/settings/#default-auto-field
 
-DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
-CORS_ALLOW_ALL_ORIGINS=True

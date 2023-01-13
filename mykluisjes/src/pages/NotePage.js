@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import { useParams,Link } from "react-router-dom";
+import { useParams, Link } from "react-router-dom";
 import { ReactComponent as ArrowLeft } from '../assets/arrow-left.svg'
 // https://django-react-notesapp-master-production.up.railway.app
 const NotePage = ({  history }) => {
@@ -15,13 +15,13 @@ const NotePage = ({  history }) => {
     let getNote = async () => {
         if (noteId === 'new') return
 
-        let response = await fetch(`notes/${noteId}/`)
+        let response = await fetch(`/notes/${noteId}/`)
         let data = await response.json()
         setNote(data)
     }
 
     let createNote = async () => {
-        fetch(`/notes/`, {
+        fetch(`/notes/create/`, {
             method: "POST",
             headers: {
                 'Content-Type': 'application/json'
@@ -32,7 +32,7 @@ const NotePage = ({  history }) => {
 
 
     let updateNote = async () => {
-        fetch(`/notes/${noteId}/`, {
+        fetch(`/notes/${noteId}/update/`, {
             method: "PUT",
             headers: {
                 'Content-Type': 'application/json'
@@ -43,7 +43,7 @@ const NotePage = ({  history }) => {
 
 
     let deleteNote = async () => {
-        fetch(`/notes/${noteId}/`, {
+        fetch(`/notes/${noteId}/delete/`, {
             method: 'DELETE',
             'headers': {
                 'Content-Type': 'application/json'
@@ -65,6 +65,7 @@ const NotePage = ({  history }) => {
 
     let handleChange = (value) => {
         setNote(note => ({ ...note, 'body': value }))
+        console.log('Handle Change:', note)
     }
 
     return (

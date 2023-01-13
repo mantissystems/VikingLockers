@@ -10,12 +10,10 @@ function App() {
     <div className="container dark">
       <div className="app">
       <Header />
-
       <BrowserRouter>
         <Routes>
           <Route path="/" element={<NotesListPage />} />
-          <Route path="note/:id" element={<NotePage />} />
-          <Route path="kluisje/:id" element={<NotePage />} />
+          <Route path="/note/:id" element={<NotePage />} />
         </Routes>
       </BrowserRouter>
     </div>
