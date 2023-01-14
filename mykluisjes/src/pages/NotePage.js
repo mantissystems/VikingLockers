@@ -15,37 +15,13 @@ const NotePage = ({  history }) => {
     let getNote = async () => {
         if (noteId === 'new') return
 
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
         let response = await fetch(`/notes/${noteId}/`)
-=======
-        let response = await fetch(`notes/${noteId}/`)
->>>>>>> 74067c0 (v13-1-08)
-=======
-        let response = await fetch(`notes/${noteId}/`)
->>>>>>> 74067c0 (v13-1-08)
-=======
-        let response = await fetch(`notes/${noteId}/`)
->>>>>>> 74067c0 (v13-1-08)
         let data = await response.json()
         setNote(data)
     }
 
     let createNote = async () => {
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
         fetch(`/notes/create/`, {
-=======
-        fetch(`notes/`, {
->>>>>>> 74067c0 (v13-1-08)
-=======
-        fetch(`notes/`, {
->>>>>>> 74067c0 (v13-1-08)
-=======
-        fetch(`notes/`, {
->>>>>>> 74067c0 (v13-1-08)
             method: "POST",
             headers: {
                 'Content-Type': 'application/json'
@@ -56,19 +32,7 @@ const NotePage = ({  history }) => {
 
 
     let updateNote = async () => {
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
         fetch(`/notes/${noteId}/update/`, {
-=======
-        fetch(`notes/${noteId}/`, {
->>>>>>> 74067c0 (v13-1-08)
-=======
-        fetch(`notes/${noteId}/`, {
->>>>>>> 74067c0 (v13-1-08)
-=======
-        fetch(`notes/${noteId}/`, {
->>>>>>> 74067c0 (v13-1-08)
             method: "PUT",
             headers: {
                 'Content-Type': 'application/json'
@@ -79,19 +43,7 @@ const NotePage = ({  history }) => {
 
 
     let deleteNote = async () => {
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
         fetch(`/notes/${noteId}/delete/`, {
-=======
-        fetch(`notes/${noteId}/`, {
->>>>>>> 74067c0 (v13-1-08)
-=======
-        fetch(`notes/${noteId}/`, {
->>>>>>> 74067c0 (v13-1-08)
-=======
-        fetch(`notes/${noteId}/`, {
->>>>>>> 74067c0 (v13-1-08)
             method: 'DELETE',
             'headers': {
                 'Content-Type': 'application/json'
@@ -101,6 +53,7 @@ const NotePage = ({  history }) => {
     }
 
     let handleSubmit = () => {
+        console.log('NOTE:', note)
         if (noteId !== 'new' && note.body === '') {
             deleteNote()
         } else if (noteId !== 'new') {
@@ -118,21 +71,19 @@ const NotePage = ({  history }) => {
 
     return (
         <div className="note" >
-        <div className="note-header">
-            <h3>
-                <Link to="/">
-                <ArrowLeft onClick={handleSubmit} />
-                </Link>
-            </h3>
-            {noteId !== 'new' ? (
-                <button onClick={deleteNote}>Delete</button>
-            ) : (
-                <button onClick={handleSubmit}>Done</button>
-            )}
+            <div className="note-header">
+                <h3>
+                    <ArrowLeft onClick={handleSubmit} />
+                </h3>
+                {noteId !== 'new' ? (
+                    <button onClick={deleteNote}>Delete</button>
+                ) : (
+                    <button onClick={handleSubmit}>Done</button>
+                )}
 
+            </div>
+            <textarea onChange={(e) => { handleChange(e.target.value) }} value={note?.body}></textarea>
         </div>
-        <textarea onChange={(e) => { handleChange(e.target.value) }} value={note?.body}></textarea>
-    </div>
     )
 }
 
