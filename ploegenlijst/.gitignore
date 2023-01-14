@@ -4,7 +4,6 @@
 node_modules/
 # testing
 coverage/
-
 # production
 # build/
 
@@ -117,7 +116,7 @@ celerybeat-schedule
 .env
 .venv
 env/
-venv/
+venv
 ENV/
 env.bak/
 venv.bak/
