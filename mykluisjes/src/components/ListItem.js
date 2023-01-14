@@ -1,15 +1,5 @@
 import React from 'react'
-<<<<<<< HEAD
 import {Link} from 'react-router-dom'
-=======
-import { Link } from 'react-router-dom'
-<<<<<<< HEAD
-<<<<<<< HEAD
->>>>>>> 74067c0 (v13-1-08)
-=======
->>>>>>> 74067c0 (v13-1-08)
-=======
->>>>>>> 74067c0 (v13-1-08)
 
 let getTime = (note) => {
     return new Date(note.updated).toLocaleDateString()

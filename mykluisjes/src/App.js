@@ -10,26 +10,10 @@ function App() {
     <div className="container dark">
       <div className="app">
       <Header />
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-      <BrowserRouter>
-        <Routes>
-          <Route path="/" element={<NotesListPage />} />
-          <Route path="/note/:id" element={<NotePage />} />
-=======
-=======
->>>>>>> 74067c0 (v13-1-08)
-=======
->>>>>>> 74067c0 (v13-1-08)
-
       <BrowserRouter>
         <Routes>
           <Route path="/" element={<NotesListPage />} />
           <Route path="note/:id" element={<NotePage />} />
-          {/* <Route path="kluisje/:id" element={<NotePage />} /> */}
-          {/* <Route path="/k" element={<KluisjesListPage />} /> */}
->>>>>>> 74067c0 (v13-1-08)
         </Routes>
       </BrowserRouter>
     </div>
