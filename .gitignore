@@ -28,7 +28,6 @@ media
 
 # Distribution / packaging
 .Python
-build/
 develop-eggs/
 dist/
 downloads/
@@ -61,7 +60,7 @@ htmlcov/
 .nox/
 .coverage
 .coverage.*
-.cache
+.cache/.*
 nosetests.xml
 coverage.xml
 *.cover
@@ -240,7 +239,7 @@ bower_components
 .lock-wscript
 
 # Compiled binary addons (https://nodejs.org/api/addons.html)
-build/Release
+# build/Release
 
 # Dependency directories
 node_modules/
@@ -254,7 +253,7 @@ typings/
 
 # Optional npm cache directory
 .npm
-
+node_modules/.cache
 # Optional eslint cache
 .eslintcache
 
