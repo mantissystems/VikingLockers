@@ -7,17 +7,17 @@ import './App.css';
 
 function App() {
   return (
+      <BrowserRouter>
     <div className="container dark">
       <div className="app">
-      <BrowserRouter>
       <Header />
         <Routes>
           <Route path="/" exact element={<NotesListPage />} />
           <Route path="note/:id" element={<NotePage />} />
         </Routes>
-      </BrowserRouter>
-    </div>
+        </div>
       </div>
+      </BrowserRouter>
   );
 }
 

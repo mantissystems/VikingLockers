@@ -1083,22 +1083,3 @@ def createNote(request):
     )
     serializer = NoteSerializer(note, many=False)
     return Response(serializer.data)
-
-    # if request.method == 'GET':
-    #     return getNoteDetail(request, pk)
-    # if request.method == 'PUT':
-    #     return updateNote(request, pk)
-    # if request.method == 'DELETE':
-    #     return deleteNote(request, pk)
-
-# @api_view(['GET', 'PUT', 'DELETE'])
-# def getKluis(request, pk):
-
-#     if request.method == 'GET':
-#         return getKluis(request, pk)
-
-#     if request.method == 'PUT':
-#         return updateKluis(request, pk)
-
-#     if request.method == 'DELETE':
-#         return deleteKluis(request, pk)
