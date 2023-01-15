@@ -1059,7 +1059,7 @@ def getNotes(request):
     serializer = NoteSerializer(notes, many=True)
     return Response(serializer.data)
 
-@api_view(['GET', 'PUT', 'DELETE'])
+@api_view(['PUT'])
 def updateNote(request, pk):
     data = request.data
     note = Note.objects.get(id=pk)
@@ -1068,7 +1068,7 @@ def updateNote(request, pk):
     if serializer.is_valid():
         serializer.save()
 
-    return serializer.data
+    return Response(serializer.data)
 @api_view(['GET', 'PUT', 'DELETE'])
 def deleteNote(request, pk):
     note = Note.objects.get(id=pk)
