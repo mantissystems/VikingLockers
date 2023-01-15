@@ -9,10 +9,10 @@ function App() {
   return (
     <div className="container dark">
       <div className="app">
-      <Header />
       <BrowserRouter>
+      <Header />
         <Routes>
-          <Route path="/" element={<NotesListPage />} />
+          <Route path="/" exact element={<NotesListPage />} />
           <Route path="note/:id" element={<NotePage />} />
         </Routes>
       </BrowserRouter>

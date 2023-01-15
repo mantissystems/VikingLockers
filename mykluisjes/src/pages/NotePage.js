@@ -53,12 +53,11 @@ const NotePage = ({  history }) => {
     }
 
     let handleSubmit = () => {
-        console.log('NOTE:', note)
-        if (noteId !== 'new' && note.body === '') {
+        if (noteId !== 'new' && ! note.body) {
             deleteNote()
         } else if (noteId !== 'new') {
             updateNote()
-        } else if (noteId === 'new' && note.body !== null) {
+        } else if (noteId === 'new' && note !== null) {
             createNote()
         }
         history.push('/')
@@ -72,8 +71,10 @@ const NotePage = ({  history }) => {
     return (
         <div className="note" >
             <div className="note-header">
-                <h3>
-                    <ArrowLeft onClick={handleSubmit} />
+            <h3>
+                    <Link to={'/'}>
+                        <ArrowLeft onClick={handleSubmit} />
+                    </Link>
                 </h3>
                 {noteId !== 'new' ? (
                     <button onClick={deleteNote}>Delete</button>
