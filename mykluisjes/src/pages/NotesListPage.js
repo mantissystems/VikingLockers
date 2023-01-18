@@ -14,15 +14,14 @@ const NotesListPage = () => {
     
       let handleChange = (value) => {
         setZoekTekst( value)
-        if (value===null) {  let zoekTekst='*'}
         console.log('Handle Change:', value)
-        getNotes(value)
+        getNotes()
     }
 
-    let getNotes = async (value) => {
+    let getNotes = async () => {
         // http://127.0.0.1:8000/notes/waar/find/
-        const endpoint = `/notes/${value}/find`
-        console.log('endpoint',endpoint,value)
+        const endpoint = `/notes/${zoekTekst}/find`
+        console.log('endpoint',endpoint)
         try{
             const response = await fetch(endpoint,{
                 method:'GET'
@@ -41,12 +40,14 @@ const NotesListPage = () => {
     return (
         <div className="notes">
             <div className="notes-header">
-                <h2 className="notes-title">&#9782; Kluisje</h2>
+                <h2 className="notes-title">&#9782; Notes</h2>
                 <p className="notes-count">{notes.length}</p>
             <input 
             type="search"
             placeholder='find note...'
+            // value={zoekTekst}   
             onChange={(e) => { handleChange(e.target.value) }} value={notes?.body}/>
+            {/* onChange={e => setZoekTekst(e.target.value)}  */}
             </div>
 
             <div className="notes-list">
