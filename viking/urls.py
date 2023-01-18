@@ -59,10 +59,12 @@ urlpatterns = [
     path('taakrooster/', taak_rooster, name='taakrooster'),
     path('events/', events, name='events'),
     path('notes/', views.getNotes, name="notes"),
+    # path('notes/<str:zoek>/', views.getNotes, name="search-notes"),
     path('notes/create/', views.createNote, name="create-note"),
     path('notes/<str:pk>/update/', views.updateNote, name="update-note"),
     path('notes/<str:pk>/delete/', views.deleteNote, name="delete-note"),
     path('notes/<str:pk>/', views.getNote, name="note"),
+    path('notes/<str:find>/find/', views.findNote, name="find-note"),
     ]
     # path('kluisjes/<str:pk>/', views.getKluis, name="kluisje"),
 # https://docs.djangoproject.com/en/3.1/topics/http/urls/

@@ -4,26 +4,49 @@ import AddButton from '../components/AddButton'
 
 
 const NotesListPage = () => {
-
+    const [zoekTekst, setZoekTekst] = useState('');
     let [notes, setNotes] = useState([])
 
     useEffect(() => {
         getNotes()
-    }, [])
+    }, [zoekTekst])
 
-
-    let getNotes = async () => {
-
-        let response = await fetch('/notes')
-        let data = await response.json()
-        setNotes(data)
+    
+      let handleChange = (value) => {
+        setZoekTekst( value)
+        if (value===null) {  let zoekTekst='*'}
+        console.log('Handle Change:', value)
+        getNotes(value)
     }
 
+    let getNotes = async (value) => {
+        // http://127.0.0.1:8000/notes/waar/find/
+        const endpoint = `/notes/${value}/find`
+        console.log('endpoint',endpoint,value)
+        try{
+            const response = await fetch(endpoint,{
+                method:'GET'
+            })
+            const notes = await response.json()
+            console.log('ZOEK',notes)
+            setNotes(notes)
+
+            // let data = await response.json()
+        }
+
+    catch (e){
+        console.log(e)
+    }
+    }
     return (
         <div className="notes">
             <div className="notes-header">
-                <h2 className="notes-title">&#9782; Notes</h2>
+                <h2 className="notes-title">&#9782; Kluisje</h2>
                 <p className="notes-count">{notes.length}</p>
+            <input 
+            type="search"
+            placeholder='find note...'
+            onChange={(e) => { handleChange(e.target.value) }} value={notes?.body}/>
             </div>
 
             <div className="notes-list">

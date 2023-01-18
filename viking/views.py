@@ -459,21 +459,21 @@ def gebruikerslijst(request):
 
     return Response(serializer.data)
 
-@api_view(['GET', 'POST'])
-def getNotes(request):
+# @api_view(['GET', 'POST'])
+# def getNotes(request):
 
-    if request.method == 'GET':
-        return getNotesList(request)
+#     if request.method == 'GET':
+#         return getNotesList(request)
 
-    if request.method == 'POST':
-        return createNote(request)
+#     if request.method == 'POST':
+#         return createNote(request)
 
-@api_view(['GET'])
-def kluisjes(request):
-    kluizen=Kluis.objects.all()
-    serializer=KluisSerializer(kluizen,many=True)
+# @api_view(['GET'])
+# def kluisjes(request):
+#     kluizen=Kluis.objects.all()
+#     serializer=KluisSerializer(kluizen,many=True)
 
-    return Response(serializer.data)
+#     return Response(serializer.data)
 
 def vote(request, room_id):
     event = get_object_or_404(Room, pk=room_id)
@@ -1056,6 +1056,16 @@ def getNote(request,pk):
 @api_view(['GET', 'POST'])
 def getNotes(request):
     notes = Note.objects.all().order_by('-updated')
+    serializer = NoteSerializer(notes, many=True)
+    return Response(serializer.data)
+
+@api_view(['GET'])
+def findNote(request,find):
+    # zoek='regel'
+    print(request,find)
+    notes = Note.objects.all().order_by('-updated')
+    if find is not None:
+        notes = Note.objects.filter(body__icontains=find).order_by('-updated')
     serializer = NoteSerializer(notes, many=True)
     return Response(serializer.data)
 
