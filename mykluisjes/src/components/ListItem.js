@@ -7,7 +7,8 @@ let getTime = (note) => {
 
 let getTitle = (note) => {
 
-    let title = note.body.split('\n')[0]
+    // let title = note.body.split('\n')[0]
+    let title = note.info
     if (title.length > 45) {
         return title.slice(0, 45)
     }
@@ -17,7 +18,10 @@ let getTitle = (note) => {
 
 let getContent = (note) => {
     let title = getTitle(note)
-    let content = note.body.replaceAll('\n', ' ')
+    let content = note.body.replaceAll('\n', '| ')
+    content = content + note.owner
+    // let regels = note.body.split('\n')
+    // console.log('REGELS', regels,regels.length)
     content = content.replaceAll(title, '')
 
     if (content.length > 45) {
