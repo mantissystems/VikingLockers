@@ -15,12 +15,29 @@ const NotesListPage = () => {
       let handleChange = (value) => {
         setZoekTekst( value)
         console.log('Handle Change:', value)
-        getNotes()
+        findNotes(value)
+    }
+
+    let findNotes = async (value) => {
+        // http://127.0.0.1:8000/notes/waar/find/
+        const endpoint = `/notes/${value}/find`
+        console.log('endpoint',endpoint)
+        try{
+            const response = await fetch(endpoint,{
+                method:'GET'
+            })
+            const notes = await response.json()
+            console.log('ZOEK',notes)
+            setNotes(notes)
+        }
+
+    catch (e){
+        console.log(e)
+    }
     }
 
     let getNotes = async () => {
-        // http://127.0.0.1:8000/notes/waar/find/
-        const endpoint = `/notes/${zoekTekst}/find`
+        const endpoint = `/notes`
         console.log('endpoint',endpoint)
         try{
             const response = await fetch(endpoint,{
@@ -30,7 +47,6 @@ const NotesListPage = () => {
             console.log('ZOEK',notes)
             setNotes(notes)
 
-            // let data = await response.json()
         }
 
     catch (e){
@@ -40,14 +56,12 @@ const NotesListPage = () => {
     return (
         <div className="notes">
             <div className="notes-header">
-                <h2 className="notes-title">&#9782; Notes</h2>
+                <h2 className="notes-title">&#9782; Kluisje</h2>
                 <p className="notes-count">{notes.length}</p>
             <input 
             type="search"
             placeholder='find note...'
-            // value={zoekTekst}   
             onChange={(e) => { handleChange(e.target.value) }} value={notes?.body}/>
-            {/* onChange={e => setZoekTekst(e.target.value)}  */}
             </div>
 
             <div className="notes-list">
