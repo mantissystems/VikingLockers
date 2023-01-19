@@ -27,7 +27,7 @@ from django.contrib.auth.models import User
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.forms import UserCreationForm
 
-from viking.serializers import FlexrecurrentSerializer, PersoonSerializer,  GebruikerSerializer,KluisSerializer,NoteSerializer
+from viking.serializers import FlexrecurrentSerializer,  PersoonSerializer,  GebruikerSerializer,KluisSerializer,NoteSerializer
 from .models import Flexrecurrent, Message, Room, Topic,Kluis,Rooster,Note
 from .forms import RoomForm,UserForm,Urv_KluisForm
 from .utils import (getNoteDetail, getNotesList,)
@@ -173,30 +173,30 @@ def room(request, pk):
     context = {'room': room, 'room_messages': room_messages, 'participants': participants,'owners': owners}
     return render(request, 'viking/room.html', context)
     
-def erv_room(request, pk):
-    event = Flexevent.objects.get(id=pk)
-    event_messages = event.bericht_set.all()
-    deelnemers = event.lid.all()
-    kandidaten=User.objects.all().exclude(id__in=deelnemers)
-    try:
-        gebruiker=User.objects.get(id=request.user.id) ## request.user
-    except:
-        messages.error(request, '.You are not logged in')
-        # print(request.user)
-        context = {'event': event,
-     'event_messages': event_messages, 
-     'deelnemers': deelnemers,
-     'kandidaten': kandidaten,
-     }   
-        return render(request, 'viking/room.html', context)
-    if request.method == 'POST':
-        gebruiker=User.objects.get(id=request.user.id) ## request.user
-        bericht = Bericht.objects.create(
-        user=gebruiker,
-        event=event,
-        body=request.POST.get('body')
-        )
-        return redirect('room', pk=event.id)
+# def erv_room(request, pk):
+#     # event = Flexevent.objects.get(id=pk)
+#     # event_messages = event.bericht_set.all()
+#     # deelnemers = event.lid.all()
+#     # kandidaten=User.objects.all().exclude(id__in=deelnemers)
+#     try:
+#         gebruiker=User.objects.get(id=request.user.id) ## request.user
+#     except:
+#         messages.error(request, '.You are not logged in')
+#         # print(request.user)
+#         context = {'event': event,
+#      'event_messages': event_messages, 
+#      'deelnemers': deelnemers,
+#      'kandidaten': kandidaten,
+#      }   
+#         return render(request, 'viking/room.html', context)
+#     if request.method == 'POST':
+#         gebruiker=User.objects.get(id=request.user.id) ## request.user
+#         bericht = Bericht.objects.create(
+#         user=gebruiker,
+#         event=event,
+#         body=request.POST.get('body')
+#         )
+#         return redirect('room', pk=event.id)
         # event.deelnemers.add(request.user)
 
     context = {'event': event,
@@ -257,7 +257,7 @@ def createRoom(request):
 def erv_createRoom(request):
     form = RoomForm()
     topics = Topic.objects.all()
-    datums=Flexevent.objects.all() ###values_list('datum',flat=True)
+    # datums=Flexevent.objects.all() ###values_list('datum',flat=True)
     # print(datums.datum)
     if request.method == 'POST':
         topic_name = request.POST.get('topic')
@@ -270,19 +270,19 @@ def erv_createRoom(request):
         omschrijving=plandatum + '; ' + activiteit
         topic, created = Topic.objects.get_or_create(name=topic_name)
 
-        Flexevent.objects.create(
-             host=request.user,
-            topic=topic,
-            pub_time=request.POST.get('tijdstip'),
-            name = request.POST.get('topic'),
-            description=omschrijving, ##request.POST.get('description'),
-            datum=request.POST.get('datum'),
-            event_text=topic,
-            # flexhost=request.user,
+        # Flexevent.objects.create(
+        #      host=request.user,
+        #     topic=topic,
+        #     pub_time=request.POST.get('tijdstip'),
+        #     name = request.POST.get('topic'),
+        #     description=omschrijving, ##request.POST.get('description'),
+        #     datum=request.POST.get('datum'),
+        #     event_text=topic,
+        #     # flexhost=request.user,
 
-        )
+        # )
         return redirect('home')
-    context = {'form': form, 'topics': topics,'datums':datums}
+    context = {'form': form, 'topics': topics,}
     return render(request, 'viking/flexevent_form.html', context)
 
 # @login_required(login_url='login')
@@ -337,19 +337,19 @@ def urv_updateKluis(request, pk):
     return render(request, 'viking/kluis_form.html', context)
 
 @login_required(login_url='login')
-def erv_deleteRoom(request, pk):
+# def erv_deleteRoom(request, pk):
 
-    room = Flexevent.objects.get(id=pk)
+#     room = Flexevent.objects.get(id=pk)
 
-    if request.user != room.host:
-        return HttpResponse('You are not allowed here!!')
+#     if request.user != room.host:
+#         return HttpResponse('You are not allowed here!!')
 
-    if request.method == 'POST':
-        room.delete()
-        return redirect('home')
+#     if request.method == 'POST':
+#         room.delete()
+#         return redirect('home')
 
-    context = {'obj': room}
-    return render(request, 'viking/delete.html', context)
+#     context = {'obj': room}
+#     return render(request, 'viking/delete.html', context)
 
 @login_required(login_url='login')
 def deleteRoom(request, pk):
@@ -382,19 +382,19 @@ def deleteMessage(request, pk):
     return render(request, 'viking/delete.html', context)
 
 @login_required(login_url='login')
-def erv_deleteMessage(request, pk):
+# def erv_deleteMessage(request, pk):
 
-    message = Bericht.objects.get(id=pk)
+#     message = Bericht.objects.get(id=pk)
 
-    # if request.user != message.user:
-    #     return HttpResponse('Geen toestemming. Het is niet uw bericht!!')
+#     # if request.user != message.user:
+#     #     return HttpResponse('Geen toestemming. Het is niet uw bericht!!')
 
-    if request.method == 'POST':
-        message.delete()
-        return redirect('home')
+#     if request.method == 'POST':
+#         message.delete()
+#         return redirect('home')
 
-    context = {'obj': message}
-    return render(request, 'viking/delete.html', context)
+#     context = {'obj': message}
+#     return render(request, 'viking/delete.html', context)
 
 @login_required(login_url='login')
 def updateUser(request):
@@ -739,7 +739,7 @@ def recurrent_event(request):
     # resetsequence('beatrix_flexevent')  # bestandsbeheer: zet sequence op nul; kan niet gelijktijdig
     # maak_activiteiten()
     maak_rooster()
-    events=Flexevent.objects.all()
+    # events=Flexevent.objects.all()
     events=Rooster.objects.all()
     context={'events':events}
     return render(request, template_name, context)
@@ -821,7 +821,7 @@ def maak_activiteiten():
     dagvandeweek=['maandag','dinsdag','woensdag','donderdag','vrijdag','zaterdag','zondag','7----','8====''maandag','dinsdag','woensdag','donderdag','vrijdag','zaterdag','zondag','16----','17====']
     blok=[0,1]                              #ochtend middag
     tijdblok=[' 09:00',' 13:00',' 17:30',' 09:00',' 13:00',' 17:30',' 09:00',' 13:00',' 17:30']   # 1x ochtend 2x middag
-    if verwijder_oude_flexevents: Flexevent.objects.all().delete()
+    # if verwijder_oude_flexevents: Flexevent.objects.all().delete()
     if verwijder_oude_onderwerpen: Topic.objects.all().delete()
         # resetsequence('beatrix_flexevent')  # bestandsbeheer: zet sequence op nul; kan niet gelijktijdig meet topics
     print('====== start ===========')
