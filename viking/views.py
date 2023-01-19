@@ -113,7 +113,7 @@ def registerPage(request):
 
 def home(request):
     q = request.GET.get('q') if request.GET.get('q') != None else ''
-    lijst='Kluisjes-bezet' # was ploegen
+    lijst= q ##'Kluisjes-bezet' # was ploegen
     where7=Q(user__username__icontains = q)
     where1=Q(body__icontains = q)
     where2=Q(location__icontains = q)
@@ -128,17 +128,19 @@ def home(request):
     lege_kastjes_count=rooms.count()
     kastjes_count=rooms.count()
     if q=='Kluisjes-leeg' : 
-        lijst='Kluisjes-leeg'
+        # lijst='Kluisjes-leeg'
         rooms = Kluis.objects.all().filter(owners=None)
         lege_kastjes_count=rooms.count()
     if q=='Kluisjes-bezet' : 
-        lijst='Kluisjes-bezet'
+        # lijst='Kluisjes-bezet'
         rooms = Kluis.objects.all() #.exclude(owners=None)
         kastjes_count = rooms.count()
 
     room_messages = [] #Message.objects.filter(Q(room__topic__name__icontains=q))
+    # rooms = Kluis.objects.all() #.exclude(owners=None)
+    print(rooms.count())
     context = {
-        # 'kluisjes': rooms, Notes List
+        'kluisjes': rooms,
         'topics': topcs, 
         'lege_kastjes_count': lege_kastjes_count, 
         'participants_count': owner_count, 
