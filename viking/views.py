@@ -1010,7 +1010,7 @@ def compute_lcm(x, y):
    return lcm
 # num1 = 54
 # num2 = 24
-# print("The L.C.M. is", compute_lcm(num1, num2))
+# print("The Lowest.Common.Meam. is", compute_lcm(num1, num2))
 
 @api_view(['GET'])
 def getRoutes(request):
@@ -1071,9 +1071,10 @@ def findNote(request,find):
     serializer = NoteSerializer(notes, many=True)
     return Response(serializer.data)
 
-@api_view(['PUT'])
+@api_view(['PUT','POST'])
 def updateNote(request, pk):
     data = request.data
+    print(data)
     note = Note.objects.get(id=pk)
     serializer = NoteSerializer(instance=note, data=data)
 
@@ -1081,7 +1082,8 @@ def updateNote(request, pk):
         serializer.save()
 
     return Response(serializer.data)
-@api_view(['GET', 'PUT', 'DELETE'])
+
+@api_view(['GET', 'PUT', 'DELETE','POST'])
 def deleteNote(request, pk):
     note = Note.objects.get(id=pk)
     note.delete()

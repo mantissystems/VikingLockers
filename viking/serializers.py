@@ -12,6 +12,7 @@ class NoteSerializer(ModelSerializer):
     class Meta:
         model = Note
         fields = '__all__'
+
 class KluisSerializer(ModelSerializer):
     class Meta:
         model = Kluis
@@ -28,7 +29,7 @@ class GebruikerSerializer(serializers.ModelSerializer):
         fields = ('id', 'last_name')
 
 # importing the module
-import json
+# import json
 
 # opening the JSON file
 # data = open('file.json',)
