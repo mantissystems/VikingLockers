@@ -19,7 +19,7 @@ const NotesListPage = () => {
     }
 
     let findNotes = async (value) => {
-        // http://127.0.0.1:8000/notes/waar/find/
+        // http://127.0.0.1:8000/notes/wat/find/
         const endpoint = `/notes/${value}/find`
         console.log('endpoint',endpoint)
         try{

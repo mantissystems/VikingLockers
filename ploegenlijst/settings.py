@@ -10,8 +10,6 @@ SECRET_KEY = 'django-insecure-)r2waboda$o)g39!ap!l7dx$numws6k7zi9=m*3e1hbudc!2&r
 DEBUG = True
 ALLOWED_HOSTS = ['*', 'http://127.0.0.1','http://127.0.0.1:8000',
 'https://kluisjeslijst.up.railway.app/*',]
-ALLOWED_ORIGINS = ['http://*', 'https://*',
-'https://kluisjeslijst.up.railway.app/*'],
 CSRF_TRUSTED_ORIGINS = ['http://*', 'https://*',
 'https://kluisjeslijst.up.railway.app/*/','http://127.0.0.1:8000',
 ]
@@ -31,8 +29,8 @@ INSTALLED_APPS = [
 # INTERNAL_IPS = ["127.0.0.1",] #debug toolbar
 MIDDLEWARE = [
     # 'debug_toolbar.middleware.DebugToolbarMiddleware', ## tijdens debug 
-    'django.middleware.security.SecurityMiddleware',
     "corsheaders.middleware.CorsMiddleware",  #29-10-2022
+    'django.middleware.security.SecurityMiddleware',
     "whitenoise.middleware.WhiteNoiseMiddleware",  #29-10-22
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -109,13 +107,20 @@ MEDIA_URL='/images/'
 STATICFILES_DIRS = [
     BASE_DIR / 'mykluisjes/build/static']
 
-# LOGIN_REDIRECT_URL = '/'
-# LOGOUT_REDIRECT_URL = '/' # new
 STATIC_ROOT = BASE_DIR.joinpath('staticfiles')
 DEFAULT_AUTO_FIELD = 'django.db.models.AutoField'
 MEDIA_ROOT= BASE_DIR / 'static/images'
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 CORS_ALLOW_ALL_ORIGINS=True
+CORS_ALLOWED_ORIGINS = [
+    "http://*", 
+    "https://*",
+    "https://kluisjeslijst.up.railway.app",
+    "http://127.0.0.1:3000",
+    "http://127.0.0.1:8000",
+    ]
+# CORS_ALLOWED_ORIGINS=["http://127.0.0.1:3000",]
+CORS_ALLOWED_ORIGIN_REGEXES=[r"https://"]
 
 # FIXTURE_DIRS = [BASE_DIR / 'static']
 
