@@ -21,10 +21,14 @@ class KluisAdmin(admin.ModelAdmin):
     list_display = ('name', 'slot','location','user','sleutels')
     search_fields = ('slot','location')
 
+@admin.register(Note)
+class NoteAdmin(admin.ModelAdmin):
+    list_filter = ('body','id')
+    list_display = ('body', 'id')
+
 # admin.site.register(Kluis)
 admin.site.register(Topic)
 admin.site.register(Message)
-
-admin.site.register(Note)
+# admin.site.register(Note)
 admin.site.register(Instromer)
 admin.register(User)

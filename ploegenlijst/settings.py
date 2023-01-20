@@ -8,11 +8,11 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-)r2waboda$o)g39!ap!l7dx$numws6k7zi9=m*3e1hbudc!2&r'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
-ALLOWED_HOSTS = ['*', 'http://127.0.0.1','http://127.0.0.1:8000',
-'https://kluisjeslijst.up.railway.app/*',]
-CSRF_TRUSTED_ORIGINS = ['http://*', 'https://*',
-'https://kluisjeslijst.up.railway.app/*/','http://127.0.0.1:8000',
-]
+ALLOWED_HOSTS = ['*', 'http://127.0.0.1',
+'https://kluisjeslijst.up.railway.app',]
+# CSRF_TRUSTED_ORIGINS = ['http://*', 'https://*',
+# 'https://kluisjeslijst.up.railway.app/*/','http://127.0.0.1:8000',
+# ]
 # Application definition
 INSTALLED_APPS = [
     'django.contrib.admin',
@@ -29,8 +29,8 @@ INSTALLED_APPS = [
 # INTERNAL_IPS = ["127.0.0.1",] #debug toolbar
 MIDDLEWARE = [
     # 'debug_toolbar.middleware.DebugToolbarMiddleware', ## tijdens debug 
-    "corsheaders.middleware.CorsMiddleware",  #29-10-2022
     'django.middleware.security.SecurityMiddleware',
+    "corsheaders.middleware.CorsMiddleware",  #29-10-2022
     "whitenoise.middleware.WhiteNoiseMiddleware",  #29-10-22
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -113,14 +113,13 @@ MEDIA_ROOT= BASE_DIR / 'static/images'
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 CORS_ALLOW_ALL_ORIGINS=True
 CORS_ALLOWED_ORIGINS = [
-    "http://*", 
-    "https://*",
+    # "http://*", 
+    # "https://*",
     "https://kluisjeslijst.up.railway.app",
-    "http://127.0.0.1:3000",
-    "http://127.0.0.1:8000",
+    "http://127.0.0.1",
+    # "http://127.0.0.1:8000",
     ]
-# CORS_ALLOWED_ORIGINS=["http://127.0.0.1:3000",]
-CORS_ALLOWED_ORIGIN_REGEXES=[r"https://"]
+# CORS_ALLOWED_ORIGIN_REGEXES=[r"https://",r"http://"]
 
 # FIXTURE_DIRS = [BASE_DIR / 'static']
 

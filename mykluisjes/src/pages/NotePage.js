@@ -15,13 +15,13 @@ const NotePage = ({  history }) => {
     let getNote = async () => {
         if (noteId === 'new') return
 
-        let response = await fetch(`/notes/${noteId}/`)
+        let response = await fetch(`https://kluisjeslijst.up.railway.app/notes/${noteId}/`)
         let data = await response.json()
         setNote(data)
     }
 
     let createNote = async () => {
-        fetch(`/notes/create/`, {
+        fetch(`/notes/create`, {
             method: "POST",
             headers: {
                 'Content-Type': 'application/json'
@@ -32,7 +32,7 @@ const NotePage = ({  history }) => {
 
 
     let updateNote = async () => {
-        fetch(`/notes/${noteId}/update/`, {
+        fetch(`https://kluisjeslijst.up.railway.app/notes/${noteId}/update`, {
             method: "PUT",
             headers: {
                 'Content-Type': 'application/json'
@@ -43,7 +43,7 @@ const NotePage = ({  history }) => {
 
 
     let deleteNote = async () => {
-        fetch(`/notes/${noteId}/delete/`, {
+        fetch(`https://kluisjeslijst.up.railway.app/notes/${noteId}/delete`, {
             method: 'DELETE',
             'headers': {
                 'Content-Type': 'application/json'
