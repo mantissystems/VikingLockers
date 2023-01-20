@@ -1093,7 +1093,7 @@ def deleteNote(request, pk):
 def createNote(request):
     data = request.data
     note = Note.objects.create(
-        body=data['body']
+        body=data['body'],info='inf'
     )
     serializer = NoteSerializer(note, many=False)
     return Response(serializer.data)
