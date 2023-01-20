@@ -10,9 +10,13 @@ SECRET_KEY = 'django-insecure-)r2waboda$o)g39!ap!l7dx$numws6k7zi9=m*3e1hbudc!2&r
 DEBUG = True
 ALLOWED_HOSTS = ['*', 'http://127.0.0.1',
 'https://kluisjeslijst.up.railway.app',]
-# CSRF_TRUSTED_ORIGINS = ['http://*', 'https://*',
-# 'https://kluisjeslijst.up.railway.app/*/','http://127.0.0.1:8000',
-# ]
+
+CSRF_TRUSTED_ORIGINS = [
+    'https://kluisjeslijst.up.railway.app/',
+    'http://127.0.0.1',
+    # 'http://*', 
+    # 'https://*',
+]
 # Application definition
 INSTALLED_APPS = [
     'django.contrib.admin',
@@ -114,7 +118,7 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 CORS_ALLOW_ALL_ORIGINS=True
 CORS_ALLOWED_ORIGINS = [
     # "http://*", 
-    # "https://*",
+    # "https://kluisjeslijst.up.railway.app ",
     "https://kluisjeslijst.up.railway.app",
     "http://127.0.0.1",
     # "http://127.0.0.1:8000",
