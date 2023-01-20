@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react'
 import { useParams, Link } from "react-router-dom";
 import { ReactComponent as ArrowLeft } from '../assets/arrow-left.svg'
 // https://django-react-notesapp-master-production.up.railway.app
+
 const NotePage = ({  history }) => {
     const params = useParams(); // vervanger van match.params.id
     let noteId = params.id;
@@ -15,13 +16,13 @@ const NotePage = ({  history }) => {
     let getNote = async () => {
         if (noteId === 'new') return
 
-        let response = await fetch(`https://kluisjeslijst.up.railway.app/notes/${noteId}/`)
+        let response = await fetch(`/notes/${noteId}/`)
         let data = await response.json()
         setNote(data)
     }
 
     let createNote = async () => {
-        fetch(`/notes/create`, {
+        fetch(`https://kluisjeslijst.up.railway.app/notes/create/`, {
             method: "POST",
             headers: {
                 'Content-Type': 'application/json'
@@ -32,7 +33,7 @@ const NotePage = ({  history }) => {
 
 
     let updateNote = async () => {
-        fetch(`https://kluisjeslijst.up.railway.app/notes/${noteId}/update`, {
+        fetch(`https://kluisjeslijst.up.railway.app/notes/${noteId}/update/`, {
             method: "PUT",
             headers: {
                 'Content-Type': 'application/json'
@@ -43,7 +44,7 @@ const NotePage = ({  history }) => {
 
 
     let deleteNote = async () => {
-        fetch(`https://kluisjeslijst.up.railway.app/notes/${noteId}/delete`, {
+        fetch(`https://kluisjeslijst.up.railway.app/notes/${noteId}/delete/`, {
             method: 'DELETE',
             'headers': {
                 'Content-Type': 'application/json'

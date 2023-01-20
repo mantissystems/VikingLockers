@@ -119,8 +119,8 @@ CORS_ALLOW_ALL_ORIGINS=True
 CORS_ALLOWED_ORIGINS = [
     # "http://*", 
     # "https://kluisjeslijst.up.railway.app ",
-    "https://kluisjeslijst.up.railway.app",
-    "http://127.0.0.1",
+    # "https://kluisjeslijst.up.railway.app",
+    # "http://127.0.0.1",
     # "http://127.0.0.1:8000",
     ]
 # CORS_ALLOWED_ORIGIN_REGEXES=[r"https://",r"http://"]
