@@ -139,9 +139,9 @@ class Note(models.Model):
     body = models.TextField(null=True, blank=True)
     updated = models.DateTimeField(auto_now=True)
     created = models.DateTimeField(auto_now_add=True)
-    info = models.CharField(max_length=35, default='===')
+    # info = models.CharField(max_length=35, default='===')
     # owner = models.CharField(max_length=35, default='___')
 
 
     def __str__(self):
-        return self.body
+        return self.body[0:50]

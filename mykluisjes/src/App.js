@@ -13,7 +13,7 @@ function App() {
       <Header />
         <Routes>
           <Route path="/" exact element={<NotesListPage />} />
-          <Route path="notes/:id" element={<NotePage />} />
+          <Route path="note/:id" element={<NotePage />} />
         </Routes>
         </div>
       </div>

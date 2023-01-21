@@ -22,7 +22,7 @@ const NotePage = ({  history }) => {
     }
 
     let createNote = async () => {
-        fetch(`https://kluisjeslijst.up.railway.app/notes/create/`, {
+        fetch(`/notes/create/`, {
             method: "POST",
             headers: {
                 'Content-Type': 'application/json'
@@ -33,7 +33,7 @@ const NotePage = ({  history }) => {
 
 
     let updateNote = async () => {
-        fetch(`https://kluisjeslijst.up.railway.app/notes/${noteId}/update/`, {
+        fetch(`/notes/${noteId}/update/`, {
             method: "PUT",
             headers: {
                 'Content-Type': 'application/json'
@@ -44,7 +44,7 @@ const NotePage = ({  history }) => {
 
 
     let deleteNote = async () => {
-        fetch(`https://kluisjeslijst.up.railway.app/notes/${noteId}/delete/`, {
+        fetch(`/notes/${noteId}/delete/`, {
             method: 'DELETE',
             'headers': {
                 'Content-Type': 'application/json'

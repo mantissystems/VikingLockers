@@ -20,7 +20,7 @@ const NotesListPage = () => {
 
     let findNotes = async (value) => {
         // http://127.0.0.1:8000/notes/wat/find/
-        const endpoint = `https://kluisjeslijst.up.railway.app/notes/${value}/find/`
+        const endpoint = `/notes/${value}/find/`
         console.log('endpoint',endpoint)
         try{
             const response = await fetch(endpoint,{
@@ -37,7 +37,7 @@ const NotesListPage = () => {
     }
 
     let getNotes = async () => {
-        const endpoint = `https://kluisjeslijst.up.railway.app/notes`
+        const endpoint = `/notes`
         console.log('endpoint',endpoint)
         try{
             const response = await fetch(endpoint,{
@@ -56,7 +56,7 @@ const NotesListPage = () => {
     return (
         <div className="notes">
             <div className="notes-header">
-                <h2 className="notes-title">&#9782; Kluisje</h2>
+                <h2 className="notes-title">&#9782; Notes</h2>
                 <p className="notes-count">{notes.length}</p>
             <input 
             type="search"
