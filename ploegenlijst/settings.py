@@ -26,13 +26,13 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'viking',
-    'debug_toolbar',
+    # 'debug_toolbar',
     'rest_framework',
     'corsheaders',
 ]
-INTERNAL_IPS = ["127.0.0.1",] #debug toolbar
+# INTERNAL_IPS = ["127.0.0.1",] #debug toolbar
 MIDDLEWARE = [
-    'debug_toolbar.middleware.DebugToolbarMiddleware', ## tijdens debug 
+    # 'debug_toolbar.middleware.DebugToolbarMiddleware', ## tijdens debug 
     'django.middleware.security.SecurityMiddleware',
     "corsheaders.middleware.CorsMiddleware",  #29-10-2022
     'django.contrib.sessions.middleware.SessionMiddleware',
