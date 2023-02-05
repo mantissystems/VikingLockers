@@ -11,12 +11,12 @@ DEBUG = False
 ALLOWED_HOSTS = ['*', 'http://127.0.0.1:8000',
 'https://kluisjeslijst.up.railway.app',]
 
-# CSRF_TRUSTED_ORIGINS = [
-#     'https://kluisjeslijst.up.railway.app',
-#     'http://127.0.0.1',
-#     # 'http://*', 
-#     # 'https://*',
-# ]
+CSRF_TRUSTED_ORIGINS = [
+    'https://kluisjeslijst.up.railway.app',
+    'http://127.0.0.1',
+    # 'http://*', 
+    # 'https://*',
+]
 # Application definition
 INSTALLED_APPS = [
     'django.contrib.admin',
