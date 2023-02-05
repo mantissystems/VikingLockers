@@ -28,7 +28,7 @@ from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.forms import UserCreationForm
 
 from viking.serializers import FlexrecurrentSerializer,  PersoonSerializer,  GebruikerSerializer,KluisSerializer,NoteSerializer
-from .models import Flexrecurrent, Message, Room, Topic,Kluis,Rooster,Note
+from .models import Flexrecurrent, Message, Room, Topic,Kluis,Rooster,Vikinglid,Activiteit,Note
 from .forms import RoomForm,UserForm,Urv_KluisForm
 from .utils import (getNoteDetail, getNotesList,)
 
@@ -113,40 +113,41 @@ def registerPage(request):
 
 def home(request):
     q = request.GET.get('q') if request.GET.get('q') != None else ''
-    lijst= q ##'Kluisjes-bezet' # was ploegen
-    where7=Q(user__username__icontains = q)
-    where1=Q(body__icontains = q)
-    where2=Q(location__icontains = q)
-    rooms = Kluis.objects.filter(where1|where2|where7)
-    topcs = Topic.objects.all()
-    rms = Kluis.objects.all() #.exclude(id__in=(87,88))
-    participants_count=0
-    owner_count=0
-    for r in rms:
-        owner_count+=r.owners.count()
-    lege_kastjes = Kluis.objects.none
-    lege_kastjes_count=rooms.count()
-    kastjes_count=rooms.count()
-    if q=='Kluisjes-leeg' : 
-        # lijst='Kluisjes-leeg'
-        rooms = Kluis.objects.all().filter(owners=None)
-        lege_kastjes_count=rooms.count()
-    if q=='Kluisjes-bezet' : 
-        # lijst='Kluisjes-bezet'
-        rooms = Kluis.objects.all() #.exclude(owners=None)
-        kastjes_count = rooms.count()
+    # lijst= q ##'Kluisjes-bezet' # was ploegen
+    # where7=Q(user__username__icontains = q)
+    # where1=Q(body__icontains = q)
+    # where2=Q(location__icontains = q)
+    # rooms = Kluis.objects.filter(where1|where2|where7)
+    # topcs = Topic.objects.all()
+    # rms = Kluis.objects.all() #.exclude(id__in=(87,88))
+    # participants_count=0
+    # owner_count=0
+    # for r in rms:
+    #     owner_count+=r.owners.count()
+    # lege_kastjes = Kluis.objects.none
+    # lege_kastjes_count=rooms.count()
+    # kastjes_count=rooms.count()
+    # if q=='Kluisjes-leeg' : 
+    #     rooms = Kluis.objects.all().filter(owners=None)
+    #     lege_kastjes_count=rooms.count()
+    # if q=='Kluisjes-bezet' : 
+    #     rooms = Kluis.objects.all() #.exclude(owners=None)
+    #     kastjes_count = rooms.count()
 
-    room_messages = [] #Message.objects.filter(Q(room__topic__name__icontains=q))
-    # rooms = Kluis.objects.all() #.exclude(owners=None)
-    print(rooms.count())
+    vikingleden=Vikinglid.objects.all().filter(name__icontains=q)
+
     context = {
-        'kluisjes': rooms,
-        'topics': topcs, 
-        'lege_kastjes_count': lege_kastjes_count, 
-        'participants_count': owner_count, 
-        'kastjes_count': kastjes_count, 
-        'room_messages': room_messages
+        # 'kluisjes': rooms,
+        'vikingleden':vikingleden,
+        # 'kluisjes': rooms, 
+        # 'lijst': lijst, 
+        # 'topics': topcs, 
+        # 'lege_kastjes_count': lege_kastjes_count, 
+        # 'participants_count': owner_count, 
+        # 'kastjes_count': kastjes_count, 
+        # 'room_messages': room_messages
         }
+    # print(vikingleden.count())
     return render(request, 'viking/home.html', context)
 
 
@@ -477,6 +478,41 @@ def gebruikerslijst(request):
 
 #     return Response(serializer.data)
 
+def get_vikinglid(request):
+    template_name = 'viking/vikinglid.html'
+
+    vikingleden=Vikinglid.objects.all() ##.filter(name__in=('zaterdag','zondag'))
+    context={'vikingleden':vikingleden}
+    return render(request, template_name, context)
+
+@login_required(login_url='login')
+def add_activity(request):
+    template_name = 'viking/vikinglid.html'
+    vikingleden=Vikinglid.objects.all() ##.filter(name__in=('zaterdag','zondag'))
+    zoeknaam = request.POST.get('zoeknaam') if request.POST.get('zoeknaam') != None else ''
+    activiteiten=Activiteit.objects.all() #.first()
+    kluisjes=Kluis.objects.all()
+    personenlijst=User.objects.values_list('last_name',flat=True)
+    print('b ===== kluisjes =====')
+    instroom=Instromer.objects.none()
+    for a in activiteiten:
+        try:
+            kluis=Kluis.objects.get(location=a.name)
+            print(kluis)
+            lid.is_lid_van.add(a)
+        except: print()
+
+    print('e ===== kluisjes =====')
+    context={
+        'vikingleden':vikingleden,
+        'lege_kastjes_count':vikingleden.count(),
+            # 'vikinglid': vikinglid,
+            'users': personen,
+            'error_message': "Er is geen keuze gemaakt.",
+        }
+
+    return render(request, 'viking/vikinglid.html', context)
+
 def vote(request, room_id):
     event = get_object_or_404(Room, pk=room_id)
     zoeknaam = request.POST.get('zoeknaam') if request.POST.get('zoeknaam') != None else 'sc'
@@ -533,7 +569,7 @@ def vote(request, room_id):
 
 @login_required(login_url='login')
 def kluis(request, kluis_id):
-    kluis = get_object_or_404(Kluis, pk=kluis_id)
+    kluis = get_object_or_404(Vikinglid, pk=kluis_id)
     zoeknaam = request.POST.get('zoeknaam') if request.POST.get('zoeknaam') != None else 'sc'
 
     leden = []
@@ -553,12 +589,44 @@ def kluis(request, kluis_id):
         Q(id__in=aanwezigen)
         # Q(pos1__icontains=zoeknaam)
         )
-    return render(request, 'viking/urv-kluis-detail.html', {
+    return render(request, 'viking/vikinglid-detail.html', {
             'kluis': kluis,
             'users': personen,
             'roeiers': roeiers,
             'kandidaten':kandidaten,
             'aanwezig':aanwezigen, 
+            'error_message': "Er is geen keuze gemaakt.",
+        })
+    return HttpResponseRedirect(reverse('kluis', args=(kluis_id,)))
+
+@login_required(login_url='login')
+def activiteit(request, lid_id):
+    vikinglid = get_object_or_404(Vikinglid, pk=lid_id)
+    zoeknaam = request.POST.get('zoeknaam') if request.POST.get('zoeknaam') != None else ''
+    print(lid_id)
+    leden = []
+    afmeldingen=[]
+    for af in request.POST.getlist('afmelding'):
+        vikinglid.is_lid_van.remove(af)
+    for l in request.POST.getlist('aanmelding'):
+        vikinglid.is_lid_van.add(l)
+    personen=User.objects.all()
+    kandidaten = Activiteit.objects.all().filter(
+        Q(name__icontains = zoeknaam) | 
+        Q(type__icontains = zoeknaam) 
+        ) 
+    islidvan=vikinglid.is_lid_van.all()
+    aanwezigen=Activiteit.objects.all().filter(id__in=islidvan)
+    roeiers=Person.objects.filter(
+        Q(id__in=aanwezigen)
+        # Q(pos1__icontains=zoeknaam)
+        )
+    return render(request, 'viking/vikinglid-detail.html', {
+            'vikinglid': vikinglid,
+            'users': personen,
+            'roeiers': roeiers,
+            'kandidaten':kandidaten,
+            'islidvan':islidvan, 
             'error_message': "Er is geen keuze gemaakt.",
         })
     print('kluis room_id, else')
@@ -568,6 +636,7 @@ def kluis(request, kluis_id):
         # with POST data. This prevents data from being posted twice if a
         # user hits the Back button.
     return HttpResponseRedirect(reverse('kluis', args=(kluis_id,)))
+
 
 class AanmeldView(ListView):
     template_name='viking/aanmeldview.html'

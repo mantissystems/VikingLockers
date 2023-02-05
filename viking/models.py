@@ -3,20 +3,10 @@ from datetime import date
 from django.db import models
 from django.contrib.auth.models import User
 from django.utils import timezone
-SCULL = [
+SOORT = [
             ('--', '--'),
-            ('sc1', 'sc1'),
-            ('sc2', 'sc2'),
-            ('sc2a', 'sc2a'),
-            ('sc3', 'sc3'),
-            ('sc4', 'sc4'),
-            ('b1', 'b1'),
-            ('b2', 'b2'),
-            ('b3', 'b3'),
-            ('b4', 'b4'),
-            ('st1', 'st1'),
-            ('st2', 'st2'),
-            ('st3', 'st3'),
+            ('kluis', 'kluis'),
+            ('ploeg', 'ploeg'),
 ]
 SLOT = [
             ('--', '--'),
@@ -65,23 +55,43 @@ class Person(models.Model):
     name = models.CharField(max_length=100)
     avatar=models.ImageField(null=True,default="avatar.svg")      # install Pillow is needed
     email = models.CharField(max_length=100,blank=True)
-    is_flex = models.BooleanField(default=True)        #wil ingedeeld worden in flexpoule
-    is_host = models.BooleanField(default=False)        #kan flexhost zijn
-    keuzes = models.IntegerField(default=0) #aantal keren als host gekozen
-    roeileeftijd = models.CharField(max_length=20,blank=True)
+    # is_flex = models.BooleanField(default=True)        #wil ingedeeld worden in flexpoule
+    # is_host = models.BooleanField(default=False)        #kan flexhost zijn
+    # keuzes = models.IntegerField(default=0) #aantal keren als host gekozen
+    # roeileeftijd = models.CharField(max_length=20,blank=True)
     is_lid= models.BooleanField(default=True)           #is roeiend lid;member
-    in_poule = models.BooleanField(default=False)       #wil flexibel roeiern
-    vaart = models.BooleanField(default=False)          #zit in ingedeelde boot op het water
-    coach = models.CharField(max_length=18, choices=SCULL,default='st1')     
+    # in_poule = models.BooleanField(default=False)       #wil flexibel roeiern
+    # vaart = models.BooleanField(default=False)          #zit in ingedeelde boot op het water
+    # coach = models.CharField(max_length=18, choices=SCULL,default='st1')     
     keuzes = models.IntegerField(default=0) #aantal keren als host gekozen
-    lnr = models.IntegerField(default=0) #lotingnummer 
+    # lnr = models.IntegerField(default=0) #lotingnummer 
 
     def __str__(self):
         return self.name
 
 
     def __str__(self):
-        return "%s" % (self.event_text)               
+        return "%s" % (self.event_text)          
+
+
+class Activiteit(models.Model):
+    name = models.CharField(max_length=100)
+    # type = models.CharField(max_length=100,blank=True)  #ploeg, kluis
+    type = models.CharField(max_length=18, choices=SOORT,default='--')     
+    def __str__(self):
+        return self.name
+
+    # def __str__(self):
+    #     return "%s" % (self.event_text)               
+class Vikinglid(models.Model):
+    name = models.CharField(max_length=100)
+    avatar=models.ImageField(null=True,default="avatar.svg")      # install Pillow is needed
+    email = models.CharField(max_length=100,blank=True)
+    is_lid_van = models.ManyToManyField(Activiteit, related_name='lid_van', blank=True)
+    def __str__(self):
+        return self.name
+
+     
 class Rooster(models.Model):
     host = models.ForeignKey(User, on_delete=models.SET_NULL, null=True)
     name = models.CharField(max_length=200)

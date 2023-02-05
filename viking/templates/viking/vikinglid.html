@@ -1,0 +1,20 @@
+{% load static %}
+{% for lid in vikingleden %}
+<div class="roomListRoom">
+    <div class="roomListRoom__content">
+        <a href="{% url 'activiteit' lid.id %}">{{ forloop.counter }} {{lid}} {{lid.id}}<hr>
+            <!-- {{kluis.owners.all}} -->
+            {% for t in lid.is_lid_van.all %} -- {{t}} <br>{% endfor %} 
+        </a>
+    </div>
+</div>
+{% endfor %}    
+
+=====>
+max 120 <hr>
+heren 8x6 48
+<!-- <img src="{% static '/images/heren1.JPG' %}" alt="Heren"> <br>          
+dames1 6x4 24
+<img src="{% static '/images/dames1.JPG' %}" alt="Heren"> <br>          
+dames2 8x6 48
+<img src="{% static '/images/dames2.JPG' %}" alt="Dames"> <br>           -->

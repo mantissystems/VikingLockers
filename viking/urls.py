@@ -23,6 +23,7 @@ recurrent_event,
 registerPage, room, 
 topicsPage, updateRoom, updateUser, userProfile,
 vote, kluis,
+add_activity,get_vikinglid,activiteit,
 DetailView,
 ploeg_participants
 )
@@ -42,11 +43,13 @@ urlpatterns = [
     path('delete-message/<str:pk>/', deleteMessage, name='delete-message'),
     path('activity/', activityPage, name="activity"),
     path('room/<str:pk>/', room, name='room'),    
-
+    path('vikinglid/', get_vikinglid, name='vikinglid'),
+    path('add_activity/',add_activity, name='add_activity'),  
+    path('activiteit/<str:lid_id>',activiteit, name='activiteit'),  
 
     path('recurrent/', recurrent_event, name='recurrent'),
     path('<int:room_id>/aanmelden/',vote, name='vote'),  
-    path('<int:kluis_id>/kluisjes/',kluis, name='kluis'),  
+    path('<int:lid_id>/kluis/',kluis, name='kluis'),  
     path('<int:pk>/update-kluis/',urv_updateKluis, name='update-kluis'),  
     path('ploegbeheer/',PloegPage , name="ploegbeheer"),
     path('kluisbeheer/',KluisPage , name="kluisbeheer"),
