@@ -3,7 +3,15 @@ from django.contrib import admin
 from .models import  User
 from .models import  Person, Topic
 from .models import Room, Message,Person,Instromer,Note,Vikinglid,Activiteit
-
+admin.site.register(Topic)
+admin.site.register(Message)
+# admin.site.register(Note)
+admin.site.register(Instromer)
+admin.register(User)
+admin.register(Person)
+admin.register(Vikinglid)
+admin.register(Activiteit)
+admin.register(Room)
 # @admin.register(Person)
 # class PersonAdmin(admin.ModelAdmin):
 #     list_filter = ('is_host','name')
@@ -21,18 +29,9 @@ from .models import Room, Message,Person,Instromer,Note,Vikinglid,Activiteit
     # list_display = ('name', 'slot','location','user','sleutels')
     # search_fields = ('slot','location')
 
-@admin.register(Note)
-class NoteAdmin(admin.ModelAdmin):
-    list_filter = ('body','id')
-    list_display = ('body', 'id')
+# @admin.register(Note)
+# class NoteAdmin(admin.ModelAdmin):
+#     list_filter = ('body','id')
+#     list_display = ('body', 'id')
 
 # admin.site.register(Kluis)
-admin.site.register(Topic)
-admin.site.register(Message)
-# admin.site.register(Note)
-admin.site.register(Instromer)
-admin.register(User)
-admin.register(Person)
-admin.register(Vikinglid)
-admin.register(Activiteit)
-admin.register(Room)

@@ -77,9 +77,9 @@
           <thead>
             <hr>
             <tr>
-              <th> <input id="search-input" name="zoeknaam" class="form-control" type="text" placeholder='@vind kandidaat'></th>
+              <th> <input id="search-input" name="zoeknaam" class="form-control" type="text" placeholder='@vind kluisje'></th>
               <th><input type="submit" value="Meld Aan"> </th>
-              <th>Vind Activiteit uit ( {{users.count}}) voor {{event.name}}</th>
+              <th>Vind Kluisje uit ( {{users.count}}) voor {{event.name}}</th>
           </thead>
           </tr>
 
@@ -89,8 +89,6 @@
             <tr>
               
               <td>{{t.id}}.{{t.name}}</td><td> {{t.type}} </td>
-
-              <td>  </td>
               <td> <input type="checkbox" name="aanmelding" id="host{{ forloop.counter }}" value="{{ t.id }}"> </td>
               {% endfor %}
             </tr>

@@ -115,11 +115,11 @@ STATIC_ROOT = BASE_DIR.joinpath('staticfiles')
 DEFAULT_AUTO_FIELD = 'django.db.models.AutoField'
 MEDIA_ROOT= BASE_DIR / 'static/images'
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
-# CORS_ALLOW_ALL_ORIGINS=True
+CORS_ALLOW_ALL_ORIGINS=True
+SECURE_CONTENT_TYPE_NOSNIFF=False
 
 CORS_ALLOWED_ORIGINS = [
     "http://*", 
-    "https://kluisjeslijst.up.railway.app",
     "https://kluisjeslijst.up.railway.app",
     "http://127.0.0.1",
     "http://127.0.0.1:8000",
