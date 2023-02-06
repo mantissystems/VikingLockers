@@ -44,7 +44,7 @@ urlpatterns = [
     path('activity/', activityPage, name="activity"),
     path('room/<str:pk>/', room, name='room'),    
     path('vikinglid/', get_vikinglid, name='vikinglid'),
-    path('add_activity/',add_activity, name='add_activity'),  
+    path('add_activity/',add_activity, name='add_activity'),  # utility call
     path('activiteit/<str:lid_id>',activiteit, name='activiteit'),  
 
     path('recurrent/', recurrent_event, name='recurrent'),

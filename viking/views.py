@@ -487,20 +487,40 @@ def get_vikinglid(request):
 
 @login_required(login_url='login')
 def add_activity(request):
+    # add kluis and ploeg to vikinglid.
+    # kluis through user,kluis; ploeg through room,participants
     template_name = 'viking/vikinglid.html'
     vikingleden=Vikinglid.objects.all() ##.filter(name__in=('zaterdag','zondag'))
     zoeknaam = request.POST.get('zoeknaam') if request.POST.get('zoeknaam') != None else ''
     activiteiten=Activiteit.objects.all() #.first()
     kluisjes=Kluis.objects.all()
-    personenlijst=User.objects.values_list('last_name',flat=True)
+    personenlijst=User.objects.all() #.values_list('last_name',flat=True)
+    ploegen=Room.objects.all()
     print('b ===== kluisjes =====')
     instroom=Instromer.objects.none()
-    for a in activiteiten:
-        try:
-            kluis=Kluis.objects.get(location=a.name)
-            print(kluis)
-            lid.is_lid_van.add(a)
-        except: print()
+    for k in kluisjes:
+        rangnr=getattr(k, 'user_id')
+        naam=getattr(k, 'name')
+        locatie=getattr(k, 'location')
+        # try:
+        #     user=User.objects.get(pk=rangnr)
+        #     v=Vikinglid.objects.get(name=user.last_name)
+        #     act=Activiteit.objects.get(name=locatie)
+        #     print(rangnr,v.name,locatie,act)
+        #     v.is_lid_van.add(act)
+        # except:
+        #     pass
+    print('b ===== kluisjes =====')
+
+    # for p in ploegen:
+    #     for part in p.participants.all():
+    #         pl=Room.objects.get(pk=p.id)
+    #         v=Vikinglid.objects.get(name=part.last_name)
+    #         # act=Activiteit.objects.get(pk=pl.id)
+    #         act=Activiteit.objects.update_or_create(name=pl,type='ploeg')
+            # print(pl,part.last_name)
+            # print(pl,act)
+            # v.is_lid_van.add(act)
 
     print('e ===== kluisjes =====')
     context={

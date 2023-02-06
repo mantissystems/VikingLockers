@@ -2,9 +2,17 @@
 {% for lid in vikingleden %}
 <div class="roomListRoom">
     <div class="roomListRoom__content">
-        <a href="{% url 'activiteit' lid.id %}">{{ forloop.counter }} {{lid}} {{lid.id}}<hr>
+        <a href="{% url 'activiteit' lid.id %}">{{ forloop.counter }} {{lid}} {{lid.id}}
             <!-- {{kluis.owners.all}} -->
-            {% for t in lid.is_lid_van.all %} -- {{t}} <br>{% endfor %} 
+            {% for t in lid.is_lid_van.all %} 
+            {% if t.type == "kluis"  %}
+            <br>-- kluisje {{t}} <br>
+            {% endif %}
+            {% if t.type == "ploeg"  %}
+            -- ploeg {{t}} <br>
+            {% endif %}
+            {% endfor %} 
+            <hr>
         </a>
     </div>
 </div>
