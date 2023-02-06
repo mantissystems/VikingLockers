@@ -1,6 +1,6 @@
 from django.forms import ModelForm
 from django.contrib.auth.forms import UserCreationForm
-from .models import Kluis, Room,User
+from .models import Kluis, Room,User,Vikinglid,Activiteit
 
 
 class MyUserCreationForm(UserCreationForm):
@@ -20,6 +20,13 @@ class Urv_KluisForm(ModelForm):
         model = Kluis
         fields = '__all__'
         exclude = ['host','owners']
+
+class VikinglidForm(ModelForm):
+    class Meta:
+        model = Vikinglid
+        fields = '__all__'
+        # exclude = ['host','owners']
+
 
 class UserForm(ModelForm):
     class Meta:

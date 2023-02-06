@@ -29,7 +29,7 @@ from django.contrib.auth.forms import UserCreationForm
 
 from viking.serializers import FlexrecurrentSerializer,  PersoonSerializer,  GebruikerSerializer,KluisSerializer,NoteSerializer
 from .models import Flexrecurrent, Message, Room, Topic,Kluis,Rooster,Vikinglid,Activiteit,Note
-from .forms import RoomForm,UserForm,Urv_KluisForm
+from .forms import RoomForm,UserForm,Urv_KluisForm,VikinglidForm
 from .utils import (getNoteDetail, getNotesList,)
 
 def loginPage(request):
@@ -317,27 +317,30 @@ def updateRoom(request, pk):
 
 @login_required(login_url='login')
 def urv_updateKluis(request, pk):
-    kluis = Kluis.objects.get(id=pk)
-    form = Urv_KluisForm(instance=kluis)
-    topics = Topic.objects.all()
+    vikinglid=Vikinglid.objects.get(id=pk)
+    # kluis = Kluis.objects.get(id=pk)
+    form=VikinglidForm(instance=vikinglid)
+    # form = Urv_KluisForm(instance=kluis)
+    # topics = Topic.objects.all()
     # if request.user != kluis.user:
     #     return HttpResponse('Your are not allowed here!!')
 
     if request.method == 'POST':
-        topic = request.POST.get('topic')
-        print(topic)
-        topic_name = Topic.objects.get(id=topic)
+        # topic = request.POST.get('topic')
+        # print(topic)
+        # topic_name = Topic.objects.get(id=topic)
         # kluis.created=date.today()
-        kluis.name = kluis.location
-        kluis.topic = topic_name
-        kluis.code = request.POST.get('code')
-        kluis.slot = request.POST.get('slot')
-        kluis.description = request.POST.get('description')
-        kluis.save()
+        vikinglid.name = vikinglid.name
+        # vikinglid.topic = topic_name
+        # vikinglid.code = request.POST.get('code')
+        vikinglid.name = request.POST.get('name')
+        # vikinglid.description = request.POST.get('description')
+        vikinglid.save()
         return redirect('home')
 
-    context = {'form': form, 'topics': topics, 'kluis': kluis}
-    return render(request, 'viking/kluis_form.html', context)
+    # context = {'form': form, 'topics': topics, 'vikinglid': vikinglid}
+    context = {'form': form, 'vikinglid': vikinglid}
+    return render(request, 'viking/vikinglid_form.html', context)
 
 @login_required(login_url='login')
 # def erv_deleteRoom(request, pk):

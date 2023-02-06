@@ -2,7 +2,7 @@
 {% for lid in vikingleden %}
 <div class="roomListRoom">
     <div class="roomListRoom__content">
-        <a href="{% url 'activiteit' lid.id %}">{{ forloop.counter }} {{lid}} {{lid.id}}
+        <a href="{% url 'activiteit' lid.id %}">{{ forloop.counter }} {{lid}}
             <!-- {{kluis.owners.all}} -->
             {% for t in lid.is_lid_van.all %} 
             {% if t.type == "kluis"  %}
