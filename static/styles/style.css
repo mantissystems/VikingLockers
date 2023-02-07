@@ -69,6 +69,7 @@ a {
   max-width: 120rem;
   width: 90%;
   margin: auto;
+  font-size: 0.8em;
 }
 
 .btn {
@@ -108,6 +109,11 @@ a {
 .btn--dark {
   background-color: var(--color-dark-light);
   color: var(--color-light);
+}
+
+.btn--error {
+  background-color: var(--color-error);
+  color: var(--color-error);
 }
 
 .btn>svg {
@@ -622,6 +628,15 @@ a {
 =>  Room List
 ================================*/
 
+.room,
+.participants {
+  background: var(--color-dark);
+  max-height: 87.5vh;
+  border-radius: 0.7rem;
+  overflow: hidden;
+  position: relative;
+}
+
 .roomList__header {
   display: flex;
   justify-content: space-between;
@@ -643,6 +658,93 @@ a {
 
 /*========== Room List Room ==========*/
 
+.roomListRoom {
+  margin-bottom: 2.4rem;
+  background-color: var(--color-dark);
+  border-radius: 1rem;
+  padding: 2rem;
+}
+
+.roomListRoom__header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.roomListRoom__author {
+  font-weight: 500;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.roomListRoom__actions {
+  display: flex;
+  align-items: flex-start;
+  gap: 1rem;
+  position: relative;
+}
+
+.roomListRoom__actions span {
+  font-size: 1.4rem;
+  font-weight: 500;
+}
+
+.roomListRoom__actions svg {
+  fill: var(--color-main);
+
+  width: 1.6rem;
+  height: 1.6rem;
+}
+
+.roomListRoom__content {
+  margin: 1rem 0;
+}
+
+.roomListRoom__content a {
+  font-size: 2rem;
+  font-weight: 500;
+  margin-bottom: 1.5rem;
+  color: var(--color-light);
+  transition: all 0.3s ease-in-out;
+}
+
+.roomListRoom__content a:hover {
+  color: var(--color-main);
+}
+
+.roomListRoom__meta {
+  border-top: 1px solid var(--color-dark-medium);
+  padding-top: 1rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.roomListRoom__joined {
+  color: var(--color-light-gray);
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  font-size: 1.4rem;
+  font-weight: 500;
+}
+
+.roomListRoom__joined svg {
+  fill: var(--color-main);
+  width: 1.6rem;
+  height: 1.6rem;
+}
+
+.roomListRoom__topic {
+  padding: 5px 1.5rem;
+  background-color: var(--color-dark-medium);
+  border-radius: 5rem;
+  font-weight: 500;
+  font-size: 1.3rem;
+}
+
+/*==============================
 /*========== viking styles ==========*/
 /* :root { */
 /* Change your font family */
@@ -765,7 +867,7 @@ a {
   height: flex;
   background-color: var(--color-dark-light);
   border-radius: 30px;
-  /* font-size: inherit; */
+  font-size: inherit;
 }
  /* The switch - the box around the slider */
  .switch {

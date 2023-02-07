@@ -118,7 +118,7 @@ def home(request):
     # where1=Q(body__icontains = q)
     # where2=Q(location__icontains = q)
     # rooms = Kluis.objects.filter(where1|where2|where7)
-    # topcs = Topic.objects.all()
+    topcs = Activiteit.objects.values('type') .filter(name__icontains=q)
     # rms = Kluis.objects.all() #.exclude(id__in=(87,88))
     # participants_count=0
     # owner_count=0
@@ -133,16 +133,26 @@ def home(request):
     # if q=='Kluisjes-bezet' : 
     #     rooms = Kluis.objects.all() #.exclude(owners=None)
     #     kastjes_count = rooms.count()
-
-    vikingleden=Vikinglid.objects.all().filter(name__icontains=q)
-
+    where1=Q(name__icontains=q)
+    vikingleden=Vikinglid.objects.all().filter(where1)
+    islidvan=Vikinglid.objects.all().exclude(is_lid_van=None) #indien ergens lid van
+    # ============
+    islidvanlijst=islidvan.values_list('is_lid_van',flat=True)[0:10]  #activiteitenlijst
+    # ============
+    filter1=Q(name__icontains=q)
+    filter2=Q(id__in=islidvanlijst)
+    activiteiten=Activiteit.objects.filter(filter1 )
+    acties=activiteiten.values_list('id',flat=True)
+    lidmetactie=Vikinglid.objects.all().filter( filter2)
+    vikingleden=Vikinglid.objects.all().filter( filter1)
+    # print(islidvanlijst)
+    # print(lidmetactie)
     context = {
         # 'kluisjes': rooms,
         'vikingleden':vikingleden,
         # 'kluisjes': rooms, 
         # 'lijst': lijst, 
-        # 'topics': topcs, 
-        # 'lege_kastjes_count': lege_kastjes_count, 
+        'topics': topcs, 
         # 'participants_count': owner_count, 
         # 'kastjes_count': kastjes_count, 
         # 'room_messages': room_messages
@@ -257,36 +267,25 @@ def createRoom(request):
     return render(request, 'viking/room_form.html', context)
 
 @login_required(login_url='login')
-def erv_createRoom(request):
-    form = RoomForm()
-    topics = Topic.objects.all()
-    # datums=Flexevent.objects.all() ###values_list('datum',flat=True)
-    # print(datums.datum)
+def createVikinglid(request):
+    form = VikinglidForm()
+    topics = Activiteit.objects.all()
     if request.method == 'POST':
-        topic_name = request.POST.get('topic')
-        tijdstip=request.POST.get('tijdstip')
-        activiteit = request.POST.get('topic')
-        omschrijving=request.POST.get('description')
-        datum=request.POST.get('datum')
-        plandatum = datum #.strftime("%m/%d/%Y")
-
-        omschrijving=plandatum + '; ' + activiteit
-        topic, created = Topic.objects.get_or_create(name=topic_name)
-
-        # Flexevent.objects.create(
-        #      host=request.user,
-        #     topic=topic,
-        #     pub_time=request.POST.get('tijdstip'),
-        #     name = request.POST.get('topic'),
-        #     description=omschrijving, ##request.POST.get('description'),
-        #     datum=request.POST.get('datum'),
-        #     event_text=topic,
-        #     # flexhost=request.user,
-
-        # )
+        topic_name = request.POST.get('islidvan')
+        email = request.POST.get('email')
+        print(email)
+        # topic, created = Topic.objects.get_or_create(name=topic_name)
+        vikinglid=Vikinglid.objects.create(
+            email=email,
+            avatar='avatar.svg',
+            name=request.POST.get('name'),
+        )
+        print(vikinglid.id)
         return redirect('home')
-    context = {'form': form, 'topics': topics,}
-    return render(request, 'viking/flexevent_form.html', context)
+    vikinglid=Vikinglid.objects.all().last()
+
+    context = {'form': form, 'topics': topics, 'vikinglid':vikinglid}
+    return render(request, 'viking/vikinglid_form.html', context)
 
 # @login_required(login_url='login')
 def updateRoom(request, pk):
@@ -334,7 +333,7 @@ def urv_updateKluis(request, pk):
         # vikinglid.topic = topic_name
         # vikinglid.code = request.POST.get('code')
         vikinglid.name = request.POST.get('name')
-        # vikinglid.description = request.POST.get('description')
+        vikinglid.email = request.POST.get('email')
         vikinglid.save()
         return redirect('home')
 
@@ -371,6 +370,21 @@ def deleteRoom(request, pk):
 
     context = {'obj': room}
     return render(request, 'viking/delete.html', context)
+@login_required(login_url='login')
+def deleteVikinglid(request, pk):
+
+    vikinglid = Vikinglid.objects.get(id=pk)
+
+    # if request.user != room.host:
+    #     return HttpResponse('You are not allowed here!!')
+
+    if request.method == 'POST':
+        vikinglid.delete()
+        return redirect('home')
+
+    context = {'obj': vikinglid}
+    return render(request, 'viking/delete.html', context)
+
 
 @login_required(login_url='login')
 def deleteMessage(request, pk):
@@ -430,7 +444,7 @@ def erv_updateUser(request):
 
 def topicsPage(request):
     q = request.GET.get('q') if request.GET.get('q') != None else ''
-    topics = Topic.objects.filter(name__icontains=q)
+    topics = Activiteit.objects.filter(name__icontains=q)
     return render(request, 'viking/topics.html', {'topics': topics})
 
 

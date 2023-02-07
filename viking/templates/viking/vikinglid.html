@@ -1,22 +1,26 @@
 {% load static %}
-{% for lid in vikingleden %}
 <div class="roomListRoom">
-    <div class="roomListRoom__content">
-        <a href="{% url 'activiteit' lid.id %}">{{ forloop.counter }} {{lid}}
-            <!-- {{kluis.owners.all}} -->
-            {% for t in lid.is_lid_van.all %} 
-            {% if t.type == "kluis"  %}
-            <br>-- kluisje {{t}} <br>
-            {% endif %}
-            {% if t.type == "ploeg"  %}
-            -- ploeg {{t}} <br>
-            {% endif %}
-            {% endfor %} 
-            <hr>
-        </a>
+
+{% for lid in vikingleden %}
+<div class="roomListRoom__header">
+    <div class="roomListRoom__actions">
+        <div class="roomListRoom__content">
+
+            <a href="{% url 'activiteit' lid.id %}">{{ forloop.counter }} {{lid}}
+                {% for t in lid.is_lid_van.all %} 
+                {% if t.type == "kluis"  %}
+                <br>-- kluisje {{t}} <br>
+                {% endif %}
+                {% if t.type == "ploeg"  %}
+                -- ploeg {{t}} <br>
+                {% endif %}
+                {% endfor %} 
+            </a>
+        </div>
     </div>
 </div>
 {% endfor %}    
+</div>
 
 =====>
 max 120 <hr>

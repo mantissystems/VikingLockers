@@ -1,17 +1,19 @@
 <div class="topics">
   <div class="topics__header">
-    <h2>Rubrieken</h2>
+    <h2>Activiteiten</h2>
   </div>
   <ul class="topics__list">
     <li>
       <a href="{% url 'home' %}" class="active"
-        >Alle <span>{{rooms.count}}</span></a
+        >Alle <span>{{vikingleden.count}}</span></a
       >
+      {% regroup topics by type as type_list %}
     </li>
-    {% for topic in topics %}
+    {% for topic in type_list %}
     <li>
-      <a href="{% url 'home' %}?q={{topic.name}}"
-        >{{topic.name}}<span>{{topic.room_set.all.count}}</span></a
+      {{grouper.count}}
+      <a href="{% url 'home' %}?q={{topic.grouper}}"
+        >{{topic.grouper}}<span></span></a
       >
     </li>
     {% endfor %}
