@@ -8,7 +8,7 @@
       {% csrf_token %}
       <div class="phone">
         <div class="phone-mirror">
-        <li><a href="/" class="btn btn-warning btn-sm">Home2</a></li>
+        <li><a href="/" class="btn btn-warning btn-sm">Terug</a></li>
         <div class="layout__boxTitle">
           <a href="{{request.META.HTTP_REFERER}}">
             <svg
@@ -64,9 +64,6 @@
               <input type="checkbox" name="afmelding" id="host{{ forloop.counter }}" value="{{ aa.id }}">
             </td>
             <td> </td>
-            <!-- <td>
-              <input type="checkbox" name="hoofdhost" id="host{{ forloop.counter }}" value="{{ aa.id }}">
-            </td> -->
             </td>
 
             {% endfor %}
@@ -77,7 +74,7 @@
           <thead>
             <hr>
             <tr>
-              <th> <input id="search-input" name="zoeknaam" class="form-control" type="text" placeholder='@vind kluisje'></th>
+              <th> <input id="search-input" name="zoeknaam" class="form-control" type="text" placeholder='@vind kluis/ploeg'></th>
               <th><input type="submit" value="Meld Aan"> </th>
               <th>Vind Kluisje uit ( {{users.count}}) voor {{event.name}}</th>
           </thead>

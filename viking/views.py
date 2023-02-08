@@ -125,8 +125,11 @@ def home(request):
     x_id=x.values('id')
     filter1=Q(name__icontains=q)
     filter2=Q(id__in=y)
+    filter3=Q(id__in=x)
+    # filter3=Q(is_lid_van__name__icontains = q) 
+    for i in x: print (i.type,i.name)
     vikingleden=Vikinglid.objects.all().filter(id__in=y_id)
-    vikingleden=Vikinglid.objects.all().filter(filter1 |  filter2)
+    vikingleden=Vikinglid.objects.all().filter(filter1 |  filter2 | filter3)
     # print('y' + q , y)
     # print('id filterlijst x', x_id)
     context = {
@@ -605,7 +608,7 @@ def activiteit(request, lid_id):
     kandidaten = Activiteit.objects.all().filter(
         Q(name__icontains = zoeknaam) | 
         Q(type__icontains = zoeknaam) 
-        ) 
+        ) [0:10]
     islidvan=vikinglid.is_lid_van.all()
     aanwezigen=Activiteit.objects.all().filter(id__in=islidvan)
     roeiers=Person.objects.filter(

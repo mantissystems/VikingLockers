@@ -1,22 +1,43 @@
 {% load static %}
 <div class="roomListRoom">
-
+    <!-- <fieldset>
+        <legend>Personalia:</legend>
+        <label for="fname">First name:</label>
+        <input type="text" id="fname" name="fname"><br><br>
+        <label for="lname">Last name:</label>
+        <input type="text" id="lname" name="lname"><br><br>
+        <label for="email">Email:</label>
+        <input type="email" id="email" name="email"><br><br>
+        <label for="birthday">Birthday:</label>
+        <input type="date" id="birthday" name="birthday"><br><br>
+        <input type="submit" value="Submit">
+       </fieldset> -->
 {% for lid in vikingleden %}
 <div class="roomListRoom__header">
     <div class="roomListRoom__actions">
+        <ul>
         <div class="roomListRoom__content">
-
-            <a href="{% url 'activiteit' lid.id %}">{{ forloop.counter }} {{lid}}
+            <fieldset>
+            <legend>
+                <a href="{% url 'activiteit' lid.id %}">{{ forloop.counter }} {{lid}}
+                </a>
+            </legend>
+            
                 {% for t in lid.is_lid_van.all %} 
+                {% if t == '' %}
+                {{ break }}
+            {% endif %}
                 {% if t.type == "kluis"  %}
-                <br>-- kluisje {{t}} <br>
+                <li>kluisje {{t}}</li>
+                  
                 {% endif %}
                 {% if t.type == "ploeg"  %}
-                -- ploeg {{t}} <br>
+                <li>ploeg {{t}}</li>  
                 {% endif %}
                 {% endfor %} 
-            </a>
+        </fieldset>
         </div>
+    </ul>
     </div>
 </div>
 {% endfor %}    
