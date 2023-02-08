@@ -430,7 +430,7 @@ def erv_updateUser(request):
 
 def topicsPage(request):
     q = request.GET.get('q') if request.GET.get('q') != None else ''
-    topics = Activiteit.objects.filter(name__icontains=q)
+    topics = Activiteit.objects.filter(name__icontains=q)[0:10]
     return render(request, 'viking/topics.html', {'topics': topics})
 
 
