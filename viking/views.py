@@ -112,52 +112,30 @@ def registerPage(request):
     return render(request, 'viking/login_register.html', context)
 
 def home(request):
+    # islidvan=Vikinglid.objects.all().exclude(is_lid_van=None) #indien ergns lid van
+    # ============
     q = request.GET.get('q') if request.GET.get('q') != None else ''
-    # lijst= q ##'Kluisjes-bezet' # was ploegen
-    # where7=Q(user__username__icontains = q)
-    # where1=Q(body__icontains = q)
-    # where2=Q(location__icontains = q)
-    # rooms = Kluis.objects.filter(where1|where2|where7)
     topcs = Activiteit.objects.values('type') .filter(name__icontains=q)
-    # rms = Kluis.objects.all() #.exclude(id__in=(87,88))
-    # participants_count=0
-    # owner_count=0
-    # for r in rms:
-    #     owner_count+=r.owners.count()
-    # lege_kastjes = Kluis.objects.none
-    # lege_kastjes_count=rooms.count()
-    # kastjes_count=rooms.count()
-    # if q=='Kluisjes-leeg' : 
-    #     rooms = Kluis.objects.all().filter(owners=None)
-    #     lege_kastjes_count=rooms.count()
-    # if q=='Kluisjes-bezet' : 
-    #     rooms = Kluis.objects.all() #.exclude(owners=None)
-    #     kastjes_count = rooms.count()
-    where1=Q(name__icontains=q)
-    vikingleden=Vikinglid.objects.all().filter(where1)
-    islidvan=Vikinglid.objects.all().exclude(is_lid_van=None) #indien ergens lid van
+    # x=Activiteit.objects.filter(type__contains=q)  #kluis of ploeg
+    # islidvanlijst=islidvan.values_list('is_lid_van',flat=True)[0:10]  #activiteitenlijst
     # ============
-    islidvanlijst=islidvan.values_list('is_lid_van',flat=True)[0:10]  #activiteitenlijst
-    # ============
+    y=Activiteit.objects.filter(lid_van__name__icontains=q)
+    x=Activiteit.objects.filter(type__icontains=q)
+    y_id=y.values('id')
+    x_id=x.values('id')
     filter1=Q(name__icontains=q)
-    filter2=Q(id__in=islidvanlijst)
-    activiteiten=Activiteit.objects.filter(filter1 )
-    acties=activiteiten.values_list('id',flat=True)
-    lidmetactie=Vikinglid.objects.all().filter( filter2)
-    vikingleden=Vikinglid.objects.all().filter( filter1)
-    # print(islidvanlijst)
-    # print(lidmetactie)
+    filter2=Q(id__in=y)
+    vikingleden=Vikinglid.objects.all().filter(id__in=y_id)
+    vikingleden=Vikinglid.objects.all().filter(filter1 |  filter2)
+    # print('y' + q , y)
+    # print('id filterlijst x', x_id)
     context = {
-        # 'kluisjes': rooms,
         'vikingleden':vikingleden,
-        # 'kluisjes': rooms, 
-        # 'lijst': lijst, 
         'topics': topcs, 
-        # 'participants_count': owner_count, 
-        # 'kastjes_count': kastjes_count, 
-        # 'room_messages': room_messages
+        'topcs':topcs,
+        'pc':y.count(),
+        'kc':x.count(),
         }
-    # print(vikingleden.count())
     return render(request, 'viking/home.html', context)
 
 
@@ -323,10 +301,14 @@ def urv_updateKluis(request, pk):
     # topics = Topic.objects.all()
     # if request.user != kluis.user:
     #     return HttpResponse('Your are not allowed here!!')
+    lidvan = request.POST.get('is_lid_van')
+    for lid in request.POST.getlist('is_lid_van'):
+        print('lid', pk,'lidvan', lid)
 
     if request.method == 'POST':
-        # topic = request.POST.get('topic')
-        # print(topic)
+        lidvan = request.POST.get('is_lid_van')
+        for lid in request.POST.getlist('is_lid_van'):
+            print('lid', pk,'is_lid_van', lid)
         # topic_name = Topic.objects.get(id=topic)
         # kluis.created=date.today()
         vikinglid.name = vikinglid.name
@@ -505,46 +487,18 @@ def get_vikinglid(request):
 @login_required(login_url='login')
 def add_activity(request):
     # add kluis and ploeg to vikinglid.
-    # kluis through user,kluis; ploeg through room,participants
-    template_name = 'viking/vikinglid.html'
-    vikingleden=Vikinglid.objects.all() ##.filter(name__in=('zaterdag','zondag'))
-    zoeknaam = request.POST.get('zoeknaam') if request.POST.get('zoeknaam') != None else ''
-    activiteiten=Activiteit.objects.all() #.first()
+    # kluis through user,kluis; ploeg kluis where sleutels=vikinglid (2=leeg); code==activiteit
+    vikingleden=Vikinglid.objects.all()
     kluisjes=Kluis.objects.all()
-    personenlijst=User.objects.all() #.values_list('last_name',flat=True)
-    ploegen=Room.objects.all()
-    print('b ===== kluisjes =====')
-    instroom=Instromer.objects.none()
     for k in kluisjes:
-        rangnr=getattr(k, 'user_id')
-        naam=getattr(k, 'name')
-        locatie=getattr(k, 'location')
-        # try:
-        #     user=User.objects.get(pk=rangnr)
-        #     v=Vikinglid.objects.get(name=user.last_name)
-        #     act=Activiteit.objects.get(name=locatie)
-        #     print(rangnr,v.name,locatie,act)
-        #     v.is_lid_van.add(act)
-        # except:
-        #     pass
-    print('b ===== kluisjes =====')
-
-    # for p in ploegen:
-    #     for part in p.participants.all():
-    #         pl=Room.objects.get(pk=p.id)
-    #         v=Vikinglid.objects.get(name=part.last_name)
-    #         # act=Activiteit.objects.get(pk=pl.id)
-    #         act=Activiteit.objects.update_or_create(name=pl,type='ploeg')
-            # print(pl,part.last_name)
-            # print(pl,act)
-            # v.is_lid_van.add(act)
-
-    print('e ===== kluisjes =====')
+        vl=Vikinglid.objects.get(id=k.sleutels)
+        act=Activiteit.objects.get(id=k.code)
+        vl.is_lid_van.add(act)
     context={
         'vikingleden':vikingleden,
-        'lege_kastjes_count':vikingleden.count(),
+        # 'lege_kastjes_count':vl.count(),
             # 'vikinglid': vikinglid,
-            'users': personen,
+            # 'users': personen,
             'error_message': "Er is geen keuze gemaakt.",
         }
 

@@ -9,11 +9,14 @@
       >
       {% regroup topics by type as type_list %}
     </li>
-    {% for topic in type_list %}
+    {% for type in type_list %}
     <li>
       {{grouper.count}}
-      <a href="{% url 'home' %}?q={{topic.grouper}}"
-        >{{topic.grouper}}<span></span></a
+      <a href="{% url 'home' %}?q={{type.grouper}}"
+        >{{type.grouper}}<span>
+       {% if type.grouper == "kluis" %}  {{kc}} {% endif %}
+       {% if type.grouper == "ploeg" %}  {{pc}} {% endif %}
+          </span></a
       >
     </li>
     {% endfor %}
