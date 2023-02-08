@@ -931,3 +931,8 @@ input:checked + .slider:before {
 .slider.round:before {
   border-radius: 50%;
 } 
+ul li {
+  background: #cce5ff;
+  color: darkblue;
+  margin: 5px;
+}

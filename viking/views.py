@@ -120,13 +120,14 @@ def home(request):
     # islidvanlijst=islidvan.values_list('is_lid_van',flat=True)[0:10]  #activiteitenlijst
     # ============
     y=Activiteit.objects.filter(lid_van__name__icontains=q)
-    x=Activiteit.objects.filter(type__icontains=q)
+    typefilter=Q(type__icontains = q) 
+    namefilter=Q(name__icontains = q) 
+    x=Activiteit.objects.filter(typefilter | namefilter)
     y_id=y.values('id')
     x_id=x.values('id')
     filter1=Q(name__icontains=q)
     filter2=Q(id__in=y)
     filter3=Q(id__in=x)
-    # filter3=Q(is_lid_van__name__icontains = q) 
     for i in x: print (i.type,i.name)
     vikingleden=Vikinglid.objects.all().filter(id__in=y_id)
     vikingleden=Vikinglid.objects.all().filter(filter1 |  filter2 | filter3)
