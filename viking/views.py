@@ -116,26 +116,32 @@ def home(request):
     # ============
     q = request.GET.get('q') if request.GET.get('q') != None else ''
     topcs = Activiteit.objects.values('type') .filter(name__icontains=q)
+    topics = Topic.objects.all()
     # x=Activiteit.objects.filter(type__contains=q)  #kluis of ploeg
     # islidvanlijst=islidvan.values_list('is_lid_van',flat=True)[0:10]  #activiteitenlijst
     # ============
     y=Activiteit.objects.filter(lid_van__name__icontains=q)
-    typefilter=Q(type__icontains = q) 
-    namefilter=Q(name__icontains = q) 
-    x=Activiteit.objects.filter(typefilter | namefilter)
+    x=Activiteit.objects.filter(type__icontains=q)
     y_id=y.values('id')
     x_id=x.values('id')
     filter1=Q(name__icontains=q)
     filter2=Q(id__in=y)
-    filter3=Q(id__in=x)
-    for i in x: print (i.type,i.name)
+    
     vikingleden=Vikinglid.objects.all().filter(id__in=y_id)
-    vikingleden=Vikinglid.objects.all().filter(filter1 |  filter2 | filter3)
-    # print('y' + q , y)
-    # print('id filterlijst x', x_id)
+    vikingleden=Vikinglid.objects.all().filter(filter1 |  filter2)
+ # print(vikingleden.count())
+    # vikingleden=Vikinglid.objects.all().exclude(is_lid_van=None)
+    # print(vikingleden.count())
+    # vikingleden=Vikinglid.objects.all().filter(is_lid_van__in=kluizen)
+    # # vikingleden=Vikinglid.objects.all().filter(id__in=kluizen)
+    # print('heeftkluis', vikingleden.count())
+    # # vikingleden=Vikinglid.objects.all().exclude(id__in=kluizen)
+    # vikingleden=Vikinglid.objects.all().exclude(is_lid_van__in=kluizen)
+    # print('heeftgeenkluis', vikingleden.count())
+    # print(kluizen.count())
     context = {
         'vikingleden':vikingleden,
-        'topics': topcs, 
+        'topics': topics, 
         'topcs':topcs,
         'pc':y.count(),
         'kc':x.count(),
@@ -430,7 +436,7 @@ def erv_updateUser(request):
 
 def topicsPage(request):
     q = request.GET.get('q') if request.GET.get('q') != None else ''
-    topics = Activiteit.objects.filter(name__icontains=q)[0:10]
+    topics = Activiteit.objects.filter(name__icontains=q)
     return render(request, 'viking/topics.html', {'topics': topics})
 
 

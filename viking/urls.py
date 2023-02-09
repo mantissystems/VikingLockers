@@ -46,7 +46,7 @@ urlpatterns = [
 
     path('recurrent/', recurrent_event, name='recurrent'),
     path('<int:room_id>/aanmelden/',vote, name='vote'),  
-    path('<int:lid_id>/kluis/',kluis, name='kluis'),  
+    path('<int:id>/kluis/',kluis, name='kluis'),  
     path('<int:pk>/update-kluis/',urv_updateKluis, name='update-kluis'),  
     path('ploegbeheer/',PloegPage , name="ploegbeheer"),
     path('kluisbeheer/',KluisPage , name="kluisbeheer"),

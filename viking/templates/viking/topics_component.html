@@ -7,16 +7,11 @@
       <a href="{% url 'home' %}" class="active"
         >Alle <span>{{vikingleden.count}}</span></a
       >
-      {% regroup topics by type as type_list %}
     </li>
-    {% for type in type_list %}
+    {% for topic in topics %}
     <li>
-      {{grouper.count}}
-      <a href="{% url 'home' %}?q={{type.grouper}}"
-        >{{type.grouper}}<span>
-       {% if type.grouper == "kluis" %}  {{kc}} {% endif %}
-       {% if type.grouper == "ploeg" %}  {{pc}} {% endif %}
-          </span></a
+      <a href="{% url 'home' %}?q={{topic.name}}"
+        >{{topic.name}}<span>{{topic.room_set.all.count}}</span></a
       >
     </li>
     {% endfor %}
