@@ -29,7 +29,7 @@
   
           <div class="form__group">
             <label for="room_slot">Naam</label
-                name="name">
+                name="vikinglid_name">
             {{form.name}}
           </div>
 
@@ -39,13 +39,23 @@
                 name="email">
             {{form.email}}
           </div>
-
-
           <div class="form__group">
-            <label for="room_name">Is lid van</label
-              name="is_lid_van">
+            <label for="kluisje_name">Kluisje (select multiple)</label name="heeftkluis">
+              <select name="heeftkluis" id="kluisjes" multiple>
+                {% for topic in kluizen %}
+                <option value="{{topic.id}}" name="kluisje">{{topic.name}}</option>
 
-            {{form.is_lid_van}}
+                {% endfor %}
+              </select>
+          </div>
+          <div class="form__group">
+            <label for="team_name">Team (select multiple)</label name="is_lid_van">
+              <select name="is_lid_van" id="teams" multiple>
+                {% for team in teams %}
+                <option value="{{team.id}}" name="kluisje">{{team.name}}</option>
+
+                {% endfor %}
+              </select>
           </div>
 
           <div class="form__action">

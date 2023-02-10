@@ -115,35 +115,30 @@ def home(request):
     # islidvan=Vikinglid.objects.all().exclude(is_lid_van=None) #indien ergns lid van
     # ============
     q = request.GET.get('q') if request.GET.get('q') != None else ''
+    # if len(q)==0:q='#' 
     topcs = Activiteit.objects.values('type') .filter(name__icontains=q)
     topics = Topic.objects.all()
     # x=Activiteit.objects.filter(type__contains=q)  #kluis of ploeg
     # islidvanlijst=islidvan.values_list('is_lid_van',flat=True)[0:10]  #activiteitenlijst
     # ============
-    y=Activiteit.objects.filter(lid_van__name__icontains=q)
+    # y=Activiteit.objects.filter(lid_van__name__icontains=q)
     x=Activiteit.objects.filter(type__icontains=q)
-    y_id=y.values('id')
+    # y_id=y.values('id')
     x_id=x.values('id')
     filter1=Q(name__icontains=q)
-    filter2=Q(id__in=y)
+    # filter2=Q(id__in=y)
     
-    vikingleden=Vikinglid.objects.all().filter(id__in=y_id)
-    vikingleden=Vikinglid.objects.all().filter(filter1 |  filter2)
- # print(vikingleden.count())
-    # vikingleden=Vikinglid.objects.all().exclude(is_lid_van=None)
-    # print(vikingleden.count())
-    # vikingleden=Vikinglid.objects.all().filter(is_lid_van__in=kluizen)
-    # # vikingleden=Vikinglid.objects.all().filter(id__in=kluizen)
-    # print('heeftkluis', vikingleden.count())
-    # # vikingleden=Vikinglid.objects.all().exclude(id__in=kluizen)
-    # vikingleden=Vikinglid.objects.all().exclude(is_lid_van__in=kluizen)
-    # print('heeftgeenkluis', vikingleden.count())
-    # print(kluizen.count())
+    # vikingleden=Vikinglid.objects.all().filter(id__in=y_id)
+    vikingleden=Vikinglid.objects.all().filter(filter1 )
+    vl=Vikinglid.objects.all().filter(is_lid_van__name__icontains=q)
+    if vl and len(q)>0: 
+        print('vl',q,'vl', vl.count())
+        vikingleden=Vikinglid.objects.all().filter(is_lid_van__name__icontains=q)
     context = {
         'vikingleden':vikingleden,
         'topics': topics, 
         'topcs':topcs,
-        'pc':y.count(),
+        # 'pc':y.count(),
         'kc':x.count(),
         }
     return render(request, 'viking/home.html', context)
@@ -305,32 +300,32 @@ def updateRoom(request, pk):
 @login_required(login_url='login')
 def urv_updateKluis(request, pk):
     vikinglid=Vikinglid.objects.get(id=pk)
-    # kluis = Kluis.objects.get(id=pk)
     form=VikinglidForm(instance=vikinglid)
-    # form = Urv_KluisForm(instance=kluis)
-    # topics = Topic.objects.all()
-    # if request.user != kluis.user:
-    #     return HttpResponse('Your are not allowed here!!')
-    lidvan = request.POST.get('is_lid_van')
-    for lid in request.POST.getlist('is_lid_van'):
-        print('lid', pk,'lidvan', lid)
-
+    kluizen=Activiteit.objects.all().filter(type='kluis').order_by('name')
+    teams=Activiteit.objects.all().filter(type='ploeg').order_by('name')
+    lidvan = vikinglid.is_lid_van.all()
     if request.method == 'POST':
-        lidvan = request.POST.get('is_lid_van')
-        for lid in request.POST.getlist('is_lid_van'):
-            print('lid', pk,'is_lid_van', lid)
-        # topic_name = Topic.objects.get(id=topic)
-        # kluis.created=date.today()
+        for team in request.POST.getlist('is_lid_van'):
+            vikinglid.is_lid_van.add(team)
+            print(team)
+        for kluis in request.POST.getlist('heeftkluis'):
+            vikinglid.is_lid_van.add(kluis)
+            vikinglid.is_lid_van.add(kluis)
+            print(kluis)
         vikinglid.name = vikinglid.name
-        # vikinglid.topic = topic_name
-        # vikinglid.code = request.POST.get('code')
         vikinglid.name = request.POST.get('name')
         vikinglid.email = request.POST.get('email')
         vikinglid.save()
         return redirect('home')
 
     # context = {'form': form, 'topics': topics, 'vikinglid': vikinglid}
-    context = {'form': form, 'vikinglid': vikinglid}
+    context = {
+        'form': form,
+          'vikinglid': vikinglid,
+          'lidvan':lidvan,
+          'kluizen':kluizen,
+          'teams':teams,
+    }
     return render(request, 'viking/vikinglid_form.html', context)
 
 @login_required(login_url='login')

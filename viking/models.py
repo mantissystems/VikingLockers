@@ -88,6 +88,10 @@ class Vikinglid(models.Model):
     avatar=models.ImageField(null=True,default="avatar.svg")      # install Pillow is needed
     email = models.CharField(max_length=100,blank=True)
     is_lid_van = models.ManyToManyField(Activiteit, related_name='lid_van', blank=True)
+    updated = models.DateTimeField(auto_now=True)
+    created = models.DateTimeField(auto_now_add=True)
+    class Meta:
+        ordering = ['-updated', '-created']
     def __str__(self):
         return self.name
 

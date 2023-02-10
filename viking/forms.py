@@ -1,7 +1,8 @@
 from django.forms import ModelForm
 from django.contrib.auth.forms import UserCreationForm
 from .models import Kluis, Room,User,Vikinglid,Activiteit
-
+from django.forms.widgets import DateInput, NumberInput
+from django.forms.fields import MultipleChoiceField
 
 class MyUserCreationForm(UserCreationForm):
     class Meta:
@@ -25,8 +26,10 @@ class VikinglidForm(ModelForm):
     class Meta:
         model = Vikinglid
         fields = '__all__'
-        # exclude = ['host','owners']
-
+        # exclude = ['is_lid_van']
+        def __init__(self, *args, **kwargs):
+            self.fields['is_lid_van'].queryset=Vikinglid.objects.filter(id=self.id)
+            self.fields['is_lid_van'].widget.attrs.update(size='20')
 
 class UserForm(ModelForm):
     class Meta:
