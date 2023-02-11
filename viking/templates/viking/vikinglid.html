@@ -1,6 +1,6 @@
 {% load static %}
 <div class="roomListRoom">
-    <h1>{{q}} </h1>
+    <h5>|{{q}}|</h5>
     {% for lid in vikingleden %}
 <div class="roomListRoom__header">
     <div class="roomListRoom__actions">
@@ -8,12 +8,16 @@
         <div class="roomListRoom__content">
             <fieldset>
             <legend>
-                {% if q == "Kluisjes-bezet" %}
-                <a href="{% url 'activiteit' lid.id %}">{{ forloop.counter }} 
+                <a href="{% url 'activiteit' lid.id %}">
+                    {% if q == 'Met Kluis' or q != "" %}
+                    {{ forloop.counter }} 
                     {{lid}}
+                    {% endif %}
+                    {% if q == 'Kluisjes-leeg' or q == "" %}
+                   
+                    {% endif %}
                 </a>
             </legend>
-            {% endif %}
                 {% for t in lid.is_lid_van.all %} 
                 {% if t.type == "kluis"  %}
                 <li>kluisje {{t}}</li>

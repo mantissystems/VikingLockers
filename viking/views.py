@@ -119,8 +119,14 @@ def home(request):
     empty=[]
     filter1=Q(name__icontains=q)    
     vikingleden=Vikinglid.objects.all().filter(filter1 )
+    print('all', vikingleden.count())
+    vl=Vikinglid.objects.all().filter(is_lid_van__name__icontains=q)
+    if vl and len(q)>0: 
+        print('vl',q,'vl', vl.count())
+        vikingleden=Vikinglid.objects.all().filter(is_lid_van__name__icontains=q)
 
     if q=='Kluisjes-leeg':
+        print('leeg', q)
         for z in all:
             kl=z.is_lid_van.all()
             act=Activiteit.objects.values_list('name',flat=True).filter(lid_van__id=z.id)
@@ -130,13 +136,11 @@ def home(request):
                 empty.append(k)
         vikingleden=Vikinglid.objects.all().filter(id__in=empty)
 
-    if q=='Kluisjes-bezet':
-        print(q)
+    if q=='Met Kluis':
+        print('bezet', q)
         vikingleden=Vikinglid.objects.all()
-    vl=Vikinglid.objects.all().filter(is_lid_van__name__icontains=q)
-    if vl and len(q)>0: 
-        print('vl',q,'vl', vl.count())
-        vikingleden=Vikinglid.objects.all().filter(is_lid_van__name__icontains=q)
+        # vikingleden=Vikinglid.objects.all().exclude(id__in=empty)
+    print('context', vikingleden.count())
     context = {
         'vikingleden':vikingleden,
         'topics': topics, 
