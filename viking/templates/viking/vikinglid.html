@@ -1,6 +1,14 @@
 {% load static %}
 <div class="roomListRoom">
-{% for lid in vikingleden %}
+    ====
+    <div>
+
+        {% for mt in empty.set.all %}
+        {{mt}}
+        {% endfor %} 
+    </div>
+
+    {% for lid in vikingleden %}
 <div class="roomListRoom__header">
     <div class="roomListRoom__actions">
         <ul>
@@ -10,7 +18,6 @@
                 <a href="{% url 'activiteit' lid.id %}">{{ forloop.counter }} {{lid}}
                 </a>
             </legend>
-            
                 {% for t in lid.is_lid_van.all %} 
                 <!-- {% if t == '' %}
                 {{ break }}

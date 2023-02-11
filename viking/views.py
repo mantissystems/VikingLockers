@@ -112,24 +112,25 @@ def registerPage(request):
     return render(request, 'viking/login_register.html', context)
 
 def home(request):
-    # islidvan=Vikinglid.objects.all().exclude(is_lid_van=None) #indien ergns lid van
-    # ============
     q = request.GET.get('q') if request.GET.get('q') != None else ''
-    # if len(q)==0:q='#' 
     topcs = Activiteit.objects.values('type') .filter(name__icontains=q)
     topics = Topic.objects.all()
-    # x=Activiteit.objects.filter(type__contains=q)  #kluis of ploeg
-    # islidvanlijst=islidvan.values_list('is_lid_van',flat=True)[0:10]  #activiteitenlijst
-    # ============
-    # y=Activiteit.objects.filter(lid_van__name__icontains=q)
-    x=Activiteit.objects.filter(type__icontains=q)
-    # y_id=y.values('id')
-    x_id=x.values('id')
-    filter1=Q(name__icontains=q)
-    # filter2=Q(id__in=y)
-    
-    # vikingleden=Vikinglid.objects.all().filter(id__in=y_id)
+    all=Vikinglid.objects.all()
+    empty=[]
+    filter1=Q(name__icontains=q)    
     vikingleden=Vikinglid.objects.all().filter(filter1 )
+
+    if q=='Kluisjes-leeg':
+        print('====b')
+        for z in all:
+            act=Activiteit.objects.values_list('name',flat=True).filter(lid_van__id=z.id)
+            if act: 
+                empty.append(act)
+        print(empty)
+        print('====e')
+    if q=='Kluisjes-bezet':
+        print(q)
+        vikingleden=Vikinglid.objects.all()
     vl=Vikinglid.objects.all().filter(is_lid_van__name__icontains=q)
     if vl and len(q)>0: 
         print('vl',q,'vl', vl.count())
@@ -138,8 +139,8 @@ def home(request):
         'vikingleden':vikingleden,
         'topics': topics, 
         'topcs':topcs,
-        # 'pc':y.count(),
-        'kc':x.count(),
+        'empty':empty,
+        # 'kc':x.count(),
         }
     return render(request, 'viking/home.html', context)
 
