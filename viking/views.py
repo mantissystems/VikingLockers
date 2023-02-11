@@ -121,13 +121,15 @@ def home(request):
     vikingleden=Vikinglid.objects.all().filter(filter1 )
 
     if q=='Kluisjes-leeg':
-        print('====b')
         for z in all:
+            kl=z.is_lid_van.all()
             act=Activiteit.objects.values_list('name',flat=True).filter(lid_van__id=z.id)
             if act: 
-                empty.append(act)
-        print(empty)
-        print('====e')
+                k=kl.values_list('id',flat=True)
+                # print(k)
+                empty.append(k)
+        vikingleden=Vikinglid.objects.all().filter(id__in=empty)
+
     if q=='Kluisjes-bezet':
         print(q)
         vikingleden=Vikinglid.objects.all()
@@ -140,7 +142,7 @@ def home(request):
         'topics': topics, 
         'topcs':topcs,
         'empty':empty,
-        # 'kc':x.count(),
+        'q':q,
         }
     return render(request, 'viking/home.html', context)
 

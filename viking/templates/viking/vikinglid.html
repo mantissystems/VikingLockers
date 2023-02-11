@@ -1,13 +1,6 @@
 {% load static %}
 <div class="roomListRoom">
-    ====
-    <div>
-
-        {% for mt in empty.set.all %}
-        {{mt}}
-        {% endfor %} 
-    </div>
-
+    <h1>{{q}} </h1>
     {% for lid in vikingleden %}
 <div class="roomListRoom__header">
     <div class="roomListRoom__actions">
@@ -15,13 +8,13 @@
         <div class="roomListRoom__content">
             <fieldset>
             <legend>
-                <a href="{% url 'activiteit' lid.id %}">{{ forloop.counter }} {{lid}}
+                {% if q == "Kluisjes-bezet" %}
+                <a href="{% url 'activiteit' lid.id %}">{{ forloop.counter }} 
+                    {{lid}}
                 </a>
             </legend>
+            {% endif %}
                 {% for t in lid.is_lid_van.all %} 
-                <!-- {% if t == '' %}
-                {{ break }}
-            {% endif %} -->
                 {% if t.type == "kluis"  %}
                 <li>kluisje {{t}}</li>
                   
