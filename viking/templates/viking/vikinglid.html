@@ -4,6 +4,8 @@
     {% for lid in vikingleden %}
 <div class="roomListRoom__header">
     <div class="roomListRoom__actions">
+        {% if q == 'Met Kluis' or q != "Kluisjes-leeg" %}
+
         <ul>
         <div class="roomListRoom__content">
             <fieldset>
@@ -20,16 +22,41 @@
             </legend>
                 {% for t in lid.is_lid_van.all %} 
                 {% if t.type == "kluis"  %}
-                <li>kluisje {{t}}</li>
+                <li>kluisje== {{t}}</li>
                   
                 {% endif %}
                 {% if t.type == "ploeg"  %}
                 <li>ploeg {{t}}</li>  
                 {% endif %}
                 {% endfor %} 
+        
         </fieldset>
         </div>
     </ul>
+    {% endif %}
+    <!--  -->
+    {% if q == 'Kluisjes-leeg' %}
+
+    <ul>
+        <div class="roomListRoom__content">
+            {% for t in lid.is_lid_van.all %} 
+            {% if t.type == "kluis"  %}
+            <fieldset>
+                <legend>
+                    <a href="{% url 'kluisje' t.id %}">
+                        {{ forloop.counter }} 
+                        {{t}}
+                    </a>
+                </legend>
+    
+                {% endif %}
+            </fieldset>
+                {% endfor %} 
+        
+        </div>
+    </ul>
+    {% endif %} 
+    <!--  -->
     </div>
 </div>
 {% endfor %}    

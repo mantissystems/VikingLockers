@@ -112,7 +112,7 @@ def registerPage(request):
     return render(request, 'viking/login_register.html', context)
 
 def home(request):
-    q = request.GET.get('q') if request.GET.get('q') != None else ''
+    q = request.GET.get('q') if request.GET.get('q') != None else 'Met Kluis'
     topcs = Activiteit.objects.values('type') .filter(name__icontains=q)
     topics = Topic.objects.all()
     all=Vikinglid.objects.all()
@@ -126,6 +126,7 @@ def home(request):
         vikingleden=Vikinglid.objects.all().filter(is_lid_van__name__icontains=q)
 
     if q=='Kluisjes-leeg':
+        # return redirect('kluisbeheer')
         print('leeg', q)
         for z in all:
             kl=z.is_lid_van.all()
@@ -443,8 +444,9 @@ def topicsPage(request):
 
 
 def activityPage(request):
-    room_messages = Message.objects.all()
-    return render(request, 'viking/activity.html', {'room_messages': room_messages})
+    # room_messages = Message.objects.all()
+    activiteit = Activiteit.objects.all()[0:10]
+    return render(request, 'viking/activity.html', {'activiteiten': activiteit})
 
 
 def PloegPage(request):
@@ -601,6 +603,18 @@ def kluis(request, kluis_id):
             'error_message': "Er is geen keuze gemaakt.",
         })
     return HttpResponseRedirect(reverse('kluis', args=(kluis_id,)))
+
+@login_required(login_url='login')
+def kluisje(request, kluis_id):
+    kluis = get_object_or_404(Activiteit, pk=kluis_id)
+    # zoeknaam = request.POST.get('zoeknaam') if request.POST.get('zoeknaam') != None else 'sc'
+    kluisjes=Activiteit.objects.all()
+    return render(request, 'viking/kluis_list.html', {
+            'kluis': kluis,
+            'kluisjes': kluisjes,
+            'error_message': "Er is geen keuze gemaakt.",
+        })
+    return HttpResponseRedirect(reverse('kluisje', args=(kluis_id,)))
 
 @login_required(login_url='login')
 def activiteit(request, lid_id):

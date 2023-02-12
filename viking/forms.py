@@ -18,9 +18,9 @@ class RoomForm(ModelForm):
 
 class Urv_KluisForm(ModelForm):
     class Meta:
-        model = Kluis
+        model = Activiteit
         fields = '__all__'
-        exclude = ['host','owners']
+        # exclude = ['host','owners']
 
 class VikinglidForm(ModelForm):
     class Meta:
