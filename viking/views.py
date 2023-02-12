@@ -29,7 +29,7 @@ from django.contrib.auth.forms import UserCreationForm
 
 from viking.serializers import FlexrecurrentSerializer,  PersoonSerializer,  GebruikerSerializer,KluisSerializer,NoteSerializer
 from .models import Flexrecurrent, Message, Room, Topic,Kluis,Rooster,Vikinglid,Activiteit,Note
-from .forms import RoomForm,UserForm,Urv_KluisForm,VikinglidForm
+from .forms import RoomForm,UserForm,Urv_KluisForm,VikinglidForm,KluisjeForm
 from .utils import (getNoteDetail, getNotesList,)
 
 def loginPage(request):
@@ -607,10 +607,19 @@ def kluis(request, kluis_id):
 @login_required(login_url='login')
 def kluisje(request, kluis_id):
     kluis = get_object_or_404(Activiteit, pk=kluis_id)
-    # zoeknaam = request.POST.get('zoeknaam') if request.POST.get('zoeknaam') != None else 'sc'
+    form = KluisjeForm(instance=kluis)
     kluisjes=Activiteit.objects.all()
-    return render(request, 'viking/kluis_list.html', {
+    # lidvan = vikinglid.is_lid_van.all()
+    if request.method == 'POST':
+        kluis.name = kluis.name
+        kluis.name = request.POST.get('name')
+
+        kluis.save()
+        return redirect('home')
+
+    return render(request, 'viking/kluisje_form.html', {
             'kluis': kluis,
+            'form': form,
             'kluisjes': kluisjes,
             'error_message': "Er is geen keuze gemaakt.",
         })

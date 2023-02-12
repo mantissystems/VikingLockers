@@ -44,7 +44,7 @@
             <fieldset>
                 <legend>
                     <a href="{% url 'kluisje' t.id %}">
-                        {{ forloop.counter }} 
+                        {{ forloop.parentloop.counter }} 
                         {{t}}
                     </a>
                 </legend>

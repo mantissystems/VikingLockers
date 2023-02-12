@@ -22,6 +22,12 @@ class Urv_KluisForm(ModelForm):
         fields = '__all__'
         # exclude = ['host','owners']
 
+class KluisjeForm(ModelForm):
+    class Meta:
+        model = Activiteit
+        fields = '__all__'
+        # exclude = ['host','owners']
+
 class VikinglidForm(ModelForm):
     class Meta:
         model = Vikinglid
