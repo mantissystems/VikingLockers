@@ -59,7 +59,7 @@ def loginPage(request):
     context = {'page': page}
     return render(request, 'viking/login_register.html', context)
 
-def erv_loginPage(request):
+def urv_loginPage(request):
 
     page = 'login'
 
@@ -120,13 +120,18 @@ def home(request):
     vikingleden=Vikinglid.objects.all().filter(filter1 )
     print('all', vikingleden.count())
     leeg = Activiteit.objects.all().filter(
-        Q(name=None) | 
+        # Q(name=None) | 
         Q(type='kluis'))
     vl=Vikinglid.objects.all().filter(is_lid_van__name__icontains=q)
     if vl and len(q)>0: 
         print('vl',q,'vl', vl.count())
         vikingleden=Vikinglid.objects.all().filter(is_lid_van__name__icontains=q)
-
+    if q=='Kluisjes-leeg':
+        leeg = Activiteit.objects.all().filter(
+        Q(lid_van=None) &
+        Q(type='kluis')
+        )
+        print('leeg', leeg.count(),topcs)
     if q=='Met Kluis':
         print('bezet', q)
         vikingleden=Vikinglid.objects.all()
@@ -136,6 +141,7 @@ def home(request):
         'topics': topics, 
         'topcs':topcs,
         'empty':leeg,
+        'legen':leeg.count(),
         'q':q,
         }
     return render(request, 'viking/home.html', context)
@@ -638,14 +644,14 @@ def activiteit(request, lid_id):
         ) [0:10]
     islidvan=vikinglid.is_lid_van.all()
     aanwezigen=Activiteit.objects.all().filter(id__in=islidvan)
-    roeiers=Person.objects.filter(
-        Q(id__in=aanwezigen)
+    # roeiers=Person.objects.filter(
+    #     Q(id__in=aanwezigen)
         # Q(pos1__icontains=zoeknaam)
-        )
+        # )
     return render(request, 'viking/vikinglid-detail.html', {
             'vikinglid': vikinglid,
             'users': personen,
-            'roeiers': roeiers,
+            # 'roeiers': roeiers,
             'kandidaten':kandidaten,
             'islidvan':islidvan, 
             'error_message': "Er is geen keuze gemaakt.",

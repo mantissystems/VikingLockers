@@ -18,7 +18,7 @@ personenlijst,
 recurrent_event,
 registerPage, room, 
 topicsPage, updateRoom, updateUser, userProfile,
-vote, kluis,
+vote, kluis,urv_loginPage,
 add_activity,get_vikinglid,activiteit,
 DetailView,createVikinglid,deleteVikinglid,
 ploeg_participants
@@ -26,7 +26,7 @@ ploeg_participants
 urlpatterns = [
     path('', home, name='home'),
     path('viking', home, name='home'),
-    path('login/', loginPage, name="login"),
+    path('login/', urv_loginPage, name="login"),
     path('logout/', logoutUser, name="logout"),
     path('topics/', topicsPage, name="topics"),
     path('update-user/', updateUser, name="update-user"),
