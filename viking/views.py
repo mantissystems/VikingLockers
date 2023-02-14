@@ -129,7 +129,8 @@ def home(request):
     if q=='Kluisjes-leeg':
         leeg = Activiteit.objects.all().filter(
         Q(lid_van=None) &
-        Q(type='kluis')
+        Q(type='kluis')|
+        Q(name='Wachtlijst')
         )
         print('leeg', leeg.count(),topcs)
     if q=='Met Kluis':
@@ -252,7 +253,7 @@ def createRoom(request):
     context = {'form': form, 'topics': topics}
     return render(request, 'viking/room_form.html', context)
 
-@login_required(login_url='login')
+# @login_required(login_url='login')
 def createVikinglid(request):
     form = VikinglidForm()
     topics = Activiteit.objects.all()
@@ -269,8 +270,16 @@ def createVikinglid(request):
         print(vikinglid.id)
         return redirect('home')
     vikinglid=Vikinglid.objects.all().last()
-
-    context = {'form': form, 'topics': topics, 'vikinglid':vikinglid}
+    leeg = Activiteit.objects.all().filter(
+        # Q(lid_van=None) &
+        # Q(type='kluis') |
+        Q(name='Wachtlijst')
+        )
+    context = {
+        'form': form,
+          'topics': topics,
+          'kluizen': leeg,
+          'vikinglid':vikinglid}
     return render(request, 'viking/vikinglid_form.html', context)
 
 # @login_required(login_url='login')

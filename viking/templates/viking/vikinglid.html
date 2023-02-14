@@ -44,13 +44,13 @@
                     {{lid}}
                 </a>
             </legend>
-                {% for t in lid.is_lid_van.all %} 
-                {% if t.type == "kluis"  %}
-                <li>kluisje== {{t}}</li>
+                {% for kluis in lid.is_lid_van.all %} 
+                {% if kluis.type == "kluis"  %}
+                <li>{{kluis}}</li>
                   
                 {% endif %}
-                {% if t.type == "ploeg"  %}
-                <li>ploeg {{t}}</li>  
+                {% if kluis.type == "ploeg"  %}
+                <li>ploeg {{kluis}}</li>  
                 {% endif %}
                 {% endfor %} 
         

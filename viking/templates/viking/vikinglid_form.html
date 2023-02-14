@@ -40,7 +40,7 @@
             {{form.email}}
           </div>
           <div class="form__group">
-            <label for="kluisje_name">Kluisje (select multiple)</label name="heeftkluis">
+            <label for="kluisje_name">Lege kluisjes (select multiple)</label name="heeftkluis">
               <select name="heeftkluis" id="kluisjes" multiple>
                 {% for topic in kluizen %}
                 <option value="{{topic.id}}" name="kluisje">{{topic.name}}</option>
