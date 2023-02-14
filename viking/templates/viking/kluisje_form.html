@@ -35,17 +35,21 @@
 
             
           <div class="form__group">
-            <label for="room_topic">Rubriek</label
+            <label for="room_topic">Kluis of Ploeg</label
                 name="topic">
             {{form.type}}
           </div>
-
-
-
           <div class="form__group">
-            <label for="room_is_lid_van">Toegewezen aan</label>
-            {{form.is_lid_van}}
+
+            <select name="kluisje" id="kluisje" multiple>
+              {% for kluis in toegewezen %}
+              <option value={{kluis.id}} >{{kluis}}</option>
+              {% endfor %}
+            </select> 
+
+
           </div>
+
 
           <div class="form__action">
             <a class="btn btn--dark" href="{{request.META.HTTP_REFERER}}"

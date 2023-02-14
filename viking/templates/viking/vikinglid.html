@@ -1,6 +1,35 @@
 {% load static %}
 <div class="roomListRoom">
     <h5>|{{q}}|</h5>
+    <!--  -->
+    {% if q == "Kluisjes-leeg" %}
+    {% for kluis in empty %}
+    <div class="roomListRoom__header">
+        <div class="roomListRoom__actions">
+            {% if q == "Kluisjes-leeg" %}
+    
+            <ul>
+            <div class="roomListRoom__content">
+                <fieldset>
+                <legend>
+                    <a href="{% url 'kluisje' kluis.id %}">
+                        {{ forloop.counter }} 
+                        {{kluis}}
+                    </a>
+                </legend>
+            
+            </fieldset>
+            </div>
+        </ul>
+        {% endif %}
+     
+        </div>
+    </div>
+    {% endfor %}    
+    </div>
+    
+    {% endif %}
+    <!--  -->
     {% for lid in vikingleden %}
 <div class="roomListRoom__header">
     <div class="roomListRoom__actions">
@@ -11,13 +40,8 @@
             <fieldset>
             <legend>
                 <a href="{% url 'activiteit' lid.id %}">
-                    {% if q == 'Met Kluis' or q != "" %}
                     {{ forloop.counter }} 
                     {{lid}}
-                    {% endif %}
-                    {% if q == 'Kluisjes-leeg' or q == "" %}
-                   
-                    {% endif %}
                 </a>
             </legend>
                 {% for t in lid.is_lid_van.all %} 
@@ -34,29 +58,7 @@
         </div>
     </ul>
     {% endif %}
-    <!--  -->
-    {% if q == 'Kluisjes-leeg' %}
-
-    <ul>
-        <div class="roomListRoom__content">
-            {% for t in lid.is_lid_van.all %} 
-            {% if t.type == "kluis"  %}
-            <fieldset>
-                <legend>
-                    <a href="{% url 'kluisje' t.id %}">
-                        {{ forloop.parentloop.counter }} 
-                        {{t}}
-                    </a>
-                </legend>
-    
-                {% endif %}
-            </fieldset>
-                {% endfor %} 
-        
-        </div>
-    </ul>
-    {% endif %} 
-    <!--  -->
+ 
     </div>
 </div>
 {% endfor %}    
@@ -65,8 +67,3 @@
 =====>
 max 120 <hr>
 heren 8x6 48
-<!-- <img src="{% static '/images/heren1.JPG' %}" alt="Heren"> <br>          
-dames1 6x4 24
-<img src="{% static '/images/dames1.JPG' %}" alt="Heren"> <br>          
-dames2 8x6 48
-<img src="{% static '/images/dames2.JPG' %}" alt="Dames"> <br>           -->

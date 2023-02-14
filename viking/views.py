@@ -112,41 +112,30 @@ def registerPage(request):
     return render(request, 'viking/login_register.html', context)
 
 def home(request):
-    q = request.GET.get('q') if request.GET.get('q') != None else 'Met Kluis'
+    q = request.GET.get('q') if request.GET.get('q') != None else '' # 'Met Kluis'
     topcs = Activiteit.objects.values('type') .filter(name__icontains=q)
     topics = Topic.objects.all()
     all=Vikinglid.objects.all()
-    empty=[]
     filter1=Q(name__icontains=q)    
     vikingleden=Vikinglid.objects.all().filter(filter1 )
     print('all', vikingleden.count())
+    leeg = Activiteit.objects.all().filter(
+        Q(name=None) | 
+        Q(type='kluis'))
     vl=Vikinglid.objects.all().filter(is_lid_van__name__icontains=q)
     if vl and len(q)>0: 
         print('vl',q,'vl', vl.count())
         vikingleden=Vikinglid.objects.all().filter(is_lid_van__name__icontains=q)
 
-    if q=='Kluisjes-leeg':
-        # return redirect('kluisbeheer')
-        print('leeg', q)
-        for z in all:
-            kl=z.is_lid_van.all()
-            act=Activiteit.objects.values_list('name',flat=True).filter(lid_van__id=z.id)
-            if act: 
-                k=kl.values_list('id',flat=True)
-                # print(k)
-                empty.append(k)
-        vikingleden=Vikinglid.objects.all().filter(id__in=empty)
-
     if q=='Met Kluis':
         print('bezet', q)
         vikingleden=Vikinglid.objects.all()
-        # vikingleden=Vikinglid.objects.all().exclude(id__in=empty)
     print('context', vikingleden.count())
     context = {
         'vikingleden':vikingleden,
         'topics': topics, 
         'topcs':topcs,
-        'empty':empty,
+        'empty':leeg,
         'q':q,
         }
     return render(request, 'viking/home.html', context)
@@ -439,7 +428,8 @@ def erv_updateUser(request):
 
 def topicsPage(request):
     q = request.GET.get('q') if request.GET.get('q') != None else ''
-    topics = Activiteit.objects.filter(name__icontains=q)
+    # topics = Activiteit.objects.filter(name__icontains=q)
+    topics = Topic.objects.filter(name__icontains=q)[0:5]
     return render(request, 'viking/topics.html', {'topics': topics})
 
 
@@ -609,18 +599,23 @@ def kluisje(request, kluis_id):
     kluis = get_object_or_404(Activiteit, pk=kluis_id)
     form = KluisjeForm(instance=kluis)
     kluisjes=Activiteit.objects.all()
-    # lidvan = vikinglid.is_lid_van.all()
-    if request.method == 'POST':
-        kluis.name = kluis.name
-        kluis.name = request.POST.get('name')
+    toegewezen=Vikinglid.objects.all().exclude(is_lid_van__id=None)
 
+    if request.method == 'POST':
+        kluis.topic = request.POST.get('topic')
+        kluis.name = request.POST.get('name')
+        for af in request.POST.getlist('kluisje'):
+            print(kluis.id,af)
+        kluis.lid_van.add(af)
         kluis.save()
+        print('eind')
         return redirect('home')
 
     return render(request, 'viking/kluisje_form.html', {
             'kluis': kluis,
             'form': form,
             'kluisjes': kluisjes,
+            'toegewezen': toegewezen,
             'error_message': "Er is geen keuze gemaakt.",
         })
     return HttpResponseRedirect(reverse('kluisje', args=(kluis_id,)))
