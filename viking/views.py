@@ -27,7 +27,14 @@ from django.contrib.auth.models import User
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.forms import UserCreationForm
 
-from viking.serializers import FlexrecurrentSerializer,  PersoonSerializer,  GebruikerSerializer,KluisSerializer,NoteSerializer
+from viking.serializers import(
+    FlexrecurrentSerializer,  
+    PersoonSerializer,  
+    GebruikerSerializer,
+    KluisSerializer,
+    NoteSerializer,
+    ActiviteitSerializer,
+)
 from .models import Flexrecurrent, Message, Room, Topic,Kluis,Rooster,Vikinglid,Activiteit,Note
 from .forms import RoomForm,UserForm,Urv_KluisForm,VikinglidForm,KluisjeForm
 from .utils import (getNoteDetail, getNotesList,)
@@ -258,16 +265,31 @@ def createVikinglid(request):
     form = VikinglidForm()
     topics = Activiteit.objects.all()
     if request.method == 'POST':
-        topic_name = request.POST.get('islidvan')
+        email='info@mantisbv.nl-unknown'
+    #  if form.is_valid():
         email = request.POST.get('email')
+        topic_name = request.POST.get('islidvan')
         print(email)
-        # topic, created = Topic.objects.get_or_create(name=topic_name)
-        vikinglid=Vikinglid.objects.create(
+        username = request.POST.get('name').lower()
+        password = 'viking123'
+        try:
+            email='info@mantisbv.nl-unknown'
+            user = User.objects.get(username = username)
+        except:
+            vikinglid=Vikinglid.objects.create(
             email=email,
             avatar='avatar.svg',
-            name=request.POST.get('name'),
-        )
-        print(vikinglid.id)
+            name=username,
+             )
+            user = authenticate(request, username=username, password=password)
+            user=User.objects.create(
+                email = email,
+                is_active=True,
+                username = username,
+                password=password,
+            )
+        else:
+            messages.error(request, 'VIKINGLID  already exists ')
         return redirect('home')
     vikinglid=Vikinglid.objects.all().last()
     leeg = Activiteit.objects.all().filter(
@@ -1164,6 +1186,18 @@ def getNote(request,pk):
 def getNotes(request):
     notes = Note.objects.all().order_by('-updated')
     serializer = NoteSerializer(notes, many=True)
+    return Response(serializer.data)
+
+@api_view(['GET', 'POST'])
+def getActiviteiten(request):
+    aktiviteiten = Activiteit.objects.all() #.order_by('-updated')
+    leeg = Activiteit.objects.all().filter(
+        Q(lid_van=None) &
+        Q(type='kluis')|
+        Q(name='Wachtlijst')
+        )
+    
+    serializer = ActiviteitSerializer(leeg, many=True)
     return Response(serializer.data)
 
 @api_view(['GET','POST'])

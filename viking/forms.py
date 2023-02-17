@@ -31,7 +31,6 @@ class VikinglidForm(ModelForm):
     class Meta:
         model = Vikinglid
         fields = '__all__'
-        # exclude = ['is_lid_van']
         def __init__(self, *args, **kwargs):
             self.fields['is_lid_van'].queryset=Vikinglid.objects.filter(id=self.id)
             self.fields['is_lid_van'].widget.attrs.update(size='20')

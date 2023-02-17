@@ -76,7 +76,6 @@ class Person(models.Model):
 
 class Activiteit(models.Model):
     name = models.CharField(max_length=100)
-    # type = models.CharField(max_length=100,blank=True)  #ploeg, kluis
     type = models.CharField(max_length=18, choices=SOORT,default='--')     
     def __str__(self):
         return self.name
