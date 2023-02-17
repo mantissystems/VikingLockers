@@ -1,6 +1,6 @@
 from rest_framework import serializers
 from rest_framework.serializers import ModelSerializer
-from .models import Room, Person, Topic,Note,Kluis,Activiteit
+from .models import Room, Person, Topic,Note,Kluis,Activiteit,Vikinglid
 from django.contrib.auth.models import User
 
 class PersoonSerializer(serializers.ModelSerializer):
@@ -14,6 +14,7 @@ class NoteSerializer(ModelSerializer):
         fields = '__all__'
 
 class ActiviteitSerializer(ModelSerializer):
+    lid_van = serializers.PrimaryKeyRelatedField(queryset=Vikinglid.objects.all(), many=True)
     class Meta:
         model = Activiteit
         fields = '__all__'
@@ -32,6 +33,22 @@ class GebruikerSerializer(serializers.ModelSerializer):
     class Meta:
         model = User 
         fields = ('id', 'last_name')
+
+# class BookSerializer(serializers.ModelSerializer):
+#     authors = serializers.PrimaryKeyRelatedField(queryset=Author.objects.all(), many=True)
+
+#     class Meta:
+#         model = Book
+#         fields = ('id', 'name', 'published', 'authors')
+
+
+# class AuthorSerializer(serializers.ModelSerializer):
+#     book_list = BookSerializer(many=True, read_only=True)
+
+#     class Meta:
+#         model = Author
+#         fields = ('id', 'name', 'last_name', 'book_list')
+
 
 # importing the module
 # import json
