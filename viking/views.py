@@ -1200,6 +1200,13 @@ def getActiviteiten(request):
     serializer = ActiviteitSerializer(leeg, many=True)
     return Response(serializer.data)
 
+@api_view(['GET', 'POST'])
+def getActiviteit(request,pk):
+    aktiviteit = Activiteit.objects.get(id=pk)
+    serializer = ActiviteitSerializer(aktiviteit, many=False)
+    return Response(serializer.data)
+
+
 @api_view(['GET','POST'])
 def findNote(request,find):
     print(request,find)

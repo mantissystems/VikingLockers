@@ -58,6 +58,7 @@ urlpatterns = [
     path('events/', events, name='events'),
     path('notes/', views.getNotes, name="notes"),
     path('activiteiten/', views.getActiviteiten, name="activiteiten"),
+    path('activiteiten/<str:pk>/', views.getActiviteit, name="activiteiten"),
     # path('notes/<str:zoek>/', views.getNotes, name="search-notes"),
     path('notes/create/', views.createNote, name="create-note"),
     path('notes/<str:pk>/update/', views.updateNote, name="update-note"),
