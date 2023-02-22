@@ -37,7 +37,7 @@ from viking.serializers import(
 )
 from .models import Flexrecurrent, Message, Room, Topic,Kluis,Rooster,Vikinglid,Activiteit,Note
 from .forms import RoomForm,UserForm,Urv_KluisForm,VikinglidForm,KluisjeForm
-from .utils import (getNoteDetail, getNotesList,)
+# from .utils import (getNoteDetail, getNotesList,) 
 
 def loginPage(request):
 
@@ -206,12 +206,12 @@ def room(request, pk):
 #         return redirect('room', pk=event.id)
         # event.deelnemers.add(request.user)
 
-    context = {'event': event,
-     'event_messages': event_messages, 
-     'deelnemers': deelnemers,
-     'kandidaten': kandidaten,
-    }
-    return render(request, 'viking/room.html', context)
+    # context = {'event': event,
+    #  'event_messages': event_messages, 
+    #  'deelnemers': deelnemers,
+    #  'kandidaten': kandidaten,
+    # }
+    # return render(request, 'viking/room.html', context)
 
 def userProfile(request, pk):
     user = User.objects.get(id=pk)
@@ -363,28 +363,10 @@ def urv_updateKluis(request, pk):
     return render(request, 'viking/vikinglid_form.html', context)
 
 @login_required(login_url='login')
-# def erv_deleteRoom(request, pk):
-
-#     room = Flexevent.objects.get(id=pk)
-
-#     if request.user != room.host:
-#         return HttpResponse('You are not allowed here!!')
-
-#     if request.method == 'POST':
-#         room.delete()
-#         return redirect('home')
-
-#     context = {'obj': room}
-#     return render(request, 'viking/delete.html', context)
-
-@login_required(login_url='login')
 def deleteRoom(request, pk):
-
     room = Room.objects.get(id=pk)
-
     if request.user != room.host:
         return HttpResponse('You are not allowed here!!')
-
     if request.method == 'POST':
         room.delete()
         return redirect('home')
@@ -395,10 +377,6 @@ def deleteRoom(request, pk):
 def deleteVikinglid(request, pk):
 
     vikinglid = Vikinglid.objects.get(id=pk)
-
-    # if request.user != room.host:
-    #     return HttpResponse('You are not allowed here!!')
-
     if request.method == 'POST':
         vikinglid.delete()
         return redirect('home')
@@ -421,21 +399,6 @@ def deleteMessage(request, pk):
 
     context = {'obj': message}
     return render(request, 'viking/delete.html', context)
-
-@login_required(login_url='login')
-# def erv_deleteMessage(request, pk):
-
-#     message = Bericht.objects.get(id=pk)
-
-#     # if request.user != message.user:
-#     #     return HttpResponse('Geen toestemming. Het is niet uw bericht!!')
-
-#     if request.method == 'POST':
-#         message.delete()
-#         return redirect('home')
-
-#     context = {'obj': message}
-#     return render(request, 'viking/delete.html', context)
 
 @login_required(login_url='login')
 def updateUser(request):
@@ -502,22 +465,6 @@ def gebruikerslijst(request):
 
     return Response(serializer.data)
 
-# @api_view(['GET', 'POST'])
-# def getNotes(request):
-
-#     if request.method == 'GET':
-#         return getNotesList(request)
-
-#     if request.method == 'POST':
-#         return createNote(request)
-
-# @api_view(['GET'])
-# def kluisjes(request):
-#     kluizen=Kluis.objects.all()
-#     serializer=KluisSerializer(kluizen,many=True)
-
-#     return Response(serializer.data)
-
 def get_vikinglid(request):
     template_name = 'viking/vikinglid.html'
 
@@ -566,12 +513,6 @@ def vote(request, room_id):
         Q(last_name__icontains = zoeknaam) | 
         Q(first_name__icontains = zoeknaam) 
         ).order_by('last_name') # search 
-        # Q(person__pos1__icontains=zoeknaam) |
-        # Q(person__pos1__icontains='sc') |
-        # Q(person__pos2__icontains=zoeknaam) |
-        # Q(person__pos3__icontains=zoeknaam) |
-        # Q(person__pos4__icontains=zoeknaam) |
-        # Q(person__pos5__icontains=zoeknaam)
     aangemeld=event.participants.all()
     aanwezigen=User.objects.all().filter(id__in=aangemeld)
     roeiers=Person.objects.filter(
@@ -590,7 +531,7 @@ def vote(request, room_id):
             'aantalregels':aantalregels,            
             'error_message': "Er is geen keuze gemaakt.",
         })
-    print('vote room_id, else')
+    # print('vote room_id, else')
         # selected_choice.keuzes += 1
         # selected_choice.save()
         # Always return an HttpResponseRedirect after successfully dealing
@@ -641,11 +582,12 @@ def kluisje(request, kluis_id):
     if request.method == 'POST':
         kluis.topic = request.POST.get('topic')
         kluis.name = request.POST.get('name')
-        for af in request.POST.getlist('kluisje'):
-            print(kluis.id,af)
-        kluis.lid_van.add(af)
+        for af in request.POST.getlist('org_list'):
+            v=Vikinglid.objects.get(pk=af)
+            # print(kluis.id,af,v)
+        kluis.lid_van.add(v)
         kluis.save()
-        print('eind')
+        # print('eind')
         return redirect('home')
 
     return render(request, 'viking/kluisje_form.html', {
@@ -687,7 +629,7 @@ def activiteit(request, lid_id):
             'islidvan':islidvan, 
             'error_message': "Er is geen keuze gemaakt.",
         })
-    print('kluis room_id, else')
+    # print('kluis room_id, else')
         # selected_choice.keuzes += 1
         # selected_choice.save()
         # Always return an HttpResponseRedirect after successfully dealing
@@ -859,8 +801,6 @@ def events(request):
        }
     return render(request, template_name, context)
 
-
-
 @login_required(login_url='login')
 def recurrent_event(request):
     template_name = 'viking/event_list.html'
@@ -992,128 +932,6 @@ def namedtuplefetchall(cursor):
     nt_result = namedtuple('Result', [col[0] for col in desc])
     return [nt_result(*row) for row in cursor.fetchall()]
 
-def ploeg_participants(request):
-        
-        sql="select * from ploeg_participants"
-        cursor = connection.cursor() 
-        cursor.execute(sql)
-        results = namedtuplefetchall(cursor)
-        usr=User.objects.first()
-        print('===== ploeg-participants =====')
-        for r in results:
-            room=Room.objects.get(name=r.Naamploeg)
-            instroom=Instromer.objects.none()
-            if r.Ploegleden!=None:
-                try:
-                    usr=User.objects.get(last_name=r.Ploegleden)
-                    room.participants.add(usr)
-                except:
-                    Instromer.objects.update_or_create(name=r.Ploegleden)
-
-            if r.field3!=None:
-                try:
-                    usr=User.objects.get(last_name=r.field3)
-                    room.participants.add(usr)                    
-                except:
-                    Instromer.objects.update_or_create(name=r.field3)
-
-                    context={}
-            if r.field4!=None:
-                try:
-                    usr=User.objects.get(last_name=r.field4)
-                    room.participants.add(usr)                    
-                except:
-                    Instromer.objects.update_or_create(name=r.field4)
-
-                    context={}
-            if r.field5!=None:
-                try:
-                    usr=User.objects.get(last_name=r.field5)
-                    room.participants.add(usr)                    
-                except:
-                    Instromer.objects.update_or_create(name=r.field5)
-
-                    context={}
-            if r.field6!=None:
-                try:
-                    usr=User.objects.get(last_name=r.field6)
-                    room.participants.add(usr)                    
-                except:
-                    Instromer.objects.update_or_create(name=r.field6)
-
-                    context={}
-            if r.field7!=None:
-                try:
-                    usr=User.objects.get(last_name=r.field7)
-                    room.participants.add(usr)                    
-                except:
-                    Instromer.objects.update_or_create(name=r.field7)
-
-                    context={}
-            if r.field8!=None:
-                try:
-                    usr=User.objects.get(last_name=r.field8)
-                    room.participants.add(usr)                    
-                except:
-                    Instromer.objects.update_or_create(name=r.field8)
-
-                    context={}
-            if r.field9!=None:
-                try:
-                    usr=User.objects.get(last_name=r.field9)
-                    room.participants.add(usr)                    
-                except:
-                    Instromer.objects.update_or_create(name=r.field9)
-                    context={}
-            if r.field10!=None:
-                try:
-                    usr=User.objects.get(last_name=r.field10)
-                    room.participants.add(usr)                    
-                except:
-                    Instromer.objects.update_or_create(name=r.field10)
-                    context={}
-            if r.field11!=None:
-                try:
-                    usr=User.objects.get(last_name=r.field11)
-                    room.participants.add(usr)                    
-                except:
-                    Instromer.objects.update_or_create(name=r.field11)
-
-                    context={}
-            if r.field12!=None:
-                try:
-                    usr=User.objects.get(last_name=r.field12)
-                    room.participants.add(usr)                    
-                except:
-                    Instromer.objects.update_or_create(name=r.field12)
-
-                    context={}
-            if r.field13!=None:
-                try:
-                    usr=User.objects.get(last_name=r.field13)
-                    room.participants.add(usr)                    
-                except:
-                    Instromer.objects.update_or_create(name=r.field13)
-
-                    context={}
-            if r.field14!=None:
-                try:
-                    usr=User.objects.get(last_name=r.field14)
-                    room.participants.add(usr)                    
-                except:
-                    Instromer.objects.update_or_create(name=r.field14)
-                    context={}
-            if r.field15!=None:
-                try:
-                    usr=User.objects.get(last_name=r.field15)
-                    room.participants.add(usr)                    
-                except:
-                    Instromer.objects.update_or_create(name=r.field15)
-                    context={}
-    #     'hoofdletters':results,
-    #     'object_list':results,
-    #    }
-        return HttpResponse('done')
 def resetsequence(*args):        
     cursor = connection.cursor() 
     cursor.execute("SELECT * FROM sqlite_sequence");

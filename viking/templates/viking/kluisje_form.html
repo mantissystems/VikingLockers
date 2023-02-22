@@ -41,14 +41,20 @@
           </div>
           <div class="form__group">
 
-            <select name="kluisje" id="kluisje" multiple>
-              {% for kluis in toegewezen %}
+            <!-- <select name="kluisje" id="kluisje" multiple>
+              {% for kluis in toegewezen %} -->
               <!-- {{kluis.id}}.{{kluis.name}}{{kluis.type}} -->
                <!-- <input type="checkbox" name="kluisje" id="{{ forloop.counter }}" value="{{ kluis.id }}">  -->
-              <option value={{kluis.id}} >{{kluis}}</option>
+              <!-- <option value={{kluis.id}} >{{kluis}}</option> -->
+              <!-- {% endfor %} -->
+            <!-- </select>  -->
+            <select id="org" name="org_list" onChange="redirectUrl()">
+              <option  value="" selected="selected">---SELECTEER VIKINGLID---</option>
+              {% for org in toegewezen %}
+               <option value="{{org.id}}">{{org.name|capfirst}}</option>
               {% endfor %}
-            </select> 
-
+            </select>
+            
 
           </div>
 

@@ -109,7 +109,10 @@ USE_TZ = True
 STATIC_URL = '/static/'
 MEDIA_URL='/images/'
 STATICFILES_DIRS = [
-BASE_DIR / 'mykluisjes/build/static']
+BASE_DIR / 'static']
+
+# STATICFILES_DIRS = [
+# BASE_DIR / 'mykluisjes/build/static']
 
 STATIC_ROOT = BASE_DIR.joinpath('staticfiles')
 DEFAULT_AUTO_FIELD = 'django.db.models.AutoField'

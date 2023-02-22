@@ -34,21 +34,6 @@ class GebruikerSerializer(serializers.ModelSerializer):
         model = User 
         fields = ('id', 'last_name')
 
-# class BookSerializer(serializers.ModelSerializer):
-#     authors = serializers.PrimaryKeyRelatedField(queryset=Author.objects.all(), many=True)
-
-#     class Meta:
-#         model = Book
-#         fields = ('id', 'name', 'published', 'authors')
-
-
-# class AuthorSerializer(serializers.ModelSerializer):
-#     book_list = BookSerializer(many=True, read_only=True)
-
-#     class Meta:
-#         model = Author
-#         fields = ('id', 'name', 'last_name', 'book_list')
-
 
 # importing the module
 # import json
