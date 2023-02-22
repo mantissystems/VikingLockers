@@ -583,9 +583,11 @@ def kluisje(request, kluis_id):
         kluis.topic = request.POST.get('topic')
         kluis.name = request.POST.get('name')
         for af in request.POST.getlist('org_list'):
-            v=Vikinglid.objects.get(pk=af)
-            # print(kluis.id,af,v)
-        kluis.lid_van.add(v)
+            try:
+                v=Vikinglid.objects.get(pk=af)
+                kluis.lid_van.add(v)
+                print(kluis.id,af,v)
+            except:pass
         kluis.save()
         # print('eind')
         return redirect('home')
