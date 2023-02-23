@@ -40,22 +40,24 @@
             {{form.email}}
           </div>
           <div class="form__group">
-            <label for="kluisje_name">Lege kluisjes (select multiple)</label name="heeftkluis">
-              <select name="heeftkluis" id="kluisjes" multiple>
-                {% for topic in kluizen %}
-                <option value="{{topic.id}}" name="kluisje">{{topic.name}}</option>
-
+            <label for="kluisje_name">Lege kluisjes</label name="heeftkluis">
+              <select id="org" name="heeftkluis" onChange="redirectUrl()">
+                <option  value="" selected="selected">---SELECTEER KLUIS---</option>
+                {% for org in kluizen %}
+                 <option value="{{org.id}}">{{org.name|capfirst}}</option>
                 {% endfor %}
+                <!-- <input type="checkbox" name="is_closed" value="closed" <label for="vehicle1"> selectie Bij Af</label > -->
               </select>
           </div>
           <div class="form__group">
-            <label for="team_name">Team (select multiple)</label name="is_lid_van">
-              <select name="is_lid_van" id="teams" multiple>
-                {% for team in teams %}
-                <option value="{{team.id}}" name="kluisje">{{team.name}}</option>
-
+            <label for="team_name">Team</label name="is_lid_van">
+              <select id="org" name="is_lid_van" onChange="redirectUrl()">
+                <option  value="" selected="selected">---SELECTEER PLOEG---</option>
+                {% for org in teams %}
+                 <option value="{{org.id}}">{{org.name|capfirst}}</option>
                 {% endfor %}
               </select>
+  
           </div>
 
           <div class="form__action">

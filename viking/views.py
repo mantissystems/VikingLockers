@@ -333,19 +333,74 @@ def updateRoom(request, pk):
 
 @login_required(login_url='login')
 def urv_updateKluis(request, pk):
+    # toevoegen=False
+    toevoegen = request.POST.getlist('is_closed')
+    for t in toevoegen: print('toevoegen',t)
+
+
     vikinglid=Vikinglid.objects.get(id=pk)
     form=VikinglidForm(instance=vikinglid)
     kluizen=Activiteit.objects.all().filter(type='kluis').order_by('name')
     teams=Activiteit.objects.all().filter(type='ploeg').order_by('name')
     lidvan = vikinglid.is_lid_van.all()
+    lids = vikinglid.is_lid_van.all().values_list('lid_van',flat=True)
+    kluisje= request.POST.getlist('heeftkluis')
+    acts=Activiteit.objects.values_list('id',flat=True)
+    for l in lidvan:
+        print('lidvan ', l.id)
+        for i in kluisje: 
+            print('selectie', i)
+            if int(i) !=int(l.id):
+                try:
+                    vikinglid.is_lid_van.add(i)
+                    print('==== toegevoegd ===', vikinglid,i)
+                except:
+                    pass
+                print('voeg toe',i,l.id)
+                # toevoegen=True
+        if toevoegen==None:
+            print('hit',l.id)
+            try:
+                vikinglid.is_lid_van.remove(l)
+                print('==== verwijderd  ===', vikinglid,l)
+            except:
+                pass
+        if toevoegen == 'closed':
+            try:
+                vikinglid.is_lid_van.add(i)
+                print('==== toegevoegd ===', vikinglid,i)
+            except:
+                pass
+    # if len(two_ids_set)!=0:
+    #     print(' aanwezig')
+    #     for i in kluisje:
+    #         try:
+    #             vikinglid.is_lid_van.remove(i)
+    #             print('==== verwijderd  ===', vikinglid,i)
+    #         except:
+    #             pass
+
+
     if request.method == 'POST':
         for team in request.POST.getlist('is_lid_van'):
-            vikinglid.is_lid_van.add(team)
-            print(team)
-        for kluis in request.POST.getlist('heeftkluis'):
-            vikinglid.is_lid_van.add(kluis)
-            vikinglid.is_lid_van.add(kluis)
-            print(kluis)
+            p=Vikinglid.objects.filter(id__in=lids)
+            a=Activiteit.objects.filter(id__in=lids)
+            # print('====>', p,a)
+
+            # a=Activiteit.objects.filter(lid_van__name__icontains=team)
+            # if vikinglid.is_lid_van.all():
+                # print('==== verwijderd ===', team,pk)
+                # vikinglid.is_lid_van.remove(team)
+            # else:
+        #     try:
+        #         vikinglid.is_lid_van.add(team)
+        #     except:
+        #         pass
+        # for kluis in request.POST.getlist('heeftkluis'):
+        #     try:
+        #         vikinglid.is_lid_van.add(kluis)
+        #     except:
+        #         pass
         vikinglid.name = vikinglid.name
         vikinglid.name = request.POST.get('name')
         vikinglid.email = request.POST.get('email')

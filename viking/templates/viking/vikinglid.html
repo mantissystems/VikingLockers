@@ -39,8 +39,12 @@
         <div class="roomListRoom__content">
             <fieldset>
             <legend>
+                {% if user.is_superuser %}
                 <a href="{% url 'activiteit' lid.id %}">
-                    {{ forloop.counter }} 
+                    {% else %}
+                        <a href="{% url 'update-kluis' lid.id %}">
+                    {% endif %}
+                        {{ forloop.counter }} 
                     {{lid}}
                 </a>
             </legend>
