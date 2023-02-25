@@ -20,7 +20,9 @@
               ></path>
             </svg>
           </a>
+          {% if request.user.is_authenticated %}
           <h3>VIKINGLID: {{vikinglid.name}} </h3>
+          {% endif %}
         </div>
       </div>
       <div class="layout__body">

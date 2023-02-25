@@ -10,15 +10,7 @@
         </div>
       </div>
       <div class="layout__body">
-        <a class="btn btn--link" href="{% url 'home' %}">
-          Home
-          <svg
-            version="1.1"
-            xmlns="http://www.w3.org/2000/svg"
-            width="32"
-            height="32"
-            viewBox="0 0 32 32"
-          >
+        <a class="btn btn--main btn--pill" href="{% url 'home' %}">Home</a>
             <title>chevron-down</title>
             <path d="M16 21l-13-13h-3l16 16 16-16h-3l-13 13z"></path>
           </svg>
@@ -31,7 +23,7 @@
               id="username"
               name="username"
               type="text"
-              placeholder="bijvoorbeeld: info@viking.nl"
+              placeholder="Geef je naam op"
             />
           </div>
           <div class="form__group">
@@ -66,8 +58,10 @@
         </form>
 
         <div class="auth__action">
+          {% if request.user.is_superuser %}
           <p>Nog niet geregistreerd?</p>
           <a href="{% url 'register' %}" class="btn btn--link">Registreer</a>
+          {% endif %}
         </div>
       </div>
     </div>
