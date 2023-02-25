@@ -136,8 +136,8 @@ def home(request):
     if q=='Kluisjes-leeg':
         leeg = Activiteit.objects.all().filter(
         Q(lid_van=None) &
-        Q(type='kluis')|
-        Q(name='Wachtlijst')
+        Q(type='kluis')
+        # Q(name='Wachtlijst')
         )
         print('leeg', leeg.count(),topcs)
     if q=='Met Kluis':

@@ -33,7 +33,8 @@
     {% for lid in vikingleden %}
 <div class="roomListRoom__header">
     <div class="roomListRoom__actions">
-        {% if q == 'Met Kluis' or q != "Kluisjes-leeg" %}
+        
+        {% if q == 'Met Kluis' or q != "Kluisjes-leeg" and q != 'Wachtlijst' %}
 
         <ul>
         <div class="roomListRoom__content">
@@ -65,6 +66,29 @@
     </ul>
     {% endif %}
  
+    {% if q == 'Wachtlijst' %}
+
+    <ul>
+    <div class="roomListRoom__content">
+        <fieldset>
+        <legend>
+            {% comment %}
+            {% if user.is_superuser %}
+            {% else %}
+            {% endif %}
+            <a href="{% url 'activiteit' lid.id %}">
+                {% endcomment %}
+                <a href="{% url 'update-kluis' lid.id %}">
+                    {{ forloop.counter }} 
+                {{lid}} 
+            </a>
+        </legend>
+    
+    </fieldset>
+    </div>
+</ul>
+{% endif %}
+
     </div>
 </div>
 {% endfor %}    
