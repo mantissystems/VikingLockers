@@ -265,31 +265,50 @@ def createVikinglid(request):
     form = VikinglidForm()
     topics = Activiteit.objects.all()
     if request.method == 'POST':
-        email='info@mantisbv.nl-unknown'
-    #  if form.is_valid():
-        email = request.POST.get('email')
-        topic_name = request.POST.get('islidvan')
-        print(email)
         username = request.POST.get('name').lower()
-        password = 'viking123'
-        try:
+        if username:
             email='info@mantisbv.nl-unknown'
-            user = User.objects.get(username = username)
-        except:
-            vikinglid=Vikinglid.objects.create(
-            email=email,
-            avatar='avatar.svg',
-            name=username,
-             )
-            user = authenticate(request, username=username, password=password)
-            user=User.objects.create(
-                email = email,
-                is_active=True,
-                username = username,
-                password=password,
-            )
-        else:
-            messages.error(request, 'VIKINGLID  already exists ')
+            try:
+                vikinglid=Vikinglid.objects.all().get(name=username)
+            except:
+                print('vikinglid not found', username)
+                vikinglid=Vikinglid.objects.create(
+                    email=email,
+                    avatar='avatar.svg',
+                    name=username,
+                )
+                try:
+                    email='info@mantisbv.nl-unknown'
+                    user = User.objects.get(username = username)
+                except:
+                    print('user not found', username)
+                #     vikinglid=Vikinglid.objects.create(
+                #     email=email,
+                #     avatar='avatar.svg',
+                #     name=username,
+                # )
+                    email = request.POST.get('email')
+                    topic_name = request.POST.get('islidvan')
+                    username = request.POST.get('name').lower()
+                    password ='pbkdf2_sha256$390000$YrBnItyjcuUgxrlMGlWFPH$HBlBExsE2C5EcmEmhHvtDTkMl3PH+0E7EQJLrWER4cs=' 
+                    # 'viking123'
+                    try:
+                        user = User.objects.get(username = username)
+                    except:
+                        # vikinglid=Vikinglid.objects.create(
+                        # email=email,
+                        # avatar='avatar.svg',
+                        # name=username,
+                        # )
+                        user = authenticate(request, username=username, password=password)
+                        user=User.objects.create(
+                        email = email,
+                        is_active=True,
+                        username = username,
+                        password=password,
+                        )
+                    else:
+                        messages.error(request, 'VIKINGLID  already exists ')
         return redirect('home')
     vikinglid=Vikinglid.objects.all().last()
     leeg = Activiteit.objects.all().filter(
@@ -333,74 +352,35 @@ def updateRoom(request, pk):
 
 @login_required(login_url='login')
 def urv_updateKluis(request, pk):
-    # toevoegen=False
-    toevoegen = request.POST.getlist('is_closed')
-    for t in toevoegen: print('toevoegen',t)
-
-
     vikinglid=Vikinglid.objects.get(id=pk)
     form=VikinglidForm(instance=vikinglid)
     kluizen=Activiteit.objects.all().filter(type='kluis').order_by('name')
     teams=Activiteit.objects.all().filter(type='ploeg').order_by('name')
     lidvan = vikinglid.is_lid_van.all()
-    lids = vikinglid.is_lid_van.all().values_list('lid_van',flat=True)
     kluisje= request.POST.getlist('heeftkluis')
-    acts=Activiteit.objects.values_list('id',flat=True)
-    for l in lidvan:
-        print('lidvan ', l.id)
-        for i in kluisje: 
-            print('selectie', i)
-            if int(i) !=int(l.id):
-                try:
-                    vikinglid.is_lid_van.add(i)
-                    print('==== toegevoegd ===', vikinglid,i)
-                except:
-                    pass
-                print('voeg toe',i,l.id)
-                # toevoegen=True
-        if toevoegen==None:
-            print('hit',l.id)
-            try:
-                vikinglid.is_lid_van.remove(l)
-                print('==== verwijderd  ===', vikinglid,l)
-            except:
-                pass
-        if toevoegen == 'closed':
-            try:
-                vikinglid.is_lid_van.add(i)
-                print('==== toegevoegd ===', vikinglid,i)
-            except:
-                pass
-    # if len(two_ids_set)!=0:
-    #     print(' aanwezig')
-    #     for i in kluisje:
-    #         try:
-    #             vikinglid.is_lid_van.remove(i)
-    #             print('==== verwijderd  ===', vikinglid,i)
-    #         except:
-    #             pass
+    kluisjeopheffen= request.POST.getlist('is_lid_van')
+    # leeg = Activiteit.objects.all().filter(
+    # Q(lid_van=122) 
+    # ) 3 lines commented due to filter example
+    if kluisje:
+        # print('kluisje:', kluisje)
+        try:
+            vikinglid.is_lid_van.add(kluisje[0])
+            # print('==== toegevoegd ===',kluisje[0])
+        except:
+            print('activiteit',kluisje[0])
+            pass
+    if kluisjeopheffen:
+        # print('kluisjeopheffen:', kluisjeopheffen[0])
+        try:
+            vikinglid.is_lid_van.remove(kluisjeopheffen[0])
+            # print('==== verwijderd ===',kluisjeopheffen[0])
+        except:
+            print('op te heffen',kluisjeopheffen[0])
+            pass
 
 
     if request.method == 'POST':
-        for team in request.POST.getlist('is_lid_van'):
-            p=Vikinglid.objects.filter(id__in=lids)
-            a=Activiteit.objects.filter(id__in=lids)
-            # print('====>', p,a)
-
-            # a=Activiteit.objects.filter(lid_van__name__icontains=team)
-            # if vikinglid.is_lid_van.all():
-                # print('==== verwijderd ===', team,pk)
-                # vikinglid.is_lid_van.remove(team)
-            # else:
-        #     try:
-        #         vikinglid.is_lid_van.add(team)
-        #     except:
-        #         pass
-        # for kluis in request.POST.getlist('heeftkluis'):
-        #     try:
-        #         vikinglid.is_lid_van.add(kluis)
-        #     except:
-        #         pass
         vikinglid.name = vikinglid.name
         vikinglid.name = request.POST.get('name')
         vikinglid.email = request.POST.get('email')
@@ -635,7 +615,8 @@ def kluisje(request, kluis_id):
     toegewezen=Vikinglid.objects.all().exclude(is_lid_van__id=None)
 
     if request.method == 'POST':
-        kluis.topic = request.POST.get('topic')
+        # kluis.topic = request.POST.get('topic')
+        kluis.topic = 'kluis' 
         kluis.name = request.POST.get('name')
         for af in request.POST.getlist('org_list'):
             try:

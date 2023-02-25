@@ -28,28 +28,25 @@
           {% csrf_token %} 
   
           <div class="form__group">
-            <label for="kluis_name">Kluis Name</label
+            <label for="kluis_name">Kluisje</label
                 name="name">
             {{form.name}}
           </div>
-
-            
+{% comment %}            
           <div class="form__group">
-            <label for="room_topic">Kluis of Ploeg</label
+            <label for="room_topic">Kluisje</label
                 name="topic">
             {{form.type}}
           </div>
+          {% endcomment %}
           <div class="form__group">
-
             <select id="org" name="org_list" onChange="redirectUrl()">
-              <option  value="" selected="selected">---SELECTEER VIKINGLID---</option>
+              <option  value="" selected="selected">---TOEWIJZEN AAN VIKINGLID ---</option>
               {% for org in toegewezen %}
                <option value="{{org.id}}">{{org.name|capfirst}}
               </option>
               {% endfor %}
-            </select>
-            <input type="checkbox" name="is_closed" value="closed" {% if 'closed' in 'is_closed' %} checked {% else %} '' {% endif %}>
-            
+            </select>            
 
           </div>
 
