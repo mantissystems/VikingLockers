@@ -68,10 +68,12 @@
               {% if user.is_superuser %}
               <a class="btn btn--main" href="{% url 'activiteit' vikinglid.id %}"
               >Details</a>
-            {% endif %}
+            {% if user.is_superuser %}
             <button class="btn btn--main" type="submit">Submit</button>
             <a class="btn btn--main" href="{% url 'delete-vikinglid' vikinglid.id %}">
+              
               <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" width="256" height="256" viewBox="0 0 256 256" xml:space="preserve">
+                {% endif %}
 
                 <defs>
                 </defs>
@@ -82,6 +84,8 @@
                 </svg>
               Delete Vikinglid 
             </a>            
+            {% endif %}
+
                     </div>
         </form>
       </div>
