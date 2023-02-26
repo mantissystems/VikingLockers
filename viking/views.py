@@ -270,7 +270,7 @@ def createVikinglid(request):
         print('vikinglid==>' ,vikinglid)
     except:
         vikinglid = Vikinglid.objects.all().last()
-        messages.error(request, 'VIKINGLID except tijdelijk ',vikinglid.id)
+        messages.error(request, 'VIKINGLID except tijdelijk ',vikinglid)
     if request.method == 'POST':
         username = request.POST.get('name').lower()
         if username:
