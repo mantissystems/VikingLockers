@@ -264,13 +264,14 @@ def createRoom(request):
 def createVikinglid(request):
     form = VikinglidForm()
     topics = Activiteit.objects.all()
+    try:
+        vikinglid = Vikinglid.objects.get(name='Wachtlijst')
+        messages.error(request, 'VIKINGLID  try tijdelijk ', vikinglid)
+        print('vikinglid==>' ,vikinglid)
+    except:
+        vikinglid = Vikinglid.objects.all().last()
+        messages.error(request, 'VIKINGLID except tijdelijk ',vikinglid.id)
     if request.method == 'POST':
-        try:
-            vikinglid = Vikinglid.objects.get(name='Wachtlijst')
-            messages.error(request, 'VIKINGLID  tijdelijk ', vikinglid)
-            # print('vikinglid==>' ,vikinglid)
-        except:
-            messages.error(request, 'VIKINGLID  tijdelijk ', vikinglid)
         username = request.POST.get('name').lower()
         if username:
             email='info@mantisbv.nl-unknown'
