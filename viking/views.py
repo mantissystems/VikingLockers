@@ -265,6 +265,12 @@ def createVikinglid(request):
     form = VikinglidForm()
     topics = Activiteit.objects.all()
     if request.method == 'POST':
+        try:
+            vikinglid = Vikinglid.objects.get(name='Wachtlijst')
+            messages.error(request, 'VIKINGLID  tijdelijk ', vikinglid)
+            # print('vikinglid==>' ,vikinglid)
+        except:
+            messages.error(request, 'VIKINGLID  tijdelijk ', vikinglid)
         username = request.POST.get('name').lower()
         if username:
             email='info@mantisbv.nl-unknown'
@@ -282,11 +288,6 @@ def createVikinglid(request):
                     user = User.objects.get(username = username)
                 except:
                     print('user not found', username)
-                #     vikinglid=Vikinglid.objects.create(
-                #     email=email,
-                #     avatar='avatar.svg',
-                #     name=username,
-                # )
                     email = request.POST.get('email')
                     topic_name = request.POST.get('islidvan')
                     username = request.POST.get('name').lower()
@@ -295,11 +296,6 @@ def createVikinglid(request):
                     try:
                         user = User.objects.get(username = username)
                     except:
-                        # vikinglid=Vikinglid.objects.create(
-                        # email=email,
-                        # avatar='avatar.svg',
-                        # name=username,
-                        # )
                         user = authenticate(request, username=username, password=password)
                         user=User.objects.create(
                         email = email,
