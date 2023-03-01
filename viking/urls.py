@@ -21,6 +21,7 @@ topicsPage, updateRoom, updateUser, userProfile,
 vote, kluis,urv_loginPage,
 add_activity,get_vikinglid,activiteit,
 DetailView,createVikinglid,deleteVikinglid,
+aanvrage,
 )
 urlpatterns = [
     path('', home, name='home'),
@@ -33,6 +34,7 @@ urlpatterns = [
     path('profile/<str:pk>/', userProfile, name='user-profile'),
     path('create-room/', createRoom, name='create-room'),
     path('create-vikinglid/', createVikinglid, name='create-vikinglid'),
+    path('create-aanvrage/', aanvrage, name='create-aanvrage'),
     path('update-room/<str:pk>/', updateRoom, name='update-room'),
     path('delete-room/<str:pk>/', deleteRoom, name='delete-room'),
     path('delete-vikinglid/<str:pk>/', deleteVikinglid, name='delete-vikinglid'),

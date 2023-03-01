@@ -126,6 +126,8 @@ def home(request):
     filter1=Q(name__icontains=q)    
     vikingleden=Vikinglid.objects.all().filter(filter1 )
     print('all', vikingleden.count())
+    if q=='Aanvraag':
+            return redirect('create-aanvrage')
     leeg = Activiteit.objects.all().filter(
         # Q(name=None) | 
         Q(type='kluis'))
@@ -319,6 +321,67 @@ def createVikinglid(request):
           'kluizen': leeg,
           'vikinglid':vikinglid}
     return render(request, 'viking/vikinglid_form.html', context)
+
+def aanvrage(request):
+    form = VikinglidForm()
+    topics = Activiteit.objects.all()
+    # try:
+    #     vikinglid = Vikinglid.objects.get(name='Wachtlijst')
+    #     messages.error(request, 'VIKINGLID  try tijdelijk ', vikinglid)
+    #     print('vikinglid==>' ,vikinglid)
+    # except:
+    #     vikinglid = Vikinglid.objects.all().last()
+    #     messages.error(request, 'VIKINGLID except tijdelijk ',vikinglid)
+    if request.method == 'POST':
+        username = request.POST.get('name').lower()
+        description = request.POST.get('description') #.lower()
+        if username:
+            email='info@mantisbv.nl-unknown'
+            try:
+                vikinglid=Vikinglid.objects.all().get(name=username)
+            except:
+                print('vikinglid not found', username)
+                vikinglid=Vikinglid.objects.create(
+                    email=email,
+                    avatar='avatar.svg',
+                    name=username,
+                    description=description
+                )
+                # try:
+                #     email='info@mantisbv.nl-unknown'
+                #     user = User.objects.get(username = username)
+                # except:
+                #     print('user not found', username)
+                #     email = request.POST.get('email')
+                #     topic_name = request.POST.get('islidvan')
+                #     username = request.POST.get('name').lower()
+                #     password ='pbkdf2_sha256$390000$YrBnItyjcuUgxrlMGlWFPH$HBlBExsE2C5EcmEmhHvtDTkMl3PH+0E7EQJLrWER4cs=' 
+                #     # 'viking123'
+                #     try:
+                #         user = User.objects.get(username = username)
+                #     except:
+                #         user = authenticate(request, username=username, password=password)
+                #         user=User.objects.create(
+                #         email = email,
+                #         is_active=True,
+                #         username = username,
+                #         password=password,
+                #         )
+                #     else:
+                #         messages.error(request, 'VIKINGLID  already exists ')
+        return redirect('home')
+    vikinglid=Vikinglid.objects.all().last()
+    leeg = Activiteit.objects.all().filter(
+        # Q(lid_van=None) &
+        # Q(type='kluis') |
+        Q(name='Wachtlijst')
+        )
+    context = {
+        'form': form,
+          'topics': topics,
+          'kluizen': leeg,
+          'vikinglid':vikinglid}
+    return render(request, 'viking/aanvrage_form.html', context)
 
 # @login_required(login_url='login')
 def updateRoom(request, pk):
