@@ -25,6 +25,7 @@
         <div class="mobile-menuItems">
           <a class="btn btn--main btn--pill" href="{% url 'topics' %}">Rubrieken</a>
           <a class="btn btn--main btn--pill" href="{% url 'home' %}?q=Kluisjes-leeg">Leeg</a>
+          <a class="btn btn--main btn--pill" href="{% url 'home' %}?q=Met Kluis">Billable</a>
         </div>
       </div>
 
@@ -46,8 +47,11 @@
         {% endif %}
       </div>
       {{lijst}}
+      {% if q == 'Met Kluis' %}
+      {% include 'viking/billable.html' %}
+      {% else %}
       {% include 'viking/vikinglid.html' %}
-
+{% endif %}
     </div>
     <!-- Room List End -->
 

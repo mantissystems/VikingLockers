@@ -1,0 +1,102 @@
+{% block content %}
+{% comment %}
+
+{% extends 'base.html' %} {% load static %}
+{% include 'navbar.html' %}
+{% endcomment %}
+
+<div class="roomListRoom">
+    <h5>|{{q}}| {{billable.count}} billable </h5>
+    <!--  -->
+    {% for kluis in billable %}
+    <div class="roomListRoom__header">
+        <div class="roomListRoom__actions">    
+            <ul>
+            <div class="roomListRoom__content">
+                <fieldset>
+                <legend>
+
+                    <a href="{% url 'kluisje' kluis.id %}">
+                        {{ forloop.counter }} 
+                        {{kluis}}
+                    </a>
+                </legend>
+            
+            </fieldset>
+            </div>
+        </ul>
+     
+        </div>
+    </div>
+    {% endfor %}    
+    </div>
+    
+    <!--  -->
+    {% for lid in vikingleden %}
+<div class="roomListRoom__header">
+    <div class="roomListRoom__actions">
+        
+        {% if q == 'Met Kluisss' %}
+
+        <ul>
+        <div class="roomListRoom__content">
+            <fieldset>
+            <legend>
+                {% comment %}
+                {% if user.is_superuser %}
+                <a href="{% url 'activiteit' lid.id %}">
+                    {% else %}
+                    {% endif %}
+                    <a href="{% url 'update-kluis' lid.id %}">
+                        {{ forloop.counter }} 
+                        {{lid}}
+                    </a>
+                </legend>
+                {% for kluis in lid.is_lid_van.all %} 
+                {% if kluis.type == "kluis"  %}
+                <li>{{kluis}}</li>
+                
+                {% endif %}
+                {% if kluis.type == "ploeg"  %}
+                <li>ploeg {{kluis}}</li>  
+                {% endif %}
+                {% endfor %} 
+                {% endcomment %}
+        
+        </fieldset>
+        </div>
+    </ul>
+    {% endif %}
+ 
+    {% comment %}
+    {% if q == 'Wachtlijst' %}
+
+    <ul>
+    <div class="roomListRoom__content">
+        <fieldset>
+        <legend>
+            {% if user.is_superuser %}
+            {% else %}
+            {% endif %}
+            <a href="{% url 'activiteit' lid.id %}">
+                <a href="{% url 'update-kluis' lid.id %}">
+                    {{ forloop.counter }} 
+                    {{lid}} 
+                </a>
+            </legend>
+            
+        </fieldset>
+    </div>
+</ul>
+{% endif %}
+{% endcomment %}
+
+    </div>
+</div>
+{% endfor %}    
+</div>
+
+=====>
+max 120 <hr>
+heren 8x6 48
+{% endblock %}

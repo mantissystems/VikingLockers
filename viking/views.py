@@ -121,6 +121,7 @@ def registerPage(request):
 def home(request):
     q = request.GET.get('q') if request.GET.get('q') != None else '' # 'Met Kluis'
     topcs = Activiteit.objects.values('type') .filter(name__icontains=q)
+    template='viking/home.html'
     topics = Topic.objects.all()
     all=Vikinglid.objects.all()
     filter1=Q(name__icontains=q)    
@@ -131,11 +132,16 @@ def home(request):
     leeg = Activiteit.objects.all().filter(
         # Q(name=None) | 
         Q(type='kluis'))
+    leeg = Activiteit.objects.all().filter(
+        Q(name=None) | 
+        Q(type='kluis'))
+    billable = Activiteit.objects.none()
     vl=Vikinglid.objects.all().filter(is_lid_van__name__icontains=q)
     if vl and len(q)>0: 
         print('vl',q,'vl', vl.count())
         vikingleden=Vikinglid.objects.all().filter(is_lid_van__name__icontains=q)
     if q=='Kluisjes-leeg':
+        template='viking/home.html'
         leeg = Activiteit.objects.all().filter(
         Q(lid_van=None) &
         Q(type='kluis')
@@ -143,18 +149,26 @@ def home(request):
         )
         print('leeg', leeg.count(),topcs)
     if q=='Met Kluis':
+        billable = Activiteit.objects.all().exclude(
+        Q(lid_van=None)| 
+        Q(type='ploeg')
+        # &
+        )
+        template='viking/home.html'
         print('bezet', q)
         vikingleden=Vikinglid.objects.all()
     print('context', vikingleden.count())
+    print('billable', billable.count())
     context = {
         'vikingleden':vikingleden,
         'topics': topics, 
         'topcs':topcs,
         'empty':leeg,
+        'billable':billable,
         'legen':leeg.count(),
         'q':q,
         }
-    return render(request, 'viking/home.html', context)
+    return render(request, template, context)
 
 
 
@@ -673,7 +687,9 @@ def kluisje(request, kluis_id):
     form = KluisjeForm(instance=kluis)
     kluisjes=Activiteit.objects.all()
     toegewezen=Vikinglid.objects.all().exclude(is_lid_van__id=None)
-
+    billable=kluis.lid_van.all()
+    # Vikinglid.objects.all().filter(is_lid_van__id=None)
+    print('billable', billable)
     if request.method == 'POST':
         # kluis.topic = request.POST.get('topic')
         kluis.topic = 'kluis' 
@@ -693,6 +709,7 @@ def kluisje(request, kluis_id):
             'form': form,
             'kluisjes': kluisjes,
             'toegewezen': toegewezen,
+            'billable': billable,
             'error_message': "Er is geen keuze gemaakt.",
         })
     return HttpResponseRedirect(reverse('kluisje', args=(kluis_id,)))
