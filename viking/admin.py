@@ -2,11 +2,11 @@ from django.contrib import admin
 # from django.contrib.auth.admin import UserAdmin
 from .models import  User
 from .models import  Person, Topic
-from .models import Room, Message,Person,Instromer,Note,Vikinglid,Activiteit
+from .models import Room, Message,Person,Note,Vikinglid,Activiteit
 admin.site.register(Topic)
 admin.site.register(Message)
 # admin.site.register(Note)
-admin.site.register(Instromer)
+# admin.site.register(Instromer)
 admin.register(User)
 admin.register(Person)
 admin.site.register(Vikinglid)

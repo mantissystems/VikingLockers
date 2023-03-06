@@ -96,32 +96,34 @@ class Vikinglid(models.Model):
         return self.name
 
      
-class Rooster(models.Model):
-    host = models.ForeignKey(User, on_delete=models.SET_NULL, null=True)
-    name = models.CharField(max_length=200)
-    description = models.TextField(null=True, blank=True) # database field (can Empty), form field (can Empty)
-    datum = models.DateField(auto_now=False)
-    pub_time = models.CharField(max_length=35, default='10:00')
-    lid = models.ManyToManyField(User, related_name='taak', blank=True)
-    created = models.DateTimeField(default=datetime.now, blank=True)
-    lnr = models.IntegerField(default=0) #loting nummer
-    rnr = models.IntegerField(default=0) #rangnummer
+# class Rooster(models.Model):
+#     host = models.ForeignKey(User, on_delete=models.SET_NULL, null=True)
+#     name = models.CharField(max_length=200)
+#     description = models.TextField(null=True, blank=True) # database field (can Empty), form field (can Empty)
+#     datum = models.DateField(auto_now=False)
+#     pub_time = models.CharField(max_length=35, default='10:00')
+#     lid = models.ManyToManyField(User, related_name='taak', blank=True)
+#     created = models.DateTimeField(default=datetime.now, blank=True)
+#     lnr = models.IntegerField(default=0) #loting nummer
+#     rnr = models.IntegerField(default=0) #rangnummer
 
 
 
-    def __str__(self):
-        return "%s" % (self.name)               
+#     def __str__(self):
+#         return "%s" % (self.name)               
 
 
 class Kluis(models.Model):
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    # user = models.ForeignKey(User, on_delete=models.CASCADE)
+    user = models.CharField(max_length=200)
     body = models.TextField()
     name = models.CharField(max_length=200)
     location = models.TextField(null=True, blank=True)
-    topic = models.ForeignKey(Topic, on_delete=models.SET_NULL, null=True)
+    # topic = models.ForeignKey(Topic, on_delete=models.SET_NULL, null=True)
+    topic = models.CharField(max_length=18, default='XXX')     
     updated = models.DateTimeField(auto_now=True)
     created = models.DateTimeField(auto_now_add=True)     
-    owners = models.ManyToManyField(User, related_name='owner', blank=True)
+    # owners = models.ManyToManyField(User, related_name='owner', blank=True)
     slot = models.CharField(max_length=18, choices=SLOT,default='H')     
     sleutels = models.IntegerField(default=2)
     code = models.TextField(null=True, blank=True)
@@ -134,15 +136,15 @@ class Kluis(models.Model):
 
 # python .\manage.py makemigrations
 # python .\manage.py migrate
-class Flexrecurrent(models.Model):
-    regels = models.CharField(max_length=18,default='30')
+# class Flexrecurrent(models.Model):
+#     regels = models.CharField(max_length=18,default='30')
 
-class Instromer(models.Model):
-    # user = models.OneToOneField(User, on_delete=models.CASCADE)    
-    name = models.CharField(max_length=100)
+# class Instromer(models.Model):
+#     # user = models.OneToOneField(User, on_delete=models.CASCADE)    
+#     name = models.CharField(max_length=100)
 
-    def __str__(self):
-        return self.name
+#     def __str__(self):
+#         return self.name
 
 from django.db import models
 

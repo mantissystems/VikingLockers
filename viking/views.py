@@ -12,7 +12,7 @@ from django.contrib.sessions.models import Session
 from django.http import HttpResponseRedirect
 from django.shortcuts import get_object_or_404, render
 from django.urls import reverse,reverse_lazy
-from viking.models import( Instromer,Person,)
+from viking.models import( Person,)
 from collections import namedtuple
 from django.db import connection
 from django.views.generic import(ListView,UpdateView,DetailView)
@@ -35,7 +35,7 @@ from viking.serializers import(
     NoteSerializer,
     ActiviteitSerializer,
 )
-from .models import Flexrecurrent, Message, Room, Topic,Kluis,Rooster,Vikinglid,Activiteit,Note
+from .models import  Message, Room, Topic,Kluis,Vikinglid,Activiteit,Note
 from .forms import RoomForm,UserForm,Urv_KluisForm,VikinglidForm,KluisjeForm
 # from .utils import (getNoteDetail, getNotesList,) 
 
@@ -548,13 +548,6 @@ def activityPage(request):
     return render(request, 'viking/activity.html', {'activiteiten': activiteit})
 
 
-def PloegPage(request):
-    q = request.GET.get('q') if request.GET.get('q') != None else ''
-    rooms=Room.objects.all().filter(name__contains=q) #.exclude(participants=None)
-    # topcs = Topic.objects.all().filter(id__in=tops)
-    # topics = Topic.objects.filter(name__icontains=q)[0:5]
-    return render(request, 'viking/ploeg_list.html', {'rooms': rooms})
-
 def KluisPage(request):
     q = request.GET.get('q') if request.GET.get('q') != None else ''
     kluisjes=Kluis.objects.all().filter(name__contains=q) #.exclude(participants=None)
@@ -855,78 +848,18 @@ def randomiseren():
     # ===================== array end
     return
 
-def events(request):
-    # personen()
-    # for xx in range(12):
-    #     randomiseren()
 
-    members=Person.objects.values_list('lnr','name','user_id')
-    # T=members
-    # # T= [[1],['wb']]
-    # lotingen=[]
-    # rooster=Rooster.objects.all().update(rnr=0) #zet alle rangnummers op nul
-    rooster=Rooster.objects.all()
-    # num1 =365 ## 54  ;aantal roosterregels 
-    # num2 =members.count() ## 24  ;aantal members
-    # num3=136145  #lcm of num1 and num2; GGV van rooster en members
-    # num4=random.randint(0, num1)
-    # ======== 10 passes needed ============
-    # for xx in range(12):
-    #     for r in T:
-    #         lot=random.randint(0, num1)
-    #         # print(lot,r[0])
-    #         try:
-    #             rr=Rooster.objects.filter(
-    #                 Q(id=lot) &
-    #                 Q(rnr=0)).update(rnr=r[0]) #geef het rangnummer een gerandomiseerd nummer
-    #             error: KeyError
-    #             continue
-    #         except:
-    #             rr=Rooster.objects.filter(
-    #                 Q(id=lot) &
-    #                 Q(rnr=0)).update(rnr=r[0]) #geef het rangnummer een gerandomiseerd nummer    # start===== generate UNIQUE numbers and store once in PERSON ============ start
-
-            # rr.lid.add(persoon)
-    # Generate unique random numbers within a range (recordcount of rooster)
-    # num_list = random.sample(range(0, recordcount-of-rooster), 10)
-    # num_list = random.sample(range(0, num3), num2)
-    # for i in range(1,num2,1):
-    #     try:
-    #         Person.objects.filter(id=i).update(lnr=num_list[i])
-    #         error:KeyError
-    #         continue
-    #     except:
-    #         Person.objects.filter(id=i).update(lnr=num_list[i])
-    # end======= generate UNIQUE numbers and store once in PERSON ============ end
-    # for ix, lnr in enumerate(members, start=1): 
-        # lotingen.append(lnr[0])
-        # T.insert(lnr[0], lnr[1])
-        # print(lnr[0],lnr[1],lnr[2])
-    # T.insert(2, [0,5,11,13,6])
-    # print(T)
-    # for m in members:
-    # lnr=getattr(members, 'lnr') #to get the value from the model.
-    # ===================== array start
-    # ===================== array end
-    template_name='viking/rooster_list.html'
-    context={
-        # 'object_list':results,
-        'rooster':rooster,
-        'namen':members,
-       }
-    return render(request, template_name, context)
-
-@login_required(login_url='login')
-def recurrent_event(request):
-    template_name = 'viking/event_list.html'
-    print('============ recurrent ============')
-    # resetsequence('beatrix_flexevent')  # bestandsbeheer: zet sequence op nul; kan niet gelijktijdig
-    # maak_activiteiten()
-    maak_rooster()
-    # events=Flexevent.objects.all()
-    events=Rooster.objects.all()
-    context={'events':events}
-    return render(request, template_name, context)
+# @login_required(login_url='login')
+# def recurrent_event(request):
+#     template_name = 'viking/event_list.html'
+#     print('============ recurrent ============')
+#     # resetsequence('beatrix_flexevent')  # bestandsbeheer: zet sequence op nul; kan niet gelijktijdig
+#     # maak_activiteiten()
+#     maak_rooster()
+#     # events=Flexevent.objects.all()
+#     events=Rooster.objects.all()
+#     context={'events':events}
+#     return render(request, template_name, context)
 
 def update_ploegen():
     room=Room.objects.get(pk='93')
@@ -940,27 +873,27 @@ def update_ploegen():
                 
     return
 
-def maak_rooster():
-    print('====== start rooster ===========')
-    Rooster.objects.all().delete()
-    resetsequence('viking_rooster')  # bestandsbeheer: zet sequence op nul;
-    start_date = datetime.date.today()
-    user=User.objects.all().first()         ## -- de beheerder en superuser
-    dagvandeweek=['maandag','dinsdag','woensdag','donderdag','vrijdag','zaterdag','zondag']
-    for d in range(0,365,1):
-        event_date = start_date + datetime.timedelta(days=d)       
-            # Rooster.objects.all().update_or_create(
-        Rooster.objects.all().create(
-        host=user,
-        datum=event_date,
-        name=dagvandeweek[event_date.weekday()],
-        description=dagvandeweek[event_date.weekday()],
-        created=event_date,
-        rnr=d,
-        lnr=d,  #lotnummer wordt later toegekend
-        )
-    print('====== einde rooster ===========')
-    return
+# def maak_rooster():
+#     print('====== start rooster ===========')
+#     Rooster.objects.all().delete()
+#     resetsequence('viking_rooster')  # bestandsbeheer: zet sequence op nul;
+#     start_date = datetime.date.today()
+#     user=User.objects.all().first()         ## -- de beheerder en superuser
+#     dagvandeweek=['maandag','dinsdag','woensdag','donderdag','vrijdag','zaterdag','zondag']
+#     for d in range(0,365,1):
+#         event_date = start_date + datetime.timedelta(days=d)       
+#             # Rooster.objects.all().update_or_create(
+#         Rooster.objects.all().create(
+#         host=user,
+#         datum=event_date,
+#         name=dagvandeweek[event_date.weekday()],
+#         description=dagvandeweek[event_date.weekday()],
+#         created=event_date,
+#         rnr=d,
+#         lnr=d,  #lotnummer wordt later toegekend
+#         )
+#     print('====== einde rooster ===========')
+#     return
 
 def maak_activiteiten():
     start_date = datetime.date.today()
