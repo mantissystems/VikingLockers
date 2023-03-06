@@ -12,7 +12,7 @@ from django.contrib.sessions.models import Session
 from django.http import HttpResponseRedirect
 from django.shortcuts import get_object_or_404, render
 from django.urls import reverse,reverse_lazy
-from viking.models import( Person,)
+# from viking.models import( Person,)
 from collections import namedtuple
 from django.db import connection
 from django.views.generic import(ListView,UpdateView,DetailView)
@@ -28,8 +28,6 @@ from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.forms import UserCreationForm
 
 from viking.serializers import(
-    FlexrecurrentSerializer,  
-    PersoonSerializer,  
     GebruikerSerializer,
     KluisSerializer,
     NoteSerializer,
@@ -196,38 +194,6 @@ def room(request, pk):
     context = {'room': room, 'room_messages': room_messages, 'participants': participants,'owners': owners}
     return render(request, 'viking/room.html', context)
     
-# def erv_room(request, pk):
-#     # event = Flexevent.objects.get(id=pk)
-#     # event_messages = event.bericht_set.all()
-#     # deelnemers = event.lid.all()
-#     # kandidaten=User.objects.all().exclude(id__in=deelnemers)
-#     try:
-#         gebruiker=User.objects.get(id=request.user.id) ## request.user
-#     except:
-#         messages.error(request, '.You are not logged in')
-#         # print(request.user)
-#         context = {'event': event,
-#      'event_messages': event_messages, 
-#      'deelnemers': deelnemers,
-#      'kandidaten': kandidaten,
-#      }   
-#         return render(request, 'viking/room.html', context)
-#     if request.method == 'POST':
-#         gebruiker=User.objects.get(id=request.user.id) ## request.user
-#         bericht = Bericht.objects.create(
-#         user=gebruiker,
-#         event=event,
-#         body=request.POST.get('body')
-#         )
-#         return redirect('room', pk=event.id)
-        # event.deelnemers.add(request.user)
-
-    # context = {'event': event,
-    #  'event_messages': event_messages, 
-    #  'deelnemers': deelnemers,
-    #  'kandidaten': kandidaten,
-    # }
-    # return render(request, 'viking/room.html', context)
 
 def userProfile(request, pk):
     user = User.objects.get(id=pk)
@@ -554,13 +520,6 @@ def KluisPage(request):
     return render(request, 'viking/kluis_list.html', {'kluisjes': kluisjes})
 
 @api_view(['GET'])
-def personenlijst(request):
-    deelnemers=Person.objects.all()
-    serializer=PersoonSerializer(deelnemers,many=True)
-
-    return Response(serializer.data)
-
-@api_view(['GET'])
 def gebruikerslijst(request):
     gebruikers=User.objects.all()
     serializer=GebruikerSerializer(gebruikers,many=True)
@@ -642,37 +601,37 @@ def vote(request, room_id):
     return HttpResponseRedirect(reverse('vote', args=(room_id,)))
 
 
-@login_required(login_url='login')
-def kluis(request, kluis_id):
-    kluis = get_object_or_404(Vikinglid, pk=kluis_id)
-    zoeknaam = request.POST.get('zoeknaam') if request.POST.get('zoeknaam') != None else 'sc'
+# @login_required(login_url='login')
+# def kluis(request, kluis_id):
+#     kluis = get_object_or_404(Vikinglid, pk=kluis_id)
+#     zoeknaam = request.POST.get('zoeknaam') if request.POST.get('zoeknaam') != None else 'sc'
 
-    leden = []
-    afmeldingen=[]
-    for af in request.POST.getlist('afmelding'):
-        kluis.owners.remove(af)
-    for l in request.POST.getlist('aanmelding'):
-        kluis.owners.add(l)
-    personen=User.objects.all()
-    kandidaten = User.objects.all().filter(
-        Q(last_name__icontains = zoeknaam) | 
-        Q(first_name__icontains = zoeknaam) 
-        ) 
-    aangemeld=kluis.owners.all()
-    aanwezigen=User.objects.all().filter(id__in=aangemeld)
-    roeiers=Person.objects.filter(
-        Q(id__in=aanwezigen)
-        # Q(pos1__icontains=zoeknaam)
-        )
-    return render(request, 'viking/vikinglid-detail.html', {
-            'kluis': kluis,
-            'users': personen,
-            'roeiers': roeiers,
-            'kandidaten':kandidaten,
-            'aanwezig':aanwezigen, 
-            'error_message': "Er is geen keuze gemaakt.",
-        })
-    return HttpResponseRedirect(reverse('kluis', args=(kluis_id,)))
+#     leden = []
+#     afmeldingen=[]
+#     for af in request.POST.getlist('afmelding'):
+#         kluis.owners.remove(af)
+#     for l in request.POST.getlist('aanmelding'):
+#         kluis.owners.add(l)
+#     personen=User.objects.all()
+#     kandidaten = User.objects.all().filter(
+#         Q(last_name__icontains = zoeknaam) | 
+#         Q(first_name__icontains = zoeknaam) 
+#         ) 
+#     aangemeld=kluis.owners.all()
+#     aanwezigen=User.objects.all().filter(id__in=aangemeld)
+#     roeiers=Person.objects.filter(
+#         Q(id__in=aanwezigen)
+#         # Q(pos1__icontains=zoeknaam)
+#         )
+#     return render(request, 'viking/vikinglid-detail.html', {
+#             'kluis': kluis,
+#             'users': personen,
+#             'roeiers': roeiers,
+#             'kandidaten':kandidaten,
+#             'aanwezig':aanwezigen, 
+#             'error_message': "Er is geen keuze gemaakt.",
+#         })
+#     return HttpResponseRedirect(reverse('kluis', args=(kluis_id,)))
 
 @login_required(login_url='login')
 def kluisje(request, kluis_id):
@@ -775,54 +734,54 @@ class AanmeldView(ListView):
         } 
         return context
 
-def personen():
-    persoon=Person.objects.none()
-    # rooster=Rooster.objects.all().update(rnr=0) #zet alle rangnummers op nul
-    rooster=Rooster.objects.all().exclude(rnr=0)
-    print(rooster.count())
-    for dag in rooster:
-            rangnr=getattr(dag, 'rnr')
-            try:
-                p=Person.objects.get(lnr=rangnr)
-                uid=getattr(p, 'user_id')
-                gebruiker=User.objects.get(id=uid)
-                userid=getattr(p, 'user_id')
-                try:
-                    user=User.objects.get(id=userid)
-                    dag.lid.add(user)
-                except:
-                    print()
-                # print(gebruiker)
-            except:
-                print()
-                # p=Person.objects.get(lnr=rangnr)
-                # uid=getattr(p, 'user_id')
+# def personen():
+#     persoon=Person.objects.none()
+#     # rooster=Rooster.objects.all().update(rnr=0) #zet alle rangnummers op nul
+#     rooster=Rooster.objects.all().exclude(rnr=0)
+#     print(rooster.count())
+#     for dag in rooster:
+#             rangnr=getattr(dag, 'rnr')
+#             try:
+#                 p=Person.objects.get(lnr=rangnr)
+#                 uid=getattr(p, 'user_id')
+#                 gebruiker=User.objects.get(id=uid)
+#                 userid=getattr(p, 'user_id')
+#                 try:
+#                     user=User.objects.get(id=userid)
+#                     dag.lid.add(user)
+#                 except:
+#                     print()
+#                 # print(gebruiker)
+#             except:
+#                 print()
+#                 # p=Person.objects.get(lnr=rangnr)
+#                 # uid=getattr(p, 'user_id')
 
-    return
-def randomiseren():
-    members=Person.objects.values_list('lnr','name','user_id')
-    T=members
-    lotingen=[]
-    # rooster=Rooster.objects.all().update(rnr=0) #zet alle rangnummers op nul
-    rooster=Rooster.objects.all()
-    num1 =365 ## 54  ;aantal roosterregels 
-    # num2 =members.count() ## 24  ;aantal members
-    num3=136145  #lcm of num1 and num2; GGV van rooster en members
-    # num4=random.randint(0, num1)
-    # ======== 10 passes needed ============
-    # for xx in range(12):
-    for r in T:
-        lot=random.randint(0, num1)
-        try:
-            rr=Rooster.objects.filter(
-                Q(id=lot) &
-                Q(rnr=0)).update(rnr=r[0]) #geef het rangnummer een gerandomiseerd nummer
-            error: KeyError
-            continue
-        except:
-            rr=Rooster.objects.filter(
-                Q(id=lot) &
-                Q(rnr=0)).update(rnr=r[0]) #geef het rangnummer een gerandomiseerd nummer    # start===== generate UNIQUE numbers and store once in PERSON ============ start
+#     return
+# def randomiseren():
+#     members=Person.objects.values_list('lnr','name','user_id')
+#     T=members
+#     lotingen=[]
+#     # rooster=Rooster.objects.all().update(rnr=0) #zet alle rangnummers op nul
+#     rooster=Rooster.objects.all()
+#     num1 =365 ## 54  ;aantal roosterregels 
+#     # num2 =members.count() ## 24  ;aantal members
+#     num3=136145  #lcm of num1 and num2; GGV van rooster en members
+#     # num4=random.randint(0, num1)
+#     # ======== 10 passes needed ============
+#     # for xx in range(12):
+#     for r in T:
+#         lot=random.randint(0, num1)
+#         try:
+#             rr=Rooster.objects.filter(
+#                 Q(id=lot) &
+#                 Q(rnr=0)).update(rnr=r[0]) #geef het rangnummer een gerandomiseerd nummer
+#             error: KeyError
+#             continue
+#         except:
+#             rr=Rooster.objects.filter(
+#                 Q(id=lot) &
+#                 Q(rnr=0)).update(rnr=r[0]) #geef het rangnummer een gerandomiseerd nummer    # start===== generate UNIQUE numbers and store once in PERSON ============ start
 
             # rr.lid.add(persoon)
     # Generate unique random numbers within a range (recordcount of rooster)
@@ -846,7 +805,7 @@ def randomiseren():
     # lnr=getattr(members, 'lnr') #to get the value from the model.
     # ===================== array start
     # ===================== array end
-    return
+    # return
 
 
 # @login_required(login_url='login')
@@ -946,33 +905,33 @@ def maak_activiteiten():
     j=1
     return
 
-def taak_rooster(request):
-    template_name = 'viking/rooster_list.html'
-    # print('============ recurrent ============')
-    num1 =365 ## 54
-    num2 =373 ## 24
-    num3=136145  #lcm of num1 and num2
-    num4=random.randint(0, num3)
-    # Generate 10 unique random numbers within a range
-    # num_list = random.sample(range(0, 1000), 10)
-    # Generate unique random numbers within a range (recordcount of rooster)
-    num_list = random.sample(range(0, num3), 365)
-    # print(num_list)
-    # Output [499, 580, 735, 784, 574, 511, 704, 637, 472, 211]    
-    # print("The L.C.M. is", compute_lcm(num1, num2),num4)
-    # events=Flexevent.objects.all()
-    events=Rooster.objects.all() ##.filter(name__in=('zaterdag','zondag'))
-    context={'rooster':events}
-    return render(request, template_name, context)
+# def taak_rooster(request):
+#     template_name = 'viking/rooster_list.html'
+#     # print('============ recurrent ============')
+#     num1 =365 ## 54
+#     num2 =373 ## 24
+#     num3=136145  #lcm of num1 and num2
+#     num4=random.randint(0, num3)
+#     # Generate 10 unique random numbers within a range
+#     # num_list = random.sample(range(0, 1000), 10)
+#     # Generate unique random numbers within a range (recordcount of rooster)
+#     num_list = random.sample(range(0, num3), 365)
+#     # print(num_list)
+#     # Output [499, 580, 735, 784, 574, 511, 704, 637, 472, 211]    
+#     # print("The L.C.M. is", compute_lcm(num1, num2),num4)
+#     # events=Flexevent.objects.all()
+#     events=Rooster.objects.all() ##.filter(name__in=('zaterdag','zondag'))
+#     context={'rooster':events}
+#     return render(request, template_name, context)
 
-@api_view(['GET'])
-def apiOverview(request):
-    api_urls={
-    'api/':'api-overview',    
-    '/kluizen':'kluizen',    
-    '/notes/':'notes',    
-    }
-    return Response(api_urls)
+# @api_view(['GET'])
+# def apiOverview(request):
+#     api_urls={
+#     'api/':'api-overview',    
+#     '/kluizen':'kluizen',    
+#     '/notes/':'notes',    
+#     }
+#     return Response(api_urls)
 
 def namedtuplefetchall(cursor):
     "Return all rows from a cursor as a namedtuple"

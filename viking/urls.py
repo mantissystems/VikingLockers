@@ -2,24 +2,19 @@ from django.urls import path
 from . import views
 from viking.views import( 
 AanmeldView ,
- activityPage ,
-apiOverview,  
+ activityPage , 
 getRoutes,
 createRoom, deleteMessage, deleteRoom,
-KluisPage,
-# PloegPage,
+KluisPage, 
 urv_updateKluis,
-home,kluisje,
-taak_rooster, 
+home,kluisje, 
 gebruikerslijst,
 loginPage, logoutUser,
-personenlijst ,
-# recurrent_event,
 registerPage, room, 
 topicsPage, updateRoom, updateUser, userProfile,
-vote, kluis,urv_loginPage,
+vote, urv_loginPage,
 add_activity,get_vikinglid,activiteit,
-DetailView,createVikinglid,deleteVikinglid,
+DetailView,createVikinglid,deleteVikinglid, 
 aanvrage,
 )
 urlpatterns = [
@@ -43,18 +38,13 @@ urlpatterns = [
     path('vikinglid/', get_vikinglid, name='vikinglid'),
     path('add_activity/',add_activity, name='add_activity'),  # utility call
     path('activiteit/<str:lid_id>',activiteit, name='activiteit'),  
-
-    # path('recurrent/', recurrent_event, name='recurrent'),
     path('<int:room_id>/aanmelden/',vote, name='vote'),  
-    path('<int:id>/kluis/',kluis, name='kluis'),  
     path('<int:kluis_id>/kluisje/',kluisje, name='kluisje'),  
     path('<int:pk>/update-kluis/',urv_updateKluis, name='update-kluis'),  
-    # path('ploegbeheer/',PloegPage , name="ploegbeheer"),
     path('kluisbeheer/',KluisPage , name="kluisbeheer"),
     path('<int:pk>/', DetailView.as_view(), name='detail'),
     path('api/', getRoutes,name='api-overview'),    
-    # path('taakrooster/', taak_rooster, name='taakrooster'),
-    # path('events/', events, name='events'),
+
     path('notes/', views.getNotes, name="notes"),
     path('activiteiten/', views.getActiviteiten, name="activiteiten"),
     path('activiteiten/<str:pk>/', views.getActiviteit, name="activiteiten"),
@@ -63,8 +53,5 @@ urlpatterns = [
     path('notes/<str:pk>/delete/', views.deleteNote, name="delete-note"),
     path('notes/<str:pk>/', views.getNote, name="note"),
     path('notes/<str:find>/find/', views.findNote, name="find-note"),
-    # path('notes/<str:zoek>/', views.getNotes, name="search-notes"),
-    # path('ploegparticipants/', ploeg_participants,name='ploegparticipants'),    
     ]
-    # path('kluisjes/<str:pk>/', views.getKluis, name="kluisje"),
 # https://docs.djangoproject.com/en/3.1/topics/http/urls/

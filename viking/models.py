@@ -50,28 +50,28 @@ class Message(models.Model):
     def __str__(self):
         return self.body[0:50]
 
-class Person(models.Model):
-    user = models.OneToOneField(User, on_delete=models.CASCADE)    
-    name = models.CharField(max_length=100)
-    avatar=models.ImageField(null=True,default="avatar.svg")      # install Pillow is needed
-    email = models.CharField(max_length=100,blank=True)
-    # is_flex = models.BooleanField(default=True)        #wil ingedeeld worden in flexpoule
-    # is_host = models.BooleanField(default=False)        #kan flexhost zijn
-    # keuzes = models.IntegerField(default=0) #aantal keren als host gekozen
-    # roeileeftijd = models.CharField(max_length=20,blank=True)
-    is_lid= models.BooleanField(default=True)           #is roeiend lid;member
-    # in_poule = models.BooleanField(default=False)       #wil flexibel roeiern
-    # vaart = models.BooleanField(default=False)          #zit in ingedeelde boot op het water
-    # coach = models.CharField(max_length=18, choices=SCULL,default='st1')     
-    keuzes = models.IntegerField(default=0) #aantal keren als host gekozen
-    # lnr = models.IntegerField(default=0) #lotingnummer 
+# class Person(models.Model):
+#     user = models.OneToOneField(User, on_delete=models.CASCADE)    
+#     name = models.CharField(max_length=100)
+#     avatar=models.ImageField(null=True,default="avatar.svg")      # install Pillow is needed
+#     email = models.CharField(max_length=100,blank=True)
+#     # is_flex = models.BooleanField(default=True)        #wil ingedeeld worden in flexpoule
+#     # is_host = models.BooleanField(default=False)        #kan flexhost zijn
+#     # keuzes = models.IntegerField(default=0) #aantal keren als host gekozen
+#     # roeileeftijd = models.CharField(max_length=20,blank=True)
+#     is_lid= models.BooleanField(default=True)           #is roeiend lid;member
+#     # in_poule = models.BooleanField(default=False)       #wil flexibel roeiern
+#     # vaart = models.BooleanField(default=False)          #zit in ingedeelde boot op het water
+#     # coach = models.CharField(max_length=18, choices=SCULL,default='st1')     
+#     keuzes = models.IntegerField(default=0) #aantal keren als host gekozen
+#     # lnr = models.IntegerField(default=0) #lotingnummer 
 
-    def __str__(self):
-        return self.name
+#     def __str__(self):
+#         return self.name
 
 
-    def __str__(self):
-        return "%s" % (self.event_text)          
+#     def __str__(self):
+#         return "%s" % (self.event_text)          
 
 
 class Activiteit(models.Model):
@@ -95,38 +95,30 @@ class Vikinglid(models.Model):
     def __str__(self):
         return self.name
 
-     
-# class Rooster(models.Model):
-#     host = models.ForeignKey(User, on_delete=models.SET_NULL, null=True)
-#     name = models.CharField(max_length=200)
-#     description = models.TextField(null=True, blank=True) # database field (can Empty), form field (can Empty)
-#     datum = models.DateField(auto_now=False)
-#     pub_time = models.CharField(max_length=35, default='10:00')
-#     lid = models.ManyToManyField(User, related_name='taak', blank=True)
-#     created = models.DateTimeField(default=datetime.now, blank=True)
-#     lnr = models.IntegerField(default=0) #loting nummer
-#     rnr = models.IntegerField(default=0) #rangnummer
-
-
-
-#     def __str__(self):
-#         return "%s" % (self.name)               
-
+# "id"	integer NOT NULL,
+# 	"body"	text NOT NULL,
+# 	"updated"	datetime NOT NULL,
+# 	"created"	datetime NOT NULL,
+# 	"user_id"	integer NOT NULL,
+# 	"name"	varchar(200) NOT NULL,
+# 	"location"	text,
+# 	"slot"	varchar(18) NOT NULL,
+# 	"sleutels"	integer NOT NULL,
+# 	"code"	text,
+# 	"topic_id"	bigint,
 
 class Kluis(models.Model):
-    # user = models.ForeignKey(User, on_delete=models.CASCADE)
-    user = models.CharField(max_length=200)
     body = models.TextField()
-    name = models.CharField(max_length=200)
-    location = models.TextField(null=True, blank=True)
-    # topic = models.ForeignKey(Topic, on_delete=models.SET_NULL, null=True)
-    topic = models.CharField(max_length=18, default='XXX')     
     updated = models.DateTimeField(auto_now=True)
     created = models.DateTimeField(auto_now_add=True)     
-    # owners = models.ManyToManyField(User, related_name='owner', blank=True)
-    slot = models.CharField(max_length=18, choices=SLOT,default='H')     
+    user_id = models.CharField(max_length=200)
+    name = models.CharField(max_length=200)
+    location = models.TextField(null=True, blank=True)
+    slot = models.CharField(max_length=18,default='H')     
     sleutels = models.IntegerField(default=2)
     code = models.TextField(null=True, blank=True)
+    topic_id = models.TextField(null=True, blank=True)
+    # topic_id = models.CharField(max_length=18, default='XXX')     
 
     class Meta:
         ordering = ['-updated', '-created']
