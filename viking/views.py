@@ -399,22 +399,15 @@ def urv_updateKluis(request, pk):
     lidvan = vikinglid.is_lid_van.all()
     kluisje= request.POST.getlist('heeftkluis')
     kluisjeopheffen= request.POST.getlist('is_lid_van')
-    # leeg = Activiteit.objects.all().filter(
-    # Q(lid_van=122) 
-    # ) 3 lines commented due to filter example
     if kluisje:
-        # print('kluisje:', kluisje)
         try:
             vikinglid.is_lid_van.add(kluisje[0])
-            # print('==== toegevoegd ===',kluisje[0])
         except:
             print('activiteit',kluisje[0])
             pass
     if kluisjeopheffen:
-        # print('kluisjeopheffen:', kluisjeopheffen[0])
         try:
             vikinglid.is_lid_van.remove(kluisjeopheffen[0])
-            # print('==== verwijderd ===',kluisjeopheffen[0])
         except:
             print('op te heffen',kluisjeopheffen[0])
             pass
@@ -640,7 +633,7 @@ def kluisje(request, kluis_id):
     kluisjes=Activiteit.objects.all()
     toegewezen=Vikinglid.objects.all().exclude(is_lid_van__id=None)
     billable=kluis.lid_van.all()
-    # Vikinglid.objects.all().filter(is_lid_van__id=None)
+    leden=Vikinglid.objects.all().filter(is_lid_van__id=None)
     print('billable', billable)
     if request.method == 'POST':
         # kluis.topic = request.POST.get('topic')
@@ -650,15 +643,14 @@ def kluisje(request, kluis_id):
             try:
                 v=Vikinglid.objects.get(pk=af)
                 kluis.lid_van.add(v)
-                print(kluis.id,af,v)
+                print('kluis.id, af', kluis.id,af,v)
             except:pass
         kluis.save()
-        # print('eind')
         return redirect('home')
-
     return render(request, 'viking/kluisje_form.html', {
             'kluis': kluis,
             'form': form,
+            'leden': leden,
             'kluisjes': kluisjes,
             'toegewezen': toegewezen,
             'billable': billable,

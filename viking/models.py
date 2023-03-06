@@ -126,22 +126,7 @@ class Kluis(models.Model):
     def __str__(self):
         return self.body
 
-# python .\manage.py makemigrations
-# python .\manage.py migrate
-# class Flexrecurrent(models.Model):
-#     regels = models.CharField(max_length=18,default='30')
-
-# class Instromer(models.Model):
-#     # user = models.OneToOneField(User, on_delete=models.CASCADE)    
-#     name = models.CharField(max_length=100)
-
-#     def __str__(self):
-#         return self.name
-
 from django.db import models
-
-# Create your models here.
-
 
 class Note(models.Model):
     body = models.TextField(null=True, blank=True)

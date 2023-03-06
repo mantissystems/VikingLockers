@@ -54,8 +54,8 @@
           <div class="form__group">
             <select id="org" name="org_list" onChange="redirectUrl()">
               <option  value="" selected="selected">---TOEWIJZEN AAN VIKINGLID ---</option>
-              {% for org in billable %}
-               <option value="{{org.id}}">{{org.name|capfirst}}
+              {% for org in leden %}
+               <option value="{{org.id}}">{{org.id}} {{org.name|capfirst}}
               </option>
               {% endfor %}
             </select>            
