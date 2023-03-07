@@ -1,6 +1,6 @@
 from rest_framework import serializers
 from rest_framework.serializers import ModelSerializer
-from .models import Room,  Topic,Note,Kluis,Activiteit,Vikinglid
+from .models import   Topic,Note,Kluis,Activiteit,Vikinglid
 from django.contrib.auth.models import User
 
 

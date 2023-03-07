@@ -22,66 +22,12 @@ class Topic(models.Model):
     def __str__(self):
         return self.name
 
-class Room(models.Model):
-    host = models.ForeignKey(User, on_delete=models.SET_NULL, null=True)
-    topic = models.ForeignKey(Topic, on_delete=models.SET_NULL, null=True)
-    name = models.CharField(max_length=200)
-    description = models.TextField(null=True, blank=True) # database field (can Empty), form field (can Empty)
-    participants = models.ManyToManyField(User, related_name='participant', blank=True)
-    updated = models.DateTimeField(auto_now=True) # everytime save (or updated) the field
-    created = models.DateTimeField(auto_now_add=True) # first time created the field
-
-    class Meta:
-        ordering = ['name', '-created'] # ('-' for reverse the order)
-
-    def __str__(self):
-        return self.name
-
-class Message(models.Model):
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
-    room = models.ForeignKey(Room, on_delete=models.CASCADE) # when room delete, delete all chiled messages
-    body = models.TextField()
-    updated = models.DateTimeField(auto_now=True)
-    created = models.DateTimeField(auto_now_add=True)     
-
-    class Meta:
-        ordering = ['-updated', '-created']
-
-    def __str__(self):
-        return self.body[0:50]
-
-# class Person(models.Model):
-#     user = models.OneToOneField(User, on_delete=models.CASCADE)    
-#     name = models.CharField(max_length=100)
-#     avatar=models.ImageField(null=True,default="avatar.svg")      # install Pillow is needed
-#     email = models.CharField(max_length=100,blank=True)
-#     # is_flex = models.BooleanField(default=True)        #wil ingedeeld worden in flexpoule
-#     # is_host = models.BooleanField(default=False)        #kan flexhost zijn
-#     # keuzes = models.IntegerField(default=0) #aantal keren als host gekozen
-#     # roeileeftijd = models.CharField(max_length=20,blank=True)
-#     is_lid= models.BooleanField(default=True)           #is roeiend lid;member
-#     # in_poule = models.BooleanField(default=False)       #wil flexibel roeiern
-#     # vaart = models.BooleanField(default=False)          #zit in ingedeelde boot op het water
-#     # coach = models.CharField(max_length=18, choices=SCULL,default='st1')     
-#     keuzes = models.IntegerField(default=0) #aantal keren als host gekozen
-#     # lnr = models.IntegerField(default=0) #lotingnummer 
-
-#     def __str__(self):
-#         return self.name
-
-
-#     def __str__(self):
-#         return "%s" % (self.event_text)          
-
-
 class Activiteit(models.Model):
     name = models.CharField(max_length=100)
     type = models.CharField(max_length=18, choices=SOORT,default='--')     
     def __str__(self):
         return self.name
 
-    # def __str__(self):
-    #     return "%s" % (self.event_text)               
 class Vikinglid(models.Model):
     name = models.CharField(max_length=100)
     avatar=models.ImageField(null=True,default="avatar.svg")      # install Pillow is needed
@@ -95,18 +41,6 @@ class Vikinglid(models.Model):
     def __str__(self):
         return self.name
 
-# "id"	integer NOT NULL,
-# 	"body"	text NOT NULL,
-# 	"updated"	datetime NOT NULL,
-# 	"created"	datetime NOT NULL,
-# 	"user_id"	integer NOT NULL,
-# 	"name"	varchar(200) NOT NULL,
-# 	"location"	text,
-# 	"slot"	varchar(18) NOT NULL,
-# 	"sleutels"	integer NOT NULL,
-# 	"code"	text,
-# 	"topic_id"	bigint,
-
 class Kluis(models.Model):
     body = models.TextField()
     updated = models.DateTimeField(auto_now=True)
@@ -118,8 +52,6 @@ class Kluis(models.Model):
     sleutels = models.IntegerField(default=2)
     code = models.TextField(null=True, blank=True)
     topic_id = models.TextField(null=True, blank=True)
-    # topic_id = models.CharField(max_length=18, default='XXX')     
-
     class Meta:
         ordering = ['-updated', '-created']
 
@@ -132,9 +64,6 @@ class Note(models.Model):
     body = models.TextField(null=True, blank=True)
     updated = models.DateTimeField(auto_now=True)
     created = models.DateTimeField(auto_now_add=True)
-    # info = models.CharField(max_length=35, default='===')
-    # owner = models.CharField(max_length=35, default='___')
-
 
     def __str__(self):
         return self.body[0:50]
