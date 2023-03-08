@@ -30,6 +30,35 @@
     
     {% endif %}
     <!--  -->
+     <!--  -->
+     {% if q == "Opheffen" %}
+     {% for kluis in billable %}
+     <div class="roomListRoom__header">
+         <div class="roomListRoom__actions">
+             {% if q == "Opheffen" %}
+     
+             <ul>
+             <div class="roomListRoom__content">
+                 <fieldset>
+                 <legend>
+                     <a href="{% url 'kluisje' kluis.id %}">
+                         {{ forloop.counter }} 
+                         {{kluis}}
+                     </a>
+                 </legend>
+             
+             </fieldset>
+             </div>
+         </ul>
+         {% endif %}
+      
+         </div>
+     </div>
+     {% endfor %}    
+     </div>
+     
+     {% endif %}
+     <!--  -->
     {% for lid in vikingleden %}
 <div class="roomListRoom__header">
     <div class="roomListRoom__actions">

@@ -32,13 +32,6 @@
                 name="name">
             {{form.name}}
           </div>
-{% comment %}            
-          <div class="form__group">
-            <label for="room_topic">Kluisje</label
-                name="topic">
-            {{form.type}}
-          </div>
-          {% endcomment %}
           <div class="form__group">
             <label for="room_topic">Billable to:</label
               name="topic">
@@ -48,9 +41,6 @@
               {% endfor %}
 
             </div>
-            {% comment %}            
-          {% endcomment %}
-
           <div class="form__group">
             <select id="org" name="org_list" onChange="redirectUrl()">
               <option  value="" selected="selected">---TOEWIJZEN AAN VIKINGLIDd ---</option>

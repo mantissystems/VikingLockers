@@ -124,7 +124,7 @@ def home(request):
     all=Vikinglid.objects.all()
     filter1=Q(name__icontains=q)    
     vikingleden=Vikinglid.objects.all().filter(filter1 )
-    print('all', vikingleden.count())
+    # print('all', vikingleden.count())
     if q=='Aanvraag':
             return redirect('create-aanvrage')
     leeg = Activiteit.objects.all().filter(
@@ -136,7 +136,7 @@ def home(request):
     billable = Activiteit.objects.none()
     vl=Vikinglid.objects.all().filter(is_lid_van__name__icontains=q)
     if vl and len(q)>0: 
-        print('vl',q,'vl', vl.count())
+        # print('vl',q,'vl', vl.count())
         vikingleden=Vikinglid.objects.all().filter(is_lid_van__name__icontains=q)
     if q=='Kluisjes-leeg':
         template='viking/home.html'
@@ -145,7 +145,7 @@ def home(request):
         Q(type='kluis')
         # Q(name='Wachtlijst')
         )
-        print('leeg', leeg.count(),topcs)
+        # print('leeg', leeg.count(),topcs)
     if q=='Met Kluis':
         billable = Activiteit.objects.all().exclude(
         Q(lid_van=None)| 
@@ -153,9 +153,9 @@ def home(request):
         # &
         )
         template='viking/home.html'
-        print('bezet', q)
+        # print('bezet', q)
         vikingleden=Vikinglid.objects.all()
-    print('context', vikingleden.count())
+    # print('context', vikingleden.count())
     print('billable', billable.count())
     context = {
         'vikingleden':vikingleden,
@@ -431,11 +431,12 @@ def add_activity(request):
 def kluisje(request, kluis_id):
     kluis = get_object_or_404(Activiteit, pk=kluis_id)
     form = KluisjeForm(instance=kluis)
-    kluisjes=Activiteit.objects.all()
-    toegewezen=Vikinglid.objects.all().exclude(is_lid_van__id=None)
+    kluisjes=Activiteit.objects.all().order_by('name')
+    toegewezen=Vikinglid.objects.all().exclude(is_lid_van__id=None).order_by('name')
     billable=kluis.lid_van.all()
-    leden=Vikinglid.objects.all().filter(is_lid_van__id=None)
+    leden=Vikinglid.objects.all().filter(is_lid_van__id=None).order_by('name')
     print('billable', billable)
+    # print('toegewezen', toegewezen)
     if request.method == 'POST':
         # kluis.topic = request.POST.get('topic')
         kluis.topic = 'kluis' 
