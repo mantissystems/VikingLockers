@@ -14,7 +14,7 @@ topicsPage ,  updateUser, userProfile,
  urv_loginPage ,
 add_activity,get_vikinglid,activiteit,
 DetailView,createVikinglid,deleteVikinglid, 
-aanvrage,
+aanvrage,export_team_data,
 )
 urlpatterns = [
     path('', home, name='home'),
@@ -37,8 +37,7 @@ urlpatterns = [
     path('<int:pk>/update-kluis/',urv_updateKluis, name='update-kluis'),  
     path('kluisbeheer/',KluisPage , name="kluisbeheer"),
     path('<int:pk>/', DetailView.as_view(), name='detail'),
-    # path('api/', getRoutes,name='api-overview'),    
-
+    path('export/', export_team_data, name='export'),
     path('notes/', views.getNotes, name="notes"),
     path('activiteiten/', views.getActiviteiten, name="activiteiten"),
     path('activiteiten/<str:pk>/', views.getActiviteit, name="activiteiten"),

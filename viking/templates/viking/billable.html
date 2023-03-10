@@ -90,26 +90,6 @@
 </ul>
 {% endif %}
 {% endcomment %}
-{% if q == 'Opheffen' %}
-
-<ul>
-<div class="roomListRoom__content">
-    <fieldset>
-    <legend>
-        {% if user.is_superuser %}
-        {% else %}
-        {% endif %}
-        <a href="{% url 'activiteit' lid.id %}">
-            <a href="{% url 'update-kluis' lid.id %}">
-                {{ forloop.counter }} 
-                {{lid}} 
-            </a>
-        </legend>
-        
-    </fieldset>
-</div>
-</ul>
-{% endif %}
 
     </div>
 </div>

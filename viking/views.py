@@ -1,6 +1,9 @@
-import random
-from array import *
-from time import strftime
+# import random
+# from array import *
+from django.template import loader
+import csv
+import io
+# from time import strftime
 from urllib import request
 from django.shortcuts import render
 import datetime
@@ -124,7 +127,8 @@ def home(request):
     all=Vikinglid.objects.all()
     filter1=Q(name__icontains=q)    
     vikingleden=Vikinglid.objects.all().filter(filter1 )
-    # print('all', vikingleden.count())
+    if q=='Export Kluislijst':
+            return redirect('export')
     if q=='Aanvraag':
             return redirect('create-aanvrage')
     leeg = Activiteit.objects.all().filter(
@@ -136,7 +140,6 @@ def home(request):
     billable = Activiteit.objects.none()
     vl=Vikinglid.objects.all().filter(is_lid_van__name__icontains=q)
     if vl and len(q)>0: 
-        # print('vl',q,'vl', vl.count())
         vikingleden=Vikinglid.objects.all().filter(is_lid_van__name__icontains=q)
     if q=='Kluisjes-leeg':
         template='viking/home.html'
@@ -700,3 +703,22 @@ def createNote(request):
     )
     serializer = NoteSerializer(note, many=False)
     return Response(serializer.data)
+
+
+def export_team_data(request):
+    # https://docs.djangoproject.com/en/3.2/howto/outputting-csv/
+    
+    # response = HttpResponse(
+    #     content_type='text/csv',headers={'Content-Disposition': 'attachment; filename="ploegen_lijst.csv"'},
+    # )
+    response = HttpResponse(content_type='text/csv')
+    response['Content-Disposition'] = 'attachment; filename="kluislijst.csv"'
+
+    writer = csv.writer(response)
+
+    csv_data = Kluis.objects.all().values_list(
+        'name', 'location')
+    t = loader.get_template('viking/export_teamlid_data.txt')
+    c = {'data': csv_data}
+    response.write(t.render(c))
+    return response
