@@ -4,6 +4,11 @@ from .models import   Topic,Note,Kluis,Activiteit,Vikinglid
 from django.contrib.auth.models import User
 
 
+class TopicSerializer(ModelSerializer):
+    class Meta:
+        model = Topic
+        fields = '__all__'
+
 class NoteSerializer(ModelSerializer):
     class Meta:
         model = Note

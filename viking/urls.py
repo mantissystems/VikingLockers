@@ -39,6 +39,7 @@ urlpatterns = [
     path('<int:pk>/', DetailView.as_view(), name='detail'),
     path('export/', export_team_data, name='export'),
     path('notes/', views.getNotes, name="notes"),
+        path('api/topics/', views.getTopics, name="topics"),
     path('activiteiten/', views.getActiviteiten, name="activiteiten"),
     path('activiteiten/<str:pk>/', views.getActiviteit, name="activiteiten"),
     path('notes/create/', views.createNote, name="create-note"),

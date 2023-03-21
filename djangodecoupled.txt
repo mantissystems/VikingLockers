@@ -1,0 +1,114 @@
+ 1516  git clone https:/github.om/valentinogagliardi/decoupled-dj/tree/chapter_05_settings_up_project
+ 1517  clone https://github.com/valentinogagliardi/decoupled-dj/tree/chapter_05_setting_up_project
+ 1518  git clone https://github.com/valentinogagliardi/decoupled-dj/tree/chapter_05_setting_up_project
+ 1520  git clone https://github.com/valentinogagliardi/decoupled-dj/tree/chapter_07_setting_up_project
+ 1521  git clone https://github.com/valentinogagliardi/decoupled-dj/tree/chapter_06_decoupled_with_drf
+ 1524  sudo apt install npm
+ 1525  npm --version
+ 1527  sudo npm install vue@next
+ 1534  git clone https://github.com/valentinogagliardi/decoupled_dj/tree/chapter_06_decoupled_with_drf.
+ 1539  pip install django
+ 1543  npm install -g @vue/cli
+ 1544  cd billing
+ 1546  npm install -g @vue/cli
+ 1551  sudo npm install -g @vue/cli
+ 1552  vue create vue_spa
+
+ 1555  sudo npm audit fix --force
+ 1556  sudo apt install nodejs
+ 1557  sudo apt install npm
+ 1564  git clone https://github.com/valentinogagliardi/decoupled-dj/tree/chapter_05_setting_up_project
+
+ 1566  cd decoupled_dj
+
+ 1568  pip install -r requirements/development.txt
+ 1569  pipenv shell
+ 1572  pip install django
+ 1573  django-admin startproject decoupled_dj .
+ 1574  cd decoupled_dj/
+ 1576  python3 manage.py startapp billing
+ 1581  python3 manage.py startapp blog
+
+ 1586  python3 manage.py startapp user
+ 1588  pip install django-environ
+
+ 1595  pip install django-extensions
+
+ 1598  python3 manage.py migrate
+
+ 1601  python3 manage.py createsuperuser
+ 1602  python3 manage.py runserver
+ 1603  pip install uvicorn
+ 1604  python3 manage.py runserver
+ 1605  export DJANGO_SETTIINGS_MODULE=decoupled_dj.settings.development
+
+ 1611  uvicorn decoupled_dj.asgi:application
+ 1619  django-admin startproject decoupled_dj .
+ 1620  cd decoupled_dj/
+ 1624  django-admin startproject decoupled_dj
+ 1625  cd decoupled_dj
+ 1627  python3 manage.py startapp billing
+ 1628  python3 manage.py startapp users
+ 1629  python3 manage.py migrate
+ 1630  python3 manage.py createsuperuser
+ 1631  python3 manage.py runserver
+ 1633  export DJANGO_SETTIINGS_MODULE=decoupled_dj.settings.development
+ 1634  uvicorn decoupled_dj.asgi:application
+ 1635  export DJANGO_SETTIINGS_MODULE=decoupled_dj.settings.development
+ 1636  uvicorn decoupled_dj.asgi:application
+
+ 1665  mkdir decoupled-dj && cd $_
+
+ 1681  pip install -r requirements/development.txt
+ 1682  python3 manage.py makemigrations
+ 1683  python3 manage.py migrate
+ 1684  npm install -g @vue/cli
+ 1685  sudo npm install -g @vue/cli
+ 1686  sudo npm audit --force
+ 1687  cd billing
+ 1688  vue create vue_spa
+ 1689  cd vue_spa
+ 1693  npm run build -- --mode staging
+
+ 1699  curl -X POST --location "http://127.0.0.1:8000/billing/api/invoices/" curl -X POST --location "http://127.0.0.1:8000/billing/api/invoices/" curl -X POST --location "http://127.0.0.1:8000/billing/api/invoices/" \ -d{ \"user"\1,}
+ 1702  npm run build -- --mode staging
+ 1703  curl -X POST --location "http://127.0.0.1:8000/billing/api/invoices/" curl -X POST --location "http://127.0.0.1:8000/billing/api/invoices/" curl -X POST --location "http://127.0.0.1:8000/billing/api/invoices/" \ -d{ \"user"\1,}
+ 1706  npm run build -- --mode staging
+ 1728  pip install django-environ
+ 1729  pip install django-extensions
+ 1730  pip install uvicorn
+ 1731  uvicorn decoupled_dj.asgi:application
+ 1733  python3 manage.py collectstatic
+ 1735  pip install django-environ
+ 1740  pip install djangorestframework
+
+ 1777  curl -X POST --location "http://127.0.0.1:8000/billing/api/invoices/" \ -H "Accept:*/* \ -H "Content-Type:application/json" \ -d "{ \ "user\":1,\"date\":\ "2020-12-01\",\"due_date\": \"2020-12-30\"}"
+ 1778  curl -X POST --location "http://127.0.0.1:8000/billing/api/invoices/" \ -H "Accept:*/* \ -H "Content-Type:application/json" \ -d "{ \ "user\":1,\"date\":\ "2020-12-01\",\"due_date\": \"2020-12-30\"}"
+ 1779  cd decoupled_dj/billing/vue_spa//src/components/
+
+ 1811  git clone https://github.com/valentingagliari/decoupled-dj/tree/chapter_06_decoupled_with_drf.
+ 1812  git clone https://github.com/valentinogagliari/decoupled-dj/tree/chapter_06_decoupled_with_drf.
+ 1814  git clone https://github.com/valentinogagliardi/decoupled-dj/tree/chapter_06_decoupled_with_drf.
+====================================================================================================================
+dotenv
+DEBUG=True
+SECRET_KEY="django-insecure-)r2waboda$o)g39!ap!l7dx$numws6k7zi9=m*3e1hbudc!2&r"
+STATIC_URL ='/static/'
+====================================================================================================================
+wsgi.py : os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'ploegenlijst.settings.development')
+====================================================================================================================
+
+development.py
+import environ
+from .base import *  # noqa
+env=environ.Env()
+SECRET_KEY = 'django-insecure-)r2waboda$o)g39!ap!l7dx$numws6k7zi9=m*3e1hbudc!2&r'
+# SECRET_KEY = env("SECRET_KEY")
+INSTALLED_APPS = INSTALLED_APPS + ["django_extensions"]
+====================================================================================================================
+export DJANGO_SETTINGS_MODULE=ploegenlijst.settings.development
+Django version 4.1, using settings 'ploegenlijst.settings.development'
+====================================================================================================================
+export DJANGO_SETTINGS_MODULE=ploegenlijst.settings.development
+Django version 4.1, using settings 'ploegenlijst.settings.production'
+

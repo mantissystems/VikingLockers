@@ -35,6 +35,7 @@ from viking.serializers import(
     KluisSerializer,
     NoteSerializer,
     ActiviteitSerializer,
+    TopicSerializer,
 )
 from .models import   Topic,Kluis,Vikinglid,Activiteit,Note
 from .forms import UserForm,Urv_KluisForm,VikinglidForm,KluisjeForm
@@ -642,6 +643,11 @@ def getNote(request,pk):
     notes = Note.objects.get(id=pk)
     serializer = NoteSerializer(notes, many=False)
     return Response(serializer.data)
+@api_view(['GET', 'POST'])
+def getTopics(request):
+    topics = Topic.objects.all()
+    serializer = TopicSerializer(topics, many=True)
+    return Response(serializer.data)
 
 @api_view(['GET', 'POST'])
 def getNotes(request):
@@ -707,7 +713,7 @@ def createNote(request):
 
 def export_team_data(request):
     # https://docs.djangoproject.com/en/3.2/howto/outputting-csv/
-    
+    # toetsenbord testen
     # response = HttpResponse(
     #     content_type='text/csv',headers={'Content-Disposition': 'attachment; filename="ploegen_lijst.csv"'},
     # )
