@@ -13,7 +13,7 @@ ALLOWED_HOSTS = ['*', 'http://127.0.0.1:8000',
 
 CSRF_TRUSTED_ORIGINS = [
     'https://kluisjeslijst.up.railway.app',
-    'http://127.0.0.1',]
+    'http://127.0.0.1','http://localhost:8080']
 # Application definition
 INSTALLED_APPS = [
     'django.contrib.admin',

@@ -638,15 +638,52 @@ def compute_lcm(x, y):
 #     ]
 #     return Response(routes)
 
+def createRequest(request):
+    data = request.data
+    username = 'Wachtlijst'
+    kluisje=Kluis.objects.get(name=username)
+    vikinglid=Vikinglid.objects.get(id=122) #wim bakker
+
+
+# ==== 
+    # vikinglid=Vikinglid.objects.get(id=pk)
+    # form=VikinglidForm(instance=vikinglid)
+    # kluizen=Activiteit.objects.all().filter(type='kluis').order_by('name')
+    # teams=Activiteit.objects.all().filter(type='ploeg').order_by('name')
+    # lidvan = vikinglid.is_lid_van.all()
+    # kluisje= request.POST.getlist('heeftkluis')
+    # kluisjeopheffen= request.POST.getlist('is_lid_van')
+    if kluisje:
+        try:
+            vikinglid.is_lid_van.add(kluisje[0])
+        except:
+            print('activiteit',kluisje[0])
+            pass
+    # if kluisjeopheffen:
+    #     try:
+    #         vikinglid.is_lid_van.remove(kluisjeopheffen[0])
+    #     except:
+    #         print('op te heffen',kluisjeopheffen[0])
+    #         pass
+
+# ====
+    note = Note.objects.create(
+        body=data['body']
+    )
+    serializer = NoteSerializer(note, many=False)
+    return Response(serializer.data)
+
+@api_view(['GET', 'POST'])
+def getTopics(request):
+    notes = Topic.objects.all()
+    serializer = TopicSerializer(notes, many=True)
+    return Response(serializer.data)
+
+
 @api_view(['GET', 'POST'])
 def getNote(request,pk):
     notes = Note.objects.get(id=pk)
     serializer = NoteSerializer(notes, many=False)
-    return Response(serializer.data)
-@api_view(['GET', 'POST'])
-def getTopics(request):
-    topics = Topic.objects.all()
-    serializer = TopicSerializer(topics, many=True)
     return Response(serializer.data)
 
 @api_view(['GET', 'POST'])

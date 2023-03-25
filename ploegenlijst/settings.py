@@ -1,19 +1,17 @@
-import environ
+# import environ
 from pathlib import Path
 
 BASE_DIR = Path(__file__).resolve().parent.parent
-env=environ.Env()
+# env=environ.Env()
 
 SECRET_KEY = 'django-insecure-)r2waboda$o)g39!ap!l7dx$numws6k7zi9=m*3e1hbudc!2&r'
 DEBUG = True
-ALLOWED_HOSTS = ['*', 'http://127.0.0.1:8000',
+ALLOWED_HOSTS = ['*', 'http://127.0.0.1',
 'https://kluisjeslijst.up.railway.app',]
 
 CSRF_TRUSTED_ORIGINS = [
     'https://kluisjeslijst.up.railway.app',
     'http://127.0.0.1',
-    # 'http://*', 
-    # 'https://*',
 ]
 # Application definition
 INSTALLED_APPS = [
@@ -47,7 +45,7 @@ ROOT_URLCONF = 'ploegenlijst.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS':[ BASE_DIR / 'mykluisjes/build','templates'
+        'DIRS':[ BASE_DIR / 'templates'
         ],
         'APP_DIRS': True,
         'OPTIONS': {

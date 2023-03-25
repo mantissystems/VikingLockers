@@ -2,7 +2,8 @@ from django.urls import path
 from . import views
 from viking.views import( 
 # AanmeldView ,
- activityPage , 
+ activityPage ,
+ createRequest, 
 # getRoutes,
 KluisPage, 
 urv_updateKluis ,
@@ -27,6 +28,7 @@ urlpatterns = [
     path('profile/<str:pk>/', userProfile, name='user-profile'),
     path('create-vikinglid/', createVikinglid, name='create-vikinglid'),
     path('create-aanvrage/', aanvrage, name='create-aanvrage'),
+    path('create-request/', createRequest, name='create-request'),
     path('delete-vikinglid/<str:pk>/', deleteVikinglid, name='delete-vikinglid'),
     path('activity/', activityPage, name="activity"),
     path('vikinglid/', get_vikinglid, name='vikinglid'),
@@ -39,7 +41,7 @@ urlpatterns = [
     path('<int:pk>/', DetailView.as_view(), name='detail'),
     path('export/', export_team_data, name='export'),
     path('notes/', views.getNotes, name="notes"),
-        path('api/topics/', views.getTopics, name="topics"),
+    path('api/topics/', views.getTopics, name="topics"),
     path('activiteiten/', views.getActiviteiten, name="activiteiten"),
     path('activiteiten/<str:pk>/', views.getActiviteit, name="activiteiten"),
     path('notes/create/', views.createNote, name="create-note"),
