@@ -1,3 +1,4 @@
+from django.core.mail import send_mail
 # import random
 # from array import *
 from django.template import loader
@@ -18,7 +19,7 @@ from django.urls import reverse,reverse_lazy
 # from viking.models import( Person,)
 from collections import namedtuple
 from django.db import connection
-from django.views.generic import(ListView,UpdateView,DetailView)
+from django.views.generic import(ListView,UpdateView,DetailView,TemplateView)
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from django.shortcuts import render, redirect
@@ -37,7 +38,7 @@ from viking.serializers import(
     ActiviteitSerializer,
     TopicSerializer,
 )
-from .models import   Topic,Kluis,Vikinglid,Activiteit,Note
+from .models import   Topic,Kluis,Vikinglid,Activiteit,Note,Matriks
 from .forms import UserForm,Urv_KluisForm,VikinglidForm,KluisjeForm
 # from .utils import (getNoteDetail, getNotesList,) 
 
@@ -159,9 +160,10 @@ def home(request):
         template='viking/home.html'
         # print('bezet', q)
         vikingleden=Vikinglid.objects.all()
-    # print('context', vikingleden.count())
+
     print('billable', billable.count())
     context = {
+        'koplegen':[f'verdeling ({all.count()} leden; {leeg.count()} leeg)','lid'],
         'vikingleden':vikingleden,
         'topics': topics, 
         'topcs':topcs,
@@ -304,7 +306,11 @@ def aanvrage(request):
 
 @login_required(login_url='login')
 def urv_updateKluis(request, pk):
-    vikinglid=Vikinglid.objects.get(id=pk)
+    s2 = "510"
+    print(int(s2))
+    print(int(s2, 16))
+    id_= int(pk,16)
+    vikinglid=Vikinglid.objects.get(id=id_)
     form=VikinglidForm(instance=vikinglid)
     kluizen=Activiteit.objects.all().filter(type='kluis').order_by('name')
     teams=Activiteit.objects.all().filter(type='ploeg').order_by('name')
@@ -340,6 +346,53 @@ def urv_updateKluis(request, pk):
           'teams':teams,
     }
     return render(request, 'viking/vikinglid_form.html', context)
+
+@login_required(login_url='login')
+def get_kluis(request, pk,kol):
+    kls=Kluis.objects.get(id=kol)
+    matrix=Matriks.objects.get(id=pk)
+    hdr=['', 'kol1','kol2','kol3','kol4','kol5','kol6','kol7','kol8','kol9']
+    a=hdr[int(kol)]
+    k=getattr(matrix,a)
+
+    pos=int(kol);begincell=0;cellengte=0;eindcell=0
+    cellengte=4
+    regellengte=len(matrix.regel)
+    begincell=0+pos*cellengte
+    eindcell=0+cellengte
+    regel=matrix.regel
+    cell=regel[begincell:eindcell]
+    links=regel[0:eindcell]
+    rechts=regel[eindcell+cellengte:regellengte]
+    new_cell_content=' xxx'
+    # Matriks.objects.all().filter(id=pk).update(kol1=new_cell_content)
+    # new_cell_content='!'+ str(kls.id)
+    new_info=links+new_cell_content+rechts
+    print(pk,begincell,eindcell,links,rechts,new_info)
+    matrix.regel=new_info
+    matrix.kol1=new_cell_content
+    matrix.save()
+    form=KluisjeForm(instance=kls)
+    kluizen=Activiteit.objects.all().filter(type='kluis').order_by('name')
+    teams=Activiteit.objects.all().filter(type='ploeg').order_by('name')
+    kluisje= request.POST.getlist('heeftkluis')
+    kluisjeopheffen= request.POST.getlist('is_lid_van')
+    if request.method == 'POST':
+        kls.name = kls.name
+        kls.name = request.POST.get('name')
+        kls.email = request.POST.get('email')
+        kls.save()
+        return redirect('home')
+
+    context = {
+        'form': form,
+          'vikinglid': kls,
+        #   'lidvan':lidvan,
+          'kluizen':kluizen,
+          'teams':teams,
+    }
+    return render(request, 'viking/get_kluis_form.html', context)
+
 
 @login_required(login_url='login')
 def deleteVikinglid(request, pk):
@@ -601,43 +654,108 @@ def compute_lcm(x, y):
 # num2 = 24
 # print("The Lowest.Common.Meam. is", compute_lcm(num1, num2))
 
-# @api_view(['GET'])
-# def getRoutes(request):
 
-#     routes = [
-#         {
-#             'Endpoint': '/notes/',
-#             'method': 'GET',
-#             'body': None,
-#             'description': 'Returns an array of notes'
-#         },
-#         {
-#             'Endpoint': '/notes/id',
-#             'method': 'GET',
-#             'body': None,
-#             'description': 'Returns a single note object'
-#         },
-#         {
-#             'Endpoint': '/notes/create/',
-#             'method': 'POST',
-#             'body': {'body': ""},
-#             'description': 'Creates new note with data sent in post request'
-#         },
-#         {
-#             'Endpoint': '/notes/id/update/',
-#             'method': 'PUT',
-#             'body': {'body': ""},
-#             'description': 'Creates an existing note with data sent in post request'
-#         },
-#         {
-#             'Endpoint': '/notes/id/delete/',
-#             'method': 'DELETE',
-#             'body': None,
-#             'description': 'Deletes and exiting note'
-#         },
-#     ]
-#     return Response(routes)
+class Blokken(TemplateView):
+    template_name = 'viking/bloktabel_list.html'
+    def get_context_data(self, **kwargs):
+        bloknummer='kastH01'
+        hdr=['kol1','kol2','kol3','kol4','kol5','kol6','kol7','kol8','kol9']
+        matrix=Matriks.objects.all()
+        ctx = super(Blokken, self).get_context_data(**kwargs)
+        ctx['header'] = ['Rondenummer', '  Blok nummer  ', 'Paring','Thuis','Uit']
+        ctx["rows"] = Kluis.objects.all()
+        ctx["bloknummer"] = bloknummer
+        nr=9
+        kolommen = nr
+        kolom6='kol6'
+        rounds=nr #int(kolommen/2)
+        r = 0
+        rijen=nr # (kolommen-1)*rounds
+        ctx['kop'] = [f'matrix({rijen}rijen; {rounds} rijen) with {kolommen} kolommen']
+        ctx["regels"]= Matriks.objects.all()
+        s = ""
+        w1=''
+        p = 0
+        Matriks.objects.all().delete()
+        for teama in range(0,kolommen):  # 0 tot 6 of 9 9
+            s = ""
+            p = 0
+            for teamb in range(0,kolommen):
+                if teama != teamb:
+                    p += 1
+                    ronde = (teamb + teama)%kolommen
+                    if ronde == 0: ronde = kolommen
+                    r+=1
+                    s += " " +  str(r).zfill(3) #+'|.'
 
+                    kls=Kluis.objects.all().get(id=r); kls.topic_id=r ; kls.kast=bloknummer;  kls.save()
+                    # mx=Matriks.objects.filter(ronde=13).update(kol6='77')
+                    if p%2 == 0:
+                        w1 += str(ronde)
+                        w1 = ""
+                    else:
+                        r+=1
+                        s += " " +  str(r).zfill(3) #+'|!'
+                        # s += w1 # " XX "
+                        ronde += 1
+                    kls=Kluis.objects.all().get(id=r); kls.topic_id=r; kls.kast=bloknummer;  kls.save()
+
+                if teama == teamb:
+                    r+=1
+                    s += " " +  str(r).zfill(3) #+'|='
+                    kls=Kluis.objects.all().get(id=r); kls.topic_id=r ; kls.kast=bloknummer;  kls.save()
+
+                    # s +=  w1+ str(r) #" | ==== |"
+                    # s+=w1+" | ==== |"
+
+            print(s)
+            # NIET MEER AANMAKEN DAT IS EENMALIG; UPDATE CEL WITH KLUIS INFO
+            # VELD 'regel' bevat kluisnummering '040' = kolom 1; rij 4 
+            Matriks.objects.update_or_create( 
+                        kop=s,
+                        regel=s,ronde=r,x_as=r,y_as=ronde)
+        return ctx
+    
+def get_matrix(request):
+    template_name = 'viking/bloktabel_list.html'
+    # bloknummer='Kast'
+    ctx = {} #super(Blokken, self).get_context_data(**kwargs)
+    ctx['header'] = ['Rondenummer', '  Blok nummer  ', 'Paring','Thuis','Uit']
+    ctx["rows"] = Kluis.objects.all()
+    # ctx["bloknummer"] = bloknummer
+    nr=9
+    kolommen = nr
+    kasten=Kluis.objects.all() #.filter(kast__icontains=bloknummer)
+    mtrx=Matriks.objects.all()
+    rounds=nr #int(kolommen/2)
+    r = 0
+    rijen=nr # (kolommen-1)*rounds
+    ctx['kop'] = [f'matrix({rijen}rijen; {rounds} rijen) with {kolommen} kolommen']
+    ctx["regels"]= Matriks.objects.all()
+    s = ""
+    w1=''
+    p = 0 ;r=0
+    # for mt in mtrx:
+        # print(mt)
+
+    # t=8
+    # team8=Matriks.objects.all().filter(regel__icontains='-'+ str(t).zfill(2))
+    spelers=Vikinglid.objects.all() #.filter(nr=str(t).zfill(2)).values_list('naam')
+    context={'kop': [f'matrix ({rijen}rijen) bij {kolommen} kolommen',],
+            #  'kopmtrx':[f'matrix {mtrx.count()}'],
+            # 'kopmtrx' : [f'matrix({rijen}rijen; {rounds} rijen) with {kolommen} kolommen','kol1','kol2','kol3','kol4','kol5','kol6','kol7','kol8','kol9'],
+            'kopmtrx' : [f'kol1','kol2','kol3','kol4','kol5','kol6','kol7','kol8','kol9'],
+            'regels': Matriks.objects.all(),
+            'matrix': mtrx,
+            'kasten': kasten,
+            # 'team8': team8,
+             'kopspelers': [f'matrix({rijen}rijen; {rounds} rijen) with {kolommen} kolommen'],
+            'spelers': spelers,
+
+            }
+    return render(request,"viking/bloktabel_list.html", context)
+    # return HttpResponseRedirect('/get_matrix/')
+    
 def createRequest(request):
     data = request.data
     username = 'Wachtlijst'
@@ -765,3 +883,5 @@ def export_team_data(request):
     c = {'data': csv_data}
     response.write(t.render(c))
     return response
+
+# send_mail('Subject here', 'Here is the message.', 'from@example.com', ['to@example.com'], fail_silently=False)

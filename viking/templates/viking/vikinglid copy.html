@@ -1,28 +1,34 @@
 {% load static %}
 <div class="roomListRoom">
     <h5>|{{q}}| {{legen}} </h5>
-    <!--  --> 
-</table>
-<table class="viking-table">
-  <thead>
-    <tr>
-        {% for h in koplegen %}
-        <th>{{h}}</th>
-        {% endfor %}
-    </tr>
-</thead>
-<tbody>
-  <tbody>
+    <!--  -->
+    {% if q == "Kluisjes-leeg" %}
     {% for kluis in empty %}
-        <tr>
-          <td> <a href="{% url 'kluisje' kluis.id %}">  {{kluis}}   </a>  </td>
-        </tr>
-    {% endfor %}
-</tbody>
-</table>
-
+    <div class="roomListRoom__header">
+        <div class="roomListRoom__actions">
+            {% if q == "Kluisjes-leeg" %}
+    
+            <ul>
+            <div class="roomListRoom__content">
+                <fieldset>
+                <legend>
+                    <a href="{% url 'kluisje' kluis.id %}">
+                        {{ forloop.counter }} 
+                        {{kluis}}
+                    </a>
+                </legend>
+            
+            </fieldset>
+            </div>
+        </ul>
+        {% endif %}
+     
+        </div>
+    </div>
+    {% endfor %}    
     </div>
     
+    {% endif %}
     <!--  -->
      <!--  -->
      {% if q == "Opheffen" %}
@@ -56,26 +62,8 @@
     {% for lid in vikingleden %}
 <div class="roomListRoom__header">
     <div class="roomListRoom__actions">
-    </table>
-    <table class="viking-table">
-      <thead>
-        <tr>
-            {% for h in koplegen %}
-            <th>{{h}}</th>
-            {% endfor %}
-        </tr>
-    </thead>
-    <tbody>
-      <tbody>
-        {% for kluis in vikingleden %}
-            <tr>
-              <td> <a href="{% url 'kluisje' kluis.id %}">  {{kluis}}   </a>  </td>
-            </tr>
-        {% endfor %}
-    </tbody>
-    </table>
-    
-        {% if q == 'Met Kluiss' or q != "Kluisjes-leegg" and q != 'Wachtlijstt' %}
+        
+        {% if q == 'Met Kluis' or q != "Kluisjes-leeg" and q != 'Wachtlijst' %}
 
         <ul>
         <div class="roomListRoom__content">
@@ -103,8 +91,6 @@
                 {% endfor %} 
         
         </fieldset>
-        <!--  -->
-        <!--  -->
         </div>
     </ul>
     {% endif %}

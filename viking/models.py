@@ -52,11 +52,12 @@ class Kluis(models.Model):
     sleutels = models.IntegerField(default=2)
     code = models.TextField(null=True, blank=True)
     topic_id = models.TextField(null=True, blank=True)
+    kast = models.CharField(max_length=18,default='kast1')     
     class Meta:
         ordering = ['-updated', '-created']
 
-    def __str__(self):
-        return self.body
+    # def __str__(self):
+    #     return self.body
 
 from django.db import models
 
@@ -67,3 +68,22 @@ class Note(models.Model):
 
     def __str__(self):
         return self.body[0:50]
+    
+
+class Matriks(models.Model):    #wrongly spelled on purpose
+    ronde = models.CharField(max_length=200)
+    kop = models.CharField(max_length=200)
+    regel = models.CharField(max_length=200)
+    x_as = models.IntegerField(default=2)
+    y_as = models.IntegerField(default=2)
+    kol1= models.CharField(max_length=18,default='1')     
+    kol2= models.CharField(max_length=18,default='1')     
+    kol3= models.CharField(max_length=18,default='1')     
+    kol4= models.CharField(max_length=18,default='1')     
+    kol5= models.CharField(max_length=18,default='1')     
+    kol6= models.CharField(max_length=18,default='1')     
+    kol7= models.CharField(max_length=18,default='1')     
+    kol8= models.CharField(max_length=18,default='1')     
+    kol9= models.CharField(max_length=18,default='1')     
+
+

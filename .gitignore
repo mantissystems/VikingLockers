@@ -4,6 +4,7 @@
 # Edit at https://www.toptal.com/developers/gitignore?templates=windows,visualstudiocode,django,linux,macos,node,python,react
 
 ### Django ###
+obs*
 *.log
 *.pot
 *.pyc

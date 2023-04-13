@@ -15,7 +15,7 @@ topicsPage ,  updateUser, userProfile,
  urv_loginPage ,
 add_activity,get_vikinglid,activiteit,
 DetailView,createVikinglid,deleteVikinglid, 
-aanvrage,export_team_data,
+aanvrage,export_team_data,Blokken,get_matrix,get_kluis,
 )
 urlpatterns = [
     path('', home, name='home'),
@@ -36,7 +36,8 @@ urlpatterns = [
     path('activiteit/<str:lid_id>',activiteit, name='activiteit'),  
     # path('<int:room_id>/aanmelden/',vote, name='vote'),  
     path('<int:kluis_id>/kluisje/',kluisje, name='kluisje'),  
-    path('<int:pk>/update-kluis/',urv_updateKluis, name='update-kluis'),  
+    path('<str:pk>/update-kluis/',urv_updateKluis, name='update-kluis'),  
+    path('<str:pk>/get_kluis/',get_kluis, name='get_kluis'),  
     path('kluisbeheer/',KluisPage , name="kluisbeheer"),
     path('<int:pk>/', DetailView.as_view(), name='detail'),
     path('export/', export_team_data, name='export'),
@@ -49,7 +50,11 @@ urlpatterns = [
     path('notes/<str:pk>/delete/', views.deleteNote, name="delete-note"),
     path('notes/<str:pk>/', views.getNote, name="note"),
     path('notes/<str:find>/find/', views.findNote, name="find-note"),
+     path('blokken/', Blokken.as_view(), name='blokken'),
+    path('get_matrix/',get_matrix, name='get_matrix'),  
+    path('<str:pk>/get_kluis/<str:kol>',get_kluis, name='get_kluis'),  
     ]
     # path('create-room/', createRoom, name='create-room'),
     # path('update-room/<str:pk>/', updateRoom, name='update-room'),
 # https://docs.djangoproject.com/en/3.1/topics/http/urls/
+# path('<int:id>/equipe_detail/<slug:slug>/', equipe_detailHL, name='equipe_detailHL'),
