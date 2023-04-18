@@ -329,7 +329,7 @@ def update_kluis(request, pk,kol):
                 form.name = huurder #request.POST.get('huurder')
                 kls.body = huurder #request.POST.get('huurder')
                 # kls.kast=matrix.kol13+str(matrix.y_as)+str(kol)
-                kls.location=matrix.kol13+str(matrix.y_as)+str(kol)
+                kls.location=matrix.naam+str(matrix.y_as)+str(kol)
                 kls.save()
                 kolom=setattr(matrix,kluisje,'kluisje')
                 # Matriks.objects.all().filter(id=pk,y_as=rgl).update(kol12='wb')
@@ -357,95 +357,74 @@ def update_kluis(request, pk,kol):
 class Blokken(TemplateView):
     template_name = 'viking/bloktabel_list.html'
     def get_context_data(self, **kwargs):
-        query = self.request.GET.get('name')
-        print(query);matrixnaam='mtrx'
-        if query!='wim':print('geen naam opgegeven')
-        if query==1:matrixnaam='dames01'
-        if query==2:matrixnaam='heren01'
+        # self.year = self.kwargs['name']    
+        # query = int(self.kwargs['name'])
+        kasten=['heren01','dames01']
+        Matriks.objects.all().delete()
+        hdr=['kol1','kol2','kol3','kol4','kol5','kol6','kol7','kol8','kol9'] #,'kol10','kol11','kol12','kol13']
+        for k in kasten:
+            print(k)
+            matrixnaam=k ##m[query]
+        # if query!=1 or query !=2:print('geen naam opgegeven')
+        # if query==1:matrixnaam='dames01'
+        # if query==2:matrixnaam='heren01'
             # return        
-        if query!='wim': redirect('get_matrix')
-        bloknummer='' ;   vv=matrixnaam[0:1]      #voorvoegsel
+        # if query!='wim': redirect('get_matrix')
+            bloknummer='' ;   vv=matrixnaam[0:1]      #voorvoegsel
 
-        hdr=['kol1','kol2','kol3','kol4','kol5','kol6','kol7','kol8','kol9','kol10','kol11','kol12','kol13']
-        matrix=Matriks.objects.all().filter(naam='heren01').first()
-        ctx = super(Blokken, self).get_context_data(**kwargs)
-        ctx['header'] = ['Rondenummer', '  Blok nummer  ', 'Paring','Thuis','Uit']
-        ctx["rows"] = Kluis.objects.all()
-        ctx["bloknummer"] = bloknummer
-        nr=9
-        kolommen = nr
-        rounds=nr #int(kolommen/2)
-        r = 0
-        rijen=nr # (kolommen-1)*rounds
+        # matrix=Matriks.objects.all().filter(naam=matrixnaam).first()
+        # ctx = super(Blokken, self).get_context_data(**kwargs)
+        # ctx['header'] = ['Rondenummer', '  Blok nummer  ', 'Paring','Thuis','Uit']
+        # ctx["rows"] = Kluis.objects.all()
+        # ctx["bloknummer"] = bloknummer
+            nr=9
+            kolommen = nr
+            rounds=nr #int(kolommen/2)
+            r = 0
+            rijen=nr # (kolommen-1)*rounds
         # ctx['kop'] = [f'matrix({rijen}rijen; {rounds} rijen) with {kolommen} kolommen']
-        ctx["regels"]= Matriks.objects.all()
-        s = ""
-        w1=''
-        p = 0
-        # Matriks.objects.all().delete()
-        for teama in range(0,kolommen):  # 0 tot 6 of 9 9
+        # ctx["regels"]= Matriks.objects.all()
             s = ""
+            w1=''
             p = 0
-            for teamb in range(0,kolommen):
-                if teama != teamb:
-                    p += 1
-                    ronde = (teamb + teama)%kolommen
-                    if ronde == 0: ronde = kolommen
-                    r+=1
-                    s += vv + str(r).zfill(3) #+'|.'
+            for teama in range(0,kolommen):  # 0 tot 6 of 9 9
+                s = ""
+                p = 0
+                for teamb in range(0,kolommen):
+                    if teama != teamb:
+                        p += 1
+                        ronde = (teamb + teama)%kolommen
+                        if ronde == 0: ronde = kolommen
+                        r+=1
+                        s += vv + str(r).zfill(3) #+'|.'
 
                     # kls=Kluis.objects.all().get(id=r); kls.topic_id=r ; kls.code=bloknummer;  kls.save()
-                    if p%2 == 0:
-                        w1 += str(ronde)
-                        w1 = ""
-                    else:
-                        r+=1
-                        s += vv + str(r).zfill(3) #+'|!'
-                        ronde += 1
+                        if p%2 == 0:
+                            w1 += str(ronde)
+                            w1 = ""
+                        else:
+                            r+=1
+                            s += vv + str(r).zfill(3) #+'|!'
+                            ronde += 1
                     # kls=Kluis.objects.all().get(id=r); kls.topic_id=r; kls.code=bloknummer;  kls.save()
 
-                if teama == teamb:
-                    r+=1
-                    s +=vv +  str(r).zfill(3) #+'|='
+                    if teama == teamb:
+                        r+=1
+                        s +=vv +  str(r).zfill(3) #+'|='
                     # kls=Kluis.objects.all().get(id=r); kls.topic_id=r ; kls.code=bloknummer;  kls.save()
 
-            print(s)
+                print(s)
             # NIET MEER AANMAKEN DAT IS EENMALIG; UPDATE CEL WITH KLUIS INFO
             # VELD 'regel' bevat kluisnummering 'h040' = kluis.kast='h40' 
-            Matriks.objects.update_or_create( 
+                Matriks.objects.update_or_create( 
                         kop=s,
-                        regel=s,ronde=r,x_as=r,y_as=ronde,kol13=matrixnaam)
+                        regel=s,ronde=r,x_as=r,y_as=ronde,naam=matrixnaam)
             
-        # y=0
-        # for m in Matriks.objects.all():
-        #     # y+=1
-        #     print(m.id)
-        #     for i in range(1,10):
-                # set_blokken(request,m.id,i,matrixnaam)
-            teller=0
-            for m in Matriks.objects.all():
-            # for m in matrix:
-                teller+=1
-                for k in range(0,13):
-                    a=hdr[k]
-                    inh=getattr(m,a)
-                    kluis=Kluis.objects.all().filter(kast=inh).first()
-                    if kluis:
-                        lid=Vikinglid.objects.all().filter(name=kluis.name).first()
-                        if lid:
-                            print(inh,kluis.name,lid.name)
-                            kluis.code=96
-                        if kluis.name=='leeg':
-                            kluis.code=93
-                        else:
-                            kluis.code=str(teller)
-                            kluis.sleutels=9
-                        kluis.save()
-                    else:   #matriks has no match with kluis.kast 
-                        #  Book.objects.filter(title__exact='').count()
-                        legecode=kluis = Kluis.objects.all().filter(code__exact='')
-                    
-                return ctx
+                for m in Matriks.objects.all():
+                    print(m.id)
+                    for i in range(1,10):
+                        set_blokken(request,m.id,i,matrixnaam)
+        return ##ctx
 
 def get_matrix(request):
     template_name = 'viking/bloktabel_list.html'
@@ -497,7 +476,7 @@ def set_kluis(request, pk,kol):
     rechts=regel[eindcell+cellengte:regellengte]
     new_cell_content=' xxx' ; huurder='';huurdernaam=''
     if col in (1,2,3,4,5,6,7,8,9,10,11,12,13):
-        b=(col-1)*3
+        b=(col-1)*cellengte
         e=b+3
         c=regel[b:e] 
         new_info=c
@@ -551,51 +530,51 @@ def set_kluis(request, pk,kol):
     }
     return render(request, 'viking/get_kluis_form.html', context)
 
-def modify_matriks( matriksregel,matrikskolom:int,cel_inhoud):
-    print('in modify_matriks')
-    matrix=Matriks.objects.get(y_as=matriksregel)
-    hdr=['', 'kol1','kol2','kol3','kol4','kol5','kol6','kol7','kol8','kol9','kol10','kol11','kol12'] #,'kol12','kol13']
-    a=hdr[matrikskolom]
-    k=getattr(matrix,a)
-    print(k)
-    # pos=matrikskolom;begincell=0;cellengte=0;eindcell=0
-    cellengte=3
-    col=matrikskolom
-    regellengte=len(matrix.regel)
-    new_cell_content=cel_inhoud
-    if col in (1,2,3,4,5,6,7,8,9,10,11,12,13): #om te voorkomen dat er verkeerde kolomnummers binnenkomen
+# def modify_matriks( matriksregel,matrikskolom:int,cel_inhoud):
+#     print('in modify_matriks')
+#     matrix=Matriks.objects.get(y_as=matriksregel)
+#     hdr=['', 'kol1','kol2','kol3','kol4','kol5','kol6','kol7','kol8','kol9','kol10','kol11','kol12'] #,'kol12','kol13']
+#     a=hdr[matrikskolom]
+#     k=getattr(matrix,a)
+#     print(k)
+#     # pos=matrikskolom;begincell=0;cellengte=0;eindcell=0
+#     cellengte=3
+#     col=matrikskolom
+#     regellengte=len(matrix.regel)
+#     new_cell_content=cel_inhoud
+#     if col in (1,2,3,4,5,6,7,8,9,10,11,12,13): #om te voorkomen dat er verkeerde kolomnummers binnenkomen
         
-        b=(col-1)*3
-        e=b+3
-        if len(cel_inhoud) > 3:
-            new_cell_content=cel_inhoud[0:3]
-        else:
-            c=matriksregel[b:e] 
-            new_info=c
-            new_cell_content=c 
-        print(matriksregel,'col', matrikskolom,'cel',cel_inhoud,k)
-        print('uit modify_matriks')
-        if col==1: matrix.kol1=new_cell_content
-        if col==2: matrix.kol2=new_cell_content
-        if col==3: matrix.kol3=new_cell_content
-        if col==4: matrix.kol4=new_cell_content
-        if col==5: matrix.kol5=new_cell_content
-        if col==6: matrix.kol6=new_cell_content
-        if col==7: matrix.kol7=new_cell_content
-        if col==8: matrix.kol8=new_cell_content
-        if col==9: matrix.kol9=new_cell_content
-        if col==10: matrix.kol10=new_cell_content
-        if col==11: matrix.kol11=new_cell_content
-        if col==12: matrix.kol12=new_cell_content
-        matrix.kol13='Heren' #new_cell_content
-        matrix.save()
-    return
+#         b=(col-1)*3
+#         e=b+3
+#         if len(cel_inhoud) > 3:
+#             new_cell_content=cel_inhoud[0:3]
+#         else:
+#             c=matriksregel[b:e] 
+#             new_info=c
+#             new_cell_content=c 
+#         print(matriksregel,'col', matrikskolom,'cel',cel_inhoud,k)
+#         print('uit modify_matriks')
+#         if col==1: matrix.kol1=new_cell_content
+#         if col==2: matrix.kol2=new_cell_content
+#         if col==3: matrix.kol3=new_cell_content
+#         if col==4: matrix.kol4=new_cell_content
+#         if col==5: matrix.kol5=new_cell_content
+#         if col==6: matrix.kol6=new_cell_content
+#         if col==7: matrix.kol7=new_cell_content
+#         if col==8: matrix.kol8=new_cell_content
+#         if col==9: matrix.kol9=new_cell_content
+#         if col==10: matrix.kol10=new_cell_content
+#         if col==11: matrix.kol11=new_cell_content
+#         if col==12: matrix.kol12=new_cell_content
+#         matrix.kol13='Heren' #new_cell_content
+#         matrix.save()
+#     return
 
 def set_blokken(request, pk,kol,matrixnaam):
-    kls=Kluis.objects.get(id=kol)
+    # kls=Kluis.objects.get(id=kol)
     # matrix=Matriks.objects.filter(kol13__icontains='heren').first()
     matrix=Matriks.objects.get(id=pk)
-    hdr=[ 'kol1','kol2','kol3','kol4','kol5','kol6','kol7','kol8','kol9','kol10','kol11','kol12'] #,'kol12','kol13']
+    hdr=[ 'kol1','kol2','kol3','kol4','kol5','kol6','kol7','kol8','kol9','kol10','kol11','kol12','kol12','kol13']
     a=hdr[int(kol)]
     col=int(kol)
     k=getattr(matrix,a)
@@ -631,7 +610,7 @@ def set_blokken(request, pk,kol,matrixnaam):
     if col==11: matrix.kol11=new_cell_content
     if col==12: matrix.kol12=new_cell_content
     # if col==13: matrix.kol13='Heren' #new_cell_content
-    matrix.kol13=matrixnaam +'!' #new_cell_content
+    matrix.naam=matrixnaam #### +'!' #new_cell_content
     kluisje=getattr(matrix,a)
     kolom=setattr(matrix,kluisje,'kluisje')
 
