@@ -654,14 +654,14 @@ def check_matriks(request):
                     kluis.sleutels=9
                 kluis.save()
             else:   #matriks has no match with kluis.kast 
-                kluis = Kluis.objects.all().exclude(
-                Q(code=None) |
-                Q(code__exact='') 
-                ).first() #skip kluis.code blank
-                kluis.code=95
-                kluis.sleutels=9
-                kluis.save()
-                print('code=blank')
+                #  Book.objects.filter(title__exact='').count()
+                legecode=kluis = Kluis.objects.all().filter(code__exact='')
+                # Q(code=None) |
+                # Q(code__exact='') 
+                # kluis.code=95
+                # kluis.sleutels=9
+                # kluis.save()
+                # print('code=blank')
     context={}
     # return
     return render(request, 'viking/home.html', context)
