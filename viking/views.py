@@ -432,7 +432,7 @@ class Blokken(TemplateView):
                     r+=1
                     s += vv + str(r).zfill(3) #+'|.'
 
-                    kls=Kluis.objects.all().get(id=r); kls.topic_id=r ; kls.code=bloknummer;  kls.save()
+                    # kls=Kluis.objects.all().get(id=r); kls.topic_id=r ; kls.code=bloknummer;  kls.save()
                     if p%2 == 0:
                         w1 += str(ronde)
                         w1 = ""
@@ -440,12 +440,12 @@ class Blokken(TemplateView):
                         r+=1
                         s += vv + str(r).zfill(3) #+'|!'
                         ronde += 1
-                    kls=Kluis.objects.all().get(id=r); kls.topic_id=r; kls.code=bloknummer;  kls.save()
+                    # kls=Kluis.objects.all().get(id=r); kls.topic_id=r; kls.code=bloknummer;  kls.save()
 
                 if teama == teamb:
                     r+=1
                     s +=vv +  str(r).zfill(3) #+'|='
-                    kls=Kluis.objects.all().get(id=r); kls.topic_id=r ; kls.code=bloknummer;  kls.save()
+                    # kls=Kluis.objects.all().get(id=r); kls.topic_id=r ; kls.code=bloknummer;  kls.save()
 
             print(s)
             # NIET MEER AANMAKEN DAT IS EENMALIG; UPDATE CEL WITH KLUIS INFO
@@ -550,8 +550,8 @@ def set_kluis(request, pk,kol):
         h=h[0]
         huurder=int(h)
         hrdr=Vikinglid.objects.get(id=huurder)
-        set_blokken(request,pk,col)   #matriks regel, matriks kolom
-        matrix.save()
+        # set_blokken(request,pk,col)   #matriks regel, matriks kolom
+        # matrix.save()
         # matrix.kol1=new_cell_content
         # matrix.save()
         kls.name = kls.name
