@@ -118,74 +118,32 @@ def registerPage(request):
 
 def home(request):
     q = request.GET.get('q') if request.GET.get('q') != None else '' # 'Met Kluis'
-    topcs = Activiteit.objects.values('type') .filter(name__icontains=q)
     template='viking/home.html'
     topics = Topic.objects.all()
     all=Vikinglid.objects.all()
     filter1=Q(name__icontains=q)    
-    # vikingleden=Vikinglid.objects.all().filter(filter1 )
     vikingleden=Vikinglid.objects.all()
-
+# ==========================================================
     if q=='Export Kluislijst':
             return redirect('export')
     if q=='Aanvraag':
             return redirect('create-aanvrage')
-    leeg = Activiteit.objects.all().filter(
-        # Q(name=None) | 
-        Q(type='kluis'))
-    leeg = Activiteit.objects.all().filter(
-        Q(name=None) | 
-        Q(type='kluis'))
-    billable = Activiteit.objects.none()
-    if q=='Kluisjes-leeg':
-        template='viking/home.html'
-        leeg = Activiteit.objects.all().filter(
-        Q(lid_van=None) &
-        Q(type='kluis')
-        )
-    if q=='Met Kluis':
-        billable = Activiteit.objects.all().exclude(
-        Q(lid_van=None)| 
-        Q(type='ploeg')
-        # &
-        )
-        template='viking/home.html'
+        # template='viking/home.html'
     vikingleden=Vikinglid.objects.all()
-
-    print('billable', billable.count())
+# ==============================================================
+    heren=Matriks.objects.all().filter(naam='heren01')
+    dames=Matriks.objects.all().filter(naam='dames01')
+    mtrx=Matriks.objects.all()
     context = {
-        'koplegen':[f'verdeling ({all.count()} leden; {leeg.count()} leeg)','lid'],
+        'koplegen':[f'verdeling ({all.count()} leden'],
         'vikingleden':vikingleden,
         'topics': topics, 
-        'topcs':topcs,
-        'empty':leeg,
-        'billable':billable,
-        'legen':leeg.count(),
+        'matrix': mtrx,
+        'heren': heren,
+        'dames': dames,
         'q':q,
         }
-    kasten=Kluis.objects.all() #.filter(kast__icontains=bloknummer)
-    mtrx=Matriks.objects.all()
-    heren=Matriks.objects.all().filter(kol13='heren01')
-    dames=Matriks.objects.all().filter(kol13='dames01')
-    # rounds=nr #int(kolommen/2)
-        # r = 0
-        # rijen=nr # (kolommen-1)*rounds
-    spelers=Vikinglid.objects.all() #.filter(nr=str(t).zfill(2)).values_list('naam')
-    context={
-        # 'kop': [f'matrix ({rijen}rijen) bij {kolommen} kolommen',],
-            'kopmtrx' : [f'kast', 'kol1','kol2','kol3','kol4','kol5','kol6','kol7','kol8','kol9'],#,'kol10','kol11','kol12','kol13'], 'regel-informatie kluisnummers'
-            # 'regels': Matriks.objects.all(),
-            'matrix': mtrx,
-            'heren': heren,
-            'dames': dames,
-            # 'kastenn': kasten,
-            #  'kopspelers': [f'matrix({rijen}rijen; {rounds} rijen) with {kolommen} kolommen'],
-            # 'spelers': spelers,
-
-            }
-
     return render(request, template, context)
-    
 
 def userProfile(request, pk):
     user = User.objects.get(id=pk)
@@ -399,12 +357,16 @@ def update_kluis(request, pk,kol):
 class Blokken(TemplateView):
     template_name = 'viking/bloktabel_list.html'
     def get_context_data(self, **kwargs):
-        bloknummer=''
-        matrixnaam='dames01'
-        vv=matrixnaam[0:1]
+        query = self.request.GET.get('name')
+        print(query);matrixnaam='mtrx'
+        if query!='wim':print('geen naam opgegeven')
+        if query==1:matrixnaam='dames01'
+        if query==2:matrixnaam='heren01'
+            # return        
+        if query!='wim': redirect('get_matrix')
+        bloknummer='' ;   vv=matrixnaam[0:1]      #voorvoegsel
+
         hdr=['kol1','kol2','kol3','kol4','kol5','kol6','kol7','kol8','kol9'] #,'kol10','kol11','kol12','kol13']
-        # matrix=Matriks.objects.all()
-        # matrix=Matriks.objects.filter(kol13='heren01').first()
         matrix=Matriks.objects.all().filter(kol13='heren01').first()
         ctx = super(Blokken, self).get_context_data(**kwargs)
         ctx['header'] = ['Rondenummer', '  Blok nummer  ', 'Paring','Thuis','Uit']
@@ -461,15 +423,16 @@ class Blokken(TemplateView):
             for i in range(1,10):
                 set_blokken(request,m.id,i,matrixnaam)
         return ctx
-    
+
 def get_matrix(request):
     template_name = 'viking/bloktabel_list.html'
     nr=9
     kolommen = nr
     kasten=Kluis.objects.all() #.filter(kast__icontains=bloknummer)
     mtrx=Matriks.objects.all()
-    heren=Matriks.objects.all().filter(kol13='heren01')
-    dames=Matriks.objects.all().filter(kol13='dames01')
+    topics=Topic.objects.all()
+    heren=Matriks.objects.all().filter(naam='heren01')
+    dames=Matriks.objects.all().filter(naam='dames01')
     rounds=nr #int(kolommen/2)
     # r = 0
     rijen=nr # (kolommen-1)*rounds
@@ -480,7 +443,7 @@ def get_matrix(request):
             'matrix': mtrx,
             'heren': heren,
             'dames': dames,
-            # 'kastenn': kasten,
+            'topics': topics,
              'kopspelers': [f'matrix({rijen}rijen; {rounds} rijen) with {kolommen} kolommen'],
             # 'spelers': spelers,
 
@@ -688,13 +651,15 @@ def check_matriks(request):
                     kluis.code=93
                 else:
                     kluis.code=str(teller)
+                    kluis.sleutels=9
                 kluis.save()
             else:   #matriks has no match with kluis.kast 
-                kluis = Kluis.objects.all().filter(
+                kluis = Kluis.objects.all().exclude(
                 Q(code=None) |
-                Q(code='') 
+                Q(code__exact='') 
                 ).first() #skip kluis.code blank
                 kluis.code=95
+                kluis.sleutels=9
                 kluis.save()
                 print('code=blank')
     context={}

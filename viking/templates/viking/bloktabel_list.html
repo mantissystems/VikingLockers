@@ -6,9 +6,22 @@
     
     <h3>Indelings blok ({{regels.count}} {{bloknummer}}) </h3>
     <li><a href="/" class="btn btn-primary btn-sm">Hoofdmenu</a></li>
+    <div class="form__group">
+        <label for="huurder">Naam</label
+            name="huurder"> 
+      </div>
+
+      <form method="POST" action="">
+        {% csrf_token %}
+        <p>Are you sure redefine the matrix? "{{object}}"?</p>
+        <a href="{{request.META.HTTP_REFERER}}"> BACK </a>
+        <input type="submit" value="Confirm" />
+    </form>
     {% if user.is_superuser %}
-    <li><a href="{% url 'blokken' %}" class="btn btn-primary btn-sm">Blokken herindelen</a></li>
+    
     {% else %}
+    <li><a href="{% url 'blokken' 1 %}" class="btn btn-primary btn-sm">Blokken herindelen heren</a></li>
+    <li><a href="{% url 'blokken' 2 %}" class="btn btn-primary btn-sm">Blokken herindelen dames</a></li>
     {% endif %}
     <li><a href="/get_matrix" class="btn btn-primary btn-sm">Matrix opvragen</a></li>
     <tbody>  
@@ -96,8 +109,8 @@ tabel3
         <tbody>
             {% for rij in heren %}
                 <tr>
-                    <td>Rij {{forloop.counter}} {{rij.kol13}}</td><td> <a href="{% url 'update_kluis'  rij.id  forloop.counter%}">  {{rij.kol1}}   </td>
-                        <td class="{% if rij.kol2 == 'leeg' %}table-warning{% endif %}">{{rij.kol2}}</td>
+                    <td>Rij {{forloop.counter}} {{rij.naam}}</td><td> <a href="{% url 'update_kluis'  rij.id  forloop.counter%}">  {{rij.kol1}}   </td>
+                        <td> <a href="{% url 'update_kluis' rij.id 1 %}"> {{rij.kol1}}   </td>
                         <td> <a href="{% url 'update_kluis' rij.id 2 %}"> {{rij.kol2}}   </td>
                         <td> <a href="{% url 'update_kluis' rij.id 3 %}"> {{rij.kol3}}   </td>
                         <td> <a href="{% url 'update_kluis' rij.id 4 %}"> {{rij.kol4}}   </td>
@@ -124,7 +137,7 @@ tabel3
         <tbody>
             {% for rij in dames %}
                 <tr>
-                    <td>Rij {{forloop.counter}} {{rij.kol13}}</td><td> <a href="{% url 'update_kluis'  rij.id  forloop.counter%}">  {{rij.kol1}}   </td>
+                    <td>Rij {{forloop.counter}} {{rij.naam}}</td><td> <a href="{% url 'update_kluis'  rij.id  forloop.counter%}">  {{rij.kol1}}   </td>
                         <td> <a href="{% url 'update_kluis' rij.id 2 %}"> {{rij.kol2}}   </td>
                         <td> <a href="{% url 'update_kluis' rij.id 3 %}"> {{rij.kol3}}   </td>
                         <td> <a href="{% url 'update_kluis' rij.id 4 %}"> {{rij.kol4}}   </td>
