@@ -366,8 +366,8 @@ class Blokken(TemplateView):
         if query!='wim': redirect('get_matrix')
         bloknummer='' ;   vv=matrixnaam[0:1]      #voorvoegsel
 
-        hdr=['kol1','kol2','kol3','kol4','kol5','kol6','kol7','kol8','kol9'] #,'kol10','kol11','kol12','kol13']
-        matrix=Matriks.objects.all().filter(kol13='heren01').first()
+        hdr=['kol1','kol2','kol3','kol4','kol5','kol6','kol7','kol8','kol9','kol10','kol11','kol12','kol13']
+        matrix=Matriks.objects.all().filter(naam='heren01').first()
         ctx = super(Blokken, self).get_context_data(**kwargs)
         ctx['header'] = ['Rondenummer', '  Blok nummer  ', 'Paring','Thuis','Uit']
         ctx["rows"] = Kluis.objects.all()
@@ -417,12 +417,35 @@ class Blokken(TemplateView):
                         regel=s,ronde=r,x_as=r,y_as=ronde,kol13=matrixnaam)
             
         # y=0
-        for m in Matriks.objects.all():
-            # y+=1
-            print(m.id)
-            for i in range(1,10):
-                set_blokken(request,m.id,i,matrixnaam)
-        return ctx
+        # for m in Matriks.objects.all():
+        #     # y+=1
+        #     print(m.id)
+        #     for i in range(1,10):
+                # set_blokken(request,m.id,i,matrixnaam)
+            teller=0
+            for m in Matriks.objects.all():
+            # for m in matrix:
+                teller+=1
+                for k in range(0,13):
+                    a=hdr[k]
+                    inh=getattr(m,a)
+                    kluis=Kluis.objects.all().filter(kast=inh).first()
+                    if kluis:
+                        lid=Vikinglid.objects.all().filter(name=kluis.name).first()
+                        if lid:
+                            print(inh,kluis.name,lid.name)
+                            kluis.code=96
+                        if kluis.name=='leeg':
+                            kluis.code=93
+                        else:
+                            kluis.code=str(teller)
+                            kluis.sleutels=9
+                        kluis.save()
+                    else:   #matriks has no match with kluis.kast 
+                        #  Book.objects.filter(title__exact='').count()
+                        legecode=kluis = Kluis.objects.all().filter(code__exact='')
+                    
+                return ctx
 
 def get_matrix(request):
     template_name = 'viking/bloktabel_list.html'
@@ -513,10 +536,6 @@ def set_kluis(request, pk,kol):
         h=h[0]
         huurder=int(h)
         hrdr=Vikinglid.objects.get(id=huurder)
-        # set_blokken(request,pk,col)   #matriks regel, matriks kolom
-        # matrix.save()
-        # matrix.kol1=new_cell_content
-        # matrix.save()
         kls.name = kls.name
         kls.name =hrdr.name # request.POST.get('name')
         kls.email = request.POST.get('email')
