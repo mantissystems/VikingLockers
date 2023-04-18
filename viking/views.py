@@ -377,7 +377,7 @@ class Blokken(TemplateView):
         rounds=nr #int(kolommen/2)
         r = 0
         rijen=nr # (kolommen-1)*rounds
-        ctx['kop'] = [f'matrix({rijen}rijen; {rounds} rijen) with {kolommen} kolommen']
+        # ctx['kop'] = [f'matrix({rijen}rijen; {rounds} rijen) with {kolommen} kolommen']
         ctx["regels"]= Matriks.objects.all()
         s = ""
         w1=''
@@ -411,7 +411,7 @@ class Blokken(TemplateView):
 
             print(s)
             # NIET MEER AANMAKEN DAT IS EENMALIG; UPDATE CEL WITH KLUIS INFO
-            # VELD 'regel' bevat kluisnummering '040' = kolom 1; rij 4 
+            # VELD 'regel' bevat kluisnummering 'h040' = kluis.kast='h40' 
             Matriks.objects.update_or_create( 
                         kop=s,
                         regel=s,ronde=r,x_as=r,y_as=ronde,kol13=matrixnaam)
