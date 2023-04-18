@@ -20,8 +20,8 @@
     {% if user.is_superuser %}
     
     {% else %}
-    <li><a href="{% url 'blokken' 1 %}" class="btn btn-primary btn-sm">Blokken herindelen heren</a></li>
-    <li><a href="{% url 'blokken' 2 %}" class="btn btn-primary btn-sm">Blokken herindelen dames</a></li>
+    <li><a href="{% url 'blokken' 1 %}" class="btn btn-primary btn-sm">Blokken herindelen Heren</a></li>
+    <li><a href="{% url 'blokken' 2 %}" class="btn btn-primary btn-sm">Blokken herindelen Dames</a></li>
     {% endif %}
     <li><a href="/get_matrix" class="btn btn-primary btn-sm">Matrix opvragen</a></li>
     <tbody>  

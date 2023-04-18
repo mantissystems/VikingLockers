@@ -3,12 +3,27 @@
   <body>
     {% extends 'base.html' %} {% block content %}
     <title>Bloklist</title>
-    {% comment %}
+    
     <h3>Indelings blok ({{regels.count}} {{bloknummer}}) </h3>
     <li><a href="/" class="btn btn-primary btn-sm">Hoofdmenu</a></li>
-    <li><a href="/blokken" class="btn btn-primary btn-sm">Blokken herindelen</a></li>
+    <div class="form__group">
+        <label for="huurder">Naam</label
+            name="huurder"> 
+      </div>
+
+      <form method="POST" action="">
+        {% csrf_token %}
+        <p>Are you sure redefine the matrix? "{{object}}"?</p>
+        <a href="{{request.META.HTTP_REFERER}}"> BACK </a>
+        <input type="submit" value="Confirm" />
+    </form>
+    {% if user.is_superuser %}
+    
+    {% else %}
+    <li><a href="{% url 'blokken' 1 %}" class="btn btn-primary btn-sm">Blokken herindelen Heren</a></li>
+    <li><a href="{% url 'blokken' 2 %}" class="btn btn-primary btn-sm">Blokken herindelen Dames</a></li>
+    {% endif %}
     <li><a href="/get_matrix" class="btn btn-primary btn-sm">Matrix opvragen</a></li>
-    {% endcomment %}
     <tbody>  
 
         tabel heren (9x9)
