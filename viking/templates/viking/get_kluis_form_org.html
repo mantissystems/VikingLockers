@@ -20,30 +20,59 @@
               ></path>
             </svg>
           </a>
+          <h3>KluisNummer: {{kluis.name}} ({{key}}) </h3>
           {% if request.user.is_authenticated %}
-          <h3>VIKINGLID: {{kluis.name}} ({{kluis.id}}) </h3>
           {% endif %}
         </div>
       </div>
       <div class="layout__body">
         <form class="form" action="" method="POST">
           {% csrf_token %} 
-  
+  {% comment %}
           <div class="form__group">
-            <label for="huurder">Naam</label
-                name="huurder"> value={{form.name}}
+            <label for="room_slot">Naam</label
+                name="vikinglid_name">
+            {{form.name}}
+          </div>
+          {% endcomment %}
+
+          <div class="form__group">
+            <label for="kluisje_name">Kluisje Huurder</label name="huurder">
+              <select id="lid" name="huurder" {{form.name}} onChange="redirectUrl()">
+                <option  value="" selected="selected">--- KLUIS HUURDER---</option>
+                {% for lid in vikingers %}
+                 <option value="{{lid.name}}">{{lid.name}} {{lid.id}} </option>
+                {% endfor %}
+              </select>
           </div>
 
-            
+{% comment %}            
+          <div class="form__group">
+            <label for="room_topic">e-mail</label
+                name="email">
+            {{form.email}}
+          </div>
+          <div class="form__group">
+            <label for="kluisje_name">Kluisje huren</label name="heeftkluis">
+              <select id="org" name="heeftkluis" onChange="redirectUrl()">
+                <option  value="" selected="selected">--- KLUISJE TOEVOEGEN---</option>
+                {% for org in kluizen %}
+                <option value="{{org.id}}">{{org.name|capfirst}}</option>
+                {% endfor %}
+              </select>
+            </div>
+            {% endcomment %}
+          {% comment %}
           <div class="form__group">
             <label for="team_name">Huur opheffen</label name="is_lid_van">
               <select id="org" name="is_lid_van" onChange="redirectUrl()">
                 <option  value="" selected="selected">--- KLUISJE OPHEFFEN---</option>
-                {% comment %}{% for org in teams %} {% endcomment %}
+                {% for org in teams %} 
                 {% for org in kluizen %}
-                 <option value="{{org.id}}">{{org.name|capfirst}}</option>
+                <option value="{{org.id}}">{{org.name|capfirst}} </option>
                 {% endfor %}
               </select>
+              {% endcomment %}
   
           </div>
 
@@ -51,6 +80,9 @@
             <a class="btn btn--dark" href="{{request.META.HTTP_REFERER}}"
               >Cancel</a>
             <button class="btn btn--main" type="submit">Submit</button>
+            {% comment %}
+            {% endif %}
+            {% endcomment %}
 
                     </div>
         </form>

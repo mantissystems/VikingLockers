@@ -261,7 +261,13 @@ a {
     display: none;
   }
 }
+NegativeTransaction {
+  color: #FF0000;
+}
 
+.PositiveTransaction.green {
+  color: #33FF3C;
+}
 /*==============================
 =>  Header Section
 ================================*/

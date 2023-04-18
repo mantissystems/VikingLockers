@@ -71,19 +71,24 @@ class Note(models.Model):
     
 
 class Matriks(models.Model):    #wrongly spelled on purpose
+    naam= models.CharField(max_length=18,default='matriks')     
     ronde = models.CharField(max_length=200)
     kop = models.CharField(max_length=200)
     regel = models.CharField(max_length=200)
     x_as = models.IntegerField(default=2)
     y_as = models.IntegerField(default=2)
-    kol1= models.CharField(max_length=18,default='1')     
-    kol2= models.CharField(max_length=18,default='1')     
-    kol3= models.CharField(max_length=18,default='1')     
-    kol4= models.CharField(max_length=18,default='1')     
-    kol5= models.CharField(max_length=18,default='1')     
-    kol6= models.CharField(max_length=18,default='1')     
-    kol7= models.CharField(max_length=18,default='1')     
-    kol8= models.CharField(max_length=18,default='1')     
-    kol9= models.CharField(max_length=18,default='1')     
+    kol1= models.CharField(max_length=18,default='000')     
+    kol2= models.CharField(max_length=18,default='000')     
+    kol3= models.CharField(max_length=18,default='000')     
+    kol4= models.CharField(max_length=18,default='000')     
+    kol5= models.CharField(max_length=18,default='000')     
+    kol6= models.CharField(max_length=18,default='000')     
+    kol7= models.CharField(max_length=18,default='000')     
+    kol8= models.CharField(max_length=18,default='000')     
+    kol9= models.CharField(max_length=18,default='000')     
+    kol10= models.CharField(max_length=18,default='000')     
+    kol11= models.CharField(max_length=18,default='000')     
+    kol12= models.CharField(max_length=18,default='000')     
+    kol13= models.CharField(max_length=18,default='000')     
 
 

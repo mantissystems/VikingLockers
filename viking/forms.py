@@ -16,7 +16,8 @@ class Urv_KluisForm(ModelForm):
 
 class KluisjeForm(ModelForm):
     class Meta:
-        model = Activiteit
+        # model = Activiteit
+        model=Kluis
         fields = '__all__'
 
 class VikinglidForm(ModelForm):

@@ -31,22 +31,25 @@
   
           <div class="form__group">
             <label for="huurder">Naam</label
-                name="huurder"> value={{form.name}}
+                name="huurder"> 
           </div>
 
-            
           <div class="form__group">
-            <label for="team_name">Huur opheffen</label name="is_lid_van">
-              <select id="org" name="is_lid_van" onChange="redirectUrl()">
-                <option  value="" selected="selected">--- KLUISJE OPHEFFEN---</option>
-                {% comment %}{% for org in teams %} {% endcomment %}
-                {% for org in kluizen %}
-                 <option value="{{org.id}}">{{org.name|capfirst}}</option>
+            <label for="room_topic">e-mail</label
+                name="email">
+            {{form.email}}
+          </div>
+          <div class="form__group">
+            <label for="kluisje_name">Kluisje huren</label name="heeftkluis">
+              <select id="org" name="heeftkluis" onChange="redirectUrl()">
+                <option  value="" selected="selected">--- KLUISJE TOEWIJZEN---</option>
+                {% for org in vikingers %}
+                <option value="{{org.name}}">{{org.name|capfirst}}</option>
                 {% endfor %}
               </select>
-  
-          </div>
+            </div>
 
+        
           <div class="form__action">
             <a class="btn btn--dark" href="{{request.META.HTTP_REFERER}}"
               >Cancel</a>

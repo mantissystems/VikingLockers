@@ -3,27 +3,40 @@
   <body>
     {% extends 'base.html' %} {% block content %}
     <title>Bloklist</title>
+    
     <h3>Indelings blok ({{regels.count}} {{bloknummer}}) </h3>
     <li><a href="/" class="btn btn-primary btn-sm">Hoofdmenu</a></li>
-    <li><a href="/blokken" class="btn btn-primary btn-sm">Blokken herindelen</a></li>
+    {% if user.is_superuser %}
+    <li><a href="{% url 'blokken' %}" class="btn btn-primary btn-sm">Blokken herindelen</a></li>
+    {% else %}
+    {% endif %}
     <li><a href="/get_matrix" class="btn btn-primary btn-sm">Matrix opvragen</a></li>
     <tbody>  
+        {% comment %}
+        tabel1
+        <hr>
+
       <table class="viking-table">
         <thead>
             <tr>
-                {% for k in kopmtrx %}
+                {% for k in kopmtrxxxx %}
                 <th>{{k}}</th>
                 {% endfor %}
             </tr>
         </thead>
         <tbody>
-            {% for rij in matrix %}
+            {% for rij in matrixxxx %}
                 <tr>
                   <td> <a href="{% url 'get_kluis' rij.id %}"> {{rij.regel}}{{rij.kol1}}{{rij.kol2}}{{rij.kol3}}{{rij.kol4}}{{rij.kol5}}{{rij.kol6}}{{rij.kol7}}{{rij.kol8}}{{rij.kol9}}   </td>
                   </tr>
             {% endfor %}
         </tbody>
     </table>
+    {% endcomment %}
+    {% comment %}
+
+    tabel2
+    <hr>
     <table class="viking-table">
       <thead>
           <tr>
@@ -40,8 +53,12 @@
           {% endfor %}
       </tbody>
   </table>
+  {% endcomment %}
 
-    <table class="viking-table">
+  {% comment %}
+
+tabel3
+<hr>
 
       <table class="viking-table">
         <thead>
@@ -63,31 +80,64 @@
             {% endfor %}
         </tbody>
     </table>
-    <table class="viking-table">
-      <thead>
-          <tr>
-              {% for h in kopmtrx %}
-              <th>{{h}}</th>
-              {% endfor %}
-          </tr>
-      </thead>
-      <tbody>
-          {% for rij in regels %}
-              <tr>
-        <td> <a href="{% url 'get_kluis'  rij.id 1 %}"> {{ forloop.counter }} {{rij.kol1}}   </td>
-        <td> <a href="{% url 'get_kluis' rij.id 2 %}"> {{ forloop.counter }}{{rij.kol2}}   </td>
-        <td> <a href="{% url 'get_kluis' rij.id 3 %}"> {{ forloop.counter }}{{rij.kol3}}   </td>
-        <td> <a href="{% url 'get_kluis' rij.id 4 %}"> {{rij.kol4}}   </td>
-        <td> <a href="{% url 'get_kluis' rij.id 5 %}"> {{rij.kol5}}   </td>
-        <td> <a href="{% url 'get_kluis' rij.id 6 %}"> {{rij.kol6}}   </td>
-        <td> <a href="{% url 'get_kluis' rij.id 7 %}"> {{rij.kol7}}   </td>
-        <td> <a href="{% url 'get_kluis' rij.id 8 %}"> {{rij.kol8}}   </td>
-        <td> <a href="{% url 'get_kluis' rij.id 9 %}"> {{rij.kol9}}   </td>
-                                  </tr>
-          {% endfor %}
-      </tbody>
-      <tbody>
-    </tbody>
+    {% endcomment %}
+
+    tabel heren (9x9)
+<hr>
+
+      <table class="viking-table">
+        <thead>
+            <tr>
+                {% for k in kopmtrx %}
+                <th>{{k}}</th>
+                {% endfor %}
+            </tr>
+        </thead>
+        <tbody>
+            {% for rij in heren %}
+                <tr>
+                    <td>Rij {{forloop.counter}} {{rij.kol13}}</td><td> <a href="{% url 'update_kluis'  rij.id  forloop.counter%}">  {{rij.kol1}}   </td>
+                        <td class="{% if rij.kol2 == 'leeg' %}table-warning{% endif %}">{{rij.kol2}}</td>
+                        <td> <a href="{% url 'update_kluis' rij.id 2 %}"> {{rij.kol2}}   </td>
+                        <td> <a href="{% url 'update_kluis' rij.id 3 %}"> {{rij.kol3}}   </td>
+                        <td> <a href="{% url 'update_kluis' rij.id 4 %}"> {{rij.kol4}}   </td>
+                        <td> <a href="{% url 'update_kluis' rij.id 5 %}"> {{rij.kol5}}   </td>
+                        <td> <a href="{% url 'update_kluis' rij.id 6 %}"> {{rij.kol6}}   </td>
+                        <td> <a href="{% url 'update_kluis' rij.id 7 %}"> {{rij.kol7}}   </td>
+                        <td> <a href="{% url 'update_kluis' rij.id 8 %}"> {{rij.kol8}}   </td>
+                        <td> <a href="{% url 'update_kluis' rij.id 9 %}"> {{rij.kol9}}   </td>
+                                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    tabel dames (9x9)
+<hr>
+
+      <table class="viking-table">
+        <thead>
+            <tr>
+                {% for k in kopmtrx %}
+                <th>{{k}}</th>
+                {% endfor %}
+            </tr>
+        </thead>
+        <tbody>
+            {% for rij in dames %}
+                <tr>
+                    <td>Rij {{forloop.counter}} {{rij.kol13}}</td><td> <a href="{% url 'update_kluis'  rij.id  forloop.counter%}">  {{rij.kol1}}   </td>
+                        <td> <a href="{% url 'update_kluis' rij.id 2 %}"> {{rij.kol2}}   </td>
+                        <td> <a href="{% url 'update_kluis' rij.id 3 %}"> {{rij.kol3}}   </td>
+                        <td> <a href="{% url 'update_kluis' rij.id 4 %}"> {{rij.kol4}}   </td>
+                        <td> <a href="{% url 'update_kluis' rij.id 5 %}"> {{rij.kol5}}   </td>
+                        <td> <a href="{% url 'update_kluis' rij.id 6 %}"> {{rij.kol6}}   </td>
+                        <td> <a href="{% url 'update_kluis' rij.id 7 %}"> {{rij.kol7}}   </td>
+                        <td> <a href="{% url 'update_kluis' rij.id 8 %}"> {{rij.kol8}}   </td>
+                        <td> <a href="{% url 'update_kluis' rij.id 9 %}"> {{rij.kol9}}   </td>
+                                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
     {% endblock %}
   </body>
 </html>
