@@ -122,18 +122,21 @@ def home(request):
     topics = Topic.objects.all()
     all=Vikinglid.objects.all()
     filter1=Q(name__icontains=q)    
-    vikingleden=Vikinglid.objects.all()
+    vikingleden=Vikinglid.objects.all().filter(filter1)
 # ==========================================================
+    filter2=Q(kast__icontains=q)    
     if q=='Export Kluislijst':
             return redirect('export')
     if q=='Aanvraag':
             return redirect('create-aanvrage')
         # template='viking/home.html'
-    vikingleden=Vikinglid.objects.all()
+    kluizen=Kluis.objects.all().order_by('kast').filter(filter1|filter2)
 # ==============================================================
-    heren=Matriks.objects.all().filter(naam='heren01')
-    dames=Matriks.objects.all().filter(naam='dames01')
-    mtrx=Matriks.objects.all()
+    filterregel=Q(regel__icontains=q)    
+
+    heren=Matriks.objects.all().filter(naam='heren01').filter(filterregel)
+    dames=Matriks.objects.all().filter(naam='dames01').filter(filterregel)
+    mtrx=Matriks.objects.all().filter(filterregel)
     context = {
         'koplegen':[f'verdeling ({all.count()} leden'],
         'vikingleden':vikingleden,
@@ -141,6 +144,7 @@ def home(request):
         'matrix': mtrx,
         'heren': heren,
         'dames': dames,
+        'kluizen': kluizen,
         'q':q,
         }
     return render(request, template, context)
@@ -323,6 +327,8 @@ def update_kluis(request, pk,kol):
             }
     if request.method == 'POST':
             huurder= request.POST.get('heeftkluis')
+            kolom=setattr(matrix,kluisje,a)
+            print('kluisje',kluisje,kol,a)
             if huurder:
                 kls.name = huurder
                 print('huurder',huurder)
@@ -331,7 +337,6 @@ def update_kluis(request, pk,kol):
                 # kls.kast=matrix.kol13+str(matrix.y_as)+str(kol)
                 kls.location=matrix.naam+str(matrix.y_as)+str(kol)
                 kls.save()
-                kolom=setattr(matrix,kluisje,'kluisje')
                 # Matriks.objects.all().filter(id=pk,y_as=rgl).update(kol12='wb')
                 # if column==1: matrix.kol1='d'+ str(kls.id)
                 # if column==2: matrix.kol2='d'+ str(kls.id)
