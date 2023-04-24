@@ -467,7 +467,7 @@ class Blokken(TemplateView):
                 regelteller+=1
                 Matriks.objects.update_or_create( 
                         kop=s,
-                        regel=s,ronde=r,x_as=r,y_as=regelteller,naam=matrixnaam,row=regelteller)            
+                        regel=s,ronde=r,x_as=r,y_as=regelteller,naam=matrixnaam,)            
         koppel_kluis_met_matriks(request)
         return
 
