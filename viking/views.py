@@ -647,8 +647,8 @@ def hernummermatriks(request):
                 pass
             setattr(m, de_matriks_kolom, c)
             # vl.kluisje='rij'+ rij.zfill(2) + de_matriks_kolom #off when handout is true       #OFF
-            vl.row=rij.zfill(2)
-            vl.col=de_matriks_kolom
+                vl.row=rij.zfill(2)
+                vl.col=de_matriks_kolom
             # setattr(m, de_matriks_kolom, 'rij'+ rij.zfill(2) + de_matriks_kolom)              #OFF
             vl.save()
             m.save()
