@@ -3,18 +3,15 @@
 
 <div class="activities">
     <div class="activities__header">
-        kluisjes: {{ kluizen.count }}
+        verhuurd: {{ kluizen.count }}
     </div>
-    {% for message in kluizen %}
-    <div class="activities__box">
-        <div class="activities__boxHeader roomListRoom__header">
+    {% if request.user.is_authenticated %}
 
-        </div>
-        <div class="activities__boxContent">
-            <div class="activities__boxRoomContent">{{ message.name|highlight:q }}: {{message.kast}}
- </div>
-        </div>
+    {% for m in kluizen %}
+    <div class="activities__box">
+            <a href="{% url 'kluis' m.id %}">{{m.kluisnummer}}</a>   {{ m.naamvoluit|highlight:q }}
     </div>
     {% endfor %}
+    {% endif %}
 
 </div>

@@ -56,10 +56,22 @@ class Kluis(models.Model):
     class Meta:
         ordering = ['-updated', '-created']
 
-    # def __str__(self):
-    #     return self.body
+class KluisjesRV(models.Model):
+    kluisnummer = models.CharField(max_length=200)
+    naamvoluit = models.CharField(max_length=200)
+    gender = models.CharField(max_length=200)
+    email = models.CharField(max_length=200)
+    userid = models.CharField(max_length=200)
+    kluisje = models.CharField(max_length=200)
+    kastje = models.CharField(max_length=18,default='kast1')     
+    topic = models.CharField(max_length=18,default='----')     
+    row = models.CharField(max_length=18,default='----')     
+    col = models.CharField(max_length=18,default='----')     
+    verhuurd=models.BooleanField(default=False)
+    # created = models.DateTimeField(auto_now_add=True)     
+    # updated = models.DateTimeField(auto_now=True)
 
-from django.db import models
+# from django.db import models
 
 class Note(models.Model):
     body = models.TextField(null=True, blank=True)

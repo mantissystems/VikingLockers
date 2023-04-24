@@ -1,6 +1,6 @@
 from django.forms import ModelForm
 from django.contrib.auth.forms import UserCreationForm
-from .models import Kluis, User,Vikinglid,Activiteit
+from .models import Kluis, User,Vikinglid,Activiteit,KluisjesRV
 from django.forms.widgets import DateInput, NumberInput
 from django.forms.fields import MultipleChoiceField
 
@@ -16,8 +16,8 @@ class Urv_KluisForm(ModelForm):
 
 class KluisjeForm(ModelForm):
     class Meta:
-        # model = Activiteit
-        model=Kluis
+        model = KluisjesRV
+        # model=Kluis
         fields = '__all__'
 
 class VikinglidForm(ModelForm):

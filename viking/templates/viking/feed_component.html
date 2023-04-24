@@ -2,15 +2,8 @@
   <head></head>
   <body>
     {% extends 'base.html' %} {% block content %}
-    <title>Bloklist</title>
-    
-    <h3>Indelings blok ({{regels.count}} {{bloknummer}}) </h3>
-    <li><a href="/" class="btn btn-primary btn-sm">Hoofdmenu</a></li>
-    <a href="{% url 'blokken' %}" class="btn btn-primary btn-sm">Matrix herindelen Dames/ Heren</a>
-    <li><a href="/get_matrix" class="btn btn-primary btn-sm">Matrix opvragen</a></li>
+    <title>Bloklist</title>    
     <tbody>  
-
-        tabel heren (9x9)
         <hr>
         
               <table class="viking-table">
@@ -18,14 +11,14 @@
                     <tr>
                         {% for k in kopmtrx %}
                         <th>{{k}}</th>
-                        {% endfor %}
                     </tr>
+                    {% endfor %}
                 </thead>
                 <tbody>
+                   {% comment %} <td> <a href="{% url 'update_kluis' rij.id 1 %}"> {{rij.kol1}}   </td> {% endcomment %}
                     {% for rij in heren %}
                         <tr>
-                            <td>Rij {{forloop.counter}} {{rij.naam}}</td><td> <a href="{% url 'update_kluis'  rij.id  forloop.counter%}">  {{rij.kol1}}   </td>
-                                <td> <a href="{% url 'update_kluis' rij.id 1 %}"> {{rij.kol1}}   </td>
+                            <td>Rij {{rij.y_as}} {{rij.naam}}</td><td> <a href="{% url 'update_kluis'  rij.id  forloop.counter%}">  {{rij.kol1}}   </td>
                                 <td> <a href="{% url 'update_kluis' rij.id 2 %}"> {{rij.kol2}}   </td>
                                 <td> <a href="{% url 'update_kluis' rij.id 3 %}"> {{rij.kol3}}   </td>
                                 <td> <a href="{% url 'update_kluis' rij.id 4 %}"> {{rij.kol4}}   </td>
@@ -34,26 +27,28 @@
                                 <td> <a href="{% url 'update_kluis' rij.id 7 %}"> {{rij.kol7}}   </td>
                                 <td> <a href="{% url 'update_kluis' rij.id 8 %}"> {{rij.kol8}}   </td>
                                 <td> <a href="{% url 'update_kluis' rij.id 9 %}"> {{rij.kol9}}   </td>
-                                        </tr>
+                                <td> <a href="{% url 'update_kluis' rij.id 9 %}"> {{rij.kol9}}   </td>
+                                <td> <a href="{% url 'update_kluis' rij.id 10 %}"> {{rij.kol10}}   </td>
+                                <td> <a href="{% url 'update_kluis' rij.id 11 %}"> {{rij.kol11}}   </td>
+                                    <td> <a href="{% url 'update_kluis' rij.id 12 %}"> {{rij.kol12}}   </td>
+                                    </tr>
                     {% endfor %}
                 </tbody>
             </table>
-            tabel dames (9x9)
-        <hr>
-        
+        <hr>        
               <table class="viking-table">
                 <thead>
                     <tr>
                         {% for k in kopmtrx %}
                         <th>{{k}}</th>
-                        {% endfor %}
                     </tr>
+                    {% endfor %}
                 </thead>
                 <tbody>
-                    {% for rij in dames %}
+                    {% for rij in adames %}
                         <tr>
                             <td>Rij {{forloop.counter}} {{rij.naam}}</td><td> <a href="{% url 'update_kluis'  rij.id  forloop.counter%}">  {{rij.kol1}}   </td>
-                                <td> <a href="{% url 'update_kluis' rij.id 2 %}"> {{rij.kol2}}   </td>
+                                <td> <a href="{% url 'update_kluis' rij.id 2 %}"> {{rij.kol2}}   </td> 
                                 <td> <a href="{% url 'update_kluis' rij.id 3 %}"> {{rij.kol3}}   </td>
                                 <td> <a href="{% url 'update_kluis' rij.id 4 %}"> {{rij.kol4}}   </td>
                                 <td> <a href="{% url 'update_kluis' rij.id 5 %}"> {{rij.kol5}}   </td>
@@ -61,11 +56,98 @@
                                 <td> <a href="{% url 'update_kluis' rij.id 7 %}"> {{rij.kol7}}   </td>
                                 <td> <a href="{% url 'update_kluis' rij.id 8 %}"> {{rij.kol8}}   </td>
                                 <td> <a href="{% url 'update_kluis' rij.id 9 %}"> {{rij.kol9}}   </td>
-                                        </tr>
+                                <td> <a href="{% url 'update_kluis' rij.id 10 %}"> {{rij.kol10}}   </td>
+                                <td> <a href="{% url 'update_kluis' rij.id 11 %}"> {{rij.kol11}}   </td>
+                                <td> <a href="{% url 'update_kluis' rij.id 12 %}"> {{rij.kol12}}   </td>
+                                    </tr>
                     {% endfor %}
                 </tbody>
             </table>
-        
+            <hr>
+            <table class="viking-table">
+                <thead>
+                    <tr>
+                        {% for k in kopmtrx %}
+                        <th>{{k}}</th>
+                    </tr>
+                    {% endfor %}
+                </thead>
+                <tbody>
+                    {% for rij in bdames %}
+                        <tr>
+                            <td>Rij {{forloop.counter}} {{rij.naam}}</td><td> <a href="{% url 'update_kluis'  rij.id  forloop.counter%}">  {{rij.kol1}}   </td>
+                                <td> <a href="{% url 'update_kluis' rij.id 2 %}"> {{rij.kol2}}   </td> 
+                                <td> <a href="{% url 'update_kluis' rij.id 3 %}"> {{rij.kol3}}   </td>
+                                <td> <a href="{% url 'update_kluis' rij.id 4 %}"> {{rij.kol4}}   </td>
+                                <td> <a href="{% url 'update_kluis' rij.id 5 %}"> {{rij.kol5}}   </td>
+                                <td> <a href="{% url 'update_kluis' rij.id 6 %}"> {{rij.kol6}}   </td>
+                                <td> <a href="{% url 'update_kluis' rij.id 7 %}"> {{rij.kol7}}   </td>
+                                <td> <a href="{% url 'update_kluis' rij.id 8 %}"> {{rij.kol8}}   </td>
+                                <td> <a href="{% url 'update_kluis' rij.id 9 %}"> {{rij.kol9}}   </td>
+                                <td> <a href="{% url 'update_kluis' rij.id 10 %}"> {{rij.kol10}}   </td>
+                                <td> <a href="{% url 'update_kluis' rij.id 11 %}"> {{rij.kol11}}   </td>
+                                <td> <a href="{% url 'update_kluis' rij.id 12 %}"> {{rij.kol12}}   </td>
+                                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+            <hr>
+            <table class="viking-table">
+                <thead>
+                    <tr>
+                        {% for k in kopmtrx %}
+                        <th>{{k}}</th>
+                    </tr>
+                    {% endfor %}
+                </thead>
+                <tbody>
+                    {% for rij in cdames %}
+                        <tr>
+                            <td>Rij {{forloop.counter}} {{rij.naam}}</td><td> <a href="{% url 'update_kluis'  rij.id  forloop.counter%}">  {{rij.kol1}}   </td>
+                                <td> <a href="{% url 'update_kluis' rij.id 2 %}"> {{rij.kol2}}   </td> 
+                                <td> <a href="{% url 'update_kluis' rij.id 3 %}"> {{rij.kol3}}   </td>
+                                <td> <a href="{% url 'update_kluis' rij.id 4 %}"> {{rij.kol4}}   </td>
+                                <td> <a href="{% url 'update_kluis' rij.id 5 %}"> {{rij.kol5}}   </td>
+                                <td> <a href="{% url 'update_kluis' rij.id 6 %}"> {{rij.kol6}}   </td>
+                                <td> <a href="{% url 'update_kluis' rij.id 7 %}"> {{rij.kol7}}   </td>
+                                <td> <a href="{% url 'update_kluis' rij.id 8 %}"> {{rij.kol8}}   </td>
+                                <td> <a href="{% url 'update_kluis' rij.id 9 %}"> {{rij.kol9}}   </td>
+                                <td> <a href="{% url 'update_kluis' rij.id 10 %}"> {{rij.kol10}}   </td>
+                                <td> <a href="{% url 'update_kluis' rij.id 11 %}"> {{rij.kol11}}   </td>
+                                <td> <a href="{% url 'update_kluis' rij.id 12 %}"> {{rij.kol12}}   </td>
+                                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+            <hr>
+            <table class="viking-table">
+                <thead>
+                    <tr>
+                        {% for k in kopmtrx %}
+                        <th>{{k}}</th>
+                    </tr>
+                    {% endfor %}
+                </thead>
+                <tbody>
+                    {% for rij in ddames %}
+                        <tr>
+                            <td>Rij {{forloop.counter}} {{rij.naam}}</td><td> <a href="{% url 'update_kluis'  rij.id  forloop.counter%}">  {{rij.kol1}}   </td>
+                                <td> <a href="{% url 'update_kluis' rij.id 2 %}"> {{rij.kol2}}   </td> 
+                                <td> <a href="{% url 'update_kluis' rij.id 3 %}"> {{rij.kol3}}   </td>
+                                <td> <a href="{% url 'update_kluis' rij.id 4 %}"> {{rij.kol4}}   </td>
+                                <td> <a href="{% url 'update_kluis' rij.id 5 %}"> {{rij.kol5}}   </td>
+                                <td> <a href="{% url 'update_kluis' rij.id 6 %}"> {{rij.kol6}}   </td>
+                                <td> <a href="{% url 'update_kluis' rij.id 7 %}"> {{rij.kol7}}   </td>
+                                <td> <a href="{% url 'update_kluis' rij.id 8 %}"> {{rij.kol8}}   </td>
+                                <td> <a href="{% url 'update_kluis' rij.id 9 %}"> {{rij.kol9}}   </td>
+                                <td> <a href="{% url 'update_kluis' rij.id 10 %}"> {{rij.kol10}}   </td>
+                                <td> <a href="{% url 'update_kluis' rij.id 11 %}"> {{rij.kol11}}   </td>
+                                <td> <a href="{% url 'update_kluis' rij.id 12 %}"> {{rij.kol12}}   </td>
+                                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+<hr>
     {% endblock %}
   </body>
 </html>

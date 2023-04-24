@@ -4,6 +4,9 @@
 <main class="layout layout--3">
   <div class="container">
     <!-- Topics Start -->
+    {% comment %}
+
+    {% endcomment %}
     {% include 'viking/topics_component.html' %}
 
     <!-- Topics End -->
@@ -23,16 +26,18 @@
           </label>
         </form>
         <div class="mobile-menuItems">
-          <a class="btn btn--main btn--pill" href="{% url 'topics' %}">Rubrieken</a>
-          <a class="btn btn--main btn--pill" href="{% url 'home' %}?q=Kluisjes-leeg">Leeg</a>
-          <a class="btn btn--main btn--pill" href="{% url 'home' %}?q=Met Kluis">Billable</a>
         </div>
+        {% comment %}
+        <a class="btn btn--main btn--pill" href="{% url 'home' %}">Rubrieken</a>
+        <a class="btn btn--main btn--pill" href="{% url 'home' %}?q=Kluisjes-leeg">Leeg</a>
+        <a class="btn btn--main btn--pill" href="{% url 'home' %}?q=Met Kluis">Billable</a>
+          {% endcomment %}
+
       </div>
 
       <div class="roomList__header">
         <div>
-          <h2>VIKINGLEDEN</h2>
-          <p>{{vikingleden.count}} Vikingleden</p>
+          <h2>KLUISJES</h2>
         </div class="phone">
         {% if not request.user.is_authenticated %}
         <a class="btn btn--main" href="{% url 'create-vikinglid' %}">

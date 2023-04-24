@@ -21,7 +21,7 @@
             </svg>
           </a>
           {% if request.user.is_authenticated %}
-          <h3>VIKINGLID: {{kluis.name}} ({{kluis.id}}) </h3>
+          <h3>Locatie: {{kluisje}} ({{kluis.kluisnummer}}) </h3>
           {% endif %}
         </div>
       </div>
@@ -30,27 +30,47 @@
           {% csrf_token %} 
   
           <div class="form__group">
-            <label for="huurder">Naam</label
+            <label for="huurder">Naam: {{kluis.naamvoluit}}
+              </label
                 name="huurder"> 
           </div>
 
           <div class="form__group">
-            <label for="room_topic">e-mail</label
+            <label for="room_topic">e-mail: {{kluis.email}}</label
                 name="email">
-            {{form.email}}
           </div>
           <div class="form__group">
-            <label for="kluisje_name">Kluisje huren</label name="heeftkluis">
-              <select id="org" name="heeftkluis" onChange="redirectUrl()">
-                <option  value="" selected="selected">--- KLUISJE TOEWIJZEN---</option>
+            <label for="room_topic">Kast benaming: {{kluis.topic}}</label
+                name="email">
+          </div>
+          <div class="form__group">
+            <label for="room_topic">Locatie: {{kluis.row}} kolom {{kluis.col}}</label
+                name="email">
+          </div>
+          <div class="form__group">
+            <label for="room_topic">verhuurd: {{kluis.verhuurd}}</label
+                name="email">
+          </div>
+
+          <div class="form__group">
+            <label for="kluisje_name">Kluisje toewijzen</label name="heeftkluis">
+              <select id="heeftkluis" name="heeftkluis" onChange="redirectUrl()">
+                <option  value="" selected="selected">--- KLUISJE TOEWIJZEN AAN:---</option>
                 {% for org in vikingers %}
                 <option value="{{org.name}}">{{org.name|capfirst}}</option>
                 {% endfor %}
               </select>
             </div>
+            <input type="checkbox" id="opheffen" name="opheffen" value="opheffen">
+<label for="opheffen"> Huur opheffen</label><br>
+{% comment %}
+            <div class="form__group">
 
-        
-          <div class="form__action">
+            <label for="your_name">Kastnummer: </label>
+            <input id="your_name" type="text" name="your_name" value="{{kluisje}} {{ kluis.kastje }} {{kluis.kastje}}">
+            </div>        
+            {% endcomment %}
+            <div class="form__action">
             <a class="btn btn--dark" href="{{request.META.HTTP_REFERER}}"
               >Cancel</a>
             <button class="btn btn--main" type="submit">Submit</button>
