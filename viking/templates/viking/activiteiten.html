@@ -7,10 +7,14 @@
     </div>
     {% if request.user.is_authenticated %}
 
-    {% for m in kluizen %}
+    {% for m in bezet %}
     <div class="activities__box">
             <a href="{% url 'kluis' m.id %}">{{m.kluisnummer}}</a>   {{ m.naamvoluit|highlight:q }}
-    </div>
+            {% for kl in m.huurders.all %} 
+            <li>{{kl}}</li>
+            {% endfor %}
+
+        </div>
     {% endfor %}
     {% endif %}
 

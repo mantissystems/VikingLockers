@@ -45,16 +45,15 @@
         <ul class="topics__list">
           <li>
             <a href="{% url 'topics' %}" class="active"
-              >All <span>{{topics.count}} </span></a
+              >All <span>{{topic.dcount}} </span></a
             >
           </li>
           {% for topic in topics %}
           <li>
-            <a href="{%url 'home' %}?q={{topic.name}}"
-              >{{topic.name}} </a
-            >
-            <!-- <span>{{topic.room_set.count}} </span> -->
-          </li>
+            <a href="{% url 'home' %}?q={{topic.topic}}"
+            >{{topic.topic}}<span>{{topic.dcount}}</span></a
+          >
+              </li>
           {% endfor %}
         </ul>
       </div>

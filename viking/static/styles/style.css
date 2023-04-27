@@ -15,7 +15,7 @@
   --phone-viking: flex;
   --color-viking-light: #11b5e7;
 }
-
+.green {color: green;}
 /*========== base styles ==========*/
 
 * {
@@ -653,7 +653,7 @@ NegativeTransaction {
 /* :root { */
 /* Change your font family */
 .person-table th {
-  background-color: var(--color-dark-medium);
+  background-color: var(--color-light);
   padding: 8px 8px;
 }
 
@@ -680,7 +680,7 @@ NegativeTransaction {
   line-height: 9px;
 }
 
-.datum-table th {
+.datum-table th{
   background-color: #11b5e7;
   padding: 8px 8px;
 }
@@ -704,9 +704,11 @@ NegativeTransaction {
 .viking-table {
   border-collapse: collapse;
   margin: 9px 0;
-  font-size: 0.8em;
+  /* font-size: 0.9em; */
+  font-size: 14px;
   height: flex;
   /* min-width: 480px; */
+  padding:2 22px;
   width: var(--phone-viking);
   border-radius: 15px 15px 0 0;
   overflow: hidden;
@@ -715,6 +717,13 @@ NegativeTransaction {
 
 .viking-table thead tr {
   background-color: var(--color-dark-light);
+  color: var(--color-light);
+  text-align: left;
+  font-weight: bold;
+}
+
+.viking-table thead {
+  background-color: var(--color-light);
   color: var(--color-light);
   text-align: left;
   font-weight: bold;
@@ -730,9 +739,10 @@ NegativeTransaction {
   border-bottom: 1px solid #dddddd;
   line-height: 15px;
   width: var(--phone-viking);
+  
 }
 
-.viking-table tbody tr:nth-of-type(even) {
+.viking-table tbody tr:nth-of-type(even), td {
   background-color: var(--color-dark-light);
 
 }

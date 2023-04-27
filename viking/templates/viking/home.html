@@ -27,9 +27,9 @@
         </form>
         <div class="mobile-menuItems">
         </div>
+        <a class="btn btn--main btn--pill" href="{% url 'topics' %}">Rubrieken</a>
+        <a class="btn btn--main btn--pill" href="{% url 'verhuur' %}">Verhuur</a>
         {% comment %}
-        <a class="btn btn--main btn--pill" href="{% url 'home' %}">Rubrieken</a>
-        <a class="btn btn--main btn--pill" href="{% url 'home' %}?q=Kluisjes-leeg">Leeg</a>
         <a class="btn btn--main btn--pill" href="{% url 'home' %}?q=Met Kluis">Billable</a>
           {% endcomment %}
 
@@ -37,7 +37,6 @@
 
       <div class="roomList__header">
         <div>
-          <h2>KLUISJES</h2>
         </div class="phone">
         {% if not request.user.is_authenticated %}
         <a class="btn btn--main" href="{% url 'create-vikinglid' %}">

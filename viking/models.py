@@ -41,35 +41,20 @@ class Vikinglid(models.Model):
     def __str__(self):
         return self.name
 
-class Kluis(models.Model):
-    body = models.TextField()
-    updated = models.DateTimeField(auto_now=True)
-    created = models.DateTimeField(auto_now_add=True)     
-    user_id = models.CharField(max_length=200)
-    name = models.CharField(max_length=200)
-    location = models.TextField(null=True, blank=True)
-    slot = models.CharField(max_length=18,default='H')     
-    sleutels = models.IntegerField(default=2)
-    code = models.TextField(null=True, blank=True)
-    topic_id = models.TextField(null=True, blank=True)
-    kast = models.CharField(max_length=18,default='kast1')     
-    class Meta:
-        ordering = ['-updated', '-created']
-
-class KluisjesRV(models.Model):
-    kluisnummer = models.CharField(max_length=200)
-    naamvoluit = models.CharField(max_length=200)
-    gender = models.CharField(max_length=200)
-    email = models.CharField(max_length=200)
-    userid = models.CharField(max_length=200)
-    kluisje = models.CharField(max_length=200)
-    kastje = models.CharField(max_length=18,default='kast1')     
-    topic = models.CharField(max_length=18,default='----')     
-    row = models.CharField(max_length=18,default='----')     
-    col = models.CharField(max_length=18,default='----')     
-    verhuurd=models.BooleanField(default=False)
-    # created = models.DateTimeField(auto_now_add=True)     
+# class Kluis(models.Model):
+#     body = models.TextField()
     # updated = models.DateTimeField(auto_now=True)
+    # created = models.DateTimeField(auto_now_add=True)     
+    # name = models.CharField(max_length=200)
+    # location = models.TextField(null=True, blank=True)
+#     user_id = models.CharField(max_length=200)
+#     slot = models.CharField(max_length=18,default='H')     
+#     sleutels = models.IntegerField(default=2)
+#     code = models.TextField(null=True, blank=True)
+#     topic_id = models.TextField(null=True, blank=True)
+    # kast = models.CharField(max_length=18,default='kast1')     
+    # class Meta:
+    #     ordering = ['-updated', '-created']
 
 # from django.db import models
 
@@ -102,5 +87,28 @@ class Matriks(models.Model):    #wrongly spelled on purpose
     kol11= models.CharField(max_length=18,default='000')     
     kol12= models.CharField(max_length=18,default='000')     
     kol13= models.CharField(max_length=18,default='000')     
+
+class KluisjesRV(models.Model):
+    kluisnummer = models.CharField(max_length=200)
+    naamvoluit = models.CharField(max_length=200)
+    gender = models.CharField(max_length=200)
+    email = models.CharField(max_length=200)
+    userid = models.CharField(max_length=200)
+    kluisje = models.CharField(max_length=200)
+    kastje = models.CharField(max_length=18,default='kast1')     
+    topic = models.CharField(max_length=18,default='----')     
+    row = models.CharField(max_length=18,default='----')     
+    col = models.CharField(max_length=18,default='----')     
+    verhuurd=models.BooleanField(default=False)
+    huurders = models.ManyToManyField(Vikinglid, related_name='huurders', blank=True)
+    class Meta:
+        ordering = ['kluisnummer']
+    # class Meta:
+    #     ordering = ['-updated', '-created']
+
+    # created = models.DateTimeField(auto_now_add=True)     
+    # updated = models.DateTimeField(auto_now=True)
+
+
 
 

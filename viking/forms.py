@@ -1,6 +1,6 @@
 from django.forms import ModelForm
 from django.contrib.auth.forms import UserCreationForm
-from .models import Kluis, User,Vikinglid,Activiteit,KluisjesRV
+from .models import  User,Vikinglid,Activiteit,KluisjesRV
 from django.forms.widgets import DateInput, NumberInput
 from django.forms.fields import MultipleChoiceField
 
