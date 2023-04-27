@@ -1,7 +1,8 @@
- MATRIKS, rij,  KOL1, KOL2, KOL3, KOL4, KOL 5, KOL6, KOL7, KOL8, KOL9, KOL10, KOL11, KOL12, KOL13
+ MATRIKS, rij,  KOL1, KOL2, KOL3, KOL4, KOL 5, KOL6, KOL7, KOL8, KOL9, KOL10, KOL11, KOL12
  ======================================================================================================================
+{{ hdr|addslashes }}
 {% for row in data %}
-{{row.naam}} , {{row.y_as}} , {{row.kol1}} , {{row.kol1}} , {{row.kol2}} , {{row.kol3}} , {{row.kol4}} , {{row.kol5}} , {{row.kol6}} , {{row.kol7}} , {{row.kol8}} , {{row.kol9}} , {{row.kol10}} , {{row.kol11}}, {{row.kol12}}, {{row.kol13}} 
+{{row.naam}} , {{row.y_as}} , {{row.kol1}} , {{row.kol1}} , {{row.kol2}} , {{row.kol3}} , {{row.kol4}} , {{row.kol5}} , {{row.kol6}} , {{row.kol7}} , {{row.kol8}} , {{row.kol9}} , {{row.kol10}} , {{row.kol11}}, {{row.kol122}}, {{row.kol133}} 
 {% endfor %}
  ======================================================================================================
 {% comment %} 

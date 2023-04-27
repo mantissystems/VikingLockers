@@ -7,7 +7,7 @@
     </div>
     {% if request.user.is_authenticated %}
 
-    {% for m in bezet %}
+    {% for m in bezetttt %}
     <div class="activities__box">
             <a href="{% url 'kluis' m.id %}">{{m.kluisnummer}}</a>   {{ m.naamvoluit|highlight:q }}
             {% for kl in m.huurders.all %} 

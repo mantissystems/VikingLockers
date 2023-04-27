@@ -3,6 +3,9 @@ from django.template import loader
 import csv
 from django.http import HttpResponse
 # from django.http import StreamingHttpResponse
+import reportlab
+from django.http import FileResponse
+from reportlab.pdfgen import canvas
 import io
 from urllib import request
 from django.shortcuts import render
@@ -897,25 +900,27 @@ def file_load_view(request):
     c = {'data': csv_data,'hdr':header}
     response.write(t.render(c))
     return response
-#  =========== EXPORT RUBBUSH HEREAFTER ========================
-def some_view(request):
-    # Create the HttpResponse object with the appropriate CSV header.
-    response = HttpResponse(
-    content_type='text/csv',
-    headers={'Content-Disposition': 'attachment; filename="somefilename.csv"'},
-    )
 
-    # The data is hard-coded here, but you could load it from a database or
-    # some other source.
-    csv_data = (
-        ('First row', 'Foo', 'Bar', 'Baz'),
-        ('Second row', 'A', 'B', 'C', '"Testing"', "Here's a quote"),
-    )
+#  =========== EXPORT TEST RUBBUSH HEREAFTER ========================
 
-    t = loader.get_template('viking/my_template_name.txt')
-    c = {'data': csv_data}
-    response.write(t.render(c))
-    return response
+# def some_view(request):
+#     # Create the HttpResponse object with the appropriate CSV header.
+#     response = HttpResponse(
+#     content_type='text/csv',
+#     headers={'Content-Disposition': 'attachment; filename="somefilename.csv"'},
+#     )
+
+#     # The data is hard-coded here, but you could load it from a database or
+#     # some other source.
+#     csv_data = (
+#         ('First row', 'Foo', 'Bar', 'Baz'),
+#         ('Second row', 'A', 'B', 'C', '"Testing"', "Here's a quote"),
+#     )
+
+#     t = loader.get_template('viking/my_template_name.txt')
+#     c = {'data': csv_data}
+#     response.write(t.render(c))
+#     return response
 
 # class Echo:
 #     """An object that implements just the write method of the file-like
@@ -925,20 +930,26 @@ def some_view(request):
 #         """Write the value by returning it, instead of storing in a buffer."""
 #         return value
 
-# def some_streaming_csv_view(request):
-#     """A view that streams a large CSV file."""
-#     # Generate a sequence of rows. The range is based on the maximum number of
-#     # rows that can be handled by a single sheet in most spreadsheet
-#     # applications.
-#     mtrx= Matriks.objects.all()
-#     # rows = (["Row {}".format(idx), str(idx)] 
-#     rows = (["mtrx".format(idx), str(idx)] 
-#     # for idx in range(65536))
-#     for idx in mtrx)
-#     pseudo_buffer = Echo()
-#     writer = csv.writer(pseudo_buffer)
-#     return StreamingHttpResponse(
-#         (writer.writerow(row) for row in rows),
-#         content_type="text/csv",
-#         headers={'Content-Disposition': 'attachment; filename="somefilename.csv"'},
-#     )
+def some_view(request):
+    # import reportlab
+    # from django.http import FileResponse
+    # from reportlab.pdfgen import canvas
+
+    # Create a file-like buffer to receive PDF data.
+    buffer = io.BytesIO()
+
+    # Create the PDF object, using the buffer as its "file."
+    p = canvas.Canvas(buffer)
+
+    # Draw things on the PDF. Here's where the PDF generation happens.
+    # See the ReportLab documentation for the full list of functionality.
+    p.drawString(10, 10, "Hello world.")
+
+    # Close the PDF object cleanly, and we're done.
+    p.showPage()
+    p.save()
+
+    # FileResponse sets the Content-Disposition header so that browsers
+    # present the option to save the file.
+    buffer.seek(0)
+    return FileResponse(buffer, as_attachment=True, filename='hello.pdf')

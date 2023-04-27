@@ -703,12 +703,12 @@ NegativeTransaction {
 
 .viking-table {
   border-collapse: collapse;
-  margin: 9px 0;
+  margin: 10px 0;
   /* font-size: 0.9em; */
-  font-size: 14px;
+  font-size: 16px;
   height: flex;
   /* min-width: 480px; */
-  padding:2 22px;
+  padding:1 12px;
   width: var(--phone-viking);
   border-radius: 15px 15px 0 0;
   overflow: hidden;

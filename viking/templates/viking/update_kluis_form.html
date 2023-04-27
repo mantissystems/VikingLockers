@@ -30,43 +30,44 @@
           {% csrf_token %} 
   
           <div class="form__group">
-            <label for="huurder">Naam:
+            Naam:
+            <label for="huurder">
               {% for org in huurders %}
-              {{org.id}}{{org.name|capfirst}}
-              e-mail: {{org.email}}
+              {{org.name|capfirst}}
+              e-mail: {{org.email}}<hr>
              {% endfor %}
                   </label
               
                 name="huurder"> 
           </div>
+          {% comment %}
           {% for org in huurders %}
           {{org.id}}{{org.name|capfirst}}
           e-mail: {{org.email}}
          {% endfor %}
-{% comment %}
           <div class="form__group">
             <label for="room_topic">e-mail: {{kluis.email}}</label
                 name="email">
           </div>
-          {% endcomment %}
           <div class="form__group">
             <label for="room_topic">Kast benaming: {{kluis.topic}}</label
+              name="email">
+            </div>
+            <div class="form__group">
+              <label for="room_topic">Locatie: {{kluis.row}} kolom {{kluis.col}}</label
                 name="email">
-          </div>
-          <div class="form__group">
-            <label for="room_topic">Locatie: {{kluis.row}} kolom {{kluis.col}}</label
-                name="email">
-          </div>
-          <div class="form__group">
-            <label for="room_topic">verhuurd: {{kluis.verhuurd}}</label
-                name="email">
-          </div>
+              </div>
+              <div class="form__group">
+                <label for="room_topic">verhuurd: {{kluis.verhuurd}}</label
+                    name="email">
+              </div>
+              {% endcomment %}
           <div class="form__group">
             {% comment %}
             <label for="team_name">Huur opheffen</label name="huurder">
               {% endcomment %}
               <select id="huuropheffen" name="huuropheffen" onChange="redirectUrl()">
-                <option  value="" selected="selected">--- KLUISJE OPHEFFEN---</option>
+                <option  value="" selected="selected">--- HUUR OPHEFFEN---</option>
                 {% for org in huurders %}
                  <option value="{{org.id}}">{{org.name|capfirst}}</option>
                 {% endfor %}
@@ -75,7 +76,6 @@
           </div>
 
           <div class="form__group">
-            <label for="kluisje_name">Kluisje toewijzen</label name="heeftkluis">
               <select id="heeftkluis" name="heeftkluis" onChange="redirectUrl()">
                 <option  value="" selected="selected">--- KLUISJE TOEWIJZEN AAN:---</option>
                 {% for org in vikingers %}
@@ -84,7 +84,16 @@
               </select>
             </div>
             {% comment %}
-            <input type="checkbox" id="opheffen" name="opheffen" value="opheffen">
+            <div class="form__group">
+              <label for="kluisje_name">Kluisje toewijzen</label name="heeftkluis">
+                <select id="heeftkluis" name="heeftkluis" onChange="redirectUrl()">
+                  <option  value="" selected="selected">--- KLUISJE TOEWIJZEN AAN:---</option>
+                  {% for org in vikingers %}
+                  <option value="{{org.id}}">{{org.name|capfirst}}</option>
+                  {% endfor %}
+                </select>
+              </div>
+              <input type="checkbox" id="opheffen" name="opheffen" value="opheffen">
 <label for="opheffen"> Huur opheffen</label><br>
             <div class="form__group">
 
