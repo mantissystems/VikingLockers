@@ -140,6 +140,7 @@ def home(request):
     filter3=Q(naamvoluit__icontains=q)    
     filter4=Q(huurders__name__icontains=q)    
     filter5=Q(topic__icontains=q)    
+    filter6=Q(huurders__name__icontains=q)    
     # wb=KluisjesRV.objects.all().order_by('kluisnummer').filter(huurders__name__contains='van')
     # print(wb)
     if q=='Export Kluislijst':
@@ -148,7 +149,8 @@ def home(request):
             return redirect('create-aanvrage')
     kasten=KluisjesRV.objects.all().order_by('kluisnummer').filter((filter2|filter3))
     # kluizen=KluisjesRV.objects.all().order_by('kluisnummer').exclude(filter4)
-    kluizen=KluisjesRV.objects.all().order_by('kluisnummer').filter((filter2|filter3|filter4|filter5))
+    kluizen=KluisjesRV.objects.all().order_by('kluisnummer').filter((filter2|filter3|filter4|filter5|filter6))
+    gevonden=KluisjesRV.objects.all().order_by('kluisnummer').filter((filter2|filter3|filter4|filter5|filter6))
     bezet=KluisjesRV.objects.all().order_by('kluisnummer').exclude(huurders=None)
 # ==============================================================
     filterregel=Q(regel__icontains=q)    
@@ -172,6 +174,7 @@ def home(request):
         'ddames': ddames,
         'kluizen': kluizen,
         'bezet': bezet,
+        'gevonden': gevonden,
         'kasten': kasten,
         'q':q,
         }
@@ -321,7 +324,9 @@ def kluis(request, pk):
     try:
         kls=KluisjesRV.objects.get(id=pk)
         form=KluisjeForm(instance=kls)
-        context = {
+        huurders=kls.huurders.all()
+        context={
+                'huurders':huurders,
                 'form': form,
                 'kluis': kls,
                 'vikingers':vikingers,

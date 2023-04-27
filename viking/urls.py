@@ -8,7 +8,7 @@ topicsPage ,  updateUser, userProfile,
  urv_loginPage ,
  check_matriks,
 createVikinglid,deleteVikinglid, 
-aanvrage,export_team_data,Blokken,get_matrix,get_kluis,set_kluis,update_kluis,hernummermatriks,kluis,file_load_view,some_view,verhuurPage,
+aanvrage,export_team_data,Blokken,get_matrix,get_kluis,update_kluis,hernummermatriks,kluis,file_load_view,some_view,verhuurPage, 
 )
 urlpatterns = [
     path('', home, name='home'),
@@ -28,7 +28,7 @@ urlpatterns = [
     path('notes/<str:pk>/', views.getNote, name="note"),
      path('blokken/', Blokken.as_view(), name='blokken'),
     path('get_matrix/',get_matrix, name='get_matrix'),  
-    path('<str:pk>/set_kluis/<str:kol>',set_kluis, name='set_kluis'),  
+    # path('<str:pk>/set_kluis/<str:kol>',set_kluis, name='set_kluis'),  
     path('<str:pk>/update_kluis/<str:kol>/',update_kluis, name='update_kluis'),  
     path('<str:pk>/kluis/',kluis, name='kluis'),  
     path('checkmatriks/', check_matriks, name='checkmatriks'),

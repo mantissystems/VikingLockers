@@ -38,6 +38,7 @@
       <div class="roomList__header">
         <div>
         </div class="phone">
+        {% comment %}
         {% if not request.user.is_authenticated %}
         <a class="btn btn--main" href="{% url 'create-vikinglid' %}">
           <svg version="1.1" xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32">
@@ -50,6 +51,7 @@
         </a>
         {% endif %}
       </div>
+      {% endcomment %}
       {{lijst}}
       {% include 'viking/feed_component.html' %}
 

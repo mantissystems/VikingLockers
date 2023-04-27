@@ -30,7 +30,7 @@
           {% csrf_token %} 
   
           <div class="form__group">
-            Naam:
+            Huurder(s):
             <label for="huurder">
               {% for org in huurders %}
               {{org.name|capfirst}}
