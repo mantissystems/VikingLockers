@@ -8,7 +8,7 @@ topicsPage ,  updateUser, userProfile,
  urv_loginPage ,
  check_matriks,
 createVikinglid,deleteVikinglid, 
-aanvrage,export_team_data,Blokken,get_matrix,get_kluis,update_kluis,hernummermatriks,kluis,file_load_view,some_view,verhuurPage, 
+aanvrage,export_team_data,Blokken,get_matrix,get_kluis,update_kluis,hernummermatriks,kluis,file_load_view,verhuurPage, 
 )
 urlpatterns = [
     path('', home, name='home'),
@@ -34,6 +34,6 @@ urlpatterns = [
     path('checkmatriks/', check_matriks, name='checkmatriks'),
     path('hernummermatriks/', hernummermatriks, name='hernummermatriks'),
     path('export/', file_load_view, name='export'),
-    path('eksporteer/', some_view, name='eksporteer'),
+    # path('eksporteer/', some_view, name='eksporteer'),
     ]
 # https://docs.djangoproject.com/en/3.1/topics/http/urls/
