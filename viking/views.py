@@ -122,7 +122,7 @@ def registerPage(request):
     return render(request, 'viking/login_register.html', context)
 
 def home(request):
-    q = request.GET.get('q') if request.GET.get('q') != None else '' # 'Met Kluis'
+    q = request.GET.get('q') if request.GET.get('q') != None else ''
     template='viking/home.html'
     topics = Topic.objects.all()
     from django.db.models import Count
@@ -134,6 +134,7 @@ def home(request):
     all=Vikinglid.objects.all()
     filter1=Q(name__icontains=q)    
     vikingleden=Vikinglid.objects.all().filter(filter1)[0:10]
+    gevonden=KluisjesRV.objects.none
 # ==========================================================
     kopmtrx="[f'kast', 'kol1','kol2','kol3','kol4','kol5','kol6','kol7','kol8','kol9','kol10','kol11','kol12','kol13']," #'regel-informatie kluisnummers'
     filter2=Q(kluisnummer__icontains=q)    
@@ -141,16 +142,14 @@ def home(request):
     filter4=Q(huurders__name__icontains=q)    
     filter5=Q(topic__icontains=q)    
     filter6=Q(huurders__name__icontains=q)    
-    # wb=KluisjesRV.objects.all().order_by('kluisnummer').filter(huurders__name__contains='van')
-    # print(wb)
-    if q=='Export Kluislijst':
-            return redirect('export')
-    if q=='Aanvraag':
-            return redirect('create-aanvrage')
+    # if q=='Export Kluislijst':
+    #         return redirect('export')
+    # if q=='Aanvraag':
+    #         return redirect('create-aanvrage')
     kasten=KluisjesRV.objects.all().order_by('kluisnummer').filter((filter2|filter3))
     # kluizen=KluisjesRV.objects.all().order_by('kluisnummer').exclude(filter4)
     kluizen=KluisjesRV.objects.all().order_by('kluisnummer').filter((filter2|filter3|filter4|filter5|filter6))
-    gevonden=KluisjesRV.objects.all().order_by('kluisnummer').filter((filter2|filter3|filter4|filter5|filter6))
+    if q!='':gevonden=KluisjesRV.objects.all().order_by('kluisnummer').filter((filter2|filter3|filter4|filter5|filter6))
     bezet=KluisjesRV.objects.all().order_by('kluisnummer').exclude(huurders=None)
 # ==============================================================
     filterregel=Q(regel__icontains=q)    
@@ -166,7 +165,6 @@ def home(request):
         'vikingleden':vikingleden,
         'topics': result, 
         'matrix': mtrx,
-        # 'kopmtrx' : [f'kast', 'kol1','kol2','kol3','kol4','kol5','kol6','kol7','kol8','kol9','kol10','kol11','kol12','kol13'], #'regel-informatie kluisnummers'
         'heren': heren,
         'adames': adames,
         'bdames': bdames,

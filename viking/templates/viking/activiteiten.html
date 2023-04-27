@@ -3,9 +3,9 @@
 
 <div class="activities">
     <div class="activities__header">
-        verhuurd:
+        verhuurd: {{gevonden.count}}
     </div>
-    {% if gevonden %}
+    {% if gevonden.count > 0 %}
 
     {% if request.user.is_authenticated %}
 
