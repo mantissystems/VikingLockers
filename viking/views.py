@@ -39,7 +39,7 @@ from viking.serializers import(
     ActiviteitSerializer,
     TopicSerializer,
 )
-from .models import   Topic,Vikinglid,Activiteit,Note,Matriks,KluisjesRV 
+from .models import   Topic,Vikinglid,Activiteit,Note,Matriks,KluisjesRV ,Matriks90,Kluislabel
 from .forms import UserForm,Urv_KluisForm,VikinglidForm,KluisjeForm
 
 def loginPage(request):
@@ -372,6 +372,7 @@ def update_kluis(request, pk,kol):
     column=int(kol)
     print('in update_kluis')
     matrix=Matriks.objects.get(id=pk)
+    labels=Kluislabel.objects.all()
     rms = KluisjesRV.objects.all() #.exclude(huurders=None)
     owner_count=0
     rgl=matrix.y_as
@@ -419,12 +420,14 @@ def update_kluis(request, pk,kol):
             context={
                 'huurders':huurders,
                 'vikingers':vikingers,
+                'labels': labels,
                 'kluis': kls,
                 'oorspronkelijkmatriksnummer':oorspronkelijkmatriksnummer,
 }
 
         if request.method == 'POST':
             huurder= request.POST.get('heeftkluis')
+            label= request.POST.get('kluislabel')
             your_name= request.POST.get('your_name')
             huuropheffen= request.POST.get('huuropheffen')
             if kls:
@@ -432,6 +435,7 @@ def update_kluis(request, pk,kol):
                         h=Vikinglid.objects.get(id=huurder)
                         kls.huurders.add(h)
                         setattr(kls, 'verhuurd',True)
+                        kls.userid=label
                         kls.save()
                     if huuropheffen:
                         h=Vikinglid.objects.get(id=huuropheffen)
@@ -656,7 +660,7 @@ def hernummermatriks(request):
                 vl=KluisjesRV.objects.get(kluisnummer=oorspronkelijkmatriksnummer)
                 if vl.huurders.all().count()==0:
                     print(m.naam,de_matriks_kolom,inh,h)
-                    setattr(vl, 'userid',vl.huurders.all().count())
+                    # setattr(vl, 'userid',vl.huurders.all().count())
                     vl.save()
                 #  setattr(vl, 'kluisje',oorspronkelijkmatriksnummer)
 
@@ -686,6 +690,47 @@ def hernummermatriks(request):
     koppel_kluis_met_matriks(request)
     context={}
     return render(request, 'viking/home.html', context)
+
+def hernummermatriks90(request):
+    print('in hernummermatriks90===============')
+    rij=0
+    # matriks regel-kolomnummering naar kolomvelden overbrengen
+    hdr=['kol1','kol2','kol3','kol4',] ###'kol5','kol6','kol7','kol8','kol9','kol10','kol11','kol12',]#'kol13',] #'kol14']
+    begincell=0;cellengte=0;eindfilter=0
+    matrix=Matriks.objects.all().filter(naam='Heren')
+    Matriks90.objects.all().delete()
+    m90=Matriks90.objects.all()
+    kolomteller=0
+    for m in matrix:
+            hd=hdr[rij]
+            i=getattr(m,hd)
+            print(i)
+            w=m90.create(naam=m.naam,
+                y_as=m.y_as,
+                ronde=m.id,
+                )
+            # if m.y_as in (1,2,3,4,5,6) and m.naam=='Heren':
+                # for h in hdr:
+    for m in m90:
+        mtx=Matriks.objects.get(id=m.ronde)
+        inh=getattr(mtx,hd)
+        setattr(m,hd,inh)
+        setattr(m,'naam',mtx.naam)
+        setattr(m,'regel',mtx.regel)
+        m.save()
+    #         # if m.y_as in (1,2,3,4,5,6) and m.naam=='Heren':
+    #     for h in hdr:
+    #         i=getattr(m,h)
+    #         print(i)
+            # setattr(m, de_matriks_kolom, oorspronkelijkmatriksnummer)
+
+            # setattr(m, de_matriks_kolom, oorspronkelijkmatriksnummer)
+
+    print('einde hernummermatriks90===============')
+    # koppel_kluis_met_matriks(request)
+    context={}
+    return render(request, 'viking/home.html', context)
+
 def isNum(data):
     try:
         int(data)

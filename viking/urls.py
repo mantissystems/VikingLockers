@@ -8,7 +8,9 @@ topicsPage ,  updateUser, userProfile,
  urv_loginPage ,
  check_matriks,
 createVikinglid,deleteVikinglid, 
-aanvrage,export_team_data,Blokken,get_matrix,get_kluis,update_kluis,hernummermatriks,kluis,file_load_view,verhuurPage, 
+aanvrage,export_team_data,Blokken,get_matrix,
+get_kluis,update_kluis,hernummermatriks,kluis,file_load_view,verhuurPage, 
+hernummermatriks90,
 )
 urlpatterns = [
     path('', home, name='home'),
@@ -32,6 +34,7 @@ urlpatterns = [
     path('<str:pk>/kluis/',kluis, name='kluis'),  
     path('checkmatriks/', check_matriks, name='checkmatriks'),
     path('hernummermatriks/', hernummermatriks, name='hernummermatriks'),
+    path('hernummermatriks90/', hernummermatriks90, name='hernummermatriks90'),
     path('export/', file_load_view, name='export'),
     # path('<str:pk>/set_kluis/<str:kol>',set_kluis, name='set_kluis'),  
     # path('eksporteer/', some_view, name='eksporteer'),

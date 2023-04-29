@@ -74,6 +74,15 @@
               </select>
   
           </div>
+          <div class="form__group">
+              <select id="kluislabel" name="kluislabel" onChange="redirectUrl()">
+                <option  value="" selected="selected">--- LABEL---</option>
+                {% for org in labels %}
+                 <option value="{{org.id}}">{{org.name|capfirst}}</option>
+                {% endfor %}
+              </select>
+  
+          </div>
 
           <div class="form__group">
               <select id="heeftkluis" name="heeftkluis" onChange="redirectUrl()">
