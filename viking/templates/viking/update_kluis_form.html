@@ -44,7 +44,9 @@
             <label for="room_topic">huidig label: {{kluis.label}}</label
                 name="email">
           </div>
-
+          <label for="your_name">Your name: </label>
+          <input id="slot" type="text" name="slot" value="{{ current_name }}">
+          <input type="submit" value="OK">
           {% comment %}
           {% for org in huurders %}
           {{org.id}}{{org.name|capfirst}}

@@ -12,8 +12,6 @@ SLOT = [
             ('--', '--'),
             ('H', 'hang'),      #gebruiker heeft hangslot
             ('C', 'cijfer'),    #gebruiker heeft cijferslot; code onbekend
-            ('E', 'eigen'),     #gebruiker heeft eigen slot gebruikt
-            ('V', 'Viking(hang)'),  #gebruiker heeft hangslot van Viking
             ]
 
 class Topic(models.Model):
@@ -90,6 +88,8 @@ class KluisjesRV(models.Model):
     kluisje = models.CharField(max_length=200)
     kastje = models.CharField(max_length=18,default='kast1')     
     label = models.CharField(max_length=18,default='label')     
+    type = models.CharField(max_length=18, choices=SLOT,default='--')     
+
     topic = models.CharField(max_length=18,default='----')     
     row = models.CharField(max_length=18,default='----')     
     col = models.CharField(max_length=18,default='----')     

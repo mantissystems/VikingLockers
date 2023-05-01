@@ -428,9 +428,16 @@ def update_kluis(request, pk,kol):
         if request.method == 'POST':
             huurder= request.POST.get('heeftkluis')
             label= request.POST.get('kluislabel')
+            slot= request.POST.get('slot')
+            print('1',slot)
             your_name= request.POST.get('your_name')
             huuropheffen= request.POST.get('huuropheffen')
+            # if form.is_valid():
             if kls:
+                    if slot:
+                        kls.type=slot
+                        print('2',slot)
+                        kls.save()
                     if label:
                         kls.label=label
                         kls.save()
