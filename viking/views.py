@@ -431,11 +431,14 @@ def update_kluis(request, pk,kol):
             your_name= request.POST.get('your_name')
             huuropheffen= request.POST.get('huuropheffen')
             if kls:
+                    if label:
+                        kls.label=label
+                        kls.save()
                     if huurder or your_name:
                         h=Vikinglid.objects.get(id=huurder)
                         kls.huurders.add(h)
                         setattr(kls, 'verhuurd',True)
-                        kls.userid=label
+                        # kls.label=label
                         kls.save()
                     if huuropheffen:
                         h=Vikinglid.objects.get(id=huuropheffen)

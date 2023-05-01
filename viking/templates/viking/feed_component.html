@@ -8,6 +8,7 @@
         
               <table class="viking-table">
                 <thead>
+                    <caption>kastenblok 3x  4x6 </caption>
                     <tr>
                         {% for k in kopmtrx %}
                         <th>{{k}}</th>
@@ -43,6 +44,8 @@
             </table>
               <table class="viking-table">
                 <thead>
+                    <caption>kastenblok 4x6 midden</caption>
+
                     <tr>
                         {% for k in kopmtrx %}
                         <th>{{k}}</th>
@@ -71,6 +74,7 @@
             </table>
             <table class="viking-table">
                 <thead>
+                    <caption>los kastenblok 4x6</caption>
                     <tr>
                         {% for k in kopmtrx %}
                         <th>{{k}}</th>
@@ -84,6 +88,8 @@
                                 <td> <a href="{% url 'update_kluis' rij.id 2 %}"> {{rij.kol2}}   </td> 
                                 <td> <a href="{% url 'update_kluis' rij.id 3 %}"> {{rij.kol3}}   </td>
                                 <td> <a href="{% url 'update_kluis' rij.id 4 %}"> {{rij.kol4}}   </td>
+                                    {% comment %}
+                                    er zijn hier slechts vier kolommen beschikbaar
                                 <td> <a href="{% url 'update_kluis' rij.id 5 %}"> {{rij.kol5}}   </td>
                                 <td> <a href="{% url 'update_kluis' rij.id 6 %}"> {{rij.kol6}}   </td>
                                 <td> <a href="{% url 'update_kluis' rij.id 7 %}"> {{rij.kol7}}   </td>
@@ -92,12 +98,14 @@
                                 <td> <a href="{% url 'update_kluis' rij.id 10 %}"> {{rij.kol10}}   </td>
                                 <td> <a href="{% url 'update_kluis' rij.id 11 %}"> {{rij.kol11}}   </td>
                                     <td> <a href="{% url 'update_kluis' rij.id 12 %}"> {{rij.kol12}}   </td>
+                                        {% endcomment %}
                                     </tr>
                     {% endfor %}
                 </tbody>
             </table>
             <table class="viking-table">
                 <thead>
+                    <caption>kastenblok 4x6 linkerzijde</caption>
                     <tr>
                         {% for k in kopmtrx %}
                         <th>{{k}}</th>
@@ -125,6 +133,7 @@
             </table>
             <table class="viking-table">
                 <thead>
+                    <caption>kastenblok 4x6 nog bepalen</caption>
                     <tr>
                         {% for k in kopmtrx %}
                         <th>{{k}}</th>

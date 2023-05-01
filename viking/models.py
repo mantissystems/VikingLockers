@@ -89,6 +89,7 @@ class KluisjesRV(models.Model):
     userid = models.CharField(max_length=200)
     kluisje = models.CharField(max_length=200)
     kastje = models.CharField(max_length=18,default='kast1')     
+    label = models.CharField(max_length=18,default='label')     
     topic = models.CharField(max_length=18,default='----')     
     row = models.CharField(max_length=18,default='----')     
     col = models.CharField(max_length=18,default='----')     

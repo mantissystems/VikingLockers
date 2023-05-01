@@ -40,6 +40,11 @@
               
                 name="huurder"> 
           </div>
+          <div class="form__group">
+            <label for="room_topic">huidig label: {{kluis.label}}</label
+                name="email">
+          </div>
+
           {% comment %}
           {% for org in huurders %}
           {{org.id}}{{org.name|capfirst}}
@@ -65,6 +70,7 @@
           <div class="form__group">
             {% comment %}
             <label for="team_name">Huur opheffen</label name="huurder">
+              <option  value="" selected="selected">--- LABEL---</option>
               {% endcomment %}
               <select id="huuropheffen" name="huuropheffen" onChange="redirectUrl()">
                 <option  value="" selected="selected">--- HUUR OPHEFFEN---</option>
@@ -77,8 +83,8 @@
           <div class="form__group">
               <select id="kluislabel" name="kluislabel" onChange="redirectUrl()">
                 <option  value="" selected="selected">--- LABEL---</option>
-                {% for org in labels %}
-                 <option value="{{org.id}}">{{org.name|capfirst}}</option>
+                {% for l in labels %}
+                 <option value="{{l.name}}">{{l.name|capfirst}}</option>
                 {% endfor %}
               </select>
   
