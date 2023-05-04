@@ -20,26 +20,28 @@
               ></path>
             </svg>
           </a>
+          <h3>Mutatie Formulier{{oorspronkelijkmatriksnummer}} {{kluis.id}} </h3>
         </div>
+
       </div>
       <div class="layout__body">
         <form class="form" action="" method="POST">
           {% csrf_token %} 
   
           <div class="form__group">
-            <label for="room_slot">Naam</label
+            <label for="room_slot">Uw naam</label
                 name="vikinglid_name">
             {{form.name}}
           </div>
 
             
           <div class="form__group">
-            <label for="room_topic">e-mail</label
+            <label for="room_topic">uw e-mail</label
                 name="email">
             {{form.email}}
           </div>
           <div class="form__group">
-            <label for="aanvrage_description">Omschrijving Aanvrage</label
+            <label for="aanvrage_description">Omschrijving of eventueel namenlijst</label
             name="email">
             {{form.description}}
           </div>
@@ -47,7 +49,7 @@
             <a class="btn btn--dark" href="{{request.META.HTTP_REFERER}}"
               >Cancel</a>
                     </div>
-                    <button class="btn btn--main" type="submit">Submit</button>
+                    <button class="btn btn--main" type="submit">Verzenden</button>
 
         </form>
       </div>

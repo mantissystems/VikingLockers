@@ -11,6 +11,7 @@ createVikinglid,deleteVikinglid,
 aanvrage,export_team_data,Blokken,get_matrix,
 get_kluis,update_kluis,hernummermatriks,kluis,file_load_view,verhuurPage, 
 hernummermatriks90,
+KluisList,
 )
 urlpatterns = [
     path('', home, name='home'),
@@ -29,6 +30,7 @@ urlpatterns = [
     path('api/topics/', views.getTopics, name="topicsapi"),
     path('notes/<str:pk>/', views.getNote, name="note"),
      path('blokken/', Blokken.as_view(), name='blokken'),
+     path('kluislijst/', KluisList.as_view(), name='kluislijst'),
     path('get_matrix/',get_matrix, name='get_matrix'),  
     path('<str:pk>/update_kluis/<str:kol>/',update_kluis, name='update_kluis'),  
     path('<str:pk>/kluis/',kluis, name='kluis'),  

@@ -304,7 +304,7 @@ def export_team_data(request):
 
     writer = csv.writer(response)
 
-    csv_data = Kluis.objects.all().values_list(
+    csv_data = KluisjesRV.objects.all().values_list(
         'name', 'location')
     t = loader.get_template('viking/export_teamlid_data.txt')
     c = {'data': csv_data}
@@ -368,6 +368,7 @@ def decodeer(regel,de_matriks_kolom,column,cellengte):
 
     return oorspronkelijkmatriksnummer
 
+@login_required(login_url='login')
 def update_kluis(request, pk,kol):
     column=int(kol)
     print('in update_kluis')
@@ -457,7 +458,9 @@ def update_kluis(request, pk,kol):
             return redirect('home')
     return render(request, 'viking/update_kluis_form.html', context)
 
-
+class KluisList(ListView):
+    # template_name='kluis_list.html'
+    queryset=KluisjesRV.objects.all()
 class Blokken(TemplateView):
     template_name = 'viking/home.html'
     def get_context_data(self, **kwargs):

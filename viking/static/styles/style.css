@@ -744,6 +744,7 @@ NegativeTransaction {
 
 .viking-table tbody tr:nth-of-type(even), td {
   background-color: var(--color-dark-light);
+  padding: 8px 8px;
 
 }
 

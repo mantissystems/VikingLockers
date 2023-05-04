@@ -40,14 +40,23 @@
               
                 name="huurder"> 
           </div>
+          huidig slottype: {{kluis.type}}
           <div class="form__group">
-            <label for="room_topic">huidig label: {{kluis.label}}</label
-                name="email">
+          <select id="slot" name="slot" required>
+            <option value="" selected>TYPE SLOT</option>
+            <option value="H" type="H">hangslot</option>
+            <option value="C" type="C">cijferslot</option>
+            <option value="L" type="L">leeg</option>
+            </select>
           </div>
-          <label for="your_name">Type slot: </label>
-          <input id="slot" type="text" name="slot" value="{{ current_name }}">
-          <input type="submit" value="OK">
-          {% comment %}
+            {% comment %}
+            <div class="form__group">
+              <label for="room_topic">huidig label: {{kluis.label}}</label
+                  name="email">
+            </div>
+            <label for="your_name">Type slot: </label>
+            <input id="slot" type="text" name="slot" value="{{ current_name }}">
+            <input type="submit" value="OK">
           {% for org in huurders %}
           {{org.id}}{{org.name|capfirst}}
           e-mail: {{org.email}}
