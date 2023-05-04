@@ -476,7 +476,7 @@ class Blokken(TemplateView):
     def get_context_data(self, **kwargs):
         kasten=['Heren','Adames','Bdames','Cdames','Ddames']
         Matriks.objects.all().delete()
-        hdr=['kol1','kol2','kol3','kol4','kol5','kol6','kol7','kol8','kol9'] #,'kol10','kol11','kol12','kol13']
+        hdr=['kol1','kol2','kol3','kol4','kol5','kol6','kol7','kol8','kol9','kol10','kol11','kol12','kol13']
         for k in kasten:
             regelteller=0
             print(k)
@@ -520,109 +520,109 @@ class Blokken(TemplateView):
                         regel=s,ronde=r,x_as=r,y_as=regelteller,naam=matrixnaam,)            
         koppel_kluis_met_matriks(request)
         return
-def get_matrix(request):
-    template_name = 'viking/bloktabel_list.html'
-    nr=9
-    kolommen = nr
-    kasten=Kluis.objects.all() #.filter(kast__icontains=bloknummer)
-    mtrx=Matriks.objects.all()
-    topics=Topic.objects.all()
-    heren=Matriks.objects.all().filter(naam__icontains='heren')
-    dames=Matriks.objects.all().filter(naam__icontains='dames')
-    rounds=nr #int(kolommen/2)
-    # r = 0
-    rijen=nr # (kolommen-1)*rounds
-    spelers=Vikinglid.objects.all() #.filter(nr=str(t).zfill(2)).values_list('naam')
-    context={'kop': [f'matrix ({rijen}rijen) bij {kolommen} kolommen',],
-            'kopmtrx' : [f'kast', 'kol1','kol2','kol3','kol4','kol5','kol6','kol7','kol8','kol9','kol10','kol11','kol12','kol13'], #'regel-informatie kluisnummers'
-            # 'regels': Matriks.objects.all(),
-            'matrix': mtrx,
-            'heren': heren,
-            'dames': dames,
-            'topics': topics,
-             'kopspelers': [f'matrix({rijen}rijen; {rounds} rijen) with {kolommen} kolommen'],
-            # 'spelers': spelers,
+# def get_matrix(request):
+#     template_name = 'viking/bloktabel_list.html'
+#     nr=9
+#     kolommen = nr
+#     kasten=Kluis.objects.all() #.filter(kast__icontains=bloknummer)
+#     mtrx=Matriks.objects.all()
+#     topics=Topic.objects.all()
+#     heren=Matriks.objects.all().filter(naam__icontains='heren')
+#     dames=Matriks.objects.all().filter(naam__icontains='dames')
+#     rounds=nr #int(kolommen/2)
+#     # r = 0
+#     rijen=nr # (kolommen-1)*rounds
+#     spelers=Vikinglid.objects.all() #.filter(nr=str(t).zfill(2)).values_list('naam')
+#     context={'kop': [f'matrix ({rijen}rijen) bij {kolommen} kolommen',],
+#             'kopmtrx' : [f'kast', 'kol1','kol2','kol3','kol4','kol5','kol6','kol7','kol8','kol9','kol10','kol11','kol12','kol13'], #'regel-informatie kluisnummers'
+#             # 'regels': Matriks.objects.all(),
+#             'matrix': mtrx,
+#             'heren': heren,
+#             'dames': dames,
+#             'topics': topics,
+#              'kopspelers': [f'matrix({rijen}rijen; {rounds} rijen) with {kolommen} kolommen'],
+#             # 'spelers': spelers,
 
-            }
-    return render(request,"viking/bloktabel_list.html", context)
+#             }
+#     return render(request,"viking/bloktabel_list.html", context)
 
-@login_required(login_url='login')
-def set_kluis(request, pk,kol):
-    # kls=Kluis.objects.get(id=kol)
-    vikingers=Vikinglid.objects.all().order_by('name')
-    matrix=Matriks.objects.get(id=pk)
-    hdr=[ 'kol1','kol2','kol3','kol4','kol5','kol6','kol7','kol8','kol9','kol10']#,'kol10','kol11','kol12','kol13']
-    a=hdr[int(kol)]
-    col=int(kol)
-    k=getattr(matrix,a)
-    # print(k)
-    # het idee is om de getoonde informatie in de regel op te slaan en de getoonde informatie in kol te vervangen op de positie van de cel in de regel.
-    # dus als getoond wordt '1', dan staat op pos 1 '001'. de regel ontvangt het kluis-id. de kol ontvangt '001'; de kluis is BEZET
-    # de kol's bevatten het kluisnummer. x-as is id, y-as =kol;
+# @login_required(login_url='login')
+# def set_kluis(request, pk,kol):
+#     # kls=Kluis.objects.get(id=kol)
+#     vikingers=Vikinglid.objects.all().order_by('name')
+#     matrix=Matriks.objects.get(id=pk)
+#     hdr=[ 'kol1','kol2','kol3','kol4','kol5','kol6','kol7','kol8','kol9','kol10']#,'kol10','kol11','kol12','kol13']
+#     a=hdr[int(kol)]
+#     col=int(kol)
+#     k=getattr(matrix,a)
+#     # print(k)
+#     # het idee is om de getoonde informatie in de regel op te slaan en de getoonde informatie in kol te vervangen op de positie van de cel in de regel.
+#     # dus als getoond wordt '1', dan staat op pos 1 '001'. de regel ontvangt het kluis-id. de kol ontvangt '001'; de kluis is BEZET
+#     # de kol's bevatten het kluisnummer. x-as is id, y-as =kol;
     
-    pos=int(kol);begincell=0;cellengte=0;eindcell=0
-    cellengte=3
-    regellengte=len(matrix.regel)
-    begincell=col+pos*cellengte
-    eindcell=0+cellengte
-    regel=matrix.regel
-    cell=regel[begincell:eindcell]
-    rechts=regel[eindcell+cellengte:regellengte]
-    new_cell_content=' xxx' ; huurder='';huurdernaam=''
-    if col in (1,2,3,4,5,6,7,8,9,10,11,12,13):
-        b=(col-1)*cellengte
-        e=b+3
-        c=regel[b:e] 
-        new_info=c
-        new_cell_content=c 
-        print('karakters per regel',regellengte,'column', col,'celinhoud',c)
-        try:            
-            kls=Kluis.objects.get(id=c)
-        except:
-            pass
-        finally:
-            kls=Kluis.objects.get(id=c)
-            form=KluisjeForm(instance=kls)
-            # form=VikinglidForm(instance=kls)
+#     pos=int(kol);begincell=0;cellengte=0;eindcell=0
+#     cellengte=3
+#     regellengte=len(matrix.regel)
+#     begincell=col+pos*cellengte
+#     eindcell=0+cellengte
+#     regel=matrix.regel
+#     cell=regel[begincell:eindcell]
+#     rechts=regel[eindcell+cellengte:regellengte]
+#     new_cell_content=' xxx' ; huurder='';huurdernaam=''
+#     if col in (1,2,3,4,5,6,7,8,9,10,11,12,13):
+#         b=(col-1)*cellengte
+#         e=b+3
+#         c=regel[b:e] 
+#         new_info=c
+#         new_cell_content=c 
+#         print('karakters per regel',regellengte,'column', col,'celinhoud',c)
+#         try:            
+#             kls=Kluis.objects.get(id=c)
+#         except:
+#             pass
+#         finally:
+#             kls=Kluis.objects.get(id=c)
+#             form=KluisjeForm(instance=kls)
+#             # form=VikinglidForm(instance=kls)
 
-    if col==1: matrix.kol1=new_cell_content
-    if col==2: matrix.kol2=new_cell_content
-    if col==3: matrix.kol3=new_cell_content
-    if col==4: matrix.kol4=new_cell_content
-    if col==5: matrix.kol5=new_cell_content
-    if col==6: matrix.kol6=new_cell_content
-    if col==7: matrix.kol7=new_cell_content
-    if col==8: matrix.kol8=new_cell_content
-    if col==9: matrix.kol9=new_cell_content
-    if col==10: matrix.kol10=new_cell_content
-    if col==11: matrix.kol11=new_cell_content
-    if col==12: matrix.kol12=new_cell_content
-    if col==13: matrix.kol13=new_cell_content
-    # form=KluisjeForm(instance=kls)
-    kluizen=Activiteit.objects.all().filter(type='kluis').order_by('name')
-    teams=Activiteit.objects.all().filter(type='ploeg').order_by('name')
-    # kluisje= request.POST.getlist('heeftkluis')
-    kluisjeopheffen= request.POST.getlist('is_lid_van')
-    if request.method == 'POST':
-        h = request.POST.getlist('huurder')
-        print('huurder',h[0])
-        h=h[0]
-        huurder=int(h)
-        hrdr=Vikinglid.objects.get(id=huurder)
-        kls.name = kls.name
-        kls.name =hrdr.name # request.POST.get('name')
-        kls.email = request.POST.get('email')
-        kls.save()
-        return redirect('get_matrix')
+#     if col==1: matrix.kol1=new_cell_content
+#     if col==2: matrix.kol2=new_cell_content
+#     if col==3: matrix.kol3=new_cell_content
+#     if col==4: matrix.kol4=new_cell_content
+#     if col==5: matrix.kol5=new_cell_content
+#     if col==6: matrix.kol6=new_cell_content
+#     if col==7: matrix.kol7=new_cell_content
+#     if col==8: matrix.kol8=new_cell_content
+#     if col==9: matrix.kol9=new_cell_content
+#     if col==10: matrix.kol10=new_cell_content
+#     if col==11: matrix.kol11=new_cell_content
+#     if col==12: matrix.kol12=new_cell_content
+#     if col==13: matrix.kol13=new_cell_content
+#     # form=KluisjeForm(instance=kls)
+#     kluizen=Activiteit.objects.all().filter(type='kluis').order_by('name')
+#     teams=Activiteit.objects.all().filter(type='ploeg').order_by('name')
+#     # kluisje= request.POST.getlist('heeftkluis')
+#     kluisjeopheffen= request.POST.getlist('is_lid_van')
+#     if request.method == 'POST':
+#         h = request.POST.getlist('huurder')
+#         print('huurder',h[0])
+#         h=h[0]
+#         huurder=int(h)
+#         hrdr=Vikinglid.objects.get(id=huurder)
+#         kls.name = kls.name
+#         kls.name =hrdr.name # request.POST.get('name')
+#         kls.email = request.POST.get('email')
+#         kls.save()
+#         return redirect('get_matrix')
 
-    context = {
-        'form': form,
-          'vikinglid': kls,
-          'vikingers':vikingers,
-          'kluizen':kluizen,
-          'teams':teams,
-    }
-    return render(request, 'viking/get_kluis_form.html', context)
+#     context = {
+#         'form': form,
+#           'vikinglid': kls,
+#           'vikingers':vikingers,
+#           'kluizen':kluizen,
+#           'teams':teams,
+#     }
+#     return render(request, 'viking/get_kluis_form.html', context)
 
 # @login_required(login_url='login')
 def koppel_kluis_met_matriks(request):
