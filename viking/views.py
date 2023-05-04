@@ -263,7 +263,7 @@ def createVikinglid(request):
           'vikinglid':vikinglid}
     return render(request, 'viking/vikinglid_form.html', context)
 
-def aanvrage(request):
+def mutatie(request):
     form = VikinglidForm()
     topics = Activiteit.objects.all()
     if request.method == 'POST':
