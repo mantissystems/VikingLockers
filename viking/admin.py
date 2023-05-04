@@ -2,10 +2,10 @@ from django.contrib import admin
 # from django.contrib.auth.admin import UserAdmin
 from .models import  User
 from .models import  Topic
-from .models import Note,Vikinglid,Activiteit,KluisjesRV
+from .models import Note,Vikinglid,Activiteit,KluisjesRV,Matriks
 admin.site.register(Topic)
 admin.register(User)
-admin.site.register(Activiteit)
+admin.site.register(Matriks)
 @admin.register(KluisjesRV)
 class KluisAdmin(admin.ModelAdmin):
     list_filter = ('topic','kluisnummer')
