@@ -12,14 +12,15 @@
                     <caption>heren kastenblok 3x  4x6 </caption>
                     <tr>
                         {% for k in kopmtrx %}
+                        
                         <th>{{k}}</th>
+                        {% endfor %}
                     </tr>
-                    {% endfor %}
                 </thead>
                 <tbody>
                     {% for rij in heren %}
                         <tr>
-                            <td> <a href="{% url 'update_kluis' rij.id 1 %}"> {{rij.kol1}}   </td> 
+                            <td> {{rij.naam|slice:"0:1"}}{{rij.y_as}}</td><td> <a href="{% url 'update_kluis'  rij.id 1 %}">  {{rij.kol1}}   </td>
                                 <td> <a href="{% url 'update_kluis' rij.id 2 %}"> {{rij.kol2}}   </td> 
                                 <td> <a href="{% url 'update_kluis' rij.id 3 %}"> {{rij.kol3}}   </td>
                                 <td> <a href="{% url 'update_kluis' rij.id 4 %}"> {{rij.kol4}}   </td>
@@ -41,12 +42,12 @@
               <table class="viking-table">
                 <thead>
                     <caption>kastenblok 4x6 midden</caption>
-
                     <tr>
                         {% for k in kopmtrx %}
+                        
                         <th>{{k}}</th>
+                        {% endfor %}
                     </tr>
-                    {% endfor %}
                 </thead>
                 <tbody>
                     {% for rij in adames %}
@@ -76,9 +77,10 @@
                     <caption>los kastenblok 4x6</caption>
                     <tr>
                         {% for k in kopmtrx %}
+                        
                         <th>{{k}}</th>
+                        {% endfor %}
                     </tr>
-                    {% endfor %}
                 </thead>
                 <tbody>
                     {% for rij in bdames %}
@@ -110,10 +112,10 @@
                     <caption>kastenblok 4x6 linkerzijde</caption>
                     <tr>
                         {% for k in kopmtrx %}
+                        
                         <th>{{k}}</th>
+                        {% endfor %}
                     </tr>
-                    {% endfor %}
-                </thead>
                 <tbody>
                     {% for rij in cdames %}
                         <tr>
@@ -134,20 +136,20 @@
                 </tbody>
             </table>
             {% endif %}
-            {% if ddames %}
+            {% if ddamessss %}
 
             <table class="viking-table">
                 <thead>
                     <caption>kastenblok 4x6 nog bepalen</caption>
                     <tr>
-                        {% for k in kopmtrx %}
+                        {% for k in kopmtrxxxx%}
+                        
                         <th>{{k}}</th>
+                        {% endfor %}
                     </tr>
-                    {% endfor %}
-                    er zijn in blok D acht kolommen beschikbaar
                 </thead>
                 <tbody>
-                    {% for rij in ddames %}
+                    {% for rij in ddamessss %}
                         <tr>
                             <td> {{rij.naam|slice:"0:1"}}{{rij.y_as}}</td><td> <a href="{% url 'update_kluis'  rij.id 1 %}">  {{rij.kol1}}   </td>
                                 <td> <a href="{% url 'update_kluis' rij.id 2 %}"> {{rij.kol2}}   </td> 
@@ -158,7 +160,6 @@
                                 <td> <a href="{% url 'update_kluis' rij.id 7 %}"> {{rij.kol7}}   </td>
                                 <td> <a href="{% url 'update_kluis' rij.id 8 %}"> {{rij.kol8}}   </td>
                                     {% comment %}
-
                                 <td> <a href="{% url 'update_kluis' rij.id 9 %}"> {{rij.kol9}}   </td>
                                 <td> <a href="{% url 'update_kluis' rij.id 10 %}"> {{rij.kol10}}   </td>
                                 <td> <a href="{% url 'update_kluis' rij.id 11 %}"> {{rij.kol11}}   </td>

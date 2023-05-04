@@ -136,7 +136,7 @@ def home(request):
     vikingleden=Vikinglid.objects.all().filter(filter1)[0:10]
     gevonden=KluisjesRV.objects.none
 # ==========================================================
-    kopmtrx="[f'kast', 'kol1','kol2','kol3','kol4','kol5','kol6','kol7','kol8','kol9','kol10','kol11','kol12','kol13']," #'regel-informatie kluisnummers'
+    # kopmtrx="[f'kast', 'kol1','kol2','kol3','kol4','kol5','kol6','kol7','kol8','kol9','kol10','kol11','kol12','kol13']," #'regel-informatie kluisnummers'
     filter2=Q(kluisnummer__icontains=q)    
     filter3=Q(naamvoluit__icontains=q)    
     filter4=Q(huurders__name__icontains=q)    
@@ -159,6 +159,11 @@ def home(request):
     cdames=Matriks.objects.all().filter(naam__startswith='C').filter(filterregel|filterregel2).exclude(y_as__in=(7,8))
     ddames=Matriks.objects.all().filter(naam__startswith='D').filter(filterregel|filterregel2).exclude(y_as__in=(7,8))
     mtrx=Matriks.objects.all().filter(filterregel).exclude(y_as__in=(7,8))
+    hdr=['', 'kol1','kol2','kol3','kol4','kol5','kol6','kol7','kol8','kol9','kol10','kol11','kol12','kol13']  #LET OP: KOLOM NUL NIET VERGETEN
+    kopmtrx=[]
+    for i in range (0,13):
+        kopmtrx.append(hdr[i])
+        # print(kopmtrx)
     context = {
         'koplegen':[f'verdeling ({all.count()} leden'],
         'vikingleden':vikingleden,
@@ -171,6 +176,7 @@ def home(request):
         'ddames': ddames,
         'kluizen': kluizen,
         'bezet': bezet,
+        'kopmtrx': kopmtrx,
         'gevonden': gevonden,
         'kasten': kasten,
         'q':q,
