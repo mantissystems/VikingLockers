@@ -377,7 +377,7 @@ def decodeer(regel,de_matriks_kolom,column,cellengte):
 @login_required(login_url='login')
 def update_kluis(request, pk,kol):
     column=int(kol)
-    print('in update_kluis')
+    # print('in update_kluis')
     matrix=Matriks.objects.get(id=pk)
     labels=Kluislabel.objects.all()
     rms = KluisjesRV.objects.all() #.exclude(huurders=None)
@@ -397,10 +397,10 @@ def update_kluis(request, pk,kol):
 
     try:
         oorspronkelijkmatriksnummer=decodeer(regel,de_matriks_kolom,column,cellengte)
-        print('oorspronkelijkmatriksnummera',oorspronkelijkmatriksnummer)
+        # print('oorspronkelijkmatriksnummera',oorspronkelijkmatriksnummer)
         kls=KluisjesRV.objects.get(kluisnummer=oorspronkelijkmatriksnummer)
         form=KluisjeForm(instance=kls)
-        print('try:',kluisje,kls.id,oorspronkelijkmatriksnummer)
+        # print('try:',kluisje,kls.id,oorspronkelijkmatriksnummer)
         context = {
                 'form': form,
                 'kluis': kls,
@@ -436,17 +436,21 @@ def update_kluis(request, pk,kol):
             huurder= request.POST.get('heeftkluis')
             label= request.POST.get('kluislabel')
             slot= request.POST.get('slot')
-            print('1',slot)
+            # print('1',slot)
             your_name= request.POST.get('your_name')
             huuropheffen= request.POST.get('huuropheffen')
             # if form.is_valid():
             if kls:
                     if slot:
                         kls.type=slot
-                        print('2',slot)
+                        # print('2',slot)
                         kls.save()
                     if label:
                         kls.label=label
+                        # print('zet label in matrix',label,oorspronkelijkmatriksnummer)
+                        mx=Matriks.objects.all().filter(regel__icontains=oorspronkelijkmatriksnummer).first()
+                        setattr(mx,hdr[int(kls.col)],label)
+                        mx.save()
                         kls.save()
                     if huurder or your_name:
                         h=Vikinglid.objects.get(id=huurder)
@@ -630,7 +634,7 @@ def koppel_kluis_met_matriks(request):
     mx= KluisjesRV.objects.all().order_by('id').last()
     max=mx.id
     teller=tel.id
-    print(teller)
+    # print(teller)
     for m in matrix:
         # for kol in range(1,10):
         for k in hdr:
@@ -646,7 +650,7 @@ def koppel_kluis_met_matriks(request):
                 setattr(vl, 'kluisje',inh)
                 vl.save()
             except:
-                print(inh)
+                # print('except',inh)
                 pass
             if teller<max: teller+=1
     print('einde koppelen ===============')
@@ -669,7 +673,6 @@ def hernummermatriks(request):
             de_matriks_kolom=h
             inh=getattr(m,h)
             if m.x_as/m.y_as==kolomteller:
-                # print(kolomteller)
                 kolomteller=0
             kolomteller+=1
             oorspronkelijkmatriksnummer=decodeer(regel,de_matriks_kolom,kolomteller,cellengte)
