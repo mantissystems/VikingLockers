@@ -147,11 +147,11 @@ def home(request):
 # ==============================================================
     filterregel=Q(regel__icontains=q)    
     filterregel2=Q(naam__icontains=q)    
-    heren=Matriks.objects.all().filter(naam__icontains='Heren').filter(filterregel|filterregel2).exclude(y_as__in=(7,8))
-    adames=Matriks.objects.all().filter(naam__startswith='A').filter(filterregel|filterregel2).exclude(y_as__in=(7,8))
-    bdames=Matriks.objects.all().filter(naam__startswith='B').filter(filterregel|filterregel2).exclude(y_as__in=(7,8))
-    cdames=Matriks.objects.all().filter(naam__startswith='C').filter(filterregel|filterregel2).exclude(y_as__in=(7,8))
-    ddames=Matriks.objects.all().filter(naam__startswith='D').filter(filterregel|filterregel2).exclude(y_as__in=(7,8))
+    heren=Matriks.objects.all().filter(naam__icontains='Heren').filter(filterregel|filterregel2).exclude(y_as__in=(7,8)).order_by('y_as')
+    adames=Matriks.objects.all().filter(naam__startswith='A').filter(filterregel|filterregel2).exclude(y_as__in=(7,8)).order_by('y_as')
+    bdames=Matriks.objects.all().filter(naam__startswith='B').filter(filterregel|filterregel2).exclude(y_as__in=(7,8)).order_by('y_as')
+    cdames=Matriks.objects.all().filter(naam__startswith='C').filter(filterregel|filterregel2).exclude(y_as__in=(7,8)).order_by('y_as')
+    ddames=Matriks.objects.all().filter(naam__startswith='D').filter(filterregel|filterregel2).exclude(y_as__in=(7,8)).order_by('y_as')
     mtrx=Matriks.objects.all().filter(filterregel).exclude(y_as__in=(7,8))
     hdr=['', 'kol1','kol2','kol3','kol4','kol5','kol6','kol7','kol8','kol9','kol10','kol11','kol12','kol13']  #LET OP: KOLOM NUL NIET VERGETEN
     kopmtrx=[]
