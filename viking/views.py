@@ -39,7 +39,7 @@ from viking.serializers import(
     ActiviteitSerializer,
     TopicSerializer,
 )
-from .models import   Topic,Vikinglid,Activiteit,Note,Matriks,KluisjesRV ,Matriks90,Kluislabel
+from .models import   Topic,Vikinglid,Activiteit,Note,Matriks,KluisjesRV ,Kluislabel
 from .forms import UserForm,Urv_KluisForm,VikinglidForm,KluisjeForm
 
 def loginPage(request):
@@ -136,17 +136,11 @@ def home(request):
     vikingleden=Vikinglid.objects.all().filter(filter1)[0:10]
     gevonden=KluisjesRV.objects.none
 # ==========================================================
-    # kopmtrx="[f'kast', 'kol1','kol2','kol3','kol4','kol5','kol6','kol7','kol8','kol9','kol10','kol11','kol12','kol13']," #'regel-informatie kluisnummers'
     filter2=Q(kluisnummer__icontains=q)    
     filter3=Q(naamvoluit__icontains=q)    
     filter4=Q(huurders__name__icontains=q)    
     filter5=Q(topic__icontains=q)    
-    # f6=Q(y_as__in=(1,2,3,4,5,6))
-    # kluizen=KluisjesRV.objects.all().order_by('kluisnummer').filter(((filter2|filter3|filter5)&f6))
-
-    # filter6=Q(huurders__name__icontains=q)    
     kasten=KluisjesRV.objects.all().order_by('kluisnummer').filter((filter2|filter3))
-    # kluizen=KluisjesRV.objects.all().order_by('kluisnummer').exclude(filter4)
     kluizen=KluisjesRV.objects.all().order_by('kluisnummer').filter((filter2|filter3|filter4|filter5))
     if q!='':gevonden=KluisjesRV.objects.all().order_by('kluisnummer').filter((filter2|filter3|filter4|filter5))
     bezet=KluisjesRV.objects.all().order_by('kluisnummer').exclude(huurders=None)
@@ -713,45 +707,45 @@ def hernummermatriks(request):
     context={}
     return render(request, 'viking/home.html', context)
 
-def hernummermatriks90(request):
-    print('in hernummermatriks90===============')
-    rij=0
-    # matriks regel-kolomnummering naar kolomvelden overbrengen
-    hdr=['kol1','kol2','kol3','kol4',] ###'kol5','kol6','kol7','kol8','kol9','kol10','kol11','kol12',]#'kol13',] #'kol14']
-    begincell=0;cellengte=0;eindfilter=0
-    matrix=Matriks.objects.all().filter(naam='Heren')
-    Matriks90.objects.all().delete()
-    m90=Matriks90.objects.all()
-    kolomteller=0
-    for m in matrix:
-            hd=hdr[rij]
-            i=getattr(m,hd)
-            print(i)
-            w=m90.create(naam=m.naam,
-                y_as=m.y_as,
-                ronde=m.id,
-                )
-            # if m.y_as in (1,2,3,4,5,6) and m.naam=='Heren':
-                # for h in hdr:
-    for m in m90:
-        mtx=Matriks.objects.get(id=m.ronde)
-        inh=getattr(mtx,hd)
-        setattr(m,hd,inh)
-        setattr(m,'naam',mtx.naam)
-        setattr(m,'regel',mtx.regel)
-        m.save()
-    #         # if m.y_as in (1,2,3,4,5,6) and m.naam=='Heren':
-    #     for h in hdr:
-    #         i=getattr(m,h)
-    #         print(i)
-            # setattr(m, de_matriks_kolom, oorspronkelijkmatriksnummer)
+# def hernummermatriks90(request):
+#     print('in hernummermatriks90===============')
+#     rij=0
+#     # matriks regel-kolomnummering naar kolomvelden overbrengen
+#     hdr=['kol1','kol2','kol3','kol4',] ###'kol5','kol6','kol7','kol8','kol9','kol10','kol11','kol12',]#'kol13',] #'kol14']
+#     begincell=0;cellengte=0;eindfilter=0
+#     matrix=Matriks.objects.all().filter(naam='Heren')
+#     Matriks90.objects.all().delete()
+#     m90=Matriks90.objects.all()
+#     kolomteller=0
+#     for m in matrix:
+#             hd=hdr[rij]
+#             i=getattr(m,hd)
+#             print(i)
+#             w=m90.create(naam=m.naam,
+#                 y_as=m.y_as,
+#                 ronde=m.id,
+#                 )
+#             # if m.y_as in (1,2,3,4,5,6) and m.naam=='Heren':
+#                 # for h in hdr:
+#     for m in m90:
+#         mtx=Matriks.objects.get(id=m.ronde)
+#         inh=getattr(mtx,hd)
+#         setattr(m,hd,inh)
+#         setattr(m,'naam',mtx.naam)
+#         setattr(m,'regel',mtx.regel)
+#         m.save()
+#     #         # if m.y_as in (1,2,3,4,5,6) and m.naam=='Heren':
+#     #     for h in hdr:
+#     #         i=getattr(m,h)
+#     #         print(i)
+#             # setattr(m, de_matriks_kolom, oorspronkelijkmatriksnummer)
 
-            # setattr(m, de_matriks_kolom, oorspronkelijkmatriksnummer)
+#             # setattr(m, de_matriks_kolom, oorspronkelijkmatriksnummer)
 
-    print('einde hernummermatriks90===============')
-    # koppel_kluis_met_matriks(request)
-    context={}
-    return render(request, 'viking/home.html', context)
+#     print('einde hernummermatriks90===============')
+#     # koppel_kluis_met_matriks(request)
+#     context={}
+#     return render(request, 'viking/home.html', context)
 
 def isNum(data):
     try:
