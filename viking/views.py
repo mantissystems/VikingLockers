@@ -284,16 +284,16 @@ def mutatie(request):
                     name=username,
                     description=description
                 )
-            finally:
+            # finally:
         # return redirect('home')
     # vikinglid=Vikinglid.objects.all().last()
     # leeg = Activiteit.objects.all().filter(
     #     Q(name='Wachtlijst')
         # )
-                context = {
+    context = {
            'form': form,
            'topics': topics,
-            'vikinglid':vikinglid,
+            # 'vikinglid':vikinglid,
            }
         #   'kluizen': leeg,
     return render(request, 'viking/aanvrage_form.html', context)
