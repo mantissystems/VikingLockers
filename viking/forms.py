@@ -33,9 +33,9 @@ class VikinglidForm(ModelForm):
     class Meta:
         model = Vikinglid
         fields = '__all__'
-        def __init__(self, *args, **kwargs):
-            self.fields['is_lid_van'].queryset=Vikinglid.objects.filter(id=self.id)
-            self.fields['is_lid_van'].widget.attrs.update(size='20')
+        # def __init__(self, *args, **kwargs):
+        #     self.fields['is_lid_van'].queryset=Vikinglid.objects.filter(id=self.id)
+        #     self.fields['is_lid_van'].widget.attrs.update(size='20')
 
 class UserForm(ModelForm):
     class Meta:

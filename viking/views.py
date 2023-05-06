@@ -135,6 +135,7 @@ def home(request):
     filter1=Q(name__icontains=q)    
     vikingleden=Vikinglid.objects.all().filter(filter1)[0:10]
     gevonden=KluisjesRV.objects.none
+    aanvragen=Vikinglid.objects.all().filter(email__icontains='unknown')
 # ==========================================================
     filter2=Q(kluisnummer__icontains=q)    
     filter3=Q(naamvoluit__icontains=q)    
@@ -173,6 +174,7 @@ def home(request):
         'kopmtrx': kopmtrx,
         'gevonden': gevonden,
         'kasten': kasten,
+        'aanvragen': aanvragen,
         'q':q,
         }
     return render(request, template, context)
@@ -269,12 +271,14 @@ def mutatie(request):
     if request.method == 'POST':
         username = request.POST.get('name').lower()
         description = request.POST.get('description') #.lower()
-        if username:
+        if username !='':
+            print('vikinglid', username)
             email='info@mantisbv.nl-unknown'
             try:
                 vikinglid=Vikinglid.objects.all().get(name=username)
             except:
                 print('vikinglid not found', username)
+            finally:
                 vikinglid=Vikinglid.objects.create(
                     email=email,
                     avatar='avatar.svg',
