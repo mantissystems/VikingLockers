@@ -20,12 +20,17 @@ class Topic(models.Model):
     def __str__(self):
         return self.name
 
-# class Activiteit(models.Model):
-#     name = models.CharField(max_length=100)
-#     type = models.CharField(max_length=18, choices=SOORT,default='--')     
-#     def __str__(self):
-#         return self.name
 
+class Instromer(models.Model):
+    name= models.CharField(max_length=222,default='---')     
+    updated = models.DateTimeField(auto_now=True)
+    created = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        ordering = ['name', '-updated']
+    def __str__(self):
+        return self.name
+    
 class Vikinglid(models.Model):
     name = models.CharField(max_length=100)
     avatar=models.ImageField(null=True,default="avatar.svg")      # install Pillow is needed

@@ -39,8 +39,8 @@ from viking.serializers import(
     # ActiviteitSerializer,
     TopicSerializer,
 )
-from .models import   Topic,Vikinglid,Note,Matriks,KluisjesRV ,Kluislabel
-from .forms import UserForm,VikinglidForm,KluisjeForm 
+from .models import   Topic,Vikinglid,Note,Matriks,KluisjesRV ,Kluislabel,Instromer
+from .forms import UserForm,VikinglidForm,KluisjeForm ,InstromerForm
 
 def loginPage(request):
 
@@ -266,7 +266,7 @@ def createVikinglid(request):
     return render(request, 'viking/vikinglid_form.html', context)
 
 def mutatie(request):
-    form = VikinglidForm()
+    form = InstromerForm()
     topics = Topic.objects.all()
     description='aanvraag..'
     context = {
@@ -276,21 +276,26 @@ def mutatie(request):
 # if this is a POST request we need to process the form data
     if request.method == "POST":
         # create a form instance and populate it with data from the request:
-        form = VikinglidForm(request.POST)
+        form = InstromerForm(request.POST)
         # check whether it's valid:
+        your_name= request.POST.get('your_name')
+        print('vikinglid', your_name,description)
+        lid, created = Instromer.objects.create(
+                name=your_name,
+                )
         if form.is_valid():
-            # print('form is valid')
-            username = form.cleaned_data["name"]
-            email = form.cleaned_data["email"]
-            description = form.cleaned_data["description"]
-            lid, created = Vikinglid.objects.create(
+            print('form is valid')
+            username = form.cleaned_data["your_name"]
+            print('vikinglid', username,description)
+            # email = form.cleaned_data["email"]
+            # description = form.cleaned_data["description"]
+            lid, created = Instromer.objects.create(
                 name=username,
-                email=email,
-                    avatar='avatar.svg',
-                description=description,
+                # email=email,
+                #     avatar='avatar.svg',
+                # description=description,
                 )
 
-            # print('vikinglid', username,email,description)
     #     message = form.cleaned_data["message"]
     #     sender = form.cleaned_data["sender"]
     #     cc_myself = form.cleaned_data["cc_myself"]
@@ -308,7 +313,7 @@ def mutatie(request):
     # else:
     #     form = NameForm()
 
-    return render(request, "viking/aanvrage_form.html", {"form": form})
+    return render(request, "viking/instromer_form.html", {"form": form})
    
 
 def export_team_data(request):
