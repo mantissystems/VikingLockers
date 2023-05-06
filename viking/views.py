@@ -279,18 +279,18 @@ def mutatie(request):
         form = VikinglidForm(request.POST)
         # check whether it's valid:
         if form.is_valid():
-            print('form is valid')
+            # print('form is valid')
             username = form.cleaned_data["name"]
             email = form.cleaned_data["email"]
             description = form.cleaned_data["description"]
-            lid, created = Vikinglid.objects.update_or_create(
+            lid, created = Vikinglid.objects.create(
                 name=username,
                 email=email,
                     avatar='avatar.svg',
                 description=description,
                 )
 
-            print('vikinglid', username,email,description)
+            # print('vikinglid', username,email,description)
     #     message = form.cleaned_data["message"]
     #     sender = form.cleaned_data["sender"]
     #     cc_myself = form.cleaned_data["cc_myself"]
