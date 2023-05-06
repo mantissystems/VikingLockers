@@ -278,23 +278,24 @@ def mutatie(request):
                 vikinglid=Vikinglid.objects.all().get(name=username)
             except:
                 print('vikinglid not found', username)
-            finally:
                 vikinglid=Vikinglid.objects.create(
                     email=email,
                     avatar='avatar.svg',
                     name=username,
                     description=description
                 )
-        return redirect('home')
-    vikinglid=Vikinglid.objects.all().last()
+            finally:
+        # return redirect('home')
+    # vikinglid=Vikinglid.objects.all().last()
     # leeg = Activiteit.objects.all().filter(
     #     Q(name='Wachtlijst')
         # )
-    context = {
-        'form': form,
-          'topics': topics,
+                context = {
+           'form': form,
+           'topics': topics,
+            'vikinglid':vikinglid,
+           }
         #   'kluizen': leeg,
-          'vikinglid':vikinglid}
     return render(request, 'viking/aanvrage_form.html', context)
 
 def export_team_data(request):
