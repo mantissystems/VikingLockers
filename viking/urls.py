@@ -4,7 +4,7 @@ from viking.views import(
 home,
 loginPage, logoutUser,
 registerPage , 
-topicsPage ,  updateUser, userProfile,
+topicsPage ,  updateUser, userProfile, 
  urv_loginPage ,
  check_matriks,
 createVikinglid,deleteVikinglid, 

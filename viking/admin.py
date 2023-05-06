@@ -2,7 +2,7 @@ from django.contrib import admin
 # from django.contrib.auth.admin import UserAdmin
 from .models import  User
 from .models import  Topic
-from .models import Note,Vikinglid,Activiteit,KluisjesRV,Matriks
+from .models import Note,Vikinglid,KluisjesRV,Matriks
 admin.site.register(Topic)
 admin.register(User)
 # admin.site.register(Matriks)

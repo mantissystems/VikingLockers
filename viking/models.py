@@ -20,18 +20,18 @@ class Topic(models.Model):
     def __str__(self):
         return self.name
 
-class Activiteit(models.Model):
-    name = models.CharField(max_length=100)
-    type = models.CharField(max_length=18, choices=SOORT,default='--')     
-    def __str__(self):
-        return self.name
+# class Activiteit(models.Model):
+#     name = models.CharField(max_length=100)
+#     type = models.CharField(max_length=18, choices=SOORT,default='--')     
+#     def __str__(self):
+#         return self.name
 
 class Vikinglid(models.Model):
     name = models.CharField(max_length=100)
     avatar=models.ImageField(null=True,default="avatar.svg")      # install Pillow is needed
     email = models.CharField(max_length=100,blank=True)
     description = models.TextField(null=True, blank=True) # database field (can Empty), form field (can Empty)
-    is_lid_van = models.ManyToManyField(Activiteit, related_name='lid_van', blank=True)
+    # is_lid_van = models.ManyToManyField(Activiteit, related_name='lid_van', blank=True)
     updated = models.DateTimeField(auto_now=True)
     created = models.DateTimeField(auto_now_add=True)
     class Meta:

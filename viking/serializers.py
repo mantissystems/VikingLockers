@@ -1,6 +1,6 @@
 from rest_framework import serializers
 from rest_framework.serializers import ModelSerializer
-from .models import   Topic,Note,KluisjesRV,Activiteit,Vikinglid
+from .models import   Topic,Note,KluisjesRV,Vikinglid
 from django.contrib.auth.models import User
 
 
@@ -14,11 +14,11 @@ class NoteSerializer(ModelSerializer):
         model = Note
         fields = '__all__'
 
-class ActiviteitSerializer(ModelSerializer):
-    lid_van = serializers.PrimaryKeyRelatedField(queryset=Vikinglid.objects.all(), many=True)
-    class Meta:
-        model = Activiteit
-        fields = '__all__'
+# class ActiviteitSerializer(ModelSerializer):
+#     lid_van = serializers.PrimaryKeyRelatedField(queryset=Vikinglid.objects.all(), many=True)
+#     class Meta:
+#         model = Activiteit
+#         fields = '__all__'
 
 class KluisSerializer(ModelSerializer):
     class Meta:

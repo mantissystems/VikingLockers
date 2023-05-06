@@ -34,13 +34,13 @@ from django.contrib.auth.forms import UserCreationForm
 
 from viking.serializers import(
     GebruikerSerializer,
-    KluisSerializer,
+    KluisSerializer, 
     NoteSerializer,
-    ActiviteitSerializer,
+    # ActiviteitSerializer,
     TopicSerializer,
 )
-from .models import   Topic,Vikinglid,Activiteit,Note,Matriks,KluisjesRV ,Kluislabel
-from .forms import UserForm,Urv_KluisForm,VikinglidForm,KluisjeForm
+from .models import   Topic,Vikinglid,Note,Matriks,KluisjesRV ,Kluislabel
+from .forms import UserForm,VikinglidForm,KluisjeForm 
 
 def loginPage(request):
 
@@ -255,19 +255,19 @@ def createVikinglid(request):
                         messages.error(request, 'VIKINGLID  already exists ')
         return redirect('home')
     vikinglid=Vikinglid.objects.all().last()
-    leeg = Activiteit.objects.all().filter(
-        Q(name='Wachtlijst')
-        )
+    # leeg = Activiteit.objects.all().filter(
+    #     Q(name='Wachtlijst')
+    #     )
     context = {
         'form': form,
           'topics': topics,
-          'kluizen': leeg,
+        #   'kluizen': leeg,
           'vikinglid':vikinglid}
     return render(request, 'viking/vikinglid_form.html', context)
 
 def mutatie(request):
     form = VikinglidForm()
-    topics = Activiteit.objects.all()
+    topics = Topic.objects.all()
     if request.method == 'POST':
         username = request.POST.get('name').lower()
         description = request.POST.get('description') #.lower()
@@ -287,13 +287,13 @@ def mutatie(request):
                 )
         return redirect('home')
     vikinglid=Vikinglid.objects.all().last()
-    leeg = Activiteit.objects.all().filter(
-        Q(name='Wachtlijst')
-        )
+    # leeg = Activiteit.objects.all().filter(
+    #     Q(name='Wachtlijst')
+        # )
     context = {
         'form': form,
           'topics': topics,
-          'kluizen': leeg,
+        #   'kluizen': leeg,
           'vikinglid':vikinglid}
     return render(request, 'viking/aanvrage_form.html', context)
 
