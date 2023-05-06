@@ -279,7 +279,7 @@ def mutatie(request):
     # except:
     #     messages.error(request, '.You are not logged in')
     if request.method == 'POST':
-        username = request.POST.get('vikinglid_name').lower()
+        username = request.POST.get('vikinglid_name')
         description = request.POST.get('description') #.lower()
         # if username !='':
         print('vikinglid', username)
@@ -288,6 +288,7 @@ def mutatie(request):
         except:
             email='info@mantisbv.nl-unknown'
             if description=='':description='aanvraag...'
+            if username=='':username='aanvraag...'
             lid, created = Vikinglid.objects.update_or_create(
                 name=username,
                 email=email,
