@@ -211,7 +211,7 @@ def erv_userProfile(request, pk):
 # @login_required(login_url='login')
 def createVikinglid(request):
     form = VikinglidForm()
-    topics = Activiteit.objects.all()
+    topics = Topic.objects.all()
     try:
         vikinglid = Vikinglid.objects.get(name='Wachtlijst')
         messages.error(request, 'VIKINGLID  try tijdelijk ', vikinglid)
@@ -273,70 +273,43 @@ def mutatie(request):
             'form': form,
             'topics': topics,
             }
-
-    # try:
-    #     gebruiker=User.objects.get(id=request.user.id) ## request.user
-    # except:
-    #     messages.error(request, '.You are not logged in')
-    if request.method == 'POST':
-        username = request.POST.get('vikinglid_name')
-        description = request.POST.get('description') #.lower()
-        # if username !='':
-        print('vikinglid', username)
-        try:
-            vikinglid=Vikinglid.objects.all().get(name=username)
-        except:
-            email='info@mantisbv.nl-unknown'
-            if description=='':description='aanvraag...'
-            if username=='':username='aanvraag...'
+# if this is a POST request we need to process the form data
+    if request.method == "POST":
+        # create a form instance and populate it with data from the request:
+        form = VikinglidForm(request.POST)
+        # check whether it's valid:
+        if form.is_valid():
+            print('form is valid')
+            username = form.cleaned_data["name"]
+            email = form.cleaned_data["email"]
+            description = form.cleaned_data["description"]
             lid, created = Vikinglid.objects.update_or_create(
                 name=username,
                 email=email,
                     avatar='avatar.svg',
                 description=description,
                 )
-#         room.name = request.POST.get('topic')
-# vikinglid=Vikinglid.objects.create(
-#                     email=email,
-#                     avatar='avatar.svg',
-#                     name=username,
-#                     description=description
-#                 )
 
-    return render(request, 'viking/aanvrage_form.html', context)
+            print('vikinglid', username,email,description)
+    #     message = form.cleaned_data["message"]
+    #     sender = form.cleaned_data["sender"]
+    #     cc_myself = form.cleaned_data["cc_myself"]
+
+    # recipients = ["info@example.com"]
+    # if cc_myself:
+    #     recipients.append(sender)
+
+            # process the data in form.cleaned_data as required
+            # ...
+            # redirect to a new URL:
+            return HttpResponseRedirect("/")
+
+    # if a GET (or any other method) we'll create a blank form
+    # else:
+    #     form = NameForm()
+
+    return render(request, "viking/aanvrage_form.html", {"form": form})
    
-# def erv_room(request, pk):
-    # event = Flexevent.objects.get(id=pk)
-    # event_messages = event.bericht_set.all()
-    # deelnemers = event.lid.all()
-    # kandidaten=User.objects.all().exclude(id__in=deelnemers)
-    # try:
-        # gebruiker=User.objects.get(id=request.user.id) ## request.user
-    # except:
-        # messages.error(request, '.You are not logged in')
-        # print(request.user)
-        # context = {'event': event,
-    #  'event_messages': event_messages, 
-    #  'deelnemers': deelnemers,
-    #  'kandidaten': kandidaten,
-    #  }   
-        # return render(request, 'beatrix/erv-room.html', context)
-    # if request.method == 'POST':
-        # gebruiker=User.objects.get(id=request.user.id) ## request.user
-        # bericht = Bericht.objects.create(
-        # user=gebruiker,
-        # event=event,
-        # body=request.POST.get('body')
-        # )
-        # return redirect('erv-room', pk=event.id)
-        # event.deelnemers.add(request.user)
-# 
-    # context = {'event': event,
-    #  'event_messages': event_messages, 
-    #  'deelnemers': deelnemers,
-    #  'kandidaten': kandidaten,
-    # }
-    # return render(request, 'beatrix/erv-room.html', context)
 
 def export_team_data(request):
     # https://docs.djangoproject.com/en/3.2/howto/outputting-csv/
