@@ -268,35 +268,74 @@ def createVikinglid(request):
 def mutatie(request):
     form = VikinglidForm()
     topics = Topic.objects.all()
-    if request.method == 'POST':
-        username = request.POST.get('name').lower()
-        description = request.POST.get('description') #.lower()
-        if username !='':
-            print('vikinglid', username)
-            email='info@mantisbv.nl-unknown'
-            try:
-                vikinglid=Vikinglid.objects.all().get(name=username)
-            except:
-                print('vikinglid not found', username)
-                vikinglid=Vikinglid.objects.create(
-                    email=email,
-                    avatar='avatar.svg',
-                    name=username,
-                    description=description
-                )
-            # finally:
-        # return redirect('home')
-    # vikinglid=Vikinglid.objects.all().last()
-    # leeg = Activiteit.objects.all().filter(
-    #     Q(name='Wachtlijst')
-        # )
+    description='aanvraag..'
     context = {
-           'form': form,
-           'topics': topics,
-            # 'vikinglid':vikinglid,
-           }
-        #   'kluizen': leeg,
+            'form': form,
+            'topics': topics,
+            }
+
+    # try:
+    #     gebruiker=User.objects.get(id=request.user.id) ## request.user
+    # except:
+    #     messages.error(request, '.You are not logged in')
+    if request.method == 'POST':
+        username = request.POST.get('vikinglid_name').lower()
+        description = request.POST.get('description') #.lower()
+        # if username !='':
+        print('vikinglid', username)
+        try:
+            vikinglid=Vikinglid.objects.all().get(name=username)
+        except:
+            email='info@mantisbv.nl-unknown'
+            if description=='':description='aanvraag...'
+            lid, created = Vikinglid.objects.update_or_create(
+                name=username,
+                email=email,
+                    avatar='avatar.svg',
+                description=description,
+                )
+#         room.name = request.POST.get('topic')
+# vikinglid=Vikinglid.objects.create(
+#                     email=email,
+#                     avatar='avatar.svg',
+#                     name=username,
+#                     description=description
+#                 )
+
     return render(request, 'viking/aanvrage_form.html', context)
+   
+# def erv_room(request, pk):
+    # event = Flexevent.objects.get(id=pk)
+    # event_messages = event.bericht_set.all()
+    # deelnemers = event.lid.all()
+    # kandidaten=User.objects.all().exclude(id__in=deelnemers)
+    # try:
+        # gebruiker=User.objects.get(id=request.user.id) ## request.user
+    # except:
+        # messages.error(request, '.You are not logged in')
+        # print(request.user)
+        # context = {'event': event,
+    #  'event_messages': event_messages, 
+    #  'deelnemers': deelnemers,
+    #  'kandidaten': kandidaten,
+    #  }   
+        # return render(request, 'beatrix/erv-room.html', context)
+    # if request.method == 'POST':
+        # gebruiker=User.objects.get(id=request.user.id) ## request.user
+        # bericht = Bericht.objects.create(
+        # user=gebruiker,
+        # event=event,
+        # body=request.POST.get('body')
+        # )
+        # return redirect('erv-room', pk=event.id)
+        # event.deelnemers.add(request.user)
+# 
+    # context = {'event': event,
+    #  'event_messages': event_messages, 
+    #  'deelnemers': deelnemers,
+    #  'kandidaten': kandidaten,
+    # }
+    # return render(request, 'beatrix/erv-room.html', context)
 
 def export_team_data(request):
     # https://docs.djangoproject.com/en/3.2/howto/outputting-csv/
