@@ -23,11 +23,11 @@ class Topic(models.Model):
 
 class Instromer(models.Model):
     name= models.CharField(max_length=222,default='---')     
-    updated = models.DateTimeField(auto_now=True)
+    # updated = models.DateTimeField(auto_now=True)
     created = models.DateTimeField(auto_now_add=True)
 
     class Meta:
-        ordering = ['name', '-updated']
+        ordering = ['name', ]
     def __str__(self):
         return self.name
     
