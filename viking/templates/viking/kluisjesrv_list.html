@@ -5,7 +5,7 @@
 {% for kluis in object_list %}
 <div class="roomListRoom">
     <div class="roomListRoom__content">
-        <a href="{% url 'kluis' kluis.id %}">{{kluis.kluisnummer}}:{{kluis.label}}: {{kluis.huurders.all.count}} 
+        <a href="{% url 'kluis' kluis.id %}">{{kluis.kluisnummer}}:{{kluis.label}}: () {{kluis.huurders.all.count}} )
             <td>{% for t in kluis.huurders.all %}{{ t.name }}: {{t.email}}<br>{% endfor %}</td>
         </a>
     </div>

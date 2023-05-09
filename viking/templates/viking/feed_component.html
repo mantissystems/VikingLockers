@@ -136,11 +136,11 @@
                 </tbody>
             </table>
             {% endif %}
-            {% if ddamessss %}
+            {% if gevonden.count > 0 %}
 
             <table class="viking-table">
                 <thead>
-                    <caption>kastenblok 4x6 nog bepalen</caption>
+                    <caption>gezocht kastenblok</caption>
                     <tr>
                         {% for k in kopmtrxxxx%}
                         
@@ -149,7 +149,7 @@
                     </tr>
                 </thead>
                 <tbody>
-                    {% for rij in ddamessss %}
+                    {% for rij in hit %}
                         <tr>
                             <td> {{rij.naam|slice:"0:1"}}{{rij.y_as}}</td><td> <a href="{% url 'update_kluis'  rij.id 1 %}">  {{rij.kol1}}   </td>
                                 <td> <a href="{% url 'update_kluis' rij.id 2 %}"> {{rij.kol2}}   </td> 
@@ -159,17 +159,28 @@
                                 <td> <a href="{% url 'update_kluis' rij.id 6 %}"> {{rij.kol6}}   </td>
                                 <td> <a href="{% url 'update_kluis' rij.id 7 %}"> {{rij.kol7}}   </td>
                                 <td> <a href="{% url 'update_kluis' rij.id 8 %}"> {{rij.kol8}}   </td>
-                                    {% comment %}
                                 <td> <a href="{% url 'update_kluis' rij.id 9 %}"> {{rij.kol9}}   </td>
                                 <td> <a href="{% url 'update_kluis' rij.id 10 %}"> {{rij.kol10}}   </td>
                                 <td> <a href="{% url 'update_kluis' rij.id 11 %}"> {{rij.kol11}}   </td>
                                     <td> <a href="{% url 'update_kluis' rij.id 12 %}"> {{rij.kol12}}   </td>
                                     </tr>
+                                    {% comment %}
                                     {% endcomment %}
                     {% endfor %}
                 </tbody>
             </table>
-            {% endif %}
+    
+{% for kluis in gevonden %}
+<div class="roomListRoom">
+    <div class="roomListRoom__content">
+        <a href="{% url 'kluis' kluis.id %}">{{kluis.kluisnummer}}:{{kluis.label}}: ({{kluis.huurders.all.count}} )
+            <td>{% for t in kluis.huurders.all %}{{ t.name }}: {{t.email}}<br>{% endfor %}</td>
+        </a>
+    </div>
+</div>
+{% endfor %}    
+
+{% endif %}
 <hr>
     {% endblock %}
   </body>

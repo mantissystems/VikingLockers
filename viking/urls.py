@@ -36,7 +36,6 @@ urlpatterns = [
     path('checkmatriks/', check_matriks, name='checkmatriks'),
     path('hernummermatriks/', hernummermatriks, name='hernummermatriks'),
     path('export/', file_load_view, name='export'),
-    # path('hernummermatriks90/', hernummermatriks90, name='hernummermatriks90'),
     # path('get_matrix/',get_matrix, name='get_matrix'),  
     # path('<str:pk>/set_kluis/<str:kol>',set_kluis, name='set_kluis'),  
     # path('eksporteer/', some_view, name='eksporteer'),

@@ -132,14 +132,16 @@ def home(request):
     gevonden=KluisjesRV.objects.none
     aanvragen=Vikinglid.objects.all().filter(email__icontains='unknown')
 # ==========================================================
-    filter2=Q(kluisnummer__icontains=q)    
-    filter3=Q(naamvoluit__icontains=q)    
-    filter4=Q(huurders__name__icontains=q)    
-    filter5=Q(topic__icontains=q)    
-    kasten=KluisjesRV.objects.all().order_by('kluisnummer').filter((filter2|filter3))
-    kluizen=KluisjesRV.objects.all().order_by('kluisnummer').filter((filter2|filter3|filter4|filter5))
-    if q!='':gevonden=KluisjesRV.objects.all().order_by('kluisnummer').filter((filter2|filter3|filter4|filter5))
+    fkluis=Q(kluisnummer__icontains=q)    
+    fnaam=Q(naamvoluit__icontains=q)    
+    fhuurdersnaam=Q(huurders__name__icontains=q)    
+    ftopic=Q(topic__icontains=q)    
+    kasten=KluisjesRV.objects.all().order_by('kluisnummer').filter((fkluis|fnaam))
+    kluizen=KluisjesRV.objects.all().order_by('kluisnummer').filter((fkluis|fnaam|fhuurdersnaam|ftopic))
+    if q!='':gevonden=KluisjesRV.objects.all().order_by('kluisnummer').filter((fkluis|fnaam|fhuurdersnaam|ftopic))
     bezet=KluisjesRV.objects.all().order_by('kluisnummer').exclude(huurders=None)
+    gevondeninmatriks=KluisjesRV.objects.all().order_by('kluisnummer').filter((fhuurdersnaam|fnaam)).values_list('kluisnummer')
+    hit=Matriks.objects.filter(regel__icontains=gevondeninmatriks)
 # ==============================================================
     filterregel=Q(regel__icontains=q)    
     filterregel2=Q(naam__icontains=q)    
@@ -153,7 +155,6 @@ def home(request):
     kopmtrx=[]
     for i in range (0,13):
         kopmtrx.append(hdr[i])
-        # print(kopmtrx)
     context = {
         'koplegen':[f'verdeling ({all.count()} leden'],
         'vikingleden':vikingleden,
@@ -167,10 +168,11 @@ def home(request):
         'kluizen': kluizen,
         'bezet': bezet,
         'kopmtrx': kopmtrx,
-        'gevonden': gevonden,
         'kasten': kasten,
+        'hit': hit,
         'aanvragen': aanvragen,
         'q':q,
+        'gevonden':gevonden,
         }
     return render(request, template, context)
 
@@ -450,6 +452,7 @@ def update_kluis(request, pk,kol):
 
 class KluisList(ListView):
     queryset=KluisjesRV.objects.all()
+
 class Blokken(TemplateView):
     template_name = 'viking/home.html'
     def get_context_data(self, **kwargs):
@@ -778,10 +781,10 @@ def topicsPage(request):
 @login_required(login_url='login')
 def verhuurPage(request):
     q = request.GET.get('q') if request.GET.get('q') != None else ''
-    filter2=Q(kluisnummer__icontains=q)    
-    filter3=Q(naamvoluit__icontains=q)    
-    filter5=Q(topic__icontains=q)    
-    kluizen=KluisjesRV.objects.all().order_by('kluisnummer').filter((filter2|filter3|filter5))
+    fkluis=Q(kluisnummer__icontains=q)    
+    fnaam=Q(naamvoluit__icontains=q)    
+    ftopic=Q(topic__icontains=q)    
+    kluizen=KluisjesRV.objects.all().order_by('kluisnummer').filter((fkluis|fnaam|ftopic))
     context = {
         'kluizen': kluizen,
         'q':q,
