@@ -780,6 +780,7 @@ def isNum(data):
 def check_matriks(request):
     print('in check_matriks')
     print('check kastje met kluisnummer; en huurder toevoegen')
+    hdr=['kol1','kol2','kol3','kol4','kol5','kol6','kol7','kol8','kol9','kol10','kol11','kol12','kol13',]
     krv= KluisjesRV.objects.all()
     l=0
     for rv in krv:
@@ -787,6 +788,7 @@ def check_matriks(request):
             l=len(rv.kastje)
             if isNum(rv.kastje[6:l]):
                 rv.kluisnummer='H' + rv.kastje[6:l].zfill(3)
+                rv.label='H_' + rv.kastje[6:l].zfill(2) #H_01
                 rv.topic=rv.kastje[0:5]
                 rv.save()
                 try:
@@ -800,6 +802,7 @@ def check_matriks(request):
             l=len(rv.kastje)
             if isNum(rv.kastje[5:l]):
                 rv.kluisnummer='D' + rv.kastje[6:l].zfill(3)
+                rv.label='D_' + rv.kastje[6:l].zfill(2)
                 rv.topic='D' +rv.kastje[0:5]
                 rv.save()
                 try:
@@ -813,6 +816,7 @@ def check_matriks(request):
             l=len(rv.kastje)
             if isNum(rv.kastje[8:l]):
                 rv.kluisnummer='A' + rv.kastje[8:l].zfill(3)
+                rv.label='A_' + rv.kastje[6:l].zfill(2)
                 rv.topic='A' +rv.kastje[0:5]
                 rv.save()
                 try:
@@ -826,6 +830,7 @@ def check_matriks(request):
             l=len(rv.kastje)
             if isNum(rv.kastje[8:l]):
                 rv.kluisnummer='B' + rv.kastje[8:l].zfill(3)
+                rv.label='B_' + rv.kastje[6:l].zfill(2)
                 rv.topic='B' +rv.kastje[0:5]
                 rv.save()
                 try:
@@ -839,6 +844,7 @@ def check_matriks(request):
             l=len(rv.kastje)
             if isNum(rv.kastje[8:l]):
                 rv.kluisnummer='C' + rv.kastje[8:l].zfill(3)
+                rv.label='C_' + rv.kastje[6:l].zfill(2)
                 rv.topic='C' +rv.kastje[0:5]
                 rv.save()
                 try:
@@ -848,6 +854,16 @@ def check_matriks(request):
                     rv.save()
                 except:
                     print(rv.naamvoluit)
+        print(rv.kluisnummer,rv.label,rv.col,rv.row)
+        m=Matriks.objects.filter(regel__icontains=rv.kluisnummer).first()
+        if m:
+            m.regel=m.kop
+            if isNum(rv.col):
+                c=        int(rv.col)
+                setattr(m,hdr[c],rv.label)
+                m.save()
+        # r=        int(rv.row)
+
     context={}
     # return
     return render(request, 'viking/home.html', context)
