@@ -2,10 +2,6 @@ from django.core.mail import send_mail
 from django.template import loader
 import csv
 from django.http import HttpResponse
-# from django.http import StreamingHttpResponse
-# import reportlab
-# from django.http import FileResponse
-# from reportlab.pdfgen import canvas
 import io
 from urllib import request
 from django.shortcuts import render
@@ -36,7 +32,6 @@ from viking.serializers import(
     GebruikerSerializer,
     KluisSerializer, 
     NoteSerializer,
-    # ActiviteitSerializer,
     TopicSerializer,
 )
 from .models import   Topic,Vikinglid,Note,Matriks,KluisjesRV ,Kluislabel,Instromer
@@ -181,14 +176,10 @@ def home(request):
 
 def userProfile(request, pk):
     user = User.objects.get(id=pk)
-    # rooms = user.room_set.all()
-    # room_messages = user.message_set.all()
     topics = Topic.objects.all()
     
     context = {
         'user': user, 
-        # 'rooms': rooms, 
-        # 'room_messages': room_messages,
         'topics': topics
         }
     return render(request, 'viking/profile.html', context)
@@ -255,13 +246,9 @@ def createVikinglid(request):
                         messages.error(request, 'VIKINGLID  already exists ')
         return redirect('home')
     vikinglid=Vikinglid.objects.all().last()
-    # leeg = Activiteit.objects.all().filter(
-    #     Q(name='Wachtlijst')
-    #     )
     context = {
         'form': form,
           'topics': topics,
-        #   'kluizen': leeg,
           'vikinglid':vikinglid}
     return render(request, 'viking/vikinglid_form.html', context)
 
@@ -336,11 +323,6 @@ def export_team_data(request):
 
 def kluis(request, pk):
     vikingers=Vikinglid.objects.all().order_by('name')
-    # dematrikskolom=hdr[column];print(dematrikskolom)
-    # kluisje=getattr(matrix,dematrikskolom)
-    # matriksnaam=getattr(matrix,'naam')
-    # match='rij'+str(rgl)+'kol'+kol
-    # context={}
     try:
         kls=KluisjesRV.objects.get(id=pk)
         form=KluisjeForm(instance=kls)
@@ -361,14 +343,9 @@ def kluis(request, pk):
                     if huurder or your_name:
                         kls.naamvoluit=huurder
                         kluisnummer=kls.kluisnummer
-                        # print(huurder,matrix.y_as,kls.kluisnummer,)
-                        # setattr(matrix, dematrikskolom, kluisnummer)
-                        # matrix.save()
                         setattr(kls, 'kluisnummer',kluisnummer)
                         kls.save()
                     if opheffen:
-                        # setattr(matrix, dematrikskolom, '---')
-                        # matrix.save()
                         setattr(kls, 'kluisnummer', '---')
                         kls.save()
                         
@@ -377,14 +354,9 @@ def kluis(request, pk):
     return render(request, 'viking/update_kluis_form.html', context)
 
 def decodeer(regel,de_matriks_kolom,column,cellengte):
-    # regel=matrix.regel
-    # de_matriks_kolom=hdr[column]
-    # regellengte=len(regel)
-
     begincell=(0+column)*column*cellengte
     eindcell=0+cellengte
     b=0+((column-1)*cellengte)
-    # print(b)
     e=b+cellengte
     c=regel[b:e] 
     oorspronkelijkmatriksnummer=c
@@ -394,7 +366,6 @@ def decodeer(regel,de_matriks_kolom,column,cellengte):
 @login_required(login_url='login')
 def update_kluis(request, pk,kol):
     column=int(kol)
-    # print('in update_kluis')
     matrix=Matriks.objects.get(id=pk)
     labels=Kluislabel.objects.all()
     rms = KluisjesRV.objects.all() #.exclude(huurders=None)
@@ -414,10 +385,8 @@ def update_kluis(request, pk,kol):
 
     try:
         oorspronkelijkmatriksnummer=decodeer(regel,de_matriks_kolom,column,cellengte)
-        # print('oorspronkelijkmatriksnummera',oorspronkelijkmatriksnummer)
         kls=KluisjesRV.objects.get(kluisnummer=oorspronkelijkmatriksnummer)
         form=KluisjeForm(instance=kls)
-        # print('try:',kluisje,kls.id,oorspronkelijkmatriksnummer)
         context = {
                 'form': form,
                 'kluis': kls,
@@ -434,7 +403,6 @@ def update_kluis(request, pk,kol):
         vikingers=Vikinglid.objects.all().order_by('name')
 
         context = {
-                # 'huurders': huurders,
                 'vikingers':vikingers,
                 'kluis': kls,
                 'oorspronkelijkmatriksnummer':oorspronkelijkmatriksnummer,
@@ -453,18 +421,14 @@ def update_kluis(request, pk,kol):
             huurder= request.POST.get('heeftkluis')
             label= request.POST.get('kluislabel')
             slot= request.POST.get('slot')
-            # print('1',slot)
             your_name= request.POST.get('your_name')
             huuropheffen= request.POST.get('huuropheffen')
-            # if form.is_valid():
             if kls:
                     if slot:
                         kls.type=slot
-                        # print('2',slot)
                         kls.save()
                     if label:
                         kls.label=label
-                        # print('zet label in matrix',label,oorspronkelijkmatriksnummer)
                         mx=Matriks.objects.all().filter(regel__icontains=oorspronkelijkmatriksnummer).first()
                         setattr(mx,hdr[int(kls.col)],label)
                         mx.save()
@@ -473,7 +437,6 @@ def update_kluis(request, pk,kol):
                         h=Vikinglid.objects.get(id=huurder)
                         kls.huurders.add(h)
                         setattr(kls, 'verhuurd',True)
-                        # kls.label=label
                         kls.save()
                     if huuropheffen:
                         h=Vikinglid.objects.get(id=huuropheffen)
@@ -486,7 +449,6 @@ def update_kluis(request, pk,kol):
     return render(request, 'viking/update_kluis_form.html', context)
 
 class KluisList(ListView):
-    # template_name='kluis_list.html'
     queryset=KluisjesRV.objects.all()
 class Blokken(TemplateView):
     template_name = 'viking/home.html'
@@ -537,109 +499,6 @@ class Blokken(TemplateView):
                         regel=s,ronde=r,x_as=r,y_as=regelteller,naam=matrixnaam,)            
         koppel_kluis_met_matriks(request)
         return
-# def get_matrix(request):
-#     template_name = 'viking/bloktabel_list.html'
-#     nr=9
-#     kolommen = nr
-#     kasten=Kluis.objects.all() #.filter(kast__icontains=bloknummer)
-#     mtrx=Matriks.objects.all()
-#     topics=Topic.objects.all()
-#     heren=Matriks.objects.all().filter(naam__icontains='heren')
-#     dames=Matriks.objects.all().filter(naam__icontains='dames')
-#     rounds=nr #int(kolommen/2)
-#     # r = 0
-#     rijen=nr # (kolommen-1)*rounds
-#     spelers=Vikinglid.objects.all() #.filter(nr=str(t).zfill(2)).values_list('naam')
-#     context={'kop': [f'matrix ({rijen}rijen) bij {kolommen} kolommen',],
-#             'kopmtrx' : [f'kast', 'kol1','kol2','kol3','kol4','kol5','kol6','kol7','kol8','kol9','kol10','kol11','kol12','kol13'], #'regel-informatie kluisnummers'
-#             # 'regels': Matriks.objects.all(),
-#             'matrix': mtrx,
-#             'heren': heren,
-#             'dames': dames,
-#             'topics': topics,
-#              'kopspelers': [f'matrix({rijen}rijen; {rounds} rijen) with {kolommen} kolommen'],
-#             # 'spelers': spelers,
-
-#             }
-#     return render(request,"viking/bloktabel_list.html", context)
-
-# @login_required(login_url='login')
-# def set_kluis(request, pk,kol):
-#     # kls=Kluis.objects.get(id=kol)
-#     vikingers=Vikinglid.objects.all().order_by('name')
-#     matrix=Matriks.objects.get(id=pk)
-#     hdr=[ 'kol1','kol2','kol3','kol4','kol5','kol6','kol7','kol8','kol9','kol10']#,'kol10','kol11','kol12','kol13']
-#     a=hdr[int(kol)]
-#     col=int(kol)
-#     k=getattr(matrix,a)
-#     # print(k)
-#     # het idee is om de getoonde informatie in de regel op te slaan en de getoonde informatie in kol te vervangen op de positie van de cel in de regel.
-#     # dus als getoond wordt '1', dan staat op pos 1 '001'. de regel ontvangt het kluis-id. de kol ontvangt '001'; de kluis is BEZET
-#     # de kol's bevatten het kluisnummer. x-as is id, y-as =kol;
-    
-#     pos=int(kol);begincell=0;cellengte=0;eindcell=0
-#     cellengte=3
-#     regellengte=len(matrix.regel)
-#     begincell=col+pos*cellengte
-#     eindcell=0+cellengte
-#     regel=matrix.regel
-#     cell=regel[begincell:eindcell]
-#     rechts=regel[eindcell+cellengte:regellengte]
-#     new_cell_content=' xxx' ; huurder='';huurdernaam=''
-#     if col in (1,2,3,4,5,6,7,8,9,10,11,12,13):
-#         b=(col-1)*cellengte
-#         e=b+3
-#         c=regel[b:e] 
-#         new_info=c
-#         new_cell_content=c 
-#         print('karakters per regel',regellengte,'column', col,'celinhoud',c)
-#         try:            
-#             kls=Kluis.objects.get(id=c)
-#         except:
-#             pass
-#         finally:
-#             kls=Kluis.objects.get(id=c)
-#             form=KluisjeForm(instance=kls)
-#             # form=VikinglidForm(instance=kls)
-
-#     if col==1: matrix.kol1=new_cell_content
-#     if col==2: matrix.kol2=new_cell_content
-#     if col==3: matrix.kol3=new_cell_content
-#     if col==4: matrix.kol4=new_cell_content
-#     if col==5: matrix.kol5=new_cell_content
-#     if col==6: matrix.kol6=new_cell_content
-#     if col==7: matrix.kol7=new_cell_content
-#     if col==8: matrix.kol8=new_cell_content
-#     if col==9: matrix.kol9=new_cell_content
-#     if col==10: matrix.kol10=new_cell_content
-#     if col==11: matrix.kol11=new_cell_content
-#     if col==12: matrix.kol12=new_cell_content
-#     if col==13: matrix.kol13=new_cell_content
-#     # form=KluisjeForm(instance=kls)
-#     kluizen=Activiteit.objects.all().filter(type='kluis').order_by('name')
-#     teams=Activiteit.objects.all().filter(type='ploeg').order_by('name')
-#     # kluisje= request.POST.getlist('heeftkluis')
-#     kluisjeopheffen= request.POST.getlist('is_lid_van')
-#     if request.method == 'POST':
-#         h = request.POST.getlist('huurder')
-#         print('huurder',h[0])
-#         h=h[0]
-#         huurder=int(h)
-#         hrdr=Vikinglid.objects.get(id=huurder)
-#         kls.name = kls.name
-#         kls.name =hrdr.name # request.POST.get('name')
-#         kls.email = request.POST.get('email')
-#         kls.save()
-#         return redirect('get_matrix')
-
-#     context = {
-#         'form': form,
-#           'vikinglid': kls,
-#           'vikingers':vikingers,
-#           'kluizen':kluizen,
-#           'teams':teams,
-#     }
-#     return render(request, 'viking/get_kluis_form.html', context)
 
 # @login_required(login_url='login')
 def koppel_kluis_met_matriks(request):
@@ -651,23 +510,15 @@ def koppel_kluis_met_matriks(request):
     mx= KluisjesRV.objects.all().order_by('id').last()
     max=mx.id
     teller=tel.id
-    # print(teller)
     for m in matrix:
-        # for kol in range(1,10):
         for k in hdr:
-            # a=hdr[kol]
             inh=getattr(m,k)
             kastje=getattr(m,k)
-            # print(teller,kastje)
-            # k=KluisjesRV.objects.all().get(id=teller)
             try:
                 vl=KluisjesRV.objects.get(kluisnummer=inh)
-            #     if vl.huurders.all().count()==0:
-                # print(m.naam,de_matriks_kolom,inh,h)
                 setattr(vl, 'kluisje',inh)
                 vl.save()
             except:
-                # print('except',inh)
                 pass
             if teller<max: teller+=1
     print('einde koppelen ===============')
@@ -692,18 +543,12 @@ def hernummermatriks(request):
             if m.x_as/m.y_as==kolomteller:
                 kolomteller=0
             kolomteller+=1
-            oorspronkelijkmatriksnummer=decodeer(regel,de_matriks_kolom,kolomteller,cellengte)
-            # print(m.naam,de_matriks_kolom,begincell,inh,oorspronkelijkmatriksnummer)
-            
+            oorspronkelijkmatriksnummer=decodeer(regel,de_matriks_kolom,kolomteller,cellengte)            
             try:
                 vl=KluisjesRV.objects.get(kluisnummer=oorspronkelijkmatriksnummer)
                 if vl.huurders.all().count()==0:
                     print(m.naam,de_matriks_kolom,inh,h)
-                    # setattr(vl, 'userid',vl.huurders.all().count())
                     vl.save()
-                #  setattr(vl, 'kluisje',oorspronkelijkmatriksnummer)
-
-            #         oorspronkelijkmatriksnummer=' - '
             except:
                 # will be part of settings
                 # c='---'   #set the mismatch string  
@@ -729,47 +574,6 @@ def hernummermatriks(request):
     koppel_kluis_met_matriks(request)
     context={}
     return render(request, 'viking/home.html', context)
-
-# def hernummermatriks90(request):
-#     print('in hernummermatriks90===============')
-#     rij=0
-#     # matriks regel-kolomnummering naar kolomvelden overbrengen
-#     hdr=['kol1','kol2','kol3','kol4',] ###'kol5','kol6','kol7','kol8','kol9','kol10','kol11','kol12',]#'kol13',] #'kol14']
-#     begincell=0;cellengte=0;eindfilter=0
-#     matrix=Matriks.objects.all().filter(naam='Heren')
-#     Matriks90.objects.all().delete()
-#     m90=Matriks90.objects.all()
-#     kolomteller=0
-#     for m in matrix:
-#             hd=hdr[rij]
-#             i=getattr(m,hd)
-#             print(i)
-#             w=m90.create(naam=m.naam,
-#                 y_as=m.y_as,
-#                 ronde=m.id,
-#                 )
-#             # if m.y_as in (1,2,3,4,5,6) and m.naam=='Heren':
-#                 # for h in hdr:
-#     for m in m90:
-#         mtx=Matriks.objects.get(id=m.ronde)
-#         inh=getattr(mtx,hd)
-#         setattr(m,hd,inh)
-#         setattr(m,'naam',mtx.naam)
-#         setattr(m,'regel',mtx.regel)
-#         m.save()
-#     #         # if m.y_as in (1,2,3,4,5,6) and m.naam=='Heren':
-#     #     for h in hdr:
-#     #         i=getattr(m,h)
-#     #         print(i)
-#             # setattr(m, de_matriks_kolom, oorspronkelijkmatriksnummer)
-
-#             # setattr(m, de_matriks_kolom, oorspronkelijkmatriksnummer)
-
-#     print('einde hernummermatriks90===============')
-#     # koppel_kluis_met_matriks(request)
-#     context={}
-#     return render(request, 'viking/home.html', context)
-
 def isNum(data):
     try:
         int(data)
@@ -862,8 +666,6 @@ def check_matriks(request):
                 c=        int(rv.col)
                 setattr(m,hdr[c],rv.label)
                 m.save()
-        # r=        int(rv.row)
-
     context={}
     # return
     return render(request, 'viking/home.html', context)
