@@ -1,7 +1,8 @@
 {% comment %} {% extends 'base.html' %} {% endcomment %} {% load static %}
 <header class="header header--loggedIn">
   <div class="container">
-    <a href="{% url 'home' %}" class="header__logo">
+
+    <a href="{% url 'home' %}?q=---" class="header__logo">
       <img src="{% static 'images/logo-mantisbv.png' %}" />
       <!-- <img src="{% static 'images/logo.svg' %}" /> -->
       <h1>Kluisjes</h1>

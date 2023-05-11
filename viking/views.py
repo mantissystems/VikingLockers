@@ -34,7 +34,7 @@ from viking.serializers import(
     NoteSerializer,
     TopicSerializer,
 )
-from .models import   Topic,Vikinglid,Note,Matriks,KluisjesRV ,Kluislabel,Instromer
+from .models import   Topic,Vikinglid,Note,Matriks,KluisjesRV ,Kluislabel,Instromer,Message
 from .forms import UserForm,VikinglidForm,KluisjeForm ,InstromerForm
 
 def loginPage(request):
@@ -130,7 +130,7 @@ def home(request):
     filter1=Q(name__icontains=q)    
     vikingleden=Vikinglid.objects.all().filter(filter1)[0:10]
     gevonden=KluisjesRV.objects.none
-    aanvragen=Vikinglid.objects.all().filter(email__icontains='unknown')
+    aanvragen=Message.objects.all()
 # ==========================================================
     fkluis=Q(kluisnummer__icontains=q)    
     fnaam=Q(naamvoluit__icontains=q)    
@@ -153,6 +153,15 @@ def home(request):
     mtrx=Matriks.objects.all().filter(filterregel).exclude(y_as__in=(7,8))
     hdr=['', 'kol1','kol2','kol3','kol4','kol5','kol6','kol7','kol8','kol9','kol10','kol11','kol12','kol13']  #LET OP: KOLOM NUL NIET VERGETEN
     kopmtrx=[]
+    wachtlijst=KluisjesRV.objects.get(naamvoluit='wachtlijst')
+    body=request.POST.get('body')
+    print(body)
+    if request.method == 'POST':
+        message = Message.objects.create(
+            user=request.user,
+            room=wachtlijst,
+            body=request.POST.get('body')
+        )
     for i in range (0,13):
         kopmtrx.append(hdr[i])
     context = {
@@ -179,7 +188,16 @@ def home(request):
 def userProfile(request, pk):
     user = User.objects.get(id=pk)
     topics = Topic.objects.all()
-    
+    wachtlijst=KluisjesRV.objects.get(naamvoluit='wachtlijst')
+    body=request.POST.get('body')
+    print(body)
+    if request.method == 'POST':
+        message = Message.objects.create(
+            user=request.user,
+            room=wachtlijst,
+            body=request.POST.get('body')
+        )
+
     context = {
         'user': user, 
         'topics': topics
@@ -253,6 +271,18 @@ def createVikinglid(request):
           'topics': topics,
           'vikinglid':vikinglid}
     return render(request, 'viking/vikinglid_form.html', context)
+
+@login_required(login_url='login')
+def deleteMessage(request, pk):
+    message = Message.objects.get(id=pk)
+
+    if request.user != message.user:
+        return HttpResponse('Your are not allowed here!!')
+
+    if request.method == 'POST':
+        message.delete()
+        return redirect('home')
+    return render(request, 'viking/aarjoesjoer.html', {'obj': message})
 
 def mutatie(request):
     form = InstromerForm()
@@ -589,6 +619,10 @@ def check_matriks(request):
     print('check kastje met kluisnummer; en huurder toevoegen')
     hdr=['kol1','kol2','kol3','kol4','kol5','kol6','kol7','kol8','kol9','kol10','kol11','kol12','kol13',]
     krv= KluisjesRV.objects.all()
+    try:
+        wachtlijst=KluisjesRV.objects.get(naamvoluit='wachtlijst')
+    except:
+        wl=KluisjesRV.objects.update_or_create(naamvoluit='wachtlijst')
     l=0
     for rv in krv:
         if 'Heren' in rv.kastje:

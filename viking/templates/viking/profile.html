@@ -31,20 +31,26 @@
       </div>
 
       <div class="roomList__header">
+        {% comment %}
         <div>
-                  <h3>Ploegleider van:</h3>
+          <h3>Ploegleider van:</h3>
           <h2>{{request.user}} </a>
           </h2>
         </div>
       </div>
+      {% endcomment %}
       {% include 'viking/feed_component.html' %}
 
 
     </div>
+
     <!-- Room List End -->
 
     <!-- Activities Start -->
+    {% comment %}
+    
     {% include 'viking/activity_component.html' %}
+    {% endcomment %}
     <!-- Activities End -->
   </div>
 </main>
