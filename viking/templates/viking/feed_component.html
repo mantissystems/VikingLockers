@@ -229,10 +229,10 @@
     <div class="activities__header">
         <h2>Berichten</h2>
     </div>
+    {% comment %}
     {% for message in aanvragen %}
     <div class="activities__box">
         <div class="activities__boxHeader roomListRoom__header">
-            {% comment %}
             <a href="{% url 'user-profile' message.user.id %}" class="roomListRoom__author">
                 {% endcomment %}
                 {% comment %}
@@ -260,12 +260,14 @@
             {% endif %}
 
         </div>
+        {% comment %}
         <div class="activities__boxContent">
             <p>post “<a href="{% url 'user-profile' message.user.id %}">{{message}}</a>”</p>
             <div class="activities__boxRoomContent">{{message.body}}</div>
         </div>
     </div>
     {% endfor %}
+    {% endcomment %}
 
 </div>
     {% endblock %}
