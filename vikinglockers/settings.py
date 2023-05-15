@@ -1,19 +1,19 @@
-import environ
+# import environ
+import os
 from pathlib import Path
 
 BASE_DIR = Path(__file__).resolve().parent.parent
-env=environ.Env()
-environ.Env.read_env()
-# SECRET_KEY = env("SECRET_KEY")
-SECRET_KEY = 'django-insecure-)r2waboda$o)g39!ap!l7dx$numws6k7zi9=m*3e1hbudc!2&r'
+# env=environ.Env()
 
-DEBUG = env.bool("DEBUG", False)
-ALLOWED_HOSTS = ['*', 'http://127.0.0.1:8000',
+SECRET_KEY = 'django-insecure-)r2waboda$o)g39!ap!l7dx$numws6k7zi9=m*3e1hbudc!2&r'
+DEBUG = True
+ALLOWED_HOSTS = ['*', 'http://127.0.0.1',
 'https://kluisjeslijst.up.railway.app',]
 
 CSRF_TRUSTED_ORIGINS = [
     'https://kluisjeslijst.up.railway.app',
-    'http://127.0.0.1',]
+    'http://127.0.0.1',
+]
 # Application definition
 INSTALLED_APPS = [
     'django.contrib.admin',
@@ -23,10 +23,13 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'viking',
+    # 'debug_toolbar',
     'rest_framework',
     'corsheaders',
 ]
+# INTERNAL_IPS = ["127.0.0.1",] #debug toolbar
 MIDDLEWARE = [
+    # 'debug_toolbar.middleware.DebugToolbarMiddleware', ## tijdens debug 
     'django.middleware.security.SecurityMiddleware',
     "corsheaders.middleware.CorsMiddleware",  #29-10-2022
     'django.contrib.sessions.middleware.SessionMiddleware',
@@ -38,12 +41,12 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
-ROOT_URLCONF = 'ploegenlijst.urls'
+ROOT_URLCONF = 'vikinglockers.urls'
 
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS':[ BASE_DIR / 'mykluisjes/build','templates'
+        'DIRS':[ BASE_DIR / 'templates'
         ],
         'APP_DIRS': True,
         'OPTIONS': {
@@ -57,7 +60,7 @@ TEMPLATES = [
     },
 ]
 
-WSGI_APPLICATION = 'ploegenlijst.wsgi.application'
+WSGI_APPLICATION = 'vikinglockers.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/4.1/ref/settings/#databases
 # DATABASES = {
@@ -72,9 +75,9 @@ DATABASES = {
        'ENGINE': 'django.db.backends.postgresql',
        'NAME': 'railway',
        'USER': 'postgres',
-       'PASSWORD':'BxRi0NiNO785IT2ClrRr',
-       'HOST':'containers-us-west-181.railway.app',
-       'PORT': '5654'
+       'PASSWORD':'V0CRWmkgvstecDD07V1i',
+       'HOST':'containers-us-west-135.railway.app',
+       'PORT': '7980'
    }
 }
 # Password validation
@@ -132,7 +135,13 @@ CORS_ALLOWED_ORIGINS = [
 CORS_ALLOWED_ORIGIN_REGEXES= [r"https://",r"http://"]
 
 # FIXTURE_DIRS = [BASE_DIR / 'static']
+SENDGRID_API_KEY = os.getenv('SENDGRID_API_KEY')
 
+EMAIL_HOST = 'smtp.sendgrid.net'
+EMAIL_HOST_USER = 'apikey' # this is exactly the value 'apikey'
+EMAIL_HOST_PASSWORD = SENDGRID_API_KEY
+EMAIL_PORT = 587
+EMAIL_USE_TLS = True
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.1/ref/settings/#default-auto-field
 

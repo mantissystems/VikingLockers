@@ -95,7 +95,7 @@ DEBUG=True
 SECRET_KEY="django-insecure-)r2waboda$o)g39!ap!l7dx$numws6k7zi9=m*3e1hbudc!2&r"
 STATIC_URL ='/static/'
 ====================================================================================================================
-wsgi.py : os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'ploegenlijst.settings.development')
+wsgi.py : os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'vikinglockers.settings.development')
 ====================================================================================================================
 
 development.py
@@ -106,9 +106,9 @@ SECRET_KEY = 'django-insecure-)r2waboda$o)g39!ap!l7dx$numws6k7zi9=m*3e1hbudc!2&r
 # SECRET_KEY = env("SECRET_KEY")
 INSTALLED_APPS = INSTALLED_APPS + ["django_extensions"]
 ====================================================================================================================
-export DJANGO_SETTINGS_MODULE=ploegenlijst.settings.development
-Django version 4.1, using settings 'ploegenlijst.settings.development'
+export DJANGO_SETTINGS_MODULE=vikinglockers.settings.development
+Django version 4.1, using settings 'vikinglockers.settings.development'
 ====================================================================================================================
-export DJANGO_SETTINGS_MODULE=ploegenlijst.settings.development
-Django version 4.1, using settings 'ploegenlijst.settings.production'
+export DJANGO_SETTINGS_MODULE=vikinglockers.settings.development
+Django version 4.1, using settings 'vikinglockers.settings.production'
 

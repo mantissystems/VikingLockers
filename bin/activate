@@ -38,7 +38,7 @@ deactivate () {
 # unset irrelevant variables
 deactivate nondestructive
 
-VIRTUAL_ENV="/media/jozef/MantisNASBoven/DJANGO/ploegenlijst"
+VIRTUAL_ENV="/media/jozef/MantisNASBoven/DJANGO/vikinglockers"
 export VIRTUAL_ENV
 
 _OLD_VIRTUAL_PATH="$PATH"
@@ -55,9 +55,9 @@ fi
 
 if [ -z "${VIRTUAL_ENV_DISABLE_PROMPT:-}" ] ; then
     _OLD_VIRTUAL_PS1="${PS1:-}"
-    PS1="(ploegenlijst) ${PS1:-}"
+    PS1="(vikinglockers) ${PS1:-}"
     export PS1
-    VIRTUAL_ENV_PROMPT="(ploegenlijst) "
+    VIRTUAL_ENV_PROMPT="(vikinglockers) "
     export VIRTUAL_ENV_PROMPT
 fi
 

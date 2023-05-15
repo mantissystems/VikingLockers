@@ -10,7 +10,7 @@ obs*
 *.pyc
 __pycache__/
 local_settings.py
-db.sqlite3
+*.sqlite3
 # viking.sqlite3
 db.sqlite3-journal
 media
@@ -125,7 +125,7 @@ celerybeat.pid
 .env/
 .venv/
 env/
-venv
+venv/
 ENV/
 env.bak/
 venv.bak/

@@ -1,5 +1,5 @@
 """
-WSGI config for ploegenlijst project.
+WSGI config for vikinglockers project.
 
 It exposes the WSGI callable as a module-level variable named ``application``.
 
@@ -11,8 +11,8 @@ import os
 
 from django.core.wsgi import get_wsgi_application
 
-os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'ploegenlijst.settings')
-# os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'ploegenlijst.settings.development')
+os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'vikinglockers.settings')
+# os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'vikinglockers.settings.development')
 
 application = get_wsgi_application()
   
