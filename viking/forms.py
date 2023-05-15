@@ -1,6 +1,6 @@
 from django.forms import ModelForm
 from django.contrib.auth.forms import UserCreationForm
-from .models import  User,Vikinglid,KluisjesRV,Instromer
+from .models import  Vikinglid,KluisjesRV,Instromer
 from django.forms.widgets import DateInput, NumberInput
 from django.forms.fields import MultipleChoiceField
 from django import forms
@@ -11,10 +11,10 @@ SLOT = [
             ('C', 'cijfer'),    #gebruiker heeft cijferslot; code onbekend
             ]
 
-class MyUserCreationForm(UserCreationForm):
-    class Meta:
-        model = User
-        fields = '__all__'
+# class MyUserCreationForm(UserCreationForm):
+#     class Meta:
+#         model = User
+#         fields = '__all__'
 
 class InstromerForm(ModelForm):
     class Meta:
@@ -37,8 +37,8 @@ class VikinglidForm(ModelForm):
         #     self.fields['is_lid_van'].queryset=Vikinglid.objects.filter(id=self.id)
         #     self.fields['is_lid_van'].widget.attrs.update(size='20')
 
-class UserForm(ModelForm):
-    class Meta:
-        model = User
-        fields = '__all__'
-        fields = ['username', 'email']        
+# class UserForm(ModelForm):
+#     class Meta:
+#         model = User
+#         fields = '__all__'
+#         fields = ['username', 'email']        

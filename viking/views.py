@@ -34,8 +34,9 @@ from viking.serializers import(
     NoteSerializer,
     TopicSerializer,
 )
-from .models import   Topic,Vikinglid,Note,Matriks,KluisjesRV ,Kluislabel,Instromer,Message
-from .forms import UserForm,VikinglidForm,KluisjeForm ,InstromerForm
+from .models import   Topic,Vikinglid,Note,Matriks,KluisjesRV ,Kluislabel,Instromer
+from base.models import Message
+# from .forms import UserForm,VikinglidForm,KluisjeForm ,InstromerForm
 
 def loginPage(request):
 

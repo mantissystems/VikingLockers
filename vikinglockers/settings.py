@@ -23,10 +23,12 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'viking',
+    'base',
     # 'debug_toolbar',
     'rest_framework',
     'corsheaders',
 ]
+AUTH_USER_MODEL = 'base.User'
 # INTERNAL_IPS = ["127.0.0.1",] #debug toolbar
 MIDDLEWARE = [
     # 'debug_toolbar.middleware.DebugToolbarMiddleware', ## tijdens debug 
@@ -46,7 +48,7 @@ ROOT_URLCONF = 'vikinglockers.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS':[ BASE_DIR / 'templates'
+        'DIRS':[ BASE_DIR / 'templates','base'
         ],
         'APP_DIRS': True,
         'OPTIONS': {
