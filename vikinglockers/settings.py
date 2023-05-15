@@ -24,7 +24,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'viking',
     'base',
-        # 'import_export',
+    
     # 'debug_toolbar',
     'rest_framework',
     'corsheaders',
@@ -128,7 +128,7 @@ MEDIA_ROOT= BASE_DIR / 'static/images'
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 CORS_ALLOW_ALL_ORIGINS=True
 SECURE_CONTENT_TYPE_NOSNIFF=False
-# IMPORT_EXPORT_USE_TRANSACTIONS = True
+
 # CORS_ALLOWED_ORIGINS = [
 #     "http://*", 
 #     "https://kluisjeslijst.up.railway.app",
