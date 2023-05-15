@@ -2,7 +2,7 @@ from django.urls import path
 from . import views
 from viking.views import( 
 home,
-loginPage, logoutUser,
+# loginPage, logoutUser,
 registerPage , 
 topicsPage ,  updateUser, userProfile, 
  urv_loginPage ,
@@ -19,12 +19,14 @@ urlpatterns = [
     path('room/<str:pk>/', views.room, name="room"),
     # path('', home, name='home'),
     # path('viking', home, name='home'),
-    path('login/', urv_loginPage, name="login"),
-    path('logout/', logoutUser, name="logout"),
+    path('login/', views.loginPage, name="login"),
+    path('logout/', views.logoutUser, name="logout"),
+    path('register/', views.registerPage, name="register"),
+
     path('topics/', topicsPage, name="topics"),
     path('verhuur/', verhuurPage, name="verhuur"),
     path('update-user/', updateUser, name="update-user"),
-    path('register/', registerPage, name="register"),    
+    # path('register/', registerPage, name="register"),    
     path('profile/<str:pk>/', userProfile, name='user-profile'),
     path('create-vikinglid/', createVikinglid, name='create-vikinglid'),
     path('mutatie/', mutatie, name='mutatie'),

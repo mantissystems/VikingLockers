@@ -38,32 +38,32 @@ from .models import   Topic,Vikinglid,Note,Matriks,KluisjesRV ,Kluislabel,Instro
 from base.models import Message
 # from .forms import UserForm,VikinglidForm,KluisjeForm ,InstromerForm
 
-def loginPage(request):
+# def loginPage(request):
 
-    page = 'login'
+#     page = 'login'
 
-    if request.user.is_authenticated:
-        return redirect('home')
+#     if request.user.is_authenticated:
+#         return redirect('home')
 
-    if request.method == 'POST':
-        username = request.POST.get('username').lower()
-        password = request.POST.get('password')
+#     if request.method == 'POST':
+#         username = request.POST.get('username').lower()
+#         password = request.POST.get('password')
 
-        try:
-            user = User.objects.get(username = username)
-        except:
-            messages.error(request, 'User does not exist')
+#         try:
+#             user = User.objects.get(username = username)
+#         except:
+#             messages.error(request, 'User does not exist')
 
-        user = authenticate(request, username=username, password=password)
+#         user = authenticate(request, username=username, password=password)
 
-        if user is not None:
-            login(request, user)
-            return redirect('home')
-        else:
-            messages.error(request, 'User name or password does not exist')
+#         if user is not None:
+#             login(request, user)
+#             return redirect('home')
+#         else:
+#             messages.error(request, 'User name or password does not exist')
 
-    context = {'page': page}
-    return render(request, 'viking/login_register.html', context)
+#     context = {'page': page}
+#     return render(request, 'viking/login_register.html', context)
 
 def urv_loginPage(request):
 
