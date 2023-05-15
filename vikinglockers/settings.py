@@ -8,10 +8,10 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-)r2waboda$o)g39!ap!l7dx$numws6k7zi9=m*3e1hbudc!2&r'
 DEBUG = True
 ALLOWED_HOSTS = ['*', 'http://127.0.0.1',
-'https://kluisjeslijst.up.railway.app',]
+'https://vikinglockers.up.railway.app',]
 
 CSRF_TRUSTED_ORIGINS = [
-    'https://kluisjeslijst.up.railway.app',
+    'https://vikinglockers.up.railway.app',
     'http://127.0.0.1',
 ]
 # Application definition
