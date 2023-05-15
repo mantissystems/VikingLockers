@@ -4,7 +4,7 @@ from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import authenticate, login, logout
 from viking.models import  Matriks,KluisjesRV
-from .models import Room,Message,User,Topic
+from base.models import Room,Message,User,Topic
 from django.db.models import Q
 from base.forms import RoomForm, UserForm,  MyUserCreationForm
 # Create your views here.
@@ -108,7 +108,7 @@ def room(request, pk):
         )
         room.participants.add(request.user)
         return redirect('room', pk=room.id)
-    heren=Matriks.objects.filter(naam__icontains=topic).exclude(y_as__in=(7,8)).order_by('y_as')
+    heren=Matriks.objects.all() #filter(naam__icontains=topic).exclude(y_as__in=(7,8)).order_by('y_as')
     hdr=['', 'kol1','kol2','kol3','kol4','kol5','kol6','kol7','kol8','kol9','kol10','kol11','kol12','kol13']  #LET OP: KOLOM NUL NIET VERGETEN
     kopmtrx=[]
     for i in range (0,13):
