@@ -1,13 +1,13 @@
 from rest_framework import serializers
 from rest_framework.serializers import ModelSerializer
-from .models import   Topic,Note,KluisjesRV,Vikinglid
+from .models import   Note,KluisjesRV,Vikinglid
 from django.contrib.auth.models import User
 
 
-class TopicSerializer(ModelSerializer):
-    class Meta:
-        model = Topic
-        fields = '__all__'
+# class TopicSerializer(ModelSerializer):
+#     class Meta:
+#         model = Topic
+#         fields = '__all__'
 
 class NoteSerializer(ModelSerializer):
     class Meta:

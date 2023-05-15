@@ -32,9 +32,9 @@ from viking.serializers import(
     GebruikerSerializer,
     KluisSerializer, 
     NoteSerializer,
-    TopicSerializer,
+    # TopicSerializer,
 )
-from .models import   Topic,Vikinglid,Note,Matriks,KluisjesRV ,Kluislabel,Instromer
+from .models import   Vikinglid,Note,Matriks,KluisjesRV ,Kluislabel,Instromer
 from base.models import Message
 # from .forms import UserForm,VikinglidForm,KluisjeForm ,InstromerForm
 
@@ -186,24 +186,24 @@ def home(request):
         }
     return render(request, template, context)
 
-def userProfile(request, pk):
-    user = User.objects.get(id=pk)
-    topics = Topic.objects.all()
-    wachtlijst=KluisjesRV.objects.get(naamvoluit='wachtlijst')
-    body=request.POST.get('body')
-    print(body)
-    if request.method == 'POST':
-        message = Message.objects.create(
-            user=request.user,
-            room=wachtlijst,
-            body=request.POST.get('body')
-        )
+# def userProfile(request, pk):
+#     user = User.objects.get(id=pk)
+#     topics = Topic.objects.all()
+#     wachtlijst=KluisjesRV.objects.get(naamvoluit='wachtlijst')
+#     body=request.POST.get('body')
+#     print(body)
+#     if request.method == 'POST':
+#         message = Message.objects.create(
+#             user=request.user,
+#             room=wachtlijst,
+#             body=request.POST.get('body')
+#         )
 
-    context = {
-        'user': user, 
-        'topics': topics
-        }
-    return render(request, 'viking/profile.html', context)
+#     context = {
+#         'user': user, 
+#         'topics': topics
+#         }
+#     return render(request, 'viking/profile.html', context)
 def erv_userProfile(request, pk):
     user = User.objects.get(id=pk)
     events = user.flexevent_set.all()[0:5]
