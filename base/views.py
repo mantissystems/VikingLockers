@@ -3,8 +3,8 @@ from django.shortcuts import redirect, render
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import authenticate, login, logout
-from viking.models import  Matriks,KluisjesRV
-from base.models import Room,Message,User,Topic
+# from viking.models import  Matriks,KluisjesRV
+from base.models import Room,Message,User,Topic,Matriks,KluisjesRV
 from django.db.models import Q
 from base.forms import RoomForm, UserForm,  MyUserCreationForm
 # Create your views here.
@@ -208,3 +208,210 @@ def createRoom(request):
 
     context = {'form': form, 'topics': topics}
     return render(request, 'base/room_form.html', context)
+
+
+@login_required(login_url='login')
+def deleteMessage(request, pk):
+    message = Message.objects.get(id=pk)
+
+    if request.user != message.user:
+        return HttpResponse('Your are not allowed here!!')
+
+    if request.method == 'POST':
+        message.delete()
+        return redirect('home')
+    return render(request, 'base/delete.html', {'obj': message})
+
+@login_required(login_url='login')
+def update_kluis(request, pk,kol):
+    column=int(kol)
+    matrix=Matriks.objects.get(id=pk)
+    rms = KluisjesRV.objects.all()
+    owner_count=0
+    rgl=matrix.y_as
+    hdr=['', 'kol1','kol2','kol3','kol4','kol5','kol6','kol7','kol8','kol9','kol10','kol11','kol12','kol13']  #LET OP: KOLOM NUL NIET VERGETEN
+    dematrikskolom=hdr[column];print(dematrikskolom)
+    kluisje=getattr(matrix,dematrikskolom)
+    matriksnaam=getattr(matrix,'naam')
+    opheffen= request.POST.get('opheffen')
+    column=int(kol)
+    regel=matrix.regel
+    oorspronkelijkmatriksnummer=decodeer(regel,dematrikskolom,column,cellengte=4)
+    # kluisfilter1=Q(row=rgl)
+    # kluisfilter2=Q(col=column)
+    # kluisfilter3=Q(topic='DDames') # matriksnaam)
+    kls=KluisjesRV.objects.get(kluisnummer=oorspronkelijkmatriksnummer)
+    huurders=kls.huurders
+    if request.method == 'POST':
+        huurder= request.POST.get('heeftkluis')
+        label= request.POST.get('kluislabel')
+        slot= request.POST.get('slot')
+        your_name= request.POST.get('your_name')
+        huuropheffen= request.POST.get('huuropheffen')
+        # h=User.objects.get(id=huurder)
+        # kls.huurders.add(h)
+        kls.userid=huurder
+        kls.verhuurd=True
+        # kls.save()
+        # print('form',huuropheffen,slot,label,huurder)
+
+        if slot:
+            kls.type=slot
+            kls.save()
+        # if label:
+        #     kls.label=label
+        #     mx=Matriks.objects.all().filter(regel__icontains=oorspronkelijkmatriksnummer).first()
+        #     setattr(mx,hdr[int(kls.col)],label)
+        #     mx.save()
+        #     kls.save()
+        if huurder or your_name:
+            h=User.objects.get(id=huurder)
+            kls.huurders.add(h)
+            setattr(kls, 'verhuurd',True)
+            kls.save()
+        if huuropheffen:
+            h=User.objects.get(id=huuropheffen)
+            print('opheffen',h)
+            kls.huurders.remove(h)
+            setattr(kls, 'verhuurd',False)
+            kls.save()
+
+        # huurder= request.POST.get('heeftkluis')
+        # label= request.POST.get('kluislabel')
+        # slot= request.POST.get('slot')
+        # your_name= request.POST.get('your_name')
+        # huuropheffen= request.POST.get('huuropheffen')
+        # print('huurder',huurder)
+        # h=User.objects.get(id=huurder)
+        # kls.huurders.add(h)
+        # kls.userid=huurder
+        # kls.verhuurd=True
+        # kls.save()
+        return redirect('home')
+
+    vikingers=User.objects.all().order_by('username')
+    context = {
+                'vikingers':vikingers,
+                'kluis': kls,
+                'huurders': huurders,
+                'oorspronkelijkmatriksnummer':oorspronkelijkmatriksnummer,
+            }
+    return render(request, 'base/update_kluis_form.html', context)
+
+def kluis(request, pk):
+    vikingers=User.objects.all().order_by('name')
+    context={
+                # 'huurders':huurders,
+                # 'form': form,
+                # 'kluis': kls,
+                'vikingers':vikingers,
+            }
+
+    try:
+        kls=KluisjesRV.objects.get(id=pk)
+        # form=KluisjeForm(instance=kls)
+        huurders=kls.huurders.all()
+        context={
+                'huurders':huurders,
+                # 'form': form,
+                'kluis': kls,
+                'vikingers':vikingers,
+            }
+    except:
+        pass
+    if request.method == 'POST':
+            huurder= request.POST.get('heeftkluis')
+            your_name= request.POST.get('your_name')
+            opheffen= request.POST.get('opheffen')
+            if kls:
+                    if huurder or your_name:
+                        kls.naamvoluit=huurder
+                        kluisnummer=kls.kluisnummer
+                        setattr(kls, 'kluisnummer',kluisnummer)
+                        kls.save()
+                    if opheffen:
+                        setattr(kls, 'kluisnummer', '---')
+                        kls.save()
+                        
+            return redirect('home')
+
+    return render(request, 'base/update_kluis_form.html', context)     
+
+def decodeer(regel,de_matriks_kolom,column,cellengte):
+    begincell=(0+column)*column*cellengte
+    eindcell=0+cellengte
+    b=0+((column-1)*cellengte)
+    e=b+cellengte
+    c=regel[b:e] 
+    oorspronkelijkmatriksnummer=c
+
+    return oorspronkelijkmatriksnummer
+
+def hernummermatriks(request):
+    print('in hernummermatriks===============')
+    # voor iedere cel in de Matriks per Room een kluisjesRV aanmaken ==================
+    hdr=['kol1','kol2','kol3','kol4','kol5','kol6','kol7','kol8','kol9','kol10','kol11','kol12',]#'kol13',] #'kol14']
+    begincell=0;cellengte=0;eindcell=0
+    topics=Room.objects.all()
+    for t in topics:
+        matrix=Matriks.objects.filter(naam__icontains=t.name).exclude(y_as__in=(7,8,1,2,3,4,5,6)).order_by('y_as') #matriks bevat ingeladen data 1-8 tijdens testen
+        kolomteller=0
+        rij=0
+        for m in matrix:
+            for h in hdr:
+                de_matriks_kolom=h
+                inh=getattr(m,h)
+                if len(hdr)==kolomteller:
+                    kolomteller=0
+                kolomteller+=1
+                rij+=1
+                oorspronkelijkmatriksnummer=decodeer(m.regel,de_matriks_kolom,kolomteller,cellengte=4)       
+                create,cre=KluisjesRV.objects.update_or_create(
+                    kluisnummer=oorspronkelijkmatriksnummer,
+                    kluisje=oorspronkelijkmatriksnummer,
+                    topic=m.naam,
+                    row=str(rij).zfill(2),
+                    col=str(kolomteller).zfill(2),
+                )     
+                print(m.naam,de_matriks_kolom,inh,h,oorspronkelijkmatriksnummer)
+                print('users ===============')
+                # voor ieder geregistreerd kluisje een user aanmaken met ww viking123 ==================
+        # for k in KluisjesRV.objects.all().exclude(email=None):
+        for k in KluisjesRV.objects.all().exclude(email=''):
+            print('kluisje-huurder', k.naamvoluit)
+            email = k.email
+            username = k.naamvoluit #.lower()
+            password ='pbkdf2_sha256$390000$YrBnItyjcuUgxrlMGlWFPH$HBlBExsE2C5EcmEmhHvtDTkMl3PH+0E7EQJLrWER4cs=' 
+            try:
+                user = User.objects.get(email = email)
+                k.huurders.add(user)
+
+            except:
+                #  als je geen user vindt dan een user aanmaken.
+                # user toevoegen als huurder van het kluisje
+                if email!='':
+                    user = authenticate(request, username=username, password=password)
+                    voegtoe,user=User.objects.update_or_create(
+                    email = email,
+                    is_active=True,
+                    last_name=k.naamvoluit,
+                    username = username,
+                    password=password,
+                    )
+                    k.huurders.add(voegtoe)
+                    k.verhuurd=True
+                    k.save()
+
+            try:
+                k.huurders.add(voegtoe)
+                k.verhuurd=True
+                k.save()
+            except:
+                print(k)
+                pass
+        print('end users===============')
+
+    print('einde hernummermatriks===============')
+    context={}
+    return render(request, 'base/home.html', context)
+

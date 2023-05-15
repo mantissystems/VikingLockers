@@ -26,8 +26,10 @@ urlpatterns = [
     path('topics/', views.topicsPage, name="topics"),
     path('update-room/<str:pk>/', views.updateRoom, name="update-room"),
     path('delete-room/<str:pk>/', views.deleteRoom, name="delete-room"),
- path('create-room/', views.createRoom, name="create-room"),
- 
+     path('create-room/', views.createRoom, name="create-room"),
+    path('delete-message/<str:pk>/', views.deleteMessage, name="delete-message"),
+    path('<str:pk>/kluis/',views.kluis, name='kluis'),  
+    path('<str:pk>/update_kluis/<str:kol>/',views.update_kluis, name='update_kluis'),  
     # path('topics/', topicsPage, name="topics"),
     # path('verhuur/', verhuurPage, name="verhuur"),
     # path('', home, name='home'),

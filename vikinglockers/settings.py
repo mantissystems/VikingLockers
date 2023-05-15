@@ -128,22 +128,22 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 CORS_ALLOW_ALL_ORIGINS=True
 SECURE_CONTENT_TYPE_NOSNIFF=False
 
-CORS_ALLOWED_ORIGINS = [
-    "http://*", 
-    "https://kluisjeslijst.up.railway.app",
-    "http://127.0.0.1",
-    "http://127.0.0.1:8000",
-    ]
-CORS_ALLOWED_ORIGIN_REGEXES= [r"https://",r"http://"]
+# CORS_ALLOWED_ORIGINS = [
+#     "http://*", 
+#     "https://kluisjeslijst.up.railway.app",
+#     "http://127.0.0.1",
+#     "http://127.0.0.1:8000",
+#     ]
+# CORS_ALLOWED_ORIGIN_REGEXES= [r"https://",r"http://"]
 
 # FIXTURE_DIRS = [BASE_DIR / 'static']
-SENDGRID_API_KEY = os.getenv('SENDGRID_API_KEY')
+# SENDGRID_API_KEY = os.getenv('SENDGRID_API_KEY')
 
-EMAIL_HOST = 'smtp.sendgrid.net'
-EMAIL_HOST_USER = 'apikey' # this is exactly the value 'apikey'
-EMAIL_HOST_PASSWORD = SENDGRID_API_KEY
-EMAIL_PORT = 587
-EMAIL_USE_TLS = True
+# EMAIL_HOST = 'smtp.sendgrid.net'
+# EMAIL_HOST_USER = 'apikey' # this is exactly the value 'apikey'
+# EMAIL_HOST_PASSWORD = SENDGRID_API_KEY
+# EMAIL_PORT = 587
+# EMAIL_USE_TLS = True
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.1/ref/settings/#default-auto-field
 
