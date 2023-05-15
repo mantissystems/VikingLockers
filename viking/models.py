@@ -64,45 +64,45 @@ class Kluislabel(models.Model):
     def __str__(self):
         return self.name
 
-class Matriks(models.Model):    #wrongly spelled on purpose
-    naam= models.CharField(max_length=18,default='matriks')     
-    ronde = models.CharField(max_length=200)
-    kop = models.CharField(max_length=200)
-    regel = models.CharField(max_length=200)
-    x_as = models.IntegerField(default=2)
-    y_as = models.IntegerField(default=2)
-    kol1= models.CharField(max_length=18,default='000')     
-    kol2= models.CharField(max_length=18,default='000')     
-    kol3= models.CharField(max_length=18,default='000')     
-    kol4= models.CharField(max_length=18,default='000')     
-    kol5= models.CharField(max_length=18,default='000')     
-    kol6= models.CharField(max_length=18,default='000')     
-    kol7= models.CharField(max_length=18,default='000')     
-    kol8= models.CharField(max_length=18,default='000')     
-    kol9= models.CharField(max_length=18,default='000')     
-    kol10= models.CharField(max_length=18,default='000')     
-    kol11= models.CharField(max_length=18,default='000')     
-    kol12= models.CharField(max_length=18,default='000')     
-    kol13= models.CharField(max_length=18,default='000')     
+# class Matriks(models.Model):    #wrongly spelled on purpose
+#     naam= models.CharField(max_length=18,default='matriks')     
+#     ronde = models.CharField(max_length=200)
+#     kop = models.CharField(max_length=200)
+#     regel = models.CharField(max_length=200)
+#     x_as = models.IntegerField(default=2)
+#     y_as = models.IntegerField(default=2)
+#     kol1= models.CharField(max_length=18,default='000')     
+#     kol2= models.CharField(max_length=18,default='000')     
+#     kol3= models.CharField(max_length=18,default='000')     
+#     kol4= models.CharField(max_length=18,default='000')     
+#     kol5= models.CharField(max_length=18,default='000')     
+#     kol6= models.CharField(max_length=18,default='000')     
+#     kol7= models.CharField(max_length=18,default='000')     
+#     kol8= models.CharField(max_length=18,default='000')     
+#     kol9= models.CharField(max_length=18,default='000')     
+#     kol10= models.CharField(max_length=18,default='000')     
+#     kol11= models.CharField(max_length=18,default='000')     
+#     kol12= models.CharField(max_length=18,default='000')     
+#     kol13= models.CharField(max_length=18,default='000')     
 
-class KluisjesRV(models.Model):
-    kluisnummer = models.CharField(max_length=200)
-    naamvoluit = models.CharField(max_length=200)
-    gender = models.CharField(max_length=200)
-    email = models.CharField(max_length=200)
-    userid = models.CharField(max_length=200)
-    kluisje = models.CharField(max_length=200)
-    kastje = models.CharField(max_length=18,default='kast1')     
-    label = models.CharField(max_length=18,default='label')     
-    type = models.CharField(max_length=18, choices=SLOT,default='--')     
+# class KluisjesRV(models.Model):
+#     kluisnummer = models.CharField(max_length=200)
+#     naamvoluit = models.CharField(max_length=200)
+#     gender = models.CharField(max_length=200)
+#     email = models.CharField(max_length=200)
+#     userid = models.CharField(max_length=200)
+#     kluisje = models.CharField(max_length=200)
+#     kastje = models.CharField(max_length=18,default='kast1')     
+#     label = models.CharField(max_length=18,default='label')     
+#     type = models.CharField(max_length=18, choices=SLOT,default='--')     
 
-    topic = models.CharField(max_length=18,default='----')     
-    row = models.CharField(max_length=18,default='----')     
-    col = models.CharField(max_length=18,default='----')     
-    verhuurd=models.BooleanField(default=False)
-    huurders = models.ManyToManyField(Vikinglid, related_name='huurders', blank=True)
-    class Meta:
-        ordering = ['kluisnummer']
+#     topic = models.CharField(max_length=18,default='----')     
+#     row = models.CharField(max_length=18,default='----')     
+#     col = models.CharField(max_length=18,default='----')     
+#     verhuurd=models.BooleanField(default=False)
+#     huurders = models.ManyToManyField(Vikinglid, related_name='huurders', blank=True)
+#     class Meta:
+#         ordering = ['kluisnummer']
 
 
 # class Message(models.Model):

@@ -41,6 +41,15 @@ def logoutUser(request):
 
 def registerPage(request):
     form = MyUserCreationForm()
+    pemail=request.POST.get('email')
+    print(pemail)
+    try:
+        usr=User.objects.get(email=pemail)
+    except:
+        pass
+    else:
+        messages.error(request, 'User email already in use.')
+
 
     if request.method == 'POST':
         form = MyUserCreationForm(request.POST)
