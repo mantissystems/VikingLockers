@@ -174,12 +174,12 @@
         <div class="participants__list scroll">
           {% if request.user.is_authenticated %}
 
-          Verhuurd
+          Verhuurd / In De Wacht
           <hr>
           {% for kluis in verhuurd %}
           <p>            
             {% for t in kluis.huurders.all %}
-            <a href="{% url 'kluis' kluis.id %}">{{kluis.kluisnummer}}:{{t.username|slice:"0:14"}}... </a>
+            <a href="{% url 'kluis' kluis.id %}">{{kluis.kluisnummer}}:{{t.username|slice:"0:12"}}... </a>
             {% endfor %}
           </p>
           {% endfor %}
