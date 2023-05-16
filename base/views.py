@@ -69,7 +69,7 @@ def registerPage(request):
 def home(request):
     q = request.GET.get('q') if request.GET.get('q') != None else ''
     lockers=Matriks.objects.all() 
-    matriks=Matriks.objects.all()
+    # matriks=Matriks.objects.all()
     rooms = Room.objects.filter(
         Q(topic__name__icontains=q) |
         Q(name__icontains=q) |
@@ -83,6 +83,19 @@ def home(request):
     room_count = rooms.count()
     room_messages = Message.objects.filter(
         Q(room__topic__name__icontains=q))[0:3]
+    if rooms.count()>0 and q!='':
+        room_found=rooms.first()
+        ftopic=Q(topic__icontains=room_found.topic)
+        fverhuurdaan=Q(huurders__name__icontains=q)
+        print(room_found.id)
+        verhuurd=KluisjesRV.objects.all().filter(ftopic&fverhuurdaan)  #verzamel verhuurde kluisjes voor de room 
+        return redirect('verhuurdaan',room_found.id, q) 
+    if rooms.count()==0 and q!='':
+        # room_found=rooms.first()
+        room_found = Room.objects.get(name='Wachtlijst')
+        print('wachtlijst',room_found)
+        return redirect('verhuurdaan',room_found.id, q) 
+    
 
     context = {'rooms': rooms, 
                'topics': topics,
@@ -122,15 +135,64 @@ def room(request, pk):
     kopmtrx=[]
     for i in range (0,13):
         kopmtrx.append(hdr[i])
-    # if topic=='Wachtlijst':
-    #     hdr=['wachtlijst']
-    #     kopmtrx=hdr
+    if topic=='Wachtlijst':
+        hdr=['wachtlijst']
+        kopmtrx=hdr
     topics = Topic.objects.all()[0:5]
     context = {
         'room': room,
                'topics': topics,
                 'heren': heren,
                 'verhuurd': verhuurd,
+                'kopmtrx': kopmtrx,
+               'participants': participants,
+               'room_messages': room_messages}
+
+    return render(request, 'base/room.html', context)
+
+def verhuurdaan(request, pk,txt):
+    try:
+        room = Room.objects.get(id=pk)
+    except:
+        return redirect('home') 
+    finally:
+        # print('verhuurdaan',pk,txt,room,room.id)
+        room_messages = room.message_set.all()
+        participants = room.participants.all()
+        vikingers=User.objects.all()
+        topic=room.name
+
+        ftopic=Q(topic__icontains=topic)
+        fverhuurd=Q(verhuurd=True)
+    # print(txt)
+    # verhuurd=KluisjesRV.objects.all().filter(ftopic&fverhuurd)  #verzamel verhuurde kluisjes voor de room 
+    verhuurden=KluisjesRV.objects.all().order_by('kluisnummer').filter(
+            Q(topic__icontains=txt)&
+            Q(huurders__name__icontains=txt)
+    )
+    # print(verhuurden.count())
+    if request.method == 'POST':
+        message = Message.objects.create(
+            user=request.user,
+            room=room,
+            body=request.POST.get('body')
+        )
+        room.participants.add(request.user)
+        return redirect('room', pk=room.id)
+    heren=Matriks.objects.filter(naam__icontains=topic).exclude(y_as__in=(7,8)).order_by('y_as')
+    hdr=['', 'kol1','kol2','kol3','kol4','kol5','kol6','kol7','kol8','kol9','kol10','kol11','kol12','kol13']  #LET OP: KOLOM NUL NIET VERGETEN
+    kopmtrx=[]
+    for i in range (0,13):
+        kopmtrx.append(hdr[i])
+    if topic=='Wachtlijst':
+        hdr=['wachtlijst']
+        kopmtrx=hdr
+    topics = Topic.objects.all()[0:5]
+    context = {
+        'room': room,
+               'topics': topics,
+                'heren': heren,
+                'verhuurden': verhuurden,
                 'kopmtrx': kopmtrx,
                'participants': participants,
                'room_messages': room_messages}

@@ -176,7 +176,7 @@
 
           Verhuurd
           <hr>
-          {% for kluis in verhuurd %}
+          {% for kluis in verhuurden %}
           <p>            
             {% for t in kluis.huurders.all %}
             <a href="{% url 'kluis' kluis.id %}">{{kluis.kluisnummer}}:{{t.username|slice:"0:14"}}... </a>

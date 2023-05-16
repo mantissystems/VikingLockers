@@ -31,6 +31,7 @@ urlpatterns = [
     path('<str:pk>/kluis/',views.kluis, name='kluis'),  
     path('<str:pk>/update_kluis/<str:kol>/',views.update_kluis, name='update_kluis'),  
     path('hernummermatriks/', views.hernummermatriks, name='hernummermatriks'),
+    path('verhuurdaan/<str:pk>/<str:txt>/',views.verhuurdaan, name='verhuurdaan'),  
     # path('topics/', topicsPage, name="topics"),
     # path('verhuur/', verhuurPage, name="verhuur"),
     # path('', home, name='home'),
