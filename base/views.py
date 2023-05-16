@@ -153,24 +153,18 @@ def room(request, pk):
 def verhuurdaan(request, pk,txt):
     try:
         room = Room.objects.get(id=pk)
+        print(room)
     except:
         return redirect('home') 
     finally:
-        # print('verhuurdaan',pk,txt,room,room.id)
         room_messages = room.message_set.all()
         participants = room.participants.all()
         vikingers=User.objects.all()
         topic=room.name
-
-        ftopic=Q(topic__icontains=topic)
-        fverhuurd=Q(verhuurd=True)
-    # print(txt)
-    # verhuurd=KluisjesRV.objects.all().filter(ftopic&fverhuurd)  #verzamel verhuurde kluisjes voor de room 
-    verhuurden=KluisjesRV.objects.all().order_by('kluisnummer').filter(
-            Q(topic__icontains=txt)&
-            Q(huurders__name__icontains=txt)
-    )
-    # print(verhuurden.count())
+        verhuurd=KluisjesRV.objects.all().order_by('kluisnummer').filter(
+            topic=topic) #.exclude(huurders=None)
+        print(verhuurd.count())
+            # Q(huurders__name__icontains=txt)
     if request.method == 'POST':
         message = Message.objects.create(
             user=request.user,
@@ -192,7 +186,7 @@ def verhuurdaan(request, pk,txt):
         'room': room,
                'topics': topics,
                 'heren': heren,
-                'verhuurden': verhuurden,
+                'verhuurd': verhuurd,
                 'kopmtrx': kopmtrx,
                'participants': participants,
                'room_messages': room_messages}
