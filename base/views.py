@@ -122,6 +122,9 @@ def room(request, pk):
     kopmtrx=[]
     for i in range (0,13):
         kopmtrx.append(hdr[i])
+    # if topic=='Wachtlijst':
+    #     hdr=['wachtlijst']
+    #     kopmtrx=hdr
     topics = Topic.objects.all()[0:5]
     context = {
         'room': room,

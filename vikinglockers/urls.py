@@ -6,7 +6,6 @@ from django.views.generic import TemplateView
 urlpatterns = [
     # path('', TemplateView.as_view(template_name='main.html')),
     path('admin/', admin.site.urls),
-    # path('', include('viking.urls')),
     path('', include('base.urls')),
     # path('__debug__/', include('debug_toolbar.urls')),    
 ]

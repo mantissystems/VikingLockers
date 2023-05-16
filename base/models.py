@@ -62,14 +62,15 @@ class Matriks(models.Model):    #wrongly spelled on purpose
     kol12= models.CharField(max_length=18,default='000')     
     kol13= models.CharField(max_length=18,default='000')     
 
-# id,name,email,is_flex,keuzes,is_host
-class File(models.Model):
-    name = models.CharField(max_length=200, null=True)
-    email = models.EmailField(unique=True, null=True)
-    bio = models.TextField(null=True)
+# # id,name,email,is_flex,keuzes,is_host
+# class File(models.Model):
+#     name = models.CharField(max_length=200, null=True)
+#     email = models.EmailField(unique=True, null=True)
+#     bio = models.TextField(null=True)
     
-    def __str__(self):
-        return self.name
+#     def __str__(self):
+#         return self.name
+
 class KluisjesRV(models.Model):
     kluisnummer = models.CharField(max_length=200)
     naamvoluit = models.CharField(max_length=200)
@@ -88,7 +89,7 @@ class KluisjesRV(models.Model):
     huurders = models.ManyToManyField(User, related_name='huurders', blank=True)
     class Meta:
         ordering = ['kluisnummer']
-            
+
 class Message(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     room = models.ForeignKey(Room, on_delete=models.CASCADE)

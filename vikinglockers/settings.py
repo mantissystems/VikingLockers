@@ -22,7 +22,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'viking',
+    # 'viking',
     'base',
     
     # 'debug_toolbar',
@@ -122,6 +122,9 @@ MEDIA_URL='/images/'
 # STATICFILES_DIRS = [
 # BASE_DIR / 'mykluisjes/build/static']
 
+STATICFILES_DIRS = [
+    BASE_DIR / 'static'
+]
 STATIC_ROOT = BASE_DIR.joinpath('staticfiles')
 DEFAULT_AUTO_FIELD = 'django.db.models.AutoField'
 MEDIA_ROOT= BASE_DIR / 'static/images'
