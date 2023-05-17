@@ -85,7 +85,7 @@
               {% endcomment %}
               <select id="huuropheffen" name="huuropheffen" onChange="redirectUrl()">
                 <option  value="" selected="selected">--- HUUR OPHEFFEN---</option>
-                {% for org in huurders %}
+                {% for org in huurders.all %}
                  <option value="{{org.id}}">{{org.email|capfirst}}</option>
                 {% endfor %}
               </select>

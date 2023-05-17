@@ -310,6 +310,9 @@ def update_kluis(request, pk,kol):
     # kluisfilter3=Q(topic='DDames') # matriksnaam)
     kls=KluisjesRV.objects.get(kluisnummer=oorspronkelijkmatriksnummer)
     huurders=kls.huurders
+    if huurders.count()==0: 
+        messages.error(request, f'{matriksnaam}: Geen huurders verder.')
+        return redirect('home')
     if request.method == 'POST':
         huurder= request.POST.get('heeftkluis')
         label= request.POST.get('kluislabel')
