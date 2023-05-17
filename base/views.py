@@ -382,39 +382,58 @@ def update_kluis(request, pk,kol):
     return render(request, 'base/update_kluis_form.html', context)
 
 def kluis(request, pk):
-    vikingers=User.objects.all().order_by('name')
-    context={
-                'vikingers':vikingers,
-            }
-
-    try:
-        kls=KluisjesRV.objects.get(id=pk)
-        huurders=kls.huurders.all()
-        context={
-                'huurders':huurders,
-                'kluis': kls,
-                'vikingers':vikingers,
-            }
-    except:
-        pass
+    # column=int(kol)
+    # matrix=Matriks.objects.get(id=pk)
+    rms = KluisjesRV.objects.all()
+    owner_count=0
+    # rgl=matrix.y_as
+    hdr=['', 'kol1','kol2','kol3','kol4','kol5','kol6','kol7','kol8','kol9','kol10','kol11','kol12','kol13']  #LET OP: KOLOM NUL NIET VERGETEN
+    # dematrikskolom=hdr[column];print(dematrikskolom)
+    # kluisje=getattr(matrix,dematrikskolom)
+    # matriksnaam=getattr(matrix,'naam')
+    opheffen= request.POST.get('opheffen')
+    # column=int(kol)
+    # regel=matrix.regel
+    # oorspronkelijkmatriksnummer=decodeer(regel,dematrikskolom,column,cellengte=4)
+    kls=KluisjesRV.objects.get(id=pk)
+    huurders=kls.huurders
+    if huurders.count()==0: 
+        messages.error(request, f'{kls.kluisnummer}: Geen huurders verder.')
+        return redirect('home')
     if request.method == 'POST':
-            huurder= request.POST.get('heeftkluis')
-            your_name= request.POST.get('your_name')
-            opheffen= request.POST.get('opheffen')
-            if kls:
-                    print('POST')
-                    if huurder or your_name:
-                        kls.naamvoluit=huurder
-                        kluisnummer=kls.kluisnummer
-                        setattr(kls, 'kluisnummer',kluisnummer)
-                        kls.save()
-                    if opheffen:
-                        setattr(kls, 'kluisnummer', '---')
-                        kls.save()
-                        
-            return redirect('home')
+        huurder= request.POST.get('heeftkluis')
+        label= request.POST.get('kluislabel')
+        slot= request.POST.get('slot')
+        your_name= request.POST.get('your_name')
+        huuropheffen= request.POST.get('huuropheffen')
+        kls.userid=huurder
+        kls.verhuurd=True
 
-    return render(request, 'base/update_kluis_form.html', context)     
+        if slot:
+            kls.type=slot
+            kls.save()
+        if huurder or your_name:
+            h=User.objects.get(id=huurder)
+            kls.huurders.add(h)
+            setattr(kls, 'verhuurd',True)
+            kls.save()
+        if huuropheffen:
+            h=User.objects.get(id=huuropheffen)
+            print('opheffen',h)
+            kls.huurders.remove(h)
+            setattr(kls, 'verhuurd',False)
+            kls.save()
+
+        # return redirect('home')
+
+    vikingers=User.objects.all().order_by('username')
+    context = {
+                'vikingers':vikingers,
+                'kluis': kls,
+                'huurders': huurders,
+                # 'oorspronkelijkmatriksnummer':oorspronkelijkmatriksnummer,
+            }
+    return render(request, 'base/update_kluis_form.html', context)
 
 def decodeer(regel,de_matriks_kolom,column,cellengte):
     begincell=(0+column)*column*cellengte
