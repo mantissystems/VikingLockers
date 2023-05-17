@@ -67,9 +67,44 @@ def registerPage(request):
     return render(request, 'base/login_register.html', {'form': form})
 
 def home(request):
+    from django.contrib.auth.models import AnonymousUser
     q = request.GET.get('q') if request.GET.get('q') != None else ''
-    lockers=Matriks.objects.all() 
-    # matriks=Matriks.objects.all()
+    lockers=Matriks.objects.all()     
+    from django.db.models import Count
+    results = (KluisjesRV.objects
+    .values('topic')
+    .annotate(dcount=Count('topic'))
+    .order_by()
+    )   
+    yourlocker=KluisjesRV.objects.none
+    if request.user is not AnonymousUser:
+        try:
+            user=User.objects.get(id=request.user.id)
+            yourlocker=KluisjesRV.objects.filter(huurders__email__icontains=user.email)
+            print(yourlocker,user)
+        except:
+            print('except1')
+            user=AnonymousUser
+        try:
+            yourlocker=KluisjesRV.objects.filter(email__icontains=user.email)
+            print(yourlocker,user)
+        except:
+            print('except2')
+            user=AnonymousUser
+
+        # finally:
+        # try:
+        #     user=User.objects.get(id=request.user.id)
+        #     yourlocker=KluisjesRV.objects.filter(huurders__email__icontains=user.email)
+        #     print(yourlocker,user)
+        # except:
+        #     print('except')
+        #     user=AnonymousUser
+        # finally:
+        # yourlocker=KluisjesRV.objects.filter(huurders__email__icontains=user.email)
+
+    # if yourlocker!=None:
+        # l=KluisjesRV.objects.get(id=yourlocker.id)
     rooms = Room.objects.filter(
         Q(topic__name__icontains=q) |
         Q(name__icontains=q) |
@@ -91,7 +126,6 @@ def home(request):
         verhuurd=KluisjesRV.objects.all().filter(ftopic&fverhuurdaan)  #verzamel verhuurde kluisjes voor de room 
         return redirect('verhuurdaan',room_found.id, q) 
     if rooms.count()==0 and q!='':
-        # room_found=rooms.first()
         room_found = Room.objects.get(name='Wachtlijst')
         print('wachtlijst',room_found)
         return redirect('verhuurdaan',room_found.id, q) 
@@ -99,9 +133,11 @@ def home(request):
 
     context = {'rooms': rooms, 
                'topics': topics,
+               'results': results,
                 'lockers': lockers,
                 'kopmtrx': kopmtrx,
                'room_count': room_count, 
+               'yourlocker': yourlocker, 
                'room_messages': room_messages}
     return render(request, 'base/home.html', context)
 
@@ -114,7 +150,7 @@ def room(request, pk):
     room = Room.objects.get(id=pk)
     room_messages = room.message_set.all()
     participants = room.participants.all()
-    vikingers=User.objects.all()
+    vikingers=User.objects.all().order_by('email')
     topic=room.name
 
     ftopic=Q(topic__icontains=topic)
@@ -305,9 +341,6 @@ def update_kluis(request, pk,kol):
     column=int(kol)
     regel=matrix.regel
     oorspronkelijkmatriksnummer=decodeer(regel,dematrikskolom,column,cellengte=4)
-    # kluisfilter1=Q(row=rgl)
-    # kluisfilter2=Q(col=column)
-    # kluisfilter3=Q(topic='DDames') # matriksnaam)
     kls=KluisjesRV.objects.get(kluisnummer=oorspronkelijkmatriksnummer)
     huurders=kls.huurders
     if huurders.count()==0: 
@@ -319,22 +352,12 @@ def update_kluis(request, pk,kol):
         slot= request.POST.get('slot')
         your_name= request.POST.get('your_name')
         huuropheffen= request.POST.get('huuropheffen')
-        # h=User.objects.get(id=huurder)
-        # kls.huurders.add(h)
         kls.userid=huurder
         kls.verhuurd=True
-        # kls.save()
-        # print('form',huuropheffen,slot,label,huurder)
 
         if slot:
             kls.type=slot
             kls.save()
-        # if label:
-        #     kls.label=label
-        #     mx=Matriks.objects.all().filter(regel__icontains=oorspronkelijkmatriksnummer).first()
-        #     setattr(mx,hdr[int(kls.col)],label)
-        #     mx.save()
-        #     kls.save()
         if huurder or your_name:
             h=User.objects.get(id=huurder)
             kls.huurders.add(h)
@@ -347,17 +370,6 @@ def update_kluis(request, pk,kol):
             setattr(kls, 'verhuurd',False)
             kls.save()
 
-        # huurder= request.POST.get('heeftkluis')
-        # label= request.POST.get('kluislabel')
-        # slot= request.POST.get('slot')
-        # your_name= request.POST.get('your_name')
-        # huuropheffen= request.POST.get('huuropheffen')
-        # print('huurder',huurder)
-        # h=User.objects.get(id=huurder)
-        # kls.huurders.add(h)
-        # kls.userid=huurder
-        # kls.verhuurd=True
-        # kls.save()
         return redirect('home')
 
     vikingers=User.objects.all().order_by('username')
@@ -372,19 +384,14 @@ def update_kluis(request, pk,kol):
 def kluis(request, pk):
     vikingers=User.objects.all().order_by('name')
     context={
-                # 'huurders':huurders,
-                # 'form': form,
-                # 'kluis': kls,
                 'vikingers':vikingers,
             }
 
     try:
         kls=KluisjesRV.objects.get(id=pk)
-        # form=KluisjeForm(instance=kls)
         huurders=kls.huurders.all()
         context={
                 'huurders':huurders,
-                # 'form': form,
                 'kluis': kls,
                 'vikingers':vikingers,
             }
@@ -395,6 +402,7 @@ def kluis(request, pk):
             your_name= request.POST.get('your_name')
             opheffen= request.POST.get('opheffen')
             if kls:
+                    print('POST')
                     if huurder or your_name:
                         kls.naamvoluit=huurder
                         kluisnummer=kls.kluisnummer

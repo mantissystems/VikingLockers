@@ -70,7 +70,7 @@
             rerum consectetur, voluptatem repudiandae eum ea porro cupiditate provident nulla, deserunt, ab ipsum
             corporis laboriosam deleniti molestias?
           </div> -->
-          <span class="room__topics">{{room.topic}}</span>
+          <span class="room__topics">{{room.topic}} </span>
         </div>
 
         <div class="room__conversation">
@@ -158,7 +158,7 @@
 
     <!--   Start -->
     <div class="participants">
-      <h3 class="participants__top">Participants <span>({{participants.count}} Joined)</span></h3>
+      <h3 class="participants__top">Participants <span>({{huurders.count}} Joined)</span></h3>
       <div class="participants__list scroll">
         {% for user in participants %}
         <a href="{%  url 'user-profile' user.id %}" class="participant">

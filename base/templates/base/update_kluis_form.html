@@ -21,7 +21,7 @@
             </svg>
           </a>
           {% if request.user.is_authenticated %}
-          <h3>Locatie:  oorspronkelijkmatriksnummer({{oorspronkelijkmatriksnummer}}) {{kluis.id}} </h3>
+          <h3>Locatie:  oorspronkelijkmatriksnummer({{oorspronkelijkmatriksnummer}}) {{kluis.id}}{{kluis.kluisnummer}} </h3>
           {% endif %}
         </div>
       </div>
@@ -85,7 +85,7 @@
               {% endcomment %}
               <select id="huuropheffen" name="huuropheffen" onChange="redirectUrl()">
                 <option  value="" selected="selected">--- HUUR OPHEFFEN---</option>
-                {% for org in huurders.all %}
+                {% for org in kluis.huurders.all %}
                  <option value="{{org.id}}">{{org.email|capfirst}}</option>
                 {% endfor %}
               </select>

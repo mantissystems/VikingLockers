@@ -12,7 +12,7 @@ admin.site.register(Message)
 class kluisAdmin(admin.ModelAdmin):
     list_filter = ('topic','kluisnummer')
     list_display = ('topic','kluisnummer')
-    search_fields = ('topic','kluisnummer')
+    search_fields = ('topic','kluisnummer','email')
 @admin.register(User)
 class UserAdmin(admin.ModelAdmin):
     list_filter = ('is_active','is_staff')
