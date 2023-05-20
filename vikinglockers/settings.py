@@ -6,7 +6,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # env=environ.Env()
 
 SECRET_KEY = 'django-insecure-)r2waboda$o)g39!ap!l7dx$numws6k7zi9=m*3e1hbudc!2&r'
-DEBUG = True
+DEBUG = False
 ALLOWED_HOSTS = ['*', 'http://127.0.0.1',
 'https://vikinglockers.up.railway.app',]
 
@@ -22,7 +22,6 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    # 'viking',
     'base',
     
     # 'debug_toolbar',
@@ -119,35 +118,24 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 MEDIA_URL='/images/'
+if DEBUG:
+    STATICFILES_DIRS = [
+    os.path.join(BASE_DIR, 'static')]
+else:
+    STATIC_ROOT =     os.path.join(BASE_DIR, 'static')
+    MEDIA_ROOT =     os.path.join(BASE_DIR, 'media')
+
 # STATICFILES_DIRS = [
 # BASE_DIR / 'mykluisjes/build/static']
 
-STATICFILES_DIRS = [
-    BASE_DIR / 'static'
-]
-STATIC_ROOT = BASE_DIR.joinpath('staticfiles')
 DEFAULT_AUTO_FIELD = 'django.db.models.AutoField'
-MEDIA_ROOT= BASE_DIR / 'static/images'
-DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+# MEDIA_ROOT= BASE_DIR / 'static/images'
+# DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 CORS_ALLOW_ALL_ORIGINS=True
 SECURE_CONTENT_TYPE_NOSNIFF=False
 
-# CORS_ALLOWED_ORIGINS = [
-#     "http://*", 
-#     "https://kluisjeslijst.up.railway.app",
-#     "http://127.0.0.1",
-#     "http://127.0.0.1:8000",
-#     ]
-# CORS_ALLOWED_ORIGIN_REGEXES= [r"https://",r"http://"]
 
 # FIXTURE_DIRS = [BASE_DIR / 'static']
-# SENDGRID_API_KEY = os.getenv('SENDGRID_API_KEY')
-
-# EMAIL_HOST = 'smtp.sendgrid.net'
-# EMAIL_HOST_USER = 'apikey' # this is exactly the value 'apikey'
-# EMAIL_HOST_PASSWORD = SENDGRID_API_KEY
-# EMAIL_PORT = 587
-# EMAIL_USE_TLS = True
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.1/ref/settings/#default-auto-field
 

@@ -1,18 +1,5 @@
 from django.urls import path
 from . import views
-# from viking.views import( 
-# home,
-# loginPage, logoutUser,
-# registerPage , 
-# topicsPage ,  updateUser,  
-#  urv_loginPage ,
-#  check_matriks,
-# createVikinglid,deleteVikinglid, 
-# deleteMessage,
-# mutatie,export_team_data,Blokken,
-# get_kluis,update_kluis,hernummermatriks,kluis,file_load_view,verhuurPage,
-# KluisList,
-# )
 
 urlpatterns = [
     path('', views.home, name="home"),
