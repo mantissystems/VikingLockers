@@ -62,26 +62,16 @@ class Matriks(models.Model):    #wrongly spelled on purpose
     kol12= models.CharField(max_length=18,default='000')     
     kol13= models.CharField(max_length=18,default='000')     
 
-# # id,name,email,is_flex,keuzes,is_host
-# class File(models.Model):
-#     name = models.CharField(max_length=200, null=True)
-#     email = models.EmailField(unique=True, null=True)
-#     bio = models.TextField(null=True)
-    
-#     def __str__(self):
-#         return self.name
-
 class KluisjesRV(models.Model):
     kluisnummer = models.CharField(max_length=200)
     naamvoluit = models.CharField(max_length=200)
-    gender = models.CharField(max_length=200)
+    # gender = models.TextField(max_length=200)
     email = models.CharField(max_length=200)
-    userid = models.CharField(max_length=200)
+    # userid = models.CharField(max_length=200)
     kluisje = models.CharField(max_length=200)
     kastje = models.CharField(max_length=18,default='kast1')     
     label = models.CharField(max_length=18,default='label')     
     type = models.CharField(max_length=18, choices=SLOT,default='--')     
-
     topic = models.CharField(max_length=18,default='----')     
     row = models.CharField(max_length=18,default='----')     
     col = models.CharField(max_length=18,default='----')     

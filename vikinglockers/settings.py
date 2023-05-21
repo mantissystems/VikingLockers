@@ -6,7 +6,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # env=environ.Env()
 
 SECRET_KEY = 'django-insecure-)r2waboda$o)g39!ap!l7dx$numws6k7zi9=m*3e1hbudc!2&r'
-DEBUG = False
+DEBUG = True
 ALLOWED_HOSTS = ['*', 'http://127.0.0.1',
 'https://vikinglockers.up.railway.app',]
 
@@ -22,8 +22,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'base',
-    
+    'base',    
     # 'debug_toolbar',
     'rest_framework',
     'corsheaders',
