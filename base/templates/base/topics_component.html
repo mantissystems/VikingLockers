@@ -1,7 +1,10 @@
 <div class="topics">
+    {% comment %}
     <div class="topics__header">
         <h2>Browse Topics</h2>
     </div>
+    {% endcomment %}
+    {% comment %}
     <ul class="topics__list">
         <li>
             <a href="{% url 'home' %}" class="active">All <span>{{topics.count}}</span></a>
@@ -20,4 +23,5 @@
             <path d="M16 21l-13-13h-3l16 16 16-16h-3l-13 13z"></path>
         </svg>
     </a>
+    {% endcomment %}
 </div>

@@ -21,7 +21,11 @@
             </svg>
           </a>
           {% if request.user.is_authenticated %}
+          <h3>Locatie:  {{kluis.id}} {{kluis.kluisnummer}} </h3>
+          {% comment %}
+
           <h3>Locatie:  oorspronkelijkmatriksnummer({{oorspronkelijkmatriksnummer}}) {{kluis.id}}{{kluis.kluisnummer}} </h3>
+          {% endcomment %}
           {% endif %}
         </div>
       </div>
@@ -33,7 +37,9 @@
             Huurder(s):
             <label for="huurder">
               {% for org in kluis.huurders.all %}
+              {% comment %}
               {{org.name|capfirst}}
+              {% endcomment %}
               e-mail: {{org.email}}<hr>
              {% endfor %}
                   </label
@@ -49,40 +55,7 @@
             <option value="L" type="L">leeg</option>
             </select>
           </div>
-            {% comment %}
-            <div class="form__group">
-              <label for="room_topic">huidig label: {{kluis.label}}</label
-                  name="email">
-            </div>
-            <label for="your_name">Type slot: </label>
-            <input id="slot" type="text" name="slot" value="{{ current_name }}">
-            <input type="submit" value="OK">
-          {% for org in huurders %}
-          {{org.id}}{{org.name|capfirst}}
-          e-mail: {{org.email}}
-         {% endfor %}
           <div class="form__group">
-            <label for="room_topic">e-mail: {{kluis.email}}</label
-                name="email">
-          </div>
-          <div class="form__group">
-            <label for="room_topic">Kast benaming: {{kluis.topic}}</label
-              name="email">
-            </div>
-            <div class="form__group">
-              <label for="room_topic">Locatie: {{kluis.row}} kolom {{kluis.col}}</label
-                name="email">
-              </div>
-              <div class="form__group">
-                <label for="room_topic">verhuurd: {{kluis.verhuurd}}</label
-                    name="email">
-              </div>
-              {% endcomment %}
-          <div class="form__group">
-            {% comment %}
-            <label for="team_name">Huur opheffen</label name="huurder">
-              <option  value="" selected="selected">--- LABEL---</option>
-              {% endcomment %}
               <select id="huuropheffen" name="huuropheffen" onChange="redirectUrl()">
                 <option  value="" selected="selected">--- HUUR OPHEFFEN---</option>
                 {% for org in kluis.huurders.all %}
@@ -91,42 +64,15 @@
               </select>
   
           </div>
-          <div class="form__group">
-              <select id="kluislabel" name="kluislabel" onChange="redirectUrl()">
-                <option  value="" selected="selected">--- LABEL---</option>
-                {% for l in labels %}
-                 <option value="{{l.name}}">{{l.name|capfirst}}</option>
-                {% endfor %}
-              </select>
-  
-          </div>
 
           <div class="form__group">
               <select id="heeftkluis" name="heeftkluis" onChange="redirectUrl()">
-                <option  value="" selected="selected">--- KLUISJE TOEWIJZEN AAN:---</option>
+                <option  value="" selected="selected">--- HUUR UITBREIDEN:---</option>
                 {% for org in vikingers %}
                 <option value="{{org.id}}">{{org.email|capfirst}}</option>
                 {% endfor %}
               </select>
             </div>
-            {% comment %}
-            <div class="form__group">
-              <label for="kluisje_name">Kluisje toewijzen</label name="heeftkluis">
-                <select id="heeftkluis" name="heeftkluis" onChange="redirectUrl()">
-                  <option  value="" selected="selected">--- KLUISJE TOEWIJZEN AAN:---</option>
-                  {% for org in vikingers %}
-                  <option value="{{org.id}}">{{org.name|capfirst}}</option>
-                  {% endfor %}
-                </select>
-              </div>
-              <input type="checkbox" id="opheffen" name="opheffen" value="opheffen">
-<label for="opheffen"> Huur opheffen</label><br>
-            <div class="form__group">
-
-            <label for="your_name">Kastnummer: </label>
-            <input id="your_name" type="text" name="your_name" value="{{kluisje}} {{ kluis.kastje }} {{kluis.kastje}}">
-            </div>        
-            {% endcomment %}
             <div class="form__action">
             <a class="btn btn--dark" href="{{request.META.HTTP_REFERER}}"
               >Cancel</a>

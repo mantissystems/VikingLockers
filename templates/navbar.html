@@ -6,6 +6,7 @@
             <h1>LockerManager</h1>
         </a>
         <form class="header__search" method="GET" action="{% url 'home' %}">
+            {% comment %}
             <label>
                 <svg version="1.1" xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32">
                     <title>search</title>
@@ -15,6 +16,7 @@
                 </svg>
                 <input name="q" placeholder="Search for posts" />
             </label>
+            {% endcomment %}
         </form>
         <nav class="header__menu">
 
