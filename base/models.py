@@ -65,9 +65,7 @@ class Matriks(models.Model):    #wrongly spelled on purpose
 class KluisjesRV(models.Model):
     kluisnummer = models.CharField(max_length=200)
     naamvoluit = models.CharField(max_length=200)
-    # gender = models.TextField(max_length=200)
     email = models.CharField(max_length=200)
-    # userid = models.CharField(max_length=200)
     kluisje = models.CharField(max_length=200)
     kastje = models.CharField(max_length=18,default='kast1')     
     label = models.CharField(max_length=18,default='label')     
@@ -77,6 +75,8 @@ class KluisjesRV(models.Model):
     col = models.CharField(max_length=18,default='----')     
     verhuurd=models.BooleanField(default=False)
     huurders = models.ManyToManyField(User, related_name='huurders', blank=True)
+    # gender = models.TextField(max_length=200)
+    # userid = models.CharField(max_length=200)
     class Meta:
         ordering = ['kluisnummer']
 

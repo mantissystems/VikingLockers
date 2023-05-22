@@ -382,20 +382,14 @@ def update_kluis(request, pk,kol):
     return render(request, 'base/update_kluis_form.html', context)
 
 def kluis(request, pk):
-    # column=int(kol)
-    # matrix=Matriks.objects.get(id=pk)
     rms = KluisjesRV.objects.all()
     owner_count=0
-    # rgl=matrix.y_as
     hdr=['', 'kol1','kol2','kol3','kol4','kol5','kol6','kol7','kol8','kol9','kol10','kol11','kol12','kol13']  #LET OP: KOLOM NUL NIET VERGETEN
-    # dematrikskolom=hdr[column];print(dematrikskolom)
-    # kluisje=getattr(matrix,dematrikskolom)
-    # matriksnaam=getattr(matrix,'naam')
     opheffen= request.POST.get('opheffen')
-    # column=int(kol)
-    # regel=matrix.regel
-    # oorspronkelijkmatriksnummer=decodeer(regel,dematrikskolom,column,cellengte=4)
-    kls=KluisjesRV.objects.get(id=pk)
+    if pk.isnumeric() :
+        kls=KluisjesRV.objects.get(id=pk)
+    else:
+        kls=KluisjesRV.objects.get(kluisnummer=pk)        
     huurders=kls.huurders
     if huurders.count()==0: 
         messages.error(request, f'{kls.kluisnummer}: Geen huurders verder.')

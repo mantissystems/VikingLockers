@@ -685,10 +685,10 @@ a {
 /*========== Room List Room ==========*/
 
 .roomListRoom {
-  margin-bottom: 2.4rem;
+  margin-bottom: 1rem;
   background-color: var(--color-dark);
   border-radius: 1rem;
-  padding: 2rem;
+  padding: 1rem;
 }
 
 .roomListRoom__header {
