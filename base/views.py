@@ -341,7 +341,12 @@ def update_kluis(request, pk,kol):
     column=int(kol)
     regel=matrix.regel
     oorspronkelijkmatriksnummer=decodeer(regel,dematrikskolom,column,cellengte=4)
-    kls=KluisjesRV.objects.get(kluisnummer=oorspronkelijkmatriksnummer)
+    try:
+        kls=KluisjesRV.objects.get(kluisnummer=oorspronkelijkmatriksnummer)
+    except: 
+        KluisjesRV.DoesNotExist
+        messages.error(request, f'{pk} {kol}: Niet gevonden')
+        return redirect('home')
     huurders=kls.huurders
     if huurders.count()==0: 
         messages.error(request, f'{matriksnaam}: Geen huurders verder.')
