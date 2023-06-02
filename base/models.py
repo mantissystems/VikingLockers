@@ -75,8 +75,6 @@ class KluisjesRV(models.Model):
     col = models.CharField(max_length=18,default='----')     
     verhuurd=models.BooleanField(default=False)
     huurders = models.ManyToManyField(User, related_name='huurders', blank=True)
-    # gender = models.TextField(max_length=200)
-    # userid = models.CharField(max_length=200)
     class Meta:
         ordering = ['kluisnummer']
 

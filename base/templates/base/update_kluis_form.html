@@ -67,7 +67,7 @@
 
           <div class="form__group">
               <select id="heeftkluis" name="heeftkluis" onChange="redirectUrl()">
-                <option  value="" selected="selected">--- HUUR UITBREIDEN:---</option>
+                <option  value="" selected="selected">--- ONDERVERHUREN:---</option>
                 {% for org in vikingers %}
                 <option value="{{org.id}}">{{org.email|capfirst}}</option>
                 {% endfor %}

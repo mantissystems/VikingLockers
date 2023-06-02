@@ -7,6 +7,7 @@ from django.contrib.auth import authenticate, login, logout
 from base.models import Room,Message,User,Topic,Matriks,KluisjesRV
 from django.db.models import Q
 from base.forms import RoomForm, UserForm,  MyUserCreationForm
+from django.views.generic import(TemplateView)
 # Create your views here.
 
 def loginPage(request):
@@ -56,6 +57,7 @@ def registerPage(request):
         if form.is_valid():
             user = form.save(commit=False)
             user.username = user.username.lower()
+            user.last_name = user.username.lower()
             print(user.username)
             user.save()
             login(request, user)
@@ -77,39 +79,33 @@ def home(request):
     .order_by()
     )   
     yourlocker=KluisjesRV.objects.none
-    if request.user is not AnonymousUser:
+    if request.user != AnonymousUser:
         try:
             user=User.objects.get(id=request.user.id)
             yourlocker=KluisjesRV.objects.filter(huurders__email__icontains=user.email)
             print(yourlocker,user)
+            messages.info(request, f'{user}: Huurder.')
         except:
-            print('except1')
             user=AnonymousUser
-        try:
-            yourlocker=KluisjesRV.objects.filter(email__icontains=user.email)
-            print(yourlocker,user)
-        except:
-            print('except2')
-            user=AnonymousUser
+            messages.info(request, f'Ubent niet ingelogd. Svp Inloggen / Registreren')
+        else:
+            try:
+                yourlocker=KluisjesRV.objects.filter(email__icontains=user.email)
+            except:
+                messages.info(request, f'{user}: Onderhuurder.')
+                print('huurder')
+                user='niet-ingelogd' #AnonymousUser
+                messages.info(request, f'Ubent niet ingelogd. Svp Inloggen / Registreren')
 
-        # finally:
-        # try:
-        #     user=User.objects.get(id=request.user.id)
-        #     yourlocker=KluisjesRV.objects.filter(huurders__email__icontains=user.email)
-        #     print(yourlocker,user)
-        # except:
-        #     print('except')
-        #     user=AnonymousUser
-        # finally:
-        # yourlocker=KluisjesRV.objects.filter(huurders__email__icontains=user.email)
-
-    # if yourlocker!=None:
-        # l=KluisjesRV.objects.get(id=yourlocker.id)
+    if q!='' or q !=None:
+        rooms_found = Matriks.objects.filter(regel__icontains=q).values_list('naam',flat=True)
+        print('rooms_found',rooms_found)
     rooms = Room.objects.filter(
         Q(topic__name__icontains=q) |
+        Q(name__in=rooms_found) |
         Q(name__icontains=q) |
         Q(description__icontains=q)
-    ).order_by('name')
+    ).order_by('name').exclude(name='Wachtlijst')
     hdr=['', 'kol1','kol2','kol3','kol4','kol5','kol6','kol7','kol8','kol9','kol10','kol11','kol12','kol13']  #LET OP: KOLOM NUL NIET VERGETEN
     kopmtrx=[]
     for i in range (0,13):
@@ -117,19 +113,7 @@ def home(request):
     topics = Topic.objects.all()[0:5]
     room_count = rooms.count()
     room_messages = Message.objects.filter(
-        Q(room__topic__name__icontains=q))[0:3]
-    if rooms.count()>0 and q!='':
-        room_found=rooms.first()
-        ftopic=Q(topic__icontains=room_found.topic)
-        fverhuurdaan=Q(huurders__name__icontains=q)
-        print(room_found.id)
-        verhuurd=KluisjesRV.objects.all().filter(ftopic&fverhuurdaan)  #verzamel verhuurde kluisjes voor de room 
-        return redirect('verhuurdaan',room_found.id, q) 
-    if rooms.count()==0 and q!='':
-        room_found = Room.objects.get(name='Wachtlijst')
-        print('wachtlijst',room_found)
-        return redirect('verhuurdaan',room_found.id, q) 
-    
+        Q(room__topic__name__icontains=q))[0:3]   
 
     context = {'rooms': rooms, 
                'topics': topics,
@@ -169,7 +153,7 @@ def room(request, pk):
     heren=Matriks.objects.filter(naam__icontains=topic).exclude(y_as__in=(7,8)).order_by('y_as')
     hdr=['', 'kol1','kol2','kol3','kol4','kol5','kol6','kol7','kol8','kol9','kol10','kol11','kol12','kol13']  #LET OP: KOLOM NUL NIET VERGETEN
     kopmtrx=[]
-    for i in range (0,13):
+    for i in range (0,9):
         kopmtrx.append(hdr[i])
     if topic=='Wachtlijst':
         hdr=['wachtlijst']
@@ -444,11 +428,11 @@ def decodeer(regel,de_matriks_kolom,column,cellengte):
 
     return oorspronkelijkmatriksnummer
 
-def hernummermatriks(request):
+def hernummermatriks_old(request):
     print('in hernummermatriks===============')
     # voor iedere cel in de Matriks per Room een kluisjesRV aanmaken ==================
     hdr=['kol1','kol2','kol3','kol4','kol5','kol6','kol7','kol8','kol9','kol10','kol11','kol12',]#'kol13',] #'kol14']
-    begincell=0;cellengte=0;eindcell=0
+    begincell=0;cellengte=0;eindcell=0;kolomteller=0
     topics=Room.objects.all()
     for t in topics:
         matrix=Matriks.objects.filter(naam__icontains=t.name).exclude(y_as__in=(7,8,1,2,3,4,5,6)).order_by('y_as') #matriks bevat ingeladen data 1-8 tijdens testen
@@ -511,4 +495,101 @@ def hernummermatriks(request):
     print('einde hernummermatriks===============')
     context={}
     return render(request, 'base/home.html', context)
+
+class Blokken(TemplateView):
+    template_name = 'base/home.html'
+    def get_context_data(self, **kwargs):
+        hdr=['kol1','kol2','kol3','kol4','kol5','kol6','kol7','kol8','kol9','kol10','kol11','kol12',]#'kol13',] #'kol14']
+        # begincell=0;cellengte=0;eindcell=0
+        begincell=0;cellengte=0;eindcell=0;kolomteller=0;rij=0
+        topics=Room.objects.all().exclude(name='Wachtlijst')
+        kasten= topics #['Heren','Adames','Bdames','Cdames','Ddames']
+        Matriks.objects.all().delete()
+        for k in kasten:
+            regelteller=0
+            print(k,len(hdr))
+            matrixnaam=k.name 
+            bloknummer='' ;   vv= matrixnaam[0:1]      #voorvoegsel
+            nr=len(hdr)
+            kolommen = len(hdr)-3
+            ronde=len(hdr)
+            r = 0
+            rijen=len(hdr)
+            s = ""
+            w1=''
+            p = 0
+            for teama in range(0,kolommen): 
+                s = ""
+                p = 0
+                for teamb in range(0,kolommen):
+                    if teama != teamb:
+                        p += 1
+                        ronde = (teamb + teama)%kolommen
+                        if ronde == 0: ronde = kolommen
+                        r+=1
+                        s += vv + str(r).zfill(2) #+'|.'
+                        if p%2 == 0:
+                            w1 += str(ronde)
+                            w1 = ""
+                        # else:
+                        #     r+=1
+                        #     s += vv + str(r).zfill(2) #+'|!'
+                        #     ronde += 1
+
+                    # if teama == teamb:
+                    #     r+=1
+                    #     s +=vv +  str(r).zfill(2) #+'|='
+                    #     if r==len(hdr):r=0
+                print(s)
+        #         # ALS DE MATRIKS AL IS AANGEMAAKT,NIET MEER UITVOEREN, wordt opgenomen in het instellingen bestand
+                regelteller+=1
+                Matriks.objects.update_or_create( 
+                        kop=s,
+                        regel=s,
+                        # ronde=r,
+                        # x_as=r,
+                        y_as=regelteller,
+                        naam=matrixnaam,
+                        )    
+                # if regelteller==len(hdr):regelteller=0
+                        
+        return
+
+def hernummermatriks(request):
+    print('in hernummermatriks===============')
+    # rij=0
+    # matriks regel-kolomnummering naar kolomvelden overbrengen
+    hdr=['','kol1','kol2','kol3','kol4','kol5','kol6','kol7','kol8','kol9','kol10','kol11','kol12','kol13','kol14']
+    begincell=0;cellengte=0;eindcell=0
+    # matrixen=Matriks.objects.all().values_list('naam',flat=True).distinct()
+    matrixen= ['Heren','ADames','BDames','CDames','DDames']
+
+    # from django.db.models import Count
+    # results = (Matriks.objects
+    # .values('naam')
+    # .annotate(dcount=Count('naam'))
+    # .order_by()
+    # )   
+
+    # matrix=Matriks.objects.filter(y_as__in=(1,2,3,4,5,6)).order_by('y_as').order_by('naam')
+    # matrix=results
+    for r in matrixen:
+        print(r)
+        matrix=Matriks.objects.filter(naam=r) #.first()
+        for m in matrix:
+        # m=matrix
+            print(m)
+            rij=str(m.y_as)
+            cellengte=3
+            regel=m.regel
+            for kol in range(0,len(hdr)):
+                de_matriks_kolom=hdr[kol]
+                oorspronkelijkmatriksnummer=decodeer(regel,de_matriks_kolom,kol,cellengte)
+                print(m.naam,de_matriks_kolom,begincell,oorspronkelijkmatriksnummer)
+                setattr(m, de_matriks_kolom, oorspronkelijkmatriksnummer)
+                m.save()
+        context={}
+    return render(request, 'base/home.html', context)
+
+
 

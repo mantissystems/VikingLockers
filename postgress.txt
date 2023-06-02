@@ -1,0 +1,6 @@
+base_matriks_id_seq
+ALTER SEQUENCE seq RESTART;
+SELECT setval('base_matriks_id_seq', 0);
+ALTER SEQUENCE <tablename>_<id>_seq RESTART WITH 1
+ALTER SEQUENCE base_matriks_id_seq RESTART WITH 1
+
