@@ -1,10 +1,11 @@
-from django.http import HttpResponse
+from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import redirect, render
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import authenticate, login, logout
+from django.urls import reverse
 # from viking.models import  Matriks,KluisjesRV
-from base.models import Room,Message,User,Topic,Matriks,KluisjesRV
+from base.models import Room,Message,User,Topic,Matriks,KluisjesRV,Locker
 from django.db.models import Q
 from base.forms import RoomForm, UserForm,  MyUserCreationForm
 from django.views.generic import(TemplateView)
@@ -330,8 +331,20 @@ def update_kluis(request, pk,kol):
     except: 
         KluisjesRV.DoesNotExist
         messages.error(request, f'{pk} {kol}: Niet gevonden')
-        return redirect('home')
-    huurders=kls.huurders
+        # return redirect('home')
+# def dispatch(self, request, *args, **kwargs):
+#         if not self.has_permission(request):
+        # url=f'{pk}/create_locker/{kol}'
+        # url=f'create_locker/1/
+        url = reverse('create_locker', kwargs={'pk': {pk},'kol': {kol}})
+        return HttpResponseRedirect(url)
+        # index_path = reverse(url)
+        # return HttpResponseRedirect(index_path)
+
+#         self.object = self.get_object()
+#         self.module = self.get_module()(model=self.object)
+#         return super(UpdateDashboardModuleView, self).dispatch(request, *args, **kwargs)
+        huurders=kls.huurders
     if huurders.count()==0: 
         messages.error(request, f'{matriksnaam}: Geen huurders verder.')
         return redirect('home')
@@ -591,5 +604,14 @@ def hernummermatriks(request):
         context={}
     return render(request, 'base/home.html', context)
 
-
-
+def create_locker(request,pk,kol):
+    create,cre=Locker.objects.update_or_create(
+                    kluisnummer='oorspronkelijkmatriksnummer',
+                    kluisje='oorspronkelijkmatriksnummer',
+                    topic='m.naam',
+                    # gender='x',
+                    row=str('rij').zfill(2),
+                    col=str('kolomteller').zfill(2)
+                    )
+    context={}
+    return render(request, 'base/home.html', context)

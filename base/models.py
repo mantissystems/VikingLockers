@@ -77,6 +77,21 @@ class KluisjesRV(models.Model):
     huurders = models.ManyToManyField(User, related_name='huurders', blank=True)
     class Meta:
         ordering = ['kluisnummer']
+class Locker(models.Model):
+    kluisnummer = models.CharField(max_length=200)
+    email = models.CharField(max_length=200)
+    kluisje = models.CharField(max_length=200)
+    type = models.CharField(max_length=18, choices=SLOT,default='--')     
+    topic = models.CharField(max_length=18,default='----')     
+    row = models.CharField(max_length=18,default='----')     
+    col = models.CharField(max_length=18,default='----')     
+    verhuurd=models.BooleanField(default=False)
+    owners = models.ManyToManyField(User, related_name='owners', blank=True)
+    # naamvoluit = models.CharField(max_length=200)
+    # kastje = models.CharField(max_length=18,default='kast1')     
+    # label = models.CharField(max_length=18,default='label')     
+    class Meta:
+        ordering = ['kluisnummer']
 
 class Message(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
