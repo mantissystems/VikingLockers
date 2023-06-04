@@ -91,26 +91,35 @@ def home(request):
             cnt=yourlocker.count()
             joincnt=joiner.count()
             print('yourlocker',yourlocker,user,cnt,joincnt)
-            messages.info(request, f'{user}: Huurder van {cnt} lockers')
-            if joincnt>0:messages.info(request, f'{user}: onderhuurder van {joincnt} lockers')
+            messages.info(request, f'Ingelogd is: {user}: Huurder van {cnt} lockers')
+            if joincnt>0:messages.info(request, f'Ingelogd is: {user}: onderhuurder van {joincnt} lockers')
         except:
             user=AnonymousUser
             messages.info(request, f'Ubent niet ingelogd. Svp Inloggen / Registreren')
     if q!='' or q !=None:
         rooms_found = Matriks.objects.filter(regel__icontains=q).values_list('naam',flat=True)
-        # print('rooms_found',rooms_found)
     rooms = Room.objects.filter(
-        Q(topic__name__icontains=q) |
-        Q(name__in=rooms_found) |
         Q(name__icontains=q) |
-        Q(description__icontains=q)
+        Q(description__icontains=q)|
+        Q(name__in=rooms_found) 
     ).order_by('name').exclude(name='Wachtlijst')
+    if rooms.count() == 1: 
+        print('room id',rooms[0].id)
+        url = reverse('room', kwargs={"pk":rooms[0].id})
+        #  return reverse('my_named_url', kwargs={ "pk": self.pk }) <---voorbeeld
+        return HttpResponseRedirect(url)
+    # if rooms.count() >= 1:
+        # print('room id',rooms[0].id)
+        # url = reverse('home')
+        #  return reverse('my_named_url', kwargs={ "pk": self.pk }) <---voorbeeld
+        # return HttpResponseRedirect(url)
+ 
     hdr=['', 'kol1','kol2','kol3','kol4','kol5','kol6','kol7','kol8','kol9','kol10','kol11','kol12','kol13']  #LET OP: KOLOM NUL NIET VERGETEN
     kopmtrx=[]
     for i in range (0,13):
         kopmtrx.append(hdr[i])
     topics = Topic.objects.all()[0:5]
-    room_count = rooms.count()
+    # room_count = rooms.count()
     room_messages = Message.objects.filter(
         Q(room__topic__name__icontains=q))[0:3]   
 
@@ -119,7 +128,7 @@ def home(request):
                'results': results,
                 'lockers': lockers,
                 'kopmtrx': kopmtrx,
-               'room_count': room_count, 
+            #    'room_count': room_count, 
                'yourlocker': yourlocker, 
                'room_messages': room_messages}
     return render(request, 'base/home.html', context)
@@ -139,7 +148,7 @@ def room(request, pk):
     ftopic=Q(topic__icontains=topic)
     fverhuurd=Q(verhuurd=True)
 
-    verhuurd=KluisjesRV.objects.all().filter(ftopic&fverhuurd)  #verzamel verhuurde kluisjes voor de room 
+    verhuurd=Locker.objects.all().filter(ftopic&fverhuurd)  #verzamel verhuurde kluisjes voor de room 
 
     if request.method == 'POST':
         message = Message.objects.create(
