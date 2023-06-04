@@ -62,21 +62,21 @@ class Matriks(models.Model):    #wrongly spelled on purpose
     kol12= models.CharField(max_length=18,default='000')     
     kol13= models.CharField(max_length=18,default='000')     
 
-class KluisjesRV(models.Model):
-    kluisnummer = models.CharField(max_length=200)
-    naamvoluit = models.CharField(max_length=200)
-    email = models.CharField(max_length=200)
-    kluisje = models.CharField(max_length=200)
-    kastje = models.CharField(max_length=18,default='kast1')     
-    label = models.CharField(max_length=18,default='label')     
-    type = models.CharField(max_length=18, choices=SLOT,default='--')     
-    topic = models.CharField(max_length=18,default='----')     
-    row = models.CharField(max_length=18,default='----')     
-    col = models.CharField(max_length=18,default='----')     
-    verhuurd=models.BooleanField(default=False)
-    huurders = models.ManyToManyField(User, related_name='huurders', blank=True)
-    class Meta:
-        ordering = ['kluisnummer']
+# class KluisjesRV(models.Model):
+#     kluisnummer = models.CharField(max_length=200)
+#     naamvoluit = models.CharField(max_length=200)
+#     email = models.CharField(max_length=200)
+#     kluisje = models.CharField(max_length=200)
+#     kastje = models.CharField(max_length=18,default='kast1')     
+#     label = models.CharField(max_length=18,default='label')     
+#     type = models.CharField(max_length=18, choices=SLOT,default='--')     
+#     topic = models.CharField(max_length=18,default='----')     
+#     row = models.CharField(max_length=18,default='----')     
+#     col = models.CharField(max_length=18,default='----')     
+#     verhuurd=models.BooleanField(default=False)
+#     huurders = models.ManyToManyField(User, related_name='huurders', blank=True)
+#     class Meta:
+#         ordering = ['kluisnummer']
 class Locker(models.Model):
     kluisnummer = models.CharField(max_length=200)
     email = models.CharField(max_length=200)

@@ -5,7 +5,7 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth import authenticate, login, logout
 from django.urls import reverse
 # from viking.models import  Matriks,KluisjesRV
-from base.models import Room,Message,User,Topic,Matriks,KluisjesRV,Locker
+from base.models import Room,Message,User,Topic,Matriks,Locker
 from django.db.models import Q
 from base.forms import RoomForm, UserForm,  MyUserCreationForm
 from django.views.generic import(TemplateView)
@@ -387,7 +387,7 @@ def update_kluis(request, pk,kol):
     return render(request, 'base/update_kluis_form.html', context)
 
 def kluis(request, pk):
-    rms = KluisjesRV.objects.all()
+    rms = Locker.objects.all()
     owner_count=0
     hdr=['', 'kol1','kol2','kol3','kol4','kol5','kol6','kol7','kol8','kol9','kol10','kol11','kol12','kol13']  #LET OP: KOLOM NUL NIET VERGETEN
     huurders=[]
@@ -614,7 +614,7 @@ def create_locker(request,row,kol):
     column=int(kol)
     print('params',row,kol)
     matrix=Matriks.objects.get(id=row)
-    rms = KluisjesRV.objects.all()
+    rms = Locker.objects.all()
     rgl=matrix.y_as
     dematrikskolom=hdr[column];print(dematrikskolom)
     kluisje=getattr(matrix,dematrikskolom)
