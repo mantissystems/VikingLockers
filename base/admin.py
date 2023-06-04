@@ -1,7 +1,7 @@
 from django.contrib import admin
 
 # Register your models here.
-from .models import Room, Topic, Message,KluisjesRV,Matriks,Locker
+from .models import Room, Topic, Message,Matriks,Locker
 from base.models import User,AbstractUser
 # admin.site.register(User)
 admin.site.register(Room)
@@ -12,11 +12,11 @@ class matriksAdmin(admin.ModelAdmin):
     list_filter = ('naam','regel')
     list_display = ('naam','regel')
     search_fields = ('naam','regel')
-@admin.register(KluisjesRV)
-class kluisAdmin(admin.ModelAdmin):
-    list_filter = ('topic','kluisnummer')
-    list_display = ('topic','kluisnummer')
-    search_fields = ('topic','kluisnummer','email')
+# @admin.register(KluisjesRV)
+# class kluisAdmin(admin.ModelAdmin):
+#     list_filter = ('topic','kluisnummer')
+#     list_display = ('topic','kluisnummer')
+#     search_fields = ('topic','kluisnummer','email')
 @admin.register(User)
 class UserAdmin(admin.ModelAdmin):
     list_filter = ('is_active','is_staff')
@@ -25,5 +25,5 @@ class UserAdmin(admin.ModelAdmin):
 @admin.register(Locker)
 class kluisAdmin(admin.ModelAdmin):
     list_filter = ('topic','kluisnummer')
-    list_display = ('topic','kluisnummer')
+    list_display = ('topic','kluisnummer','email')
     search_fields = ('topic','kluisnummer','email')

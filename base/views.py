@@ -74,33 +74,31 @@ def home(request):
     q = request.GET.get('q') if request.GET.get('q') != None else ''
     lockers=Matriks.objects.all()     
     from django.db.models import Count
-    results = (KluisjesRV.objects
+    results = (Locker.objects
     .values('topic')
     .annotate(dcount=Count('topic'))
     .order_by()
     )   
-    yourlocker=KluisjesRV.objects.none
+    yourlocker=Locker.objects.none
+    joiner=Locker.objects.none
+    cnt=0
+    joincnt=0
     if request.user != AnonymousUser:
         try:
             user=User.objects.get(id=request.user.id)
-            yourlocker=KluisjesRV.objects.filter(huurders__email__icontains=user.email)
-            print(yourlocker,user)
-            messages.info(request, f'{user}: Huurder.')
+            joiner=Locker.objects.filter(owners__email__icontains=user.email)
+            yourlocker=Locker.objects.filter(email__icontains=user.email)
+            cnt=yourlocker.count()
+            joincnt=joiner.count()
+            print('yourlocker',yourlocker,user,cnt,joincnt)
+            messages.info(request, f'{user}: Huurder van {cnt} lockers')
+            if joincnt>0:messages.info(request, f'{user}: onderhuurder van {joincnt} lockers')
         except:
             user=AnonymousUser
             messages.info(request, f'Ubent niet ingelogd. Svp Inloggen / Registreren')
-        else:
-            try:
-                yourlocker=KluisjesRV.objects.filter(email__icontains=user.email)
-            except:
-                messages.info(request, f'{user}: Onderhuurder.')
-                print('huurder')
-                user='niet-ingelogd' #AnonymousUser
-                messages.info(request, f'Ubent niet ingelogd. Svp Inloggen / Registreren')
-
     if q!='' or q !=None:
         rooms_found = Matriks.objects.filter(regel__icontains=q).values_list('naam',flat=True)
-        print('rooms_found',rooms_found)
+        # print('rooms_found',rooms_found)
     rooms = Room.objects.filter(
         Q(topic__name__icontains=q) |
         Q(name__in=rooms_found) |
@@ -151,7 +149,7 @@ def room(request, pk):
         )
         room.participants.add(request.user)
         return redirect('room', pk=room.id)
-    heren=Matriks.objects.filter(naam__icontains=topic).exclude(y_as__in=(7,8)).order_by('y_as')
+    heren=Matriks.objects.filter(naam__icontains=topic).exclude(y_as__in=(7,8,9)).order_by('y_as')
     hdr=['', 'kol1','kol2','kol3','kol4','kol5','kol6','kol7','kol8','kol9','kol10','kol11','kol12','kol13']  #LET OP: KOLOM NUL NIET VERGETEN
     kopmtrx=[]
     for i in range (0,9):
@@ -183,9 +181,9 @@ def verhuurdaan(request, pk,txt):
         vikingers=User.objects.all()
         topic=room.name
         verhuurd=KluisjesRV.objects.all().order_by('kluisnummer').filter(
-            topic=topic) #.exclude(huurders=None)
+            topic=topic) #.exclude(owners=None)
         print(verhuurd.count())
-            # Q(huurders__name__icontains=txt)
+            # Q(owners__name__icontains=txt)
     if request.method == 'POST':
         message = Message.objects.create(
             user=request.user,
@@ -315,9 +313,10 @@ def deleteMessage(request, pk):
 def update_kluis(request, pk,kol):
     column=int(kol)
     matrix=Matriks.objects.get(id=pk)
-    rms = KluisjesRV.objects.all()
+    rms = Locker.objects.all().filter(verhuurd=True)
     owner_count=0
     rgl=matrix.y_as
+    # owners=[]    
     hdr=['', 'kol1','kol2','kol3','kol4','kol5','kol6','kol7','kol8','kol9','kol10','kol11','kol12','kol13']  #LET OP: KOLOM NUL NIET VERGETEN
     dematrikskolom=hdr[column];print(dematrikskolom)
     kluisje=getattr(matrix,dematrikskolom)
@@ -325,29 +324,23 @@ def update_kluis(request, pk,kol):
     opheffen= request.POST.get('opheffen')
     column=int(kol)
     regel=matrix.regel
-    oorspronkelijkmatriksnummer=decodeer(regel,dematrikskolom,column,cellengte=4)
+    oorspronkelijkmatriksnummer=decodeer(regel,dematrikskolom,column,cellengte=3)
+    print('oorspronkelijkmatriksnummer',oorspronkelijkmatriksnummer)
     try:
-        kls=KluisjesRV.objects.get(kluisnummer=oorspronkelijkmatriksnummer)
+        kls=Locker.objects.get(kluisnummer=oorspronkelijkmatriksnummer)
+        # try:
+        #     huurders=kls.owners.all()
+        #     print(kls,huurders)
+        #     if huurders.count()==0: 
+        #         messages.error(request, f'{matriksnaam}: Geen huurders verder.')
+        #         return redirect('home')
+        # except:
+        #     pass
     except: 
-        KluisjesRV.DoesNotExist
+        Locker.DoesNotExist
         messages.error(request, f'{pk} {kol}: Niet gevonden')
-        # return redirect('home')
-# def dispatch(self, request, *args, **kwargs):
-#         if not self.has_permission(request):
-        # url=f'{pk}/create_locker/{kol}'
-        # url=f'create_locker/1/
-        url = reverse('create_locker', kwargs={'pk': {pk},'kol': {kol}})
+        url = reverse('create_locker', kwargs={'row': pk,'kol': kol})
         return HttpResponseRedirect(url)
-        # index_path = reverse(url)
-        # return HttpResponseRedirect(index_path)
-
-#         self.object = self.get_object()
-#         self.module = self.get_module()(model=self.object)
-#         return super(UpdateDashboardModuleView, self).dispatch(request, *args, **kwargs)
-        huurders=kls.huurders
-    if huurders.count()==0: 
-        messages.error(request, f'{matriksnaam}: Geen huurders verder.')
-        return redirect('home')
     if request.method == 'POST':
         huurder= request.POST.get('heeftkluis')
         label= request.POST.get('kluislabel')
@@ -356,19 +349,19 @@ def update_kluis(request, pk,kol):
         huuropheffen= request.POST.get('huuropheffen')
         kls.userid=huurder
         kls.verhuurd=True
-
+        # return HttpResponseRedirect('/')
         if slot:
             kls.type=slot
             kls.save()
         if huurder or your_name:
             h=User.objects.get(id=huurder)
-            kls.huurders.add(h)
+            kls.owners.add(h)
             setattr(kls, 'verhuurd',True)
             kls.save()
         if huuropheffen:
             h=User.objects.get(id=huuropheffen)
             print('opheffen',h)
-            kls.huurders.remove(h)
+            kls.owners.remove(h)
             setattr(kls, 'verhuurd',False)
             kls.save()
 
@@ -378,7 +371,8 @@ def update_kluis(request, pk,kol):
     context = {
                 'vikingers':vikingers,
                 'kluis': kls,
-                'huurders': huurders,
+                'verhuurd': rms,
+                # 'huurders': huurders,
                 'oorspronkelijkmatriksnummer':oorspronkelijkmatriksnummer,
             }
     return render(request, 'base/update_kluis_form.html', context)
@@ -387,14 +381,16 @@ def kluis(request, pk):
     rms = KluisjesRV.objects.all()
     owner_count=0
     hdr=['', 'kol1','kol2','kol3','kol4','kol5','kol6','kol7','kol8','kol9','kol10','kol11','kol12','kol13']  #LET OP: KOLOM NUL NIET VERGETEN
+    huurders=[]
     opheffen= request.POST.get('opheffen')
     if pk.isnumeric() :
-        kls=KluisjesRV.objects.get(id=pk)
+        kls=Locker.objects.get(id=pk)
+        huurders=kls.owners
     else:
-        kls=KluisjesRV.objects.get(kluisnummer=pk)        
-    huurders=kls.huurders
-    if huurders.count()==0: 
-        messages.error(request, f'{kls.kluisnummer}: Geen huurders verder.')
+        kls=Locker.objects.get(kluisnummer=pk)        
+        huurders=kls.owners
+        if huurders.count()==0: 
+            messages.error(request, f'{kls.kluisnummer}: Geen huurders verder.')
         return redirect('home')
     if request.method == 'POST':
         huurder= request.POST.get('heeftkluis')
@@ -410,13 +406,13 @@ def kluis(request, pk):
             kls.save()
         if huurder or your_name:
             h=User.objects.get(id=huurder)
-            kls.huurders.add(h)
+            kls.owners.add(h)
             setattr(kls, 'verhuurd',True)
             kls.save()
         if huuropheffen:
             h=User.objects.get(id=huuropheffen)
             print('opheffen',h)
-            kls.huurders.remove(h)
+            kls.owners.remove(h)
             setattr(kls, 'verhuurd',False)
             kls.save()
 
@@ -604,14 +600,39 @@ def hernummermatriks(request):
         context={}
     return render(request, 'base/home.html', context)
 
-def create_locker(request,pk,kol):
-    create,cre=Locker.objects.update_or_create(
-                    kluisnummer='oorspronkelijkmatriksnummer',
-                    kluisje='oorspronkelijkmatriksnummer',
-                    topic='m.naam',
-                    # gender='x',
-                    row=str('rij').zfill(2),
-                    col=str('kolomteller').zfill(2)
-                    )
-    context={}
-    return render(request, 'base/home.html', context)
+def create_locker(request,row,kol):
+    hdr=['', 'kol1','kol2','kol3','kol4','kol5','kol6','kol7','kol8','kol9','kol10','kol11','kol12','kol13']  #LET OP: KOLOM NUL NIET VERGETEN
+    column=int(kol)
+    print('params',row,kol)
+    matrix=Matriks.objects.get(id=row)
+    rms = KluisjesRV.objects.all()
+    rgl=matrix.y_as
+    dematrikskolom=hdr[column];print(dematrikskolom)
+    kluisje=getattr(matrix,dematrikskolom)
+    matriksnaam=getattr(matrix,'naam')
+    column=int(kol)
+    regel=matrix.regel
+    oorspronkelijkmatriksnummer=decodeer(regel,dematrikskolom,column,cellengte=3)
+    print('locker:',oorspronkelijkmatriksnummer)
+    try:
+        l=Locker.objects.get(kluisnummer=oorspronkelijkmatriksnummer)
+        regel=l.regel
+    except:
+        print('except..not found..',regel,dematrikskolom,column,oorspronkelijkmatriksnummer)
+        email=request.user.email
+        print(row,kol,'create-locker?',email)
+
+        if request.method == 'POST':
+            create,cre=Locker.objects.update_or_create(
+                            kluisnummer=oorspronkelijkmatriksnummer,
+                            kluisje=oorspronkelijkmatriksnummer,
+                            topic=matriksnaam,
+                            email=email,
+                            row=row.zfill(2),
+                            col=kol.zfill(2),
+                            verhuurd=True
+                            )
+            create.owners.add(request.user)
+            return render(request, 'base/locker-add.html', {'column': kol,'row':row,'oorspronkelijkmatriksnummer':oorspronkelijkmatriksnummer })
+            # return redirect('home')
+    return render(request, 'base/locker-add.html', {'column': kol,'row':row,'oorspronkelijkmatriksnummer':oorspronkelijkmatriksnummer })

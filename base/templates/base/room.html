@@ -83,7 +83,6 @@
 
             <table class="viking-table">
               <thead>
-                  <caption>{{room.name}} </caption>
                   <tr>
                       {% for k in kopmtrx %}
                       
@@ -103,7 +102,8 @@
                               <td> <a href="{% url 'update_kluis' rij.id 7 %}"> {{rij.kol7}}   </td>
                               <td> <a href="{% url 'update_kluis' rij.id 8 %}"> {{rij.kol8}}   </td>
                                 {% comment %}
-                                      <td> <a href="{% url 'update_kluis' rij.id 9 %}"> {{rij.kol9}}   </td>
+                                <caption>{{room.name}} </caption>
+                                <td> <a href="{% url 'update_kluis' rij.id 9 %}"> {{rij.kol9}}   </td>
                               <td> <a href="{% url 'update_kluis' rij.id 10 %}"> {{rij.kol10}}   </td>
                               <td> <a href="{% url 'update_kluis' rij.id 11 %}"> {{rij.kol11}}   </td>
                                   <td> <a href="{% url 'update_kluis' rij.id 12 %}"> {{rij.kol12}}   </td>
@@ -121,7 +121,7 @@
           In De Wacht
           <hr>
           {% for kluis in verhuurd %}
-          {% for t in kluis.huurders.all %}
+          {% for t in kluis.owners.all %}
           <p>            
             <a href="{% url 'kluis' kluis.id %}">{{kluis.kluisnummer}}:{{t.username|slice:"0:12"}}... </a>
           </p>
@@ -183,7 +183,7 @@
 
     <!--   Start -->
     <div class="participants">
-      <h3 class="participants__top">Participants <span>({{huurders.count}} Joined)</span></h3>
+      <h3 class="participants__top">Participants <span>({{owners.count}} Joined)</span></h3>
       <div class="participants__list scroll">
         {% for user in participants %}
         <a href="{%  url 'user-profile' user.id %}" class="participant">
@@ -199,11 +199,12 @@
         <div class="participants__list scroll">
           {% if request.user.is_authenticated %}
 
-          Verhuurd / In De Wacht
+          Verhuurd
           <hr>
           {% for kluis in verhuurd %}
           <p>            
-            {% for t in kluis.huurders.all %}
+            <a href="{% url 'kluis' kluis.id %}">{{kluis.kluisnummer}}:{{kluis.email|slice:"0:12"}}... </a>
+            {% for t in kluis.owners.all %}
             <a href="{% url 'kluis' kluis.id %}">{{kluis.kluisnummer}}:{{t.username|slice:"0:12"}}... </a>
             {% endfor %}
           </p>

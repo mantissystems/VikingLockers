@@ -22,9 +22,9 @@
           </a>
           {% if request.user.is_authenticated %}
           <h3>Locatie:  {{kluis.id}} {{kluis.kluisnummer}} </h3>
+          
+          <h3>Locatie:  oorspronkelijkmatriksnummer({{oorspronkelijkmatriksnummer}}) {{kluis.id}}:{{kluis.kluisnummer}} </h3>
           {% comment %}
-
-          <h3>Locatie:  oorspronkelijkmatriksnummer({{oorspronkelijkmatriksnummer}}) {{kluis.id}}{{kluis.kluisnummer}} </h3>
           {% endcomment %}
           {% endif %}
         </div>
@@ -36,7 +36,7 @@
           <div class="form__group">
             Huurder(s):
             <label for="huurder">
-              {% for org in kluis.huurders.all %}
+              {% for org in kluis.owners.all %}
               {% comment %}
               {{org.name|capfirst}}
               {% endcomment %}
@@ -58,7 +58,7 @@
           <div class="form__group">
               <select id="huuropheffen" name="huuropheffen" onChange="redirectUrl()">
                 <option  value="" selected="selected">--- HUUR OPHEFFEN---</option>
-                {% for org in kluis.huurders.all %}
+                {% for org in kluis.owners.all %}
                  <option value="{{org.id}}">{{org.email|capfirst}}</option>
                 {% endfor %}
               </select>
@@ -67,7 +67,7 @@
 
           <div class="form__group">
               <select id="heeftkluis" name="heeftkluis" onChange="redirectUrl()">
-                <option  value="" selected="selected">--- ONDERVERHUREN:---</option>
+                <option  value="" selected="selected">--- VERHUREN:---</option>
                 {% for org in vikingers %}
                 <option value="{{org.id}}">{{org.email|capfirst}}</option>
                 {% endfor %}
