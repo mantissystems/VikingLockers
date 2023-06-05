@@ -91,8 +91,8 @@ def home(request):
             cnt=yourlocker.count()
             joincnt=joiner.count()
             print('yourlocker',yourlocker,user,cnt,joincnt)
-            messages.info(request, f'Ingelogd is: {user}: Huurder van {cnt} lockers')
-            if joincnt>0:messages.info(request, f'Ingelogd is: {user}: onderhuurder van {joincnt} lockers')
+            messages.info(request, f'Huurder van {cnt} lockers')
+            if joincnt>0:messages.info(request, f'Onderhuurder van {joincnt} lockers')
         except:
             user=AnonymousUser
             messages.info(request, f'Ubent niet ingelogd. Svp Inloggen / Registreren')
@@ -136,6 +136,11 @@ def home(request):
 def activityPage(request):
     room_messages = Message.objects.all()
     return render(request, 'base/activity.html', {'room_messages': room_messages})
+
+def helpPage(request):
+    
+    room_messages = Message.objects.all()
+    return render(request, 'base/help.html', {'room_messages': room_messages})
 
 @login_required(login_url='login')
 def room(request, pk):
