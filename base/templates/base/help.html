@@ -14,42 +14,50 @@
               </path>
             </svg>
           </a>
-          <h3>Usage</h3>
+          <h3>Usage of the Lockers</h3>
         </div>
       </div>
 
       <div class="activities-page layout__body">
-        <table class="bordered">
+        <table class="viking-table">
             <thead>
                 <tbody>
                     <tr>
+                        <td></td>
                         <td>
-                            Lockernumbers will be different from the earlier used labels.
+                            New lockernumbers are different from the earlier used labels.
                         </td>
                     </tr>
                     <tr>
+                        <td></td>
                         <td>
-                            Lockernumbers are sequenced from top left to bottom right of the locker
+                            Lockernumbers are sequenced per locker block
                         </td>
                     </tr>
                     <tr>
+                        <td></td>
                         <td>
                             Search wil query locker labels from the matrix
                         </td>
                     </tr>
                     <tr>
                         <td>
-                            Heren<br>
-                            H01--+-H02-+-H03-l<br>
-                            H04--+-H05-+-H06-l<br>
-                            H07--+-H08-+-H09-l<br>
-                            H10--+-H11-+-H12-l<br>
-                            H13--+-H14-+-H15-l<br>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td></td>
+                        <td>
+                            Please let other members use your locker.
+                            Pass names to us to let us manage the locker keys and locks
                         </td>
                     </tr>
                 </tbody>
             </thead>
         </table>
+        <hr>
+        {{used}}
+        lockers bezet
+        <hr>
         {% for message in room_messages %}
 
         <div class="activities__box">

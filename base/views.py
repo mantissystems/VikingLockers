@@ -140,7 +140,14 @@ def activityPage(request):
 def helpPage(request):
     
     room_messages = Message.objects.all()
-    return render(request, 'base/help.html', {'room_messages': room_messages})
+    fverhuurd=Q(verhuurd=True)
+
+    verhuurd=Locker.objects.all().filter(fverhuurd)  #verzamel verhuurde kluisjes voor de room 
+    used=verhuurd.count()
+    context={'room_messages': room_messages,
+             'used':used,
+             }
+    return render(request, 'base/help.html', context)
 
 @login_required(login_url='login')
 def room(request, pk):
@@ -167,49 +174,6 @@ def room(request, pk):
     hdr=['', 'kol1','kol2','kol3','kol4','kol5','kol6','kol7','kol8','kol9','kol10','kol11','kol12','kol13']  #LET OP: KOLOM NUL NIET VERGETEN
     kopmtrx=[]
     for i in range (0,9):
-        kopmtrx.append(hdr[i])
-    if topic=='Wachtlijst':
-        hdr=['wachtlijst']
-        kopmtrx=hdr
-    topics = Topic.objects.all()[0:5]
-    context = {
-        'room': room,
-               'topics': topics,
-                'heren': heren,
-                'verhuurd': verhuurd,
-                'kopmtrx': kopmtrx,
-               'participants': participants,
-               'room_messages': room_messages}
-
-    return render(request, 'base/room.html', context)
-
-def verhuurdaan(request, pk,txt):
-    try:
-        room = Room.objects.get(id=pk)
-        print(room)
-    except:
-        return redirect('home') 
-    finally:
-        room_messages = room.message_set.all()
-        participants = room.participants.all()
-        vikingers=User.objects.all()
-        topic=room.name
-        verhuurd=KluisjesRV.objects.all().order_by('kluisnummer').filter(
-            topic=topic) #.exclude(owners=None)
-        print(verhuurd.count())
-            # Q(owners__name__icontains=txt)
-    if request.method == 'POST':
-        message = Message.objects.create(
-            user=request.user,
-            room=room,
-            body=request.POST.get('body')
-        )
-        room.participants.add(request.user)
-        return redirect('room', pk=room.id)
-    heren=Matriks.objects.filter(naam__icontains=topic).exclude(y_as__in=(7,8)).order_by('y_as')
-    hdr=['', 'kol1','kol2','kol3','kol4','kol5','kol6','kol7','kol8','kol9','kol10','kol11','kol12','kol13']  #LET OP: KOLOM NUL NIET VERGETEN
-    kopmtrx=[]
-    for i in range (0,13):
         kopmtrx.append(hdr[i])
     if topic=='Wachtlijst':
         hdr=['wachtlijst']
@@ -437,7 +401,6 @@ def kluis(request, pk):
                 'vikingers':vikingers,
                 'kluis': kls,
                 'huurders': huurders,
-                # 'oorspronkelijkmatriksnummer':oorspronkelijkmatriksnummer,
             }
     return render(request, 'base/update_kluis_form.html', context)
 
