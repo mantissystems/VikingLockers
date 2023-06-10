@@ -71,6 +71,10 @@ def registerPage(request):
 
 def home(request):
     from django.contrib.auth.models import AnonymousUser
+    from django.contrib import messages
+    # messages.add_message(request, messages.INFO, "Hello world.")    
+    # messages.add_message(request, messages.INFO, "Over 9000!", extra_tags="dragonball")
+    # messages.error(request, "Email box full", extra_tags="email")
     q = request.GET.get('q') if request.GET.get('q') != None else ''
     lockers=Matriks.objects.all()     
     from django.db.models import Count
@@ -79,10 +83,16 @@ def home(request):
     .annotate(dcount=Count('topic'))
     .order_by()
     )   
+    cabinetsused = (Matriks.objects
+    .values('naam')
+    .annotate(dcount=Count('regel'))
+    .order_by()
+    )   
     yourlocker=Locker.objects.none
     joiner=Locker.objects.none
     cnt=0
     joincnt=0
+    # print('yourlocker',cabinetsused)
     if request.user != AnonymousUser:
         try:
             user=User.objects.get(id=request.user.id)
@@ -90,7 +100,8 @@ def home(request):
             yourlocker=Locker.objects.filter(email__icontains=user.email)
             cnt=yourlocker.count()
             joincnt=joiner.count()
-            print('yourlocker',yourlocker,user,cnt,joincnt)
+            # print('yourlocker',yourlocker,user,cnt,joincnt,cabinetsused[0].dcount)
+            # messages.info(request, f'Aantal Cabinetten {cabinetsused} ')
             messages.info(request, f'Huurder van {cnt} lockers')
             if joincnt>0:messages.info(request, f'Onderhuurder van {joincnt} lockers')
         except:
@@ -104,6 +115,7 @@ def home(request):
         Q(name__in=rooms_found) 
     ).order_by('name').exclude(name='Wachtlijst')
     if rooms.count() == 1: 
+        messages.success(request, f'Searched for locker: {q}')
         print('room id',rooms[0].id)
         url = reverse('room', kwargs={"pk":rooms[0].id})
         #  return reverse('my_named_url', kwargs={ "pk": self.pk }) <---voorbeeld
@@ -128,7 +140,7 @@ def home(request):
                'results': results,
                 'lockers': lockers,
                 'kopmtrx': kopmtrx,
-            #    'room_count': room_count, 
+               'cabinetsused': cabinetsused, 
                'yourlocker': yourlocker, 
                'room_messages': room_messages}
     return render(request, 'base/home.html', context)
@@ -179,6 +191,8 @@ def room(request, pk):
         hdr=['wachtlijst']
         kopmtrx=hdr
     topics = Topic.objects.all()[0:5]
+    q='H35'  #temporary value to test 'highlight' templatetag
+    q=' '
     context = {
         'room': room,
                'topics': topics,
@@ -186,6 +200,7 @@ def room(request, pk):
                 'verhuurd': verhuurd,
                 'kopmtrx': kopmtrx,
                'participants': participants,
+               'q':q,
                'room_messages': room_messages}
 
     return render(request, 'base/room.html', context)
@@ -323,6 +338,9 @@ def update_kluis(request, pk,kol):
         huurder= request.POST.get('heeftkluis')
         label= request.POST.get('kluislabel')
         slot= request.POST.get('slot')
+        sleutels= request.POST.get('sleutels')
+        code= request.POST.get('code')
+        print(sleutels,code)
         your_name= request.POST.get('your_name')
         huuropheffen= request.POST.get('huuropheffen')
         kls.userid=huurder
@@ -341,6 +359,12 @@ def update_kluis(request, pk,kol):
             print('opheffen',h)
             kls.owners.remove(h)
             setattr(kls, 'verhuurd',False)
+            kls.save()
+        if sleutels:
+            kls.sleutels=sleutels
+            kls.save()
+        if code:
+            kls.code=code
             kls.save()
 
         return redirect('home')

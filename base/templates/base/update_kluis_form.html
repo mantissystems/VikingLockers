@@ -23,7 +23,7 @@
           {% if request.user.is_authenticated %}
           <h3>Locatie:  {{kluis.id}} {{kluis.kluisnummer}} </h3>
           
-          <h3>Locatie:  oorspronkelijkmatriksnummer({{oorspronkelijkmatriksnummer}}) {{kluis.id}}:{{kluis.kluisnummer}} </h3>
+          <h3>Locatie:({{oorspronkelijkmatriksnummer}}) {{kluis.id}}:{{kluis.kluisnummer}} </h3>
           {% comment %}
           {% endcomment %}
           {% endif %}
@@ -34,7 +34,6 @@
           {% csrf_token %} 
   
           <div class="form__group">
-            Huurder(s):
             <label for="huurder">
               {% for org in kluis.owners.all %}
               {% comment %}
@@ -72,6 +71,13 @@
                 <option value="{{org.id}}">{{org.email|capfirst}}</option>
                 {% endfor %}
               </select>
+            </div>
+            <div class="form__group">
+              <label for="fname">Uitgegeven Sleutels:</label>
+              <input type="text" id="sleutels" name="sleutels"><br><br>  
+              <label for="fname">Code:</label>
+              <input type="text" id="code" name="code"><br><br>  
+              {{form.code}}
             </div>
             <div class="form__action">
             <a class="btn btn--dark" href="{{request.META.HTTP_REFERER}}"
