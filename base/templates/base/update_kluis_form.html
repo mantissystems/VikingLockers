@@ -45,14 +45,15 @@
               
                 name="huurder"> 
           </div>
-          huidig slottype: {{kluis.type}}
           <div class="form__group">
-          <select id="slot" name="slot" >
+            <label for="slottype">Type slot:</label>
+            <select id="slot" name="slot" value="H" >
             <option value="" selected>TYPE SLOT</option>
             <option value="H" type="H">hangslot</option>
             <option value="C" type="C">cijferslot</option>
             <option value="L" type="L">leeg</option>
-            </select>
+            <option value={{kluis.type}} selected>{{kluis.type}} </option>
+          </select>
           </div>
           <div class="form__group">
               <select id="huuropheffen" name="huuropheffen" onChange="redirectUrl()">
@@ -74,10 +75,9 @@
             </div>
             <div class="form__group">
               <label for="fname">Uitgegeven Sleutels:</label>
-              <input type="text" id="sleutels" name="sleutels"><br><br>  
+              <input type="text" id="sleutels" name="sleutels" value={{kluis.sleutels}}><br><br>  
               <label for="fname">Code:</label>
-              <input type="text" id="code" name="code"><br><br>  
-              {{form.code}}
+              <input type="text" id="code" name="code" value={{kluis.code}}><br><br>  
             </div>
             <div class="form__action">
             <a class="btn btn--dark" href="{{request.META.HTTP_REFERER}}"

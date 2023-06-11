@@ -481,25 +481,25 @@ a {
 
 .layout__boxHeader {
   display: flex;
-  padding: 1.5rem;
+  padding: 1.0rem;
   background-color: var(--color-dark-light);
 }
 
 .layout__boxTitle {
   display: flex;
-  gap: 1.5rem;
+  gap: 1.0rem;
   align-items: center;
 }
 
 .layout__boxTitle h3 {
   text-transform: uppercase;
-  font-weight: 500;
+  font-weight: 300;
   color: var(--color-light);
 }
 
 .layout__boxTitle svg {
   width: 1.6rem;
-  height: 1.6rem;
+  height: 1.4rem;
   fill: var(--color-main);
 }
 
@@ -523,13 +523,13 @@ a {
 ================================*/
 
 .form__group {
-  margin-bottom: 2rem;
+  margin-bottom: 1rem;
   width: 100%;
 }
 
 .form__split {
   display: flex;
-  gap: 1.5rem;
+  gap: 1.0rem;
 }
 
 .form__group label {
