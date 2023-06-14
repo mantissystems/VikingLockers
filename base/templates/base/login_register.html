@@ -2,7 +2,6 @@
 
 {% block content %}
 <main class="auth layout">
-
   {% if page == 'login' %}
   <div class="container">
     <div class="layout__box">
@@ -105,4 +104,9 @@
   </div>
   {% endif %}
 </main>
+{% comment %}
+<script>
+  alert('{{ message }}');
+</script>
+{% endcomment %}
 {% endblock content %}

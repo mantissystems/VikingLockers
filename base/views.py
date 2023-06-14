@@ -50,7 +50,11 @@ def registerPage(request):
     except:
         pass
     else:
-        messages.error(request, 'User email already in use.')
+        # messages.error(request, 'User email already in use.')
+        # return render_to_response('template_name', message='Save complete')
+        # return HttpResponse('email used')
+        info='email already in use'
+        return HttpResponseRedirect('/info/',{'info':info,})
 
 
     if request.method == 'POST':
@@ -160,6 +164,18 @@ def helpPage(request):
              'used':used,
              }
     return render(request, 'base/help.html', context)
+
+def infoPage(request):
+    
+    room_messages = Message.objects.all()
+    fverhuurd=Q(verhuurd=True)
+
+    # verhuurd=Locker.objects.all().filter(fverhuurd)  #verzamel verhuurde kluisjes voor de room 
+    # used=verhuurd.count()
+    context={'room_messages': room_messages,
+            #  'used':used,
+             }
+    return render(request, 'base/info.html', context)
 
 @login_required(login_url='login')
 def room(request, pk):
