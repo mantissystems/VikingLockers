@@ -14,9 +14,16 @@
               </path>
             </svg>
           </a>
-          <h3>Information</h3>
+          <h3>Message</h3>
         </div>
       </div>
+      <div class="mobile-menuItems">
+        <a class="btn btn--main btn--pill" href="{% url 'login' %}">Registreer/Login</a>
+        {% comment %}
+        <a class="btn btn--main btn--pill" href="{% url 'home' %}">Home</a>
+        {% endcomment %}
+      </div>
+
       {% if messages %}
 <ul class="messages">
   {% for message in messages %}
@@ -24,7 +31,35 @@
   {% endfor %}
 </ul>
 {% endif %}
-      {{info}}
+<!--  -->
+<div class="participants__list scroll">
+  {% if page == 'info' %}
+  {{header}}
+  {% for kluis in yourlockers %}
+  <p>            
+    <a href="{% url 'kluis' kluis.id %}">{{kluis.kluisnummer}} :{{kluis.email|slice:"0:12"}}... </a>
+    {% for t in kluis.owners.all %}
+    <a href="{% url 'kluis' kluis.id %}">{{kluis.kluisnummer}} :{{t.username|slice:"0:12"}}... </a>
+    {% endfor %}
+  </p>
+  {% endfor %}
+  <hr>
+  {% endif %}
+  </div>
+
+<!--  -->
+{% if page == 'info' %}
+{{header_logged_in}}
+{% for kluis in yourlockers %}
+<p>            
+  <a href="{% url 'kluis' kluis.id %}">{{kluis.kluisnummer}} :{{kluis.email|slice:"0:12"}}... </a>
+  {% for t in kluis.owners.all %}
+  <a href="{% url 'kluis' kluis.id %}">{{kluis.kluisnummer}} :{{t.username|slice:"0:12"}}... </a>
+  {% endfor %}
+</p>
+{% endfor %}
+<hr>
+{% endif %}
     </div>
   </div>
 </main>

@@ -9,6 +9,9 @@ from base.models import Room,Message,User,Topic,Matriks,Locker
 from django.db.models import Q
 from base.forms import RoomForm, UserForm,  MyUserCreationForm
 from django.views.generic import(TemplateView)
+from django.contrib.auth.models import AnonymousUser
+from django.contrib import messages
+
 # Create your views here.
 
 def loginPage(request):
@@ -50,11 +53,8 @@ def registerPage(request):
     except:
         pass
     else:
-        # messages.error(request, 'User email already in use.')
-        # return render_to_response('template_name', message='Save complete')
-        # return HttpResponse('email used')
-        info='email already in use'
-        return HttpResponseRedirect('/info/',{'info':info,})
+        messages.error(request, 'User email already in use.')
+        return HttpResponseRedirect('/info/')
 
 
     if request.method == 'POST':
@@ -70,13 +70,12 @@ def registerPage(request):
         else:
             print('else')
             messages.error(request, 'An error occurred during registration')
+            return HttpResponseRedirect('/info/')
 
     return render(request, 'base/login_register.html', {'form': form})
 
 def home(request):
-    from django.contrib.auth.models import AnonymousUser
-    from django.contrib import messages
-    # messages.add_message(request, messages.INFO, "Hello world.")    
+    messages.add_message(request, messages.INFO, "Welkom bij Viking Lockers.")    
     # messages.add_message(request, messages.INFO, "Over 9000!", extra_tags="dragonball")
     # messages.error(request, "Email box full", extra_tags="email")
     q = request.GET.get('q') if request.GET.get('q') != None else ''
@@ -96,21 +95,31 @@ def home(request):
     joiner=Locker.objects.none
     cnt=0
     joincnt=0
-    # print('yourlocker',cabinetsused)
-    if request.user != AnonymousUser:
-        try:
-            user=User.objects.get(id=request.user.id)
-            joiner=Locker.objects.filter(owners__email__icontains=user.email)
-            yourlocker=Locker.objects.filter(email__icontains=user.email)
-            cnt=yourlocker.count()
-            joincnt=joiner.count()
-            # print('yourlocker',yourlocker,user,cnt,joincnt,cabinetsused[0].dcount)
-            # messages.info(request, f'Aantal Cabinetten {cabinetsused} ')
-            messages.info(request, f'Huurder van {cnt} lockers')
-            if joincnt>0:messages.info(request, f'Onderhuurder van {joincnt} lockers')
-        except:
-            user=AnonymousUser
-            messages.info(request, f'Ubent niet ingelogd. Svp Inloggen / Registreren')
+    # print('1.your entry user',request.user)
+    if request.user.is_authenticated:
+        print('5.logged-in-user:', request.user)
+    elif request.user is not None:
+        messages.info(request, f'Ubent niet ingelogd. Svp Inloggen / Registreren')
+        print('2.not-none-user:', request.user)
+        return HttpResponseRedirect('/info/')
+    elif request.user == AnonymousUser:
+          print('3.anonymoususer:', request.user)
+    elif request.user != AnonymousUser:
+            print('4.not-none-and-not-anonymous user:', request.user)
+            try:
+                    user=User.objects.get(id=request.user.id)
+                    yourlocker=Locker.objects.filter(email__icontains=user.email)
+                    yourlocker=0
+                    cnt=yourlocker.count()
+                    print('5.logged-in-user:', request.user)
+            except:
+                print('6.not-foundlocker-user:', request.user)
+                pass
+            else:
+                print('7.use-user:', request.user)
+                # messages.info(request, f'Ubent niet ingelogd. Svp Inloggen / Registreren')
+                # return HttpResponseRedirect('/info/')
+
     if q!='' or q !=None:
         rooms_found = Matriks.objects.filter(regel__icontains=q).values_list('naam',flat=True)
     rooms = Room.objects.filter(
@@ -166,14 +175,28 @@ def helpPage(request):
     return render(request, 'base/help.html', context)
 
 def infoPage(request):
-    
+    page = 'info'
     room_messages = Message.objects.all()
     fverhuurd=Q(verhuurd=True)
-
-    # verhuurd=Locker.objects.all().filter(fverhuurd)  #verzamel verhuurde kluisjes voor de room 
-    # used=verhuurd.count()
+    if request.user != AnonymousUser:
+        # user=User.objects.get(id=request.user.id)
+        user=User.objects.first()
+        yourlockers=Locker.objects.filter(
+            Q(email__icontains=user.email)|
+            Q(verhuurd=True)
+        )
+        page=''
+        print('cnt..', yourlockers.count())
+    # joiner=Locker.objects.filter(owners__email__icontains=user.email)
+    # yourlockers=Locker.objects.filter(email__icontains=user.email)
+    verhuurd=Locker.objects.all().filter(fverhuurd)  #verzamel verhuurde kluisjes voor de room 
+    header_logged_in='U huurt bij ons: '
+    header='Verhuurd: '
     context={'room_messages': room_messages,
-            #  'used':used,
+             'yourlockers':yourlockers,
+             'header':header,
+             'header_logged_in':header_logged_in,
+             'page':page,
              }
     return render(request, 'base/info.html', context)
 
@@ -335,21 +358,21 @@ def update_kluis(request, pk,kol):
     regel=matrix.regel
     oorspronkelijkmatriksnummer=decodeer(regel,dematrikskolom,column,cellengte=3)
     print('oorspronkelijkmatriksnummer',oorspronkelijkmatriksnummer)
+
     try:
-        kls=Locker.objects.get(kluisnummer=oorspronkelijkmatriksnummer)
-        # try:
-        #     huurders=kls.owners.all()
-        #     print(kls,huurders)
-        #     if huurders.count()==0: 
-        #         messages.error(request, f'{matriksnaam}: Geen huurders verder.')
-        #         return redirect('home')
-        # except:
-        #     pass
+        kls=Locker.objects.get(email=opheffen)
+        try:
+            print(kls)
+            messages.error(request, f'{matriksnaam}: Geen huurders verder.')
+            # return redirect('home')
+        except:
+            pass
     except: 
         Locker.DoesNotExist
         messages.error(request, f'{pk} {kol}: Niet gevonden')
         url = reverse('create_locker', kwargs={'row': pk,'kol': kol})
         return HttpResponseRedirect(url)
+        # return HttpResponseRedirect('/info/')
     if request.method == 'POST':
         huurder= request.POST.get('heeftkluis')
         label= request.POST.get('kluislabel')
@@ -372,8 +395,10 @@ def update_kluis(request, pk,kol):
             kls.save()
         if huuropheffen:
             h=User.objects.get(id=huuropheffen)
-            print('opheffen',h)
+            print('opheffen..',h)
             kls.owners.remove(h)
+            print(kls)
+            setattr(kls, 'email','info@viking.nl')
             setattr(kls, 'verhuurd',False)
             kls.save()
         if sleutels:
@@ -409,13 +434,16 @@ def kluis(request, pk):
         huurders=kls.owners
         if huurders.count()==0: 
             messages.error(request, f'{kls.kluisnummer}: Geen huurders verder.')
-        return redirect('home')
+            return HttpResponseRedirect('/info/')
+
+        # return redirect('home')
     if request.method == 'POST':
         huurder= request.POST.get('heeftkluis')
         label= request.POST.get('kluislabel')
         slot= request.POST.get('slot')
         your_name= request.POST.get('your_name')
         huuropheffen= request.POST.get('huuropheffen')
+        print('huuropheffen', huuropheffen)
         kls.userid=huurder
         kls.verhuurd=True
 
@@ -428,10 +456,12 @@ def kluis(request, pk):
             setattr(kls, 'verhuurd',True)
             kls.save()
         if huuropheffen:
+
             h=User.objects.get(id=huuropheffen)
             print('opheffen',h)
             kls.owners.remove(h)
             setattr(kls, 'verhuurd',False)
+            setattr(kls, 'email','info@mantissystems.nl')
             kls.save()
 
         # return redirect('home')
