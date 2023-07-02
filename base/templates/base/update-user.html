@@ -33,9 +33,9 @@
             <a class="btn btn--dark" href="{% url 'home' %}">Cancel</a>
             <button class="btn btn--main" type="submit">Update</button>
             {% if request.user.is_superuser %}
+            <a class="btn btn--dark" href="{% url 'admin:index' %}">Admin</a>
             <a href="/hernummermatriks" class="btn btn-warning btn-sm">Hernummer</a>
           <a href="/create-room" class="btn btn-warning btn-sm">Create Room</a>
-          <a class="btn btn--dark" href="{% url 'admin:index' %}">Admin</a>
           {% endif %}
           </div>
         </form>
