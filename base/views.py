@@ -205,6 +205,7 @@ def room(request, pk):
     room = Room.objects.get(id=pk)
     room_messages = room.message_set.all()
     participants = room.participants.all()
+    ploegen=Ploeg.objects.all()
     vikingers=User.objects.all().order_by('email')
     topic=room.name
 
@@ -236,6 +237,7 @@ def room(request, pk):
         'room': room,
                'topics': topics,
                 'heren': heren,
+                'ploegen': ploegen,
                 'verhuurd': verhuurd,
                 'kopmtrx': kopmtrx,
                'participants': participants,
@@ -276,6 +278,10 @@ def topicsPage(request):
     topics = Topic.objects.filter(name__icontains=q)
     return render(request, 'base/topics.html', {'topics': topics})
 
+def ploegenPage(request):
+    q = request.GET.get('q') if request.GET.get('q') != None else ''
+    ploegen = Ploeg.objects.filter(name__icontains=q)
+    return render(request, 'base/ploegen.html', {'ploegen': ploegen})
 
 @login_required(login_url='login')
 def updateRoom(request, pk):
