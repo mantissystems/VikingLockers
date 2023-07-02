@@ -7,7 +7,7 @@ from django.urls import reverse
 # from viking.models import  Matriks,KluisjesRV
 from base.models import Room,Message,User,Topic,Matriks,Locker,Ploeg
 from django.db.models import Q
-from base.forms import RoomForm, UserForm,  MyUserCreationForm
+from base.forms import RoomForm, UserForm,  MyUserCreationForm,PloegForm
 from django.views.generic import(TemplateView)
 from django.contrib.auth.models import AnonymousUser
 from django.contrib import messages
@@ -282,6 +282,24 @@ def ploegenPage(request):
     q = request.GET.get('q') if request.GET.get('q') != None else ''
     ploegen = Ploeg.objects.filter(name__icontains=q)
     return render(request, 'base/ploegen.html', {'ploegen': ploegen})
+
+def ploegPage(request,pk):
+    q = request.GET.get('q') if request.GET.get('q') != None else ''
+    ploeg = Ploeg.objects.get(name=q)
+    print(q)
+    form = PloegForm(instance=ploeg)
+
+    if request.method == 'POST':
+        form = PloegForm(request.POST, request.FILES, instance=ploeg)
+        if form.is_valid():
+            # print(user.ploeg)
+            # ploeg, created = Ploeg.objects.get_or_create(name=user.ploeg)
+            form.save()
+            return redirect('ploegen', pk=ploeg.id)
+
+    return render(request, 'base/ploegen.html', {'form': form})
+
+    return render(request, 'base/ploegen.html', {'ploeg': ploeg})
 
 @login_required(login_url='login')
 def updateRoom(request, pk):

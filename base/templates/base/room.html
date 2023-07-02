@@ -214,7 +214,7 @@
           <hr>
           {% for kluis in ploegen %}
           <p>            
-            <a href="{% url 'ploegen' %}">{{kluis.name}}:{{kluis.email|slice:"0:12"}}... </a>
+            <a href="{% url 'ploegen' kluis.name %}">{{kluis.name}}:{{kluis.email|slice:"0:12"}}... </a>
             {% for t in kluis.owners.all %}
             <a href="{% url 'kluis' kluis.id %}">{{kluis.kluisnummer}}:{{t.username|slice:"0:12"}}... </a>
             {% endfor %}
