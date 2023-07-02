@@ -5,7 +5,7 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth import authenticate, login, logout
 from django.urls import reverse
 # from viking.models import  Matriks,KluisjesRV
-from base.models import Room,Message,User,Topic,Matriks,Locker
+from base.models import Room,Message,User,Topic,Matriks,Locker,Ploeg
 from django.db.models import Q
 from base.forms import RoomForm, UserForm,  MyUserCreationForm
 from django.views.generic import(TemplateView)
@@ -230,7 +230,7 @@ def room(request, pk):
         hdr=['wachtlijst']
         kopmtrx=hdr
     topics = Topic.objects.all()[0:5]
-    q='H35'  #temporary value to test 'highlight' templatetag
+    # q='H35'  #temporary value to test 'highlight' templatetag
     q=' '
     context = {
         'room': room,
@@ -253,6 +253,8 @@ def updateUser(request):
     if request.method == 'POST':
         form = UserForm(request.POST, request.FILES, instance=user)
         if form.is_valid():
+            # print(user.ploeg)
+            ploeg, created = Ploeg.objects.get_or_create(name=user.ploeg)
             form.save()
             return redirect('user-profile', pk=user.id)
 

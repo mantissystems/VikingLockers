@@ -4,6 +4,7 @@ from django.contrib.auth.models import AbstractUser
 
 class User(AbstractUser):
     name = models.CharField(max_length=200, null=True)
+    ploeg = models.CharField(max_length=200, null=True)
     email = models.EmailField(unique=True, null=True)
     bio = models.TextField(null=True)
 
@@ -24,6 +25,11 @@ class Topic(models.Model):
     def __str__(self):
         return self.name
 
+class Ploeg(models.Model):
+    name = models.CharField(max_length=200)
+
+    def __str__(self):
+        return self.name
 
 class Room(models.Model):
     host = models.ForeignKey(User, on_delete=models.SET_NULL, null=True)
