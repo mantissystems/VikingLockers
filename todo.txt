@@ -1,0 +1,17 @@
+5-7-23 15:
+url update locker afmaken
+    locker form layout
+    locker form html template creeren
+    locker form + template vervangen update kluis en update kluis form.html
+search locker
+    redirect kluis/pk vervangen / verwijderen
+    regel 150 if count > 1000 voorkomt redirect tijdelijk
+ploegen scherm
+    search topics vervangen door search ploegen
+    participants per ploeg implementeren
+    in feed components participants count per locker ivm algemene info zonder dat je toestemming krijgt
+    huurders zijn users met een lockernummer in locker
+    owners zijn huurders
+    sub owners zijn onderhuurders die de huurders hebben toegevoegd
+    sub owners zijn niet noodzakelijkerwijze ploegleden
+    'uw locker' aankiesbaar maken. user hoeft niet te zoeken en overbodig te klikken

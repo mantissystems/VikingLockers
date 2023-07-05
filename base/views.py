@@ -7,7 +7,7 @@ from django.urls import reverse
 # from viking.models import  Matriks,KluisjesRV
 from base.models import Room,Message,User,Topic,Matriks,Locker,Ploeg
 from django.db.models import Q
-from base.forms import RoomForm, UserForm,  MyUserCreationForm,PloegForm
+from base.forms import RoomForm, UserForm,  MyUserCreationForm,PloegForm,LockerForm
 from django.views.generic import(TemplateView)
 from django.contrib.auth.models import AnonymousUser
 from django.contrib import messages
@@ -76,8 +76,6 @@ def registerPage(request):
 
 def home(request):
     messages.add_message(request, messages.INFO, "Welkom bij Viking Lockers.")    
-    # messages.add_message(request, messages.INFO, "Over 9000!", extra_tags="dragonball")
-    # messages.error(request, "Email box full", extra_tags="email")
     q = request.GET.get('q') if request.GET.get('q') != None else ''
     lllockers=Matriks.objects.all()     
     lockers=Locker.objects.all()     
@@ -92,13 +90,32 @@ def home(request):
     .annotate(dcount=Count('regel'))
     .order_by()
     )   
-    yourlocker=Locker.objects.none
+    # yourlocker=Locker.objects.none
     joiner=Locker.objects.none
     cnt=0
     joincnt=0
     # print('1.your entry user',request.user)
     if request.user.is_authenticated:
         print('5.logged-in-user:', request.user)
+        try:
+            user=User.objects.get(id=request.user.id)
+            # yourlocker=Locker.objects.filter(email__icontains=user.email)
+            yourlocker=Locker.objects.filter(kluisnummer__icontains=user.locker) #.first()
+            if yourlocker:
+                messages.success(request, f'Uw locker : {yourlocker[0].kluisnummer}')
+        except:
+            messages.info(request, f'U heeft nog geen  locker.')
+            print('8.not-found-user.locker:', request.user)
+            pass
+        # print(yourlocker)
+        # if yourlocker:
+        #     # try:
+        #     #     y=yourlocker[0].kluisnummer
+        #     # except IndexError:
+        #     #     raise ValueError(f"No student found when processing {user.locker}") from None
+        #         # messages.success(request, f'Uw locker : {yourlocker.kluisnummer}')
+        #     messages.success(request, f'Uw locker : {yourlocker[0].kluisnummer}')
+
     elif request.user is not None:
         messages.info(request, f'Ubent niet ingelogd. Svp Inloggen / Registreren')
         print('2.not-none-user:', request.user)
@@ -110,11 +127,12 @@ def home(request):
             try:
                     user=User.objects.get(id=request.user.id)
                     yourlocker=Locker.objects.filter(email__icontains=user.email)
-                    yourlocker=0
+                    yourlocker=Locker.objects.filter(kluisnummer__icontains=user.locker)
+                    # yourlocker=0
                     cnt=yourlocker.count()
-                    print('5.logged-in-user:', request.user)
+                    print('6.logged-in-user:', request.user)
             except:
-                print('6.not-foundlocker-user:', request.user)
+                print('7.not-foundlocker-user:', request.user)
                 pass
             else:
                 print('7.use-user:', request.user)
@@ -123,12 +141,13 @@ def home(request):
 
     if q!='' or q !=None:
         rooms_found = Matriks.objects.filter(regel__icontains=q).values_list('naam',flat=True)
+        lockers=Locker.objects.filter(kluisnummer__icontains=q)
     rooms = Room.objects.filter(
         Q(name__icontains=q) |
         Q(description__icontains=q)|
         Q(name__in=rooms_found) 
     ).order_by('name').exclude(name='Wachtlijst')
-    if rooms.count() == 1: 
+    if rooms.count() == 1000: 
         messages.success(request, f'Searched for locker: {q}')
         print('room id',rooms[0].id)
         url = reverse('kluis', kwargs={"pk":rooms[0].id})
@@ -155,7 +174,7 @@ def home(request):
                 'lockers': lockers,
                 'kopmtrx': kopmtrx,
                'cabinetsused': cabinetsused, 
-               'yourlocker': yourlocker, 
+            #    'yourlocker': yourlocker, 
                'room_messages': room_messages}
     return render(request, 'base/home.html', context)
 
@@ -259,7 +278,9 @@ def updateUser(request):
         if form.is_valid():
             # print(user.ploeg)
             ploeg, created = Ploeg.objects.get_or_create(name=user.ploeg)
-            locker, created = Locker.objects.get_or_create(kluisnummer=user.locker)
+            locker, created = Locker.objects.get_or_create(kluisnummer=user.locker,
+                                                           email=user.email,
+                                                           kluisje=user.locker)
             form.save()
             return redirect('user-profile', pk=user.id)
 
@@ -377,6 +398,24 @@ def deleteMessage(request, pk):
     return render(request, 'base/delete.html', {'obj': message})
 
 @login_required(login_url='login')
+def updateLocker(request,pk):
+    locker = Locker.objects.get(id=pk)
+    form = LockerForm(instance=locker)
+
+    if request.method == 'POST':
+        form = UserForm(request.POST, request.FILES, instance=locker)
+        if form.is_valid():
+            # print(user.ploeg)
+            # ploeg, created = Ploeg.objects.get_or_create(name=user.ploeg)
+            # locker, created = Locker.objects.get_or_create(kluisnummer=user.locker,
+                                                        #    email=user.email,
+                                                        #    kluisje=user.locker)
+            form.save()
+            return redirect('kluis', pk=locker.id)
+
+    return render(request, 'base/update_kluis_form.html', {'form': form})
+
+@login_required(login_url='login')
 def update_kluis(request, pk,kol):
     column=int(kol)
     matrix=Matriks.objects.get(id=pk)
@@ -457,14 +496,17 @@ def update_kluis(request, pk,kol):
 
 def kluis(request, pk):
     rms = Locker.objects.all()
+    hoofdhuurder=User.objects.filter(locker=request.user.locker)
     print(pk)
     owner_count=0
     hdr=['', 'kol1','kol2','kol3','kol4','kol5','kol6','kol7','kol8','kol9','kol10','kol11','kol12','kol13']  #LET OP: KOLOM NUL NIET VERGETEN
     huurders=[]
     opheffen= request.POST.get('opheffen')
     if pk.isnumeric() :
-        kls=Locker.objects.get(id=pk)
-        huurders=kls.owners
+        # pass
+        kls=Locker.objects.filter(kluisnummer__icontains=pk).first()
+        if kls:
+            huurders=kls.owners
     else:
         kls=Locker.objects.get(kluisnummer=pk)        
         huurders=kls.owners
@@ -514,6 +556,7 @@ def kluis(request, pk):
     context = {
                 'vikingers':vikingers,
                 'kluis': kls,
+                'hoofdhuurder':hoofdhuurder,
                 'huurders': huurders,
             }
     return render(request, 'base/update_kluis_form.html', context)

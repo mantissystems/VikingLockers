@@ -1,6 +1,6 @@
 from django.forms import ModelForm
 from django.contrib.auth.forms import UserCreationForm
-from .models import Room, User,Ploeg
+from .models import Room, User,Ploeg,Locker
 import io
 from django import forms
 import csv
@@ -38,6 +38,10 @@ class RoomForm(ModelForm):
 class PloegForm(ModelForm):
     class Meta:
         model = Ploeg
+        fields = '__all__'
+class LockerForm(ModelForm):
+    class Meta:
+        model = Locker
         fields = '__all__'
 
 class UserForm(ModelForm):
