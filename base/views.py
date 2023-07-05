@@ -79,7 +79,8 @@ def home(request):
     # messages.add_message(request, messages.INFO, "Over 9000!", extra_tags="dragonball")
     # messages.error(request, "Email box full", extra_tags="email")
     q = request.GET.get('q') if request.GET.get('q') != None else ''
-    lockers=Matriks.objects.all()     
+    lllockers=Matriks.objects.all()     
+    lockers=Locker.objects.all()     
     from django.db.models import Count
     results = (Locker.objects
     .values('topic')
@@ -130,7 +131,7 @@ def home(request):
     if rooms.count() == 1: 
         messages.success(request, f'Searched for locker: {q}')
         print('room id',rooms[0].id)
-        url = reverse('room', kwargs={"pk":rooms[0].id})
+        url = reverse('kluis', kwargs={"pk":rooms[0].id})
         #  return reverse('my_named_url', kwargs={ "pk": self.pk }) <---voorbeeld
         return HttpResponseRedirect(url)
     # if rooms.count() >= 1:
@@ -147,7 +148,7 @@ def home(request):
     # room_count = rooms.count()
     room_messages = Message.objects.filter(
         Q(room__topic__name__icontains=q))[0:3]   
-
+    rooms=lockers
     context = {'rooms': rooms, 
                'topics': topics,
                'results': results,
@@ -202,12 +203,12 @@ def infoPage(request):
 
 @login_required(login_url='login')
 def room(request, pk):
-    room = Room.objects.get(id=pk)
-    room_messages = room.message_set.all()
-    participants = room.participants.all()
+    room = Locker.objects.get(id=pk)
+    # room_messages = room.message_set.all()
+    # participants = room.participants.all()
     ploegen=Ploeg.objects.all()
     vikingers=User.objects.all().order_by('email')
-    topic=room.name
+    topic=room.kluisnummer
 
     ftopic=Q(topic__icontains=topic)
     fverhuurd=Q(verhuurd=True)
@@ -240,9 +241,10 @@ def room(request, pk):
                 'ploegen': ploegen,
                 'verhuurd': verhuurd,
                 'kopmtrx': kopmtrx,
-               'participants': participants,
+            #    'participants': participants,
                'q':q,
-               'room_messages': room_messages}
+            #    'room_messages': room_messages
+               }
 
     return render(request, 'base/room.html', context)
 
@@ -257,6 +259,7 @@ def updateUser(request):
         if form.is_valid():
             # print(user.ploeg)
             ploeg, created = Ploeg.objects.get_or_create(name=user.ploeg)
+            locker, created = Locker.objects.get_or_create(kluisnummer=user.locker)
             form.save()
             return redirect('user-profile', pk=user.id)
 
@@ -266,10 +269,11 @@ def updateUser(request):
 def userProfile(request, pk):
     user = User.objects.get(id=pk)
     rooms = user.room_set.all()
+    lockers = Locker.objects.all()
     room_messages = user.message_set.all()
     topics = Topic.objects.all()
     context = {'user': user, 'rooms': rooms,
-               'room_messages': room_messages, 'topics': topics}
+               'room_messages': room_messages, 'topics': topics,'lockers':lockers}
     return render(request, 'base/profile.html', context)
 
 
@@ -285,8 +289,9 @@ def ploegenPage(request):
 
 def ploegPage(request,pk):
     q = request.GET.get('q') if request.GET.get('q') != None else ''
-    ploeg = Ploeg.objects.get(name=q)
-    print(q)
+    ploeg = Ploeg.objects.get(name=pk)
+    topics = Ploeg.objects.filter(name__icontains=q)
+    print(pk)
     form = PloegForm(instance=ploeg)
 
     if request.method == 'POST':
@@ -297,9 +302,13 @@ def ploegPage(request,pk):
             form.save()
             return redirect('ploegen', pk=ploeg.id)
 
-    return render(request, 'base/ploegen.html', {'form': form})
+    # return render(request, 'base/ploegen.html', {'form': form})
 
     return render(request, 'base/ploegen.html', {'ploeg': ploeg})
+def lockersPage(request,pk):
+    q = request.GET.get('q') if request.GET.get('q') != None else ''
+    lockers = Locker.objects.filter(kluisnummer__icontains=q)
+    return render(request, 'base/lockers.html', {'lockers': lockers})
 
 @login_required(login_url='login')
 def updateRoom(request, pk):
@@ -448,6 +457,7 @@ def update_kluis(request, pk,kol):
 
 def kluis(request, pk):
     rms = Locker.objects.all()
+    print(pk)
     owner_count=0
     hdr=['', 'kol1','kol2','kol3','kol4','kol5','kol6','kol7','kol8','kol9','kol10','kol11','kol12','kol13']  #LET OP: KOLOM NUL NIET VERGETEN
     huurders=[]
@@ -467,14 +477,22 @@ def kluis(request, pk):
         huurder= request.POST.get('heeftkluis')
         label= request.POST.get('kluislabel')
         slot= request.POST.get('slot')
+        slotcode= request.POST.get('code')
+        sleutels= request.POST.get('sleutels')
         your_name= request.POST.get('your_name')
         huuropheffen= request.POST.get('huuropheffen')
-        print('huuropheffen', huuropheffen)
+        print('huuropheffen', huuropheffen,sleutels,slotcode)
         kls.userid=huurder
         kls.verhuurd=True
 
         if slot:
             kls.type=slot
+            kls.save()
+        if slotcode:
+            kls.code=slotcode
+            kls.save()
+        if sleutels:
+            kls.sleutels=sleutels
             kls.save()
         if huurder or your_name:
             h=User.objects.get(id=huurder)

@@ -43,4 +43,4 @@ class PloegForm(ModelForm):
 class UserForm(ModelForm):
     class Meta:
         model = User
-        fields = ['avatar', 'name', 'username','ploeg', 'email', 'bio']
+        fields = ['avatar', 'name', 'username','ploeg','locker', 'email', 'bio']

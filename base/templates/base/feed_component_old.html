@@ -1,4 +1,4 @@
-{% for room in lockers %}
+{% for room in rooms %}
 <div class="roomListRoom">
     <div class="roomListRoom__header">
         {% comment %}
@@ -16,7 +16,7 @@
         </div>
     </div>
     <div class="roomListRoom__content">
-        <a href="{% url 'kluis' room.id %}">{{room.kluisnummer}}</a>
+        <a href="{% url 'room' room.id %}">{{room.name}}</a>
     </div>
     <div class="roomListRoom__meta">
         {% comment %}
