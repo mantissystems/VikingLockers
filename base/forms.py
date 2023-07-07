@@ -43,6 +43,11 @@ class LockerForm(ModelForm):
     class Meta:
         model = Locker
         fields = '__all__'
+        labels = {
+        "verhuurd": "Hoofdhuurder",
+        }
+        exclude = ['topic','row', 'col','owners']
+
 
 class UserForm(ModelForm):
     class Meta:

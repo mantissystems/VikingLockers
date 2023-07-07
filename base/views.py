@@ -78,7 +78,7 @@ def home(request):
     messages.add_message(request, messages.INFO, "Welkom bij Viking Lockers.")    
     q = request.GET.get('q') if request.GET.get('q') != None else ''
     lllockers=Matriks.objects.all()     
-    lockers=Locker.objects.all()     
+    lockers=Locker.objects.all().filter(verhuurd=True)     
     from django.db.models import Count
     results = (Locker.objects
     .values('topic')
@@ -94,28 +94,29 @@ def home(request):
     joiner=Locker.objects.none
     cnt=0
     joincnt=0
-    # print('1.your entry user',request.user)
+    results = (Locker.objects
+    .values('kluisnummer')
+    .annotate(dcount=Count('kluisnummer'))
+    .order_by()
+    )       
+    # for r in results:
+    #     print(r)
     if request.user.is_authenticated:
         print('5.logged-in-user:', request.user)
         try:
             user=User.objects.get(id=request.user.id)
-            # yourlocker=Locker.objects.filter(email__icontains=user.email)
-            yourlocker=Locker.objects.filter(kluisnummer__icontains=user.locker) #.first()
-            if yourlocker:
-                messages.success(request, f'Uw locker : {yourlocker[0].kluisnummer}')
+            # yourlocker=Locker.objects.filter(email__icontains=user.email,kluisnummer__icontains=user.locker)
+            yourlocker=Locker.objects.filter(email__icontains=user.email,kluisnummer__icontains=user.locker) ##.exclude(verhuurd=False)
+            locker2 = Locker.objects.get(kluisnummer=user.locker,email=user.email,verhuurd=True)
+            # if yourlocker:
+            if locker2:
+                messages.success(request, f'Uw locker : {locker2.kluisnummer}')
+            else:
+                messages.info(request, f'U heeft nog geen  locker.')
         except:
-            messages.info(request, f'U heeft nog geen  locker.')
+            # messages.info(request, f'U heeft nog geen  locker.')
             print('8.not-found-user.locker:', request.user)
             pass
-        # print(yourlocker)
-        # if yourlocker:
-        #     # try:
-        #     #     y=yourlocker[0].kluisnummer
-        #     # except IndexError:
-        #     #     raise ValueError(f"No student found when processing {user.locker}") from None
-        #         # messages.success(request, f'Uw locker : {yourlocker.kluisnummer}')
-        #     messages.success(request, f'Uw locker : {yourlocker[0].kluisnummer}')
-
     elif request.user is not None:
         messages.info(request, f'Ubent niet ingelogd. Svp Inloggen / Registreren')
         print('2.not-none-user:', request.user)
@@ -141,7 +142,7 @@ def home(request):
 
     if q!='' or q !=None:
         rooms_found = Matriks.objects.filter(regel__icontains=q).values_list('naam',flat=True)
-        lockers=Locker.objects.filter(kluisnummer__icontains=q)
+        lockers=Locker.objects.filter(kluisnummer__icontains=q).exclude(verhuurd=False)
     rooms = Room.objects.filter(
         Q(name__icontains=q) |
         Q(description__icontains=q)|
@@ -177,7 +178,31 @@ def home(request):
             #    'yourlocker': yourlocker, 
                'room_messages': room_messages}
     return render(request, 'base/home.html', context)
+# 
+def nietverhuurdePage(request):
+    messages.add_message(request, messages.INFO, "NIET VERHUURDE LOCKERS aan bestaande users.")    
+    # q = request.GET.get('q') if request.GET.get('q') != None else ''
+    lockers=Locker.objects.all().filter(verhuurd=True)     
+    users_found=User.objects.all().values_list('email',flat=True)
+    # lockers=Locker.objects.filter(kluisnummer__icontains=q).exclude(verhuurd=True) 
+    open_lockers = Locker.objects.filter(
+        Q(verhuurd=False)&
+        Q(email__in=users_found) 
+    ).order_by('kluisnummer')
 
+    topics = Topic.objects.all()[0:5]
+    # room_messages = Message.objects.filter(
+    #     Q(room__topic__name__icontains=q))[0:3]   
+    # rooms=lockers
+    context = {
+        # 'rooms': rooms, 
+               'topics': topics,
+                'lockers': open_lockers,
+            #    'room_messages': room_messages
+               }
+    return render(request, 'base/home.html', context)
+
+# 
 def activityPage(request):
     room_messages = Message.objects.all()
     return render(request, 'base/activity.html', {'room_messages': room_messages})
@@ -276,7 +301,9 @@ def updateUser(request):
     if request.method == 'POST':
         form = UserForm(request.POST, request.FILES, instance=user)
         if form.is_valid():
-            # print(user.ploeg)
+            if user.locker == 'x':
+                messages.success(request, f'Uw locker opheffen?: {user.locker}')
+                print('locker opheffen?')
             ploeg, created = Ploeg.objects.get_or_create(name=user.ploeg)
             locker, created = Locker.objects.get_or_create(kluisnummer=user.locker,
                                                            email=user.email,
@@ -330,6 +357,23 @@ def lockersPage(request,pk):
     q = request.GET.get('q') if request.GET.get('q') != None else ''
     lockers = Locker.objects.filter(kluisnummer__icontains=q)
     return render(request, 'base/lockers.html', {'lockers': lockers})
+
+def lockerPage(request,pk):
+    locker = Locker.objects.get(id=pk)
+    form = LockerForm(instance=locker)
+
+    if request.method == 'POST':
+        form = LockerForm(request.POST, request.FILES, instance=locker)
+        if form.is_valid():
+            # print(user.ploeg)
+            # ploeg, created = Ploeg.objects.get_or_create(name=user.ploeg)
+            # locker, created = Locker.objects.get_or_create(kluisnummer=user.locker,
+            #                                                email=user.email,
+            #                                                kluisje=user.locker)
+            form.save()
+            return redirect('update_locker', pk=locker.id)
+
+    return render(request, 'base/update_kluis_form.html', {'form': form})
 
 @login_required(login_url='login')
 def updateRoom(request, pk):
@@ -403,17 +447,21 @@ def updateLocker(request,pk):
     form = LockerForm(instance=locker)
 
     if request.method == 'POST':
-        form = UserForm(request.POST, request.FILES, instance=locker)
+        form = LockerForm(request.POST, request.FILES, instance=locker)
         if form.is_valid():
-            # print(user.ploeg)
-            # ploeg, created = Ploeg.objects.get_or_create(name=user.ploeg)
-            # locker, created = Locker.objects.get_or_create(kluisnummer=user.locker,
-                                                        #    email=user.email,
-                                                        #    kluisje=user.locker)
+            if locker.verhuurd == False:
+                # print( 'verhuurd of niet',locker.kluisnummer,locker.verhuurd)
+                try:
+                    locker2 = Locker.objects.get(kluisnummer=locker.kluisnummer,email=locker.email)
+                except IndexError:
+                    print( 'except verhuurd of niet',locker.kluisnummer,locker.verhuurd)
+            if locker.verhuurd == True:
+                    print('hoofdhuurder')
+            # print(locker2)
             form.save()
             return redirect('kluis', pk=locker.id)
 
-    return render(request, 'base/update_kluis_form.html', {'form': form})
+    return render(request, 'base/update-locker.html', {'form': form})
 
 @login_required(login_url='login')
 def update_kluis(request, pk,kol):
@@ -495,24 +543,23 @@ def update_kluis(request, pk,kol):
     return render(request, 'base/update_kluis_form.html', context)
 
 def kluis(request, pk):
-    rms = Locker.objects.all()
+    # rms = Locker.objects.all()
+    kls=Locker.objects.filter(kluisnummer__icontains=pk)        
     hoofdhuurder=User.objects.filter(locker=request.user.locker)
-    print(pk)
-    owner_count=0
-    hdr=['', 'kol1','kol2','kol3','kol4','kol5','kol6','kol7','kol8','kol9','kol10','kol11','kol12','kol13']  #LET OP: KOLOM NUL NIET VERGETEN
-    huurders=[]
     opheffen= request.POST.get('opheffen')
-    if pk.isnumeric() :
-        # pass
-        kls=Locker.objects.filter(kluisnummer__icontains=pk).first()
-        if kls:
-            huurders=kls.owners
-    else:
-        kls=Locker.objects.get(kluisnummer=pk)        
-        huurders=kls.owners
-        if huurders.count()==0: 
-            messages.error(request, f'{kls.kluisnummer}: Geen huurders verder.')
-            return HttpResponseRedirect('/info/')
+    for k in kls:
+        print(k)
+    # if pk.isnumeric() :
+    #     # pass
+    #     kls=Locker.objects.filter(kluisnummer__icontains=pk).first()
+    #     if kls:
+    #         huurders=kls.owners
+    # else:
+        # kls=Locker.objects.get(kluisnummer=pk)        
+        # huurders=kls.owners
+        # if huurders.count()==0: 
+        #     messages.error(request, f'{kls.kluisnummer}: Geen huurders verder.')
+        #     return HttpResponseRedirect('/info/')
 
         # return redirect('home')
     if request.method == 'POST':
@@ -557,7 +604,7 @@ def kluis(request, pk):
                 'vikingers':vikingers,
                 'kluis': kls,
                 'hoofdhuurder':hoofdhuurder,
-                'huurders': huurders,
+                # 'huurders': huurders,
             }
     return render(request, 'base/update_kluis_form.html', context)
 
@@ -571,73 +618,73 @@ def decodeer(regel,de_matriks_kolom,column,cellengte):
 
     return oorspronkelijkmatriksnummer
 
-def hernummermatriks_old(request):
-    print('in hernummermatriks===============')
-    # voor iedere cel in de Matriks per Room een kluisjesRV aanmaken ==================
-    hdr=['kol1','kol2','kol3','kol4','kol5','kol6','kol7','kol8','kol9','kol10','kol11','kol12',]#'kol13',] #'kol14']
-    begincell=0;cellengte=0;eindcell=0;kolomteller=0
-    topics=Room.objects.all()
-    for t in topics:
-        matrix=Matriks.objects.filter(naam__icontains=t.name).exclude(y_as__in=(7,8,1,2,3,4,5,6)).order_by('y_as') #matriks bevat ingeladen data 1-8 tijdens testen
-        kolomteller=0
-        rij=0
-        for m in matrix:
-            for h in hdr:
-                de_matriks_kolom=h
-                inh=getattr(m,h)
-                if len(hdr)==kolomteller:
-                    kolomteller=0
-                kolomteller+=1
-                rij+=1
-                oorspronkelijkmatriksnummer=decodeer(m.regel,de_matriks_kolom,kolomteller,cellengte=4)       
-                create,cre=KluisjesRV.objects.update_or_create(
-                    kluisnummer=oorspronkelijkmatriksnummer,
-                    kluisje=oorspronkelijkmatriksnummer,
-                    topic=m.naam,
-                    row=str(rij).zfill(2),
-                    col=str(kolomteller).zfill(2),
-                )     
-                print(m.naam,de_matriks_kolom,inh,h,oorspronkelijkmatriksnummer)
-                print('users ===============')
-                # voor ieder geregistreerd kluisje een user aanmaken met ww viking123 ==================
-        # for k in KluisjesRV.objects.all().exclude(email=None):
-        for k in KluisjesRV.objects.all().exclude(email=''):
-            print('kluisje-huurder', k.naamvoluit)
-            email = k.email
-            username = k.naamvoluit #.lower()
-            password ='pbkdf2_sha256$390000$YrBnItyjcuUgxrlMGlWFPH$HBlBExsE2C5EcmEmhHvtDTkMl3PH+0E7EQJLrWER4cs=' 
-            try:
-                user = User.objects.get(email = email)
-                k.huurders.add(user)
+# def hernummermatriks_old(request):
+#     print('in hernummermatriks===============')
+#     # voor iedere cel in de Matriks per Room een kluisjesRV aanmaken ==================
+#     hdr=['kol1','kol2','kol3','kol4','kol5','kol6','kol7','kol8','kol9','kol10','kol11','kol12',]#'kol13',] #'kol14']
+#     begincell=0;cellengte=0;eindcell=0;kolomteller=0
+#     topics=Room.objects.all()
+#     for t in topics:
+#         matrix=Matriks.objects.filter(naam__icontains=t.name).exclude(y_as__in=(7,8,1,2,3,4,5,6)).order_by('y_as') #matriks bevat ingeladen data 1-8 tijdens testen
+#         kolomteller=0
+#         rij=0
+#         for m in matrix:
+#             for h in hdr:
+#                 de_matriks_kolom=h
+#                 inh=getattr(m,h)
+#                 if len(hdr)==kolomteller:
+#                     kolomteller=0
+#                 kolomteller+=1
+#                 rij+=1
+#                 oorspronkelijkmatriksnummer=decodeer(m.regel,de_matriks_kolom,kolomteller,cellengte=4)       
+#                 create,cre=KluisjesRV.objects.update_or_create(
+#                     kluisnummer=oorspronkelijkmatriksnummer,
+#                     kluisje=oorspronkelijkmatriksnummer,
+#                     topic=m.naam,
+#                     row=str(rij).zfill(2),
+#                     col=str(kolomteller).zfill(2),
+#                 )     
+#                 print(m.naam,de_matriks_kolom,inh,h,oorspronkelijkmatriksnummer)
+#                 print('users ===============')
+#                 # voor ieder geregistreerd kluisje een user aanmaken met ww viking123 ==================
+#         # for k in KluisjesRV.objects.all().exclude(email=None):
+#         for k in KluisjesRV.objects.all().exclude(email=''):
+#             print('kluisje-huurder', k.naamvoluit)
+#             email = k.email
+#             username = k.naamvoluit #.lower()
+#             password ='pbkdf2_sha256$390000$YrBnItyjcuUgxrlMGlWFPH$HBlBExsE2C5EcmEmhHvtDTkMl3PH+0E7EQJLrWER4cs=' 
+#             try:
+#                 user = User.objects.get(email = email)
+#                 k.huurders.add(user)
 
-            except:
-                #  als je geen user vindt dan een user aanmaken.
-                # user toevoegen als huurder van het kluisje
-                if email!='':
-                    user = authenticate(request, username=username, password=password)
-                    voegtoe,user=User.objects.update_or_create(
-                    email = email,
-                    is_active=True,
-                    last_name=k.naamvoluit,
-                    username = username,
-                    password=password,
-                    )
-                    k.huurders.add(voegtoe)
-                    k.verhuurd=True
-                    k.save()
+#             except:
+#                 #  als je geen user vindt dan een user aanmaken.
+#                 # user toevoegen als huurder van het kluisje
+#                 if email!='':
+#                     user = authenticate(request, username=username, password=password)
+#                     voegtoe,user=User.objects.update_or_create(
+#                     email = email,
+#                     is_active=True,
+#                     last_name=k.naamvoluit,
+#                     username = username,
+#                     password=password,
+#                     )
+#                     k.huurders.add(voegtoe)
+#                     k.verhuurd=True
+#                     k.save()
 
-            try:
-                k.huurders.add(voegtoe)
-                k.verhuurd=True
-                k.save()
-            except:
-                print(k)
-                pass
-        print('end users===============')
+#             try:
+#                 k.huurders.add(voegtoe)
+#                 k.verhuurd=True
+#                 k.save()
+#             except:
+#                 print(k)
+#                 pass
+#         print('end users===============')
 
-    print('einde hernummermatriks===============')
-    context={}
-    return render(request, 'base/home.html', context)
+#     print('einde hernummermatriks===============')
+#     context={}
+#     return render(request, 'base/home.html', context)
 
 class Blokken(TemplateView):
     template_name = 'base/home.html'
