@@ -1,11 +1,11 @@
 5-7-23 15:
-url update locker afmaken
-    locker form layout
-    locker form html template creeren
-    locker form + template vervangen update kluis en update kluis form.html
+url update locker afmaken done
+    locker form layout done
+    locker form html template creeren done
+    locker form + template vervangen update kluis en update kluis form.html done
 search locker
-    redirect kluis/pk vervangen / verwijderen
-    regel 150 if count > 1000 voorkomt redirect tijdelijk
+    redirect kluis/pk vervangen / verwijderen done
+    regel 150 if count > 1000 voorkomt redirect tijdelijk done
 ploegen scherm
     search topics vervangen door search ploegen
     participants per ploeg implementeren
@@ -14,4 +14,12 @@ ploegen scherm
     owners zijn huurders
     sub owners zijn onderhuurders die de huurders hebben toegevoegd
     sub owners zijn niet noodzakelijkerwijze ploegleden
-    'uw locker' aankiesbaar maken. user hoeft niet te zoeken en overbodig te klikken
+    'uw locker' aankiesbaar maken. user hoeft niet te zoeken en overbodig te klikken done
+omwisselen van huurder
+    als een huurder geen huurder meer is, dan verhuurd=False. De locker wordt dan onzichtbaar
+    de onzichtbare lockers vie url 'nietverhuurd/ of via superuser profile screen en button 'Open' (open lockers)
+    de nieuwe huurder registreert
+    de nieuwe huurder logt in
+    ===> de superuser koppelt locker aan user via email en kluisnummer
+   ===> de superuser zet van de gekoppelde locker verhuurd==TRUE, tegelijkertijd dienen ALLE lockers in Locker op FALSE gezet te worden 
+   waarvoor geldt: kluisnummer=locker,user !=logged in user 

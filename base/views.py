@@ -75,6 +75,7 @@ def registerPage(request):
     return render(request, 'base/login_register.html', {'form': form})
 
 def home(request):
+    from django.utils.safestring import mark_safe
     messages.add_message(request, messages.INFO, "Welkom bij Viking Lockers.")    
     q = request.GET.get('q') if request.GET.get('q') != None else ''
     lllockers=Matriks.objects.all()     
@@ -105,16 +106,16 @@ def home(request):
         print('5.logged-in-user:', request.user)
         try:
             user=User.objects.get(id=request.user.id)
-            # yourlocker=Locker.objects.filter(email__icontains=user.email,kluisnummer__icontains=user.locker)
-            yourlocker=Locker.objects.filter(email__icontains=user.email,kluisnummer__icontains=user.locker) ##.exclude(verhuurd=False)
+            # yourlocker=Locker.objects.filter(email__icontains=user.email,kluisnummer__icontains=user.locker) ##.exclude(verhuurd=False)
             locker2 = Locker.objects.get(kluisnummer=user.locker,email=user.email,verhuurd=True)
             # if yourlocker:
             if locker2:
                 messages.success(request, f'Uw locker : {locker2.kluisnummer}')
+                messages.info(request, mark_safe(f"Beheer uw locker via <a href='{locker2.id}/update_locker'>locker</a> {locker2.id}"))
+                messages.info(request, mark_safe(f"Beheer uw locker via <a href='{locker2.id}/kluis'>kluis</a> {locker2.kluisnummer}"))
             else:
                 messages.info(request, f'U heeft nog geen  locker.')
         except:
-            # messages.info(request, f'U heeft nog geen  locker.')
             print('8.not-found-user.locker:', request.user)
             pass
     elif request.user is not None:
@@ -180,7 +181,7 @@ def home(request):
     return render(request, 'base/home.html', context)
 # 
 def nietverhuurdePage(request):
-    messages.add_message(request, messages.INFO, "NIET VERHUURDE LOCKERS aan bestaande users.")    
+    messages.add_message(request, messages.INFO, "NIET VERHUURDE LOCKERS aan geregistreerde users.")    
     # q = request.GET.get('q') if request.GET.get('q') != None else ''
     lockers=Locker.objects.all().filter(verhuurd=True)     
     users_found=User.objects.all().values_list('email',flat=True)
@@ -301,13 +302,14 @@ def updateUser(request):
     if request.method == 'POST':
         form = UserForm(request.POST, request.FILES, instance=user)
         if form.is_valid():
-            if user.locker == 'x':
+            if user.locker == 'xx':
                 messages.success(request, f'Uw locker opheffen?: {user.locker}')
                 print('locker opheffen?')
             ploeg, created = Ploeg.objects.get_or_create(name=user.ploeg)
             locker, created = Locker.objects.get_or_create(kluisnummer=user.locker,
                                                            email=user.email,
-                                                           kluisje=user.locker)
+                                                           kluisje=user.locker,
+                                                           verhuurd=True)
             form.save()
             return redirect('user-profile', pk=user.id)
 
