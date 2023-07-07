@@ -46,7 +46,8 @@ class LockerForm(ModelForm):
         labels = {
         "verhuurd": "Hoofdhuurder",
         }
-        exclude = ['topic','row', 'col','owners']
+        # exclude = ['topic','row', 'col','owners']
+        exclude = ['topic','row', 'col']
 
 
 class UserForm(ModelForm):

@@ -452,14 +452,25 @@ def updateLocker(request,pk):
         form = LockerForm(request.POST, request.FILES, instance=locker)
         if form.is_valid():
             if locker.verhuurd == False:
-                # print( 'verhuurd of niet',locker.kluisnummer,locker.verhuurd)
+                users_found=User.objects.all().values_list('email',flat=True)
+                overigelockers = Locker.objects.filter(
+                    Q(verhuurd=False)&
+                    Q(email=request.user.email)
+                ).order_by('kluisnummer').update(verhuurd=False)
                 try:
                     locker2 = Locker.objects.get(kluisnummer=locker.kluisnummer,email=locker.email)
                 except IndexError:
                     print( 'except verhuurd of niet',locker.kluisnummer,locker.verhuurd)
             if locker.verhuurd == True:
-                    print('hoofdhuurder')
-            # print(locker2)
+                locker.email=request.user.email
+                
+                print('hoofdhuurder')
+                overigelockers = Locker.objects.filter(
+                    Q(verhuurd=False)&
+                    Q(email=locker.email)
+                ).order_by('kluisnummer').update(code=0)
+                print(overigelockers)
+
             form.save()
             return redirect('kluis', pk=locker.id)
 
@@ -545,25 +556,14 @@ def update_kluis(request, pk,kol):
     return render(request, 'base/update_kluis_form.html', context)
 
 def kluis(request, pk):
-    # rms = Locker.objects.all()
-    kls=Locker.objects.filter(kluisnummer__icontains=pk)        
+    user=request.user    
+    # kls=Locker.objects.filter(kluisnummer__icontains=pk)        
+    kls=Locker.objects.get(id=pk)        
     hoofdhuurder=User.objects.filter(locker=request.user.locker)
     opheffen= request.POST.get('opheffen')
-    for k in kls:
-        print(k)
-    # if pk.isnumeric() :
-    #     # pass
-    #     kls=Locker.objects.filter(kluisnummer__icontains=pk).first()
-    #     if kls:
-    #         huurders=kls.owners
-    # else:
-        # kls=Locker.objects.get(kluisnummer=pk)        
-        # huurders=kls.owners
-        # if huurders.count()==0: 
-        #     messages.error(request, f'{kls.kluisnummer}: Geen huurders verder.')
-        #     return HttpResponseRedirect('/info/')
-
-        # return redirect('home')
+    if request.user.email != kls.email:
+        messages.error(request, f'U heeft geen toegang tot {kls.kluisnummer}')
+        return redirect('home')
     if request.method == 'POST':
         huurder= request.POST.get('heeftkluis')
         label= request.POST.get('kluislabel')

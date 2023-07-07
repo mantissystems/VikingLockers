@@ -16,6 +16,16 @@ ploegen scherm
     sub owners zijn niet noodzakelijkerwijze ploegleden
     'uw locker' aankiesbaar maken. user hoeft niet te zoeken en overbodig te klikken done
 omwisselen van huurder
+begint bij profile/userid
+    profile.html toont niet verhuurder cq open lockers
+    1. kies een niet verhuurde locker uit de lijst
+    2. zet hoofhuurder aan; verhuurd=True
+    3. user kan maar 1 keer hoofdhuurder zijn. geen twee lockers huren als hoofdhuurder.
+    4. zet verhuurd = True
+    5. zet locker.email=user.email
+    6. zet verhuurd = false voor alle lockers met user.email=locker.email
+    7. voor deze groep; zet email = info@mantissystems.nl
+
     als een huurder geen huurder meer is, dan verhuurd=False. De locker wordt dan onzichtbaar
     de onzichtbare lockers vie url 'nietverhuurd/ of via superuser profile screen en button 'Open' (open lockers)
     de nieuwe huurder registreert

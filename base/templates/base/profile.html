@@ -38,10 +38,10 @@
           </h2>
         </div>
       </div>
-      {% endcomment %}
       {% if request.user.is_superuser %}
-      {% include 'base/feed_component.html' %}
       {% endif %}
+      {% endcomment %}
+      {% include 'base/feed_component.html' %}
 
 
     </div>
