@@ -40,8 +40,9 @@
       </div>
       {% if request.user.is_superuser %}
       {% endif %}
-      {% endcomment %}
       {% include 'base/feed_component.html' %}
+      {% endcomment %}
+      {% include 'base/feed_member_lockers.html' %}
 
 
     </div>

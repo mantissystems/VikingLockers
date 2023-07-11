@@ -45,9 +45,10 @@ class LockerForm(ModelForm):
         fields = '__all__'
         labels = {
         "verhuurd": "Hoofdhuurder",
+        "owners": "mede gebruikers",
         }
         # exclude = ['topic','row', 'col','owners']
-        exclude = ['topic','row', 'col']
+        exclude = ['topic','row', 'col','owners']
 
 
 class UserForm(ModelForm):

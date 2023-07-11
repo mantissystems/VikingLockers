@@ -71,6 +71,7 @@ class Matriks(models.Model):    #wrongly spelled on purpose
 
 class Locker(models.Model):
     kluisnummer = models.CharField(max_length=200)
+    # host = models.ForeignKey(User, on_delete=models.SET_NULL, null=True)
     email = models.CharField(max_length=200)
     kluisje = models.CharField(max_length=200)
     type = models.CharField(max_length=18, choices=SLOT,default='--')     
@@ -81,6 +82,8 @@ class Locker(models.Model):
     owners = models.ManyToManyField(User, related_name='owners', blank=True)
     sleutels = models.CharField(max_length=18,default='----')     
     code = models.CharField(max_length=18,default='----')     
+    created = models.DateTimeField(auto_now_add=True)
+
     class Meta:
         ordering = ['kluisnummer']
 

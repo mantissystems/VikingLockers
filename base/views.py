@@ -91,7 +91,6 @@ def home(request):
     .annotate(dcount=Count('regel'))
     .order_by()
     )   
-    # yourlocker=Locker.objects.none
     joiner=Locker.objects.none
     cnt=0
     joincnt=0
@@ -100,19 +99,15 @@ def home(request):
     .annotate(dcount=Count('kluisnummer'))
     .order_by()
     )       
-    # for r in results:
-    #     print(r)
     if request.user.is_authenticated:
         print('5.logged-in-user:', request.user)
         try:
             user=User.objects.get(id=request.user.id)
-            # yourlocker=Locker.objects.filter(email__icontains=user.email,kluisnummer__icontains=user.locker) ##.exclude(verhuurd=False)
             locker2 = Locker.objects.get(kluisnummer=user.locker,email=user.email,verhuurd=True)
-            # if yourlocker:
             if locker2:
-                messages.success(request, f'Uw locker : {locker2.kluisnummer}')
-                messages.info(request, mark_safe(f"Beheer uw locker via <a href='{locker2.id}/update_locker'>locker</a> {locker2.id}"))
-                messages.info(request, mark_safe(f"Beheer uw locker via <a href='{locker2.id}/kluis'>kluis</a> {locker2.kluisnummer}"))
+                # messages.success(request, f'Uw locker : {locker2.kluisnummer}')
+                # messages.info(request, mark_safe(f"Beheer uw locker via <a href='{locker2.id}/update_locker'>update_locker</a> {locker2.id}"))
+                messages.info(request, mark_safe(f"Beheer uw locker: <a href='{locker2.id}/kluis'>{locker2.kluisnummer}</a>"))
             else:
                 messages.info(request, f'U heeft nog geen  locker.')
         except:
@@ -169,7 +164,7 @@ def home(request):
     # room_count = rooms.count()
     room_messages = Message.objects.filter(
         Q(room__topic__name__icontains=q))[0:3]   
-    rooms=lockers
+    # rooms=lockers
     context = {'rooms': rooms, 
                'topics': topics,
                'results': results,
@@ -320,10 +315,11 @@ def userProfile(request, pk):
     user = User.objects.get(id=pk)
     rooms = user.room_set.all()
     lockers = Locker.objects.all()
+    member_lockers = Locker.objects.all().exclude(owners=None)
     room_messages = user.message_set.all()
     topics = Topic.objects.all()
     context = {'user': user, 'rooms': rooms,
-               'room_messages': room_messages, 'topics': topics,'lockers':lockers}
+               'room_messages': room_messages, 'topics': topics,'lockers':lockers,'member_lockers':member_lockers}
     return render(request, 'base/profile.html', context)
 
 
@@ -443,6 +439,63 @@ def deleteMessage(request, pk):
         return redirect('home')
     return render(request, 'base/delete.html', {'obj': message})
 
+# def kluis(request, pk):
+#     user=request.user    
+#     # kls=Locker.objects.filter(kluisnummer__icontains=pk)        
+#     kls=Locker.objects.get(id=pk)        
+#     hoofdhuurder=User.objects.filter(locker=request.user.locker)
+#     hoofdhuurder=User.objects.filter(email=request.user.email)
+#     opheffen= request.POST.get('opheffen')
+#     if request.user.email != kls.email:
+#         messages.error(request, f'U heeft geen toegang tot {kls.kluisnummer}')
+#         return redirect('home')
+#     if request.method == 'POST':
+#         huurder= request.POST.get('heeftkluis')
+#         label= request.POST.get('kluislabel')
+#         slot= request.POST.get('slot')
+#         slotcode= request.POST.get('code')
+#         sleutels= request.POST.get('sleutels')
+#         your_name= request.POST.get('your_name')
+#         huuropheffen= request.POST.get('huuropheffen')
+#         print('huuropheffen', huuropheffen,sleutels,slotcode)
+#         kls.userid=huurder
+#         kls.verhuurd=True
+
+#         if slot:
+#             kls.type=slot
+#             kls.save()
+#         if slotcode:
+#             kls.code=slotcode
+#             kls.save()
+#         if sleutels:
+#             kls.sleutels=sleutels
+#             kls.save()
+#         if huurder or your_name:
+#             h=User.objects.get(id=huurder)
+#             kls.owners.add(h)
+#             setattr(kls, 'verhuurd',True)
+#             kls.save()
+#         if huuropheffen:
+
+#             h=User.objects.get(id=huuropheffen)
+#             print('opheffen',h)
+#             kls.owners.remove(h)
+#             setattr(kls, 'verhuurd',False)
+#             setattr(kls, 'email','info@mantissystems.nl')
+#             kls.save()
+
+#         # return redirect('home')
+
+#     vikingers=User.objects.all().order_by('username')
+#     context = {
+#                 'vikingers':vikingers,
+#                 'kluis': kls,
+#                 'hoofdhuurder':hoofdhuurder,
+#                 # 'huurders': huurders,
+#             }
+#     return render(request, 'base/update_kluis_form.html', context)
+
+
 @login_required(login_url='login')
 def updateLocker(request,pk):
     locker = Locker.objects.get(id=pk)
@@ -556,59 +609,36 @@ def update_kluis(request, pk,kol):
     return render(request, 'base/update_kluis_form.html', context)
 
 def kluis(request, pk):
-    user=request.user    
-    # kls=Locker.objects.filter(kluisnummer__icontains=pk)        
-    kls=Locker.objects.get(id=pk)        
-    hoofdhuurder=User.objects.filter(locker=request.user.locker)
-    opheffen= request.POST.get('opheffen')
-    if request.user.email != kls.email:
-        messages.error(request, f'U heeft geen toegang tot {kls.kluisnummer}')
-        return redirect('home')
+    locker = Locker.objects.get(id=pk)
+    form = LockerForm(instance=locker)
+
     if request.method == 'POST':
-        huurder= request.POST.get('heeftkluis')
-        label= request.POST.get('kluislabel')
-        slot= request.POST.get('slot')
-        slotcode= request.POST.get('code')
-        sleutels= request.POST.get('sleutels')
-        your_name= request.POST.get('your_name')
-        huuropheffen= request.POST.get('huuropheffen')
-        print('huuropheffen', huuropheffen,sleutels,slotcode)
-        kls.userid=huurder
-        kls.verhuurd=True
+        form = LockerForm(request.POST, request.FILES, instance=locker)
+        if form.is_valid():
+            if locker.verhuurd == False:
+                users_found=User.objects.all().values_list('email',flat=True)
+                overigelockers = Locker.objects.filter(
+                    Q(verhuurd=False)&
+                    Q(email=request.user.email)
+                ).order_by('kluisnummer').update(verhuurd=False)
+                try:
+                    locker2 = Locker.objects.get(kluisnummer=locker.kluisnummer,email=locker.email)
+                except IndexError:
+                    print( 'except verhuurd of niet',locker.kluisnummer,locker.verhuurd)
+            if locker.verhuurd == True:
+                locker.email=request.user.email
+                
+                print('hoofdhuurder')
+                overigelockers = Locker.objects.filter(
+                    Q(verhuurd=False)&
+                    Q(email=locker.email)
+                ).order_by('kluisnummer').update(code=0)
+                print(overigelockers)
 
-        if slot:
-            kls.type=slot
-            kls.save()
-        if slotcode:
-            kls.code=slotcode
-            kls.save()
-        if sleutels:
-            kls.sleutels=sleutels
-            kls.save()
-        if huurder or your_name:
-            h=User.objects.get(id=huurder)
-            kls.owners.add(h)
-            setattr(kls, 'verhuurd',True)
-            kls.save()
-        if huuropheffen:
+            form.save()
+            return redirect('kluis', pk=locker.id)
 
-            h=User.objects.get(id=huuropheffen)
-            print('opheffen',h)
-            kls.owners.remove(h)
-            setattr(kls, 'verhuurd',False)
-            setattr(kls, 'email','info@mantissystems.nl')
-            kls.save()
-
-        # return redirect('home')
-
-    vikingers=User.objects.all().order_by('username')
-    context = {
-                'vikingers':vikingers,
-                'kluis': kls,
-                'hoofdhuurder':hoofdhuurder,
-                # 'huurders': huurders,
-            }
-    return render(request, 'base/update_kluis_form.html', context)
+    return render(request, 'base/update-locker.html', {'form': form})
 
 def decodeer(regel,de_matriks_kolom,column,cellengte):
     begincell=(0+column)*column*cellengte

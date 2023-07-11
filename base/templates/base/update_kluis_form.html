@@ -38,9 +38,17 @@
             <label for="huurder">
               {% for hh in hoofdhuurder %}
              <li>
-               {{hh.name|capfirst}}
+               {{hh.name|capfirst}}: Hoofdhuurder
 
              </li> 
+             {% if hh.owners.count > 1 %}
+             {% for h in hh.owners %}
+             <li>
+              {{h.name|capfirst}}: onderhuurder
+
+            </li> 
+            {% endfor %}
+             {% endif %}
               {% comment %}
               {% endcomment %}
              {% endfor %}

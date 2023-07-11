@@ -35,15 +35,15 @@
 
       <div class="roomList__header">
         <div>
-          <h2>Verhuurde Lockers</h2>
           {% comment %}
           {% endcomment %}
   
         </div>
       </div>
-
+      {% if request.user.is_superuser %}
+      <h2>Verhuurde Lockers</h2>
       {% include 'base/feed_component.html' %}
-
+      {% endif %}
     </div>
     <!-- Room List End -->
 
