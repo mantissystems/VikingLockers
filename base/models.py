@@ -19,7 +19,13 @@ SLOT = [
             ('H', 'hang'),      #gebruiker heeft hangslot
             ('C', 'cijfer'),    #gebruiker heeft cijferslot; code onbekend
             ]
-
+@property
+def imageURL(self):
+		try:
+			url = self.image.url
+		except:
+			url = ''
+		return url
 class Topic(models.Model):
     name = models.CharField(max_length=200)
 
