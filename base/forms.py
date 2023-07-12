@@ -39,6 +39,7 @@ class PloegForm(ModelForm):
     class Meta:
         model = Ploeg
         fields = '__all__'
+        
 class LockerForm(ModelForm):
     class Meta:
         model = Locker
