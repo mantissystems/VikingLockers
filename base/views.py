@@ -364,7 +364,7 @@ def ploegPage(request, pk):
             form.save()
             return redirect('ploegen')
 
-    return render(request, 'base/update-locker.html', {'form': form})
+    return render(request, 'base/update-ploeg.html', {'form': form})
 
 def ploegPage_org(request,pk):
     q = request.GET.get('q') if request.GET.get('q') != None else ''
