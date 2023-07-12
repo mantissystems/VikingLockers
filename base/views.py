@@ -82,8 +82,8 @@ def home(request):
     lockers=Locker.objects.all().filter(verhuurd=True)     
     from django.db.models import Count
     results = (Locker.objects
-    .values('topic')
-    .annotate(dcount=Count('topic'))
+    .values('kluisnummer')
+    .annotate(dcount=Count('kluisnummer'))
     .order_by()
     )   
     cabinetsused = (Matriks.objects

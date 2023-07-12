@@ -40,9 +40,9 @@
   
         </div>
       </div>
-      {% if request.user.is_superuser %}
       <h2>Verhuurde Lockers</h2>
       {% include 'base/feed_component.html' %}
+      {% if request.user.is_superuser %}
       {% endif %}
     </div>
     <!-- Room List End -->
