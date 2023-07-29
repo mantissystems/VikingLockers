@@ -162,8 +162,8 @@ def home(request):
         kopmtrx.append(hdr[i])
     topics = Topic.objects.all()[0:5]
     # room_count = rooms.count()
-    room_messages = Message.objects.filter(
-        Q(room__topic__name__icontains=q))[0:3]   
+    # room_messages = Message.objects.filter(
+    #     Q(room__topic__name__icontains=q))[0:3]   
     # rooms=lockers
     context = {'rooms': rooms, 
                'topics': topics,
@@ -172,7 +172,8 @@ def home(request):
                 'kopmtrx': kopmtrx,
                'cabinetsused': cabinetsused, 
             #    'yourlocker': yourlocker, 
-               'room_messages': room_messages}
+            #    'room_messages': room_messages
+               }
     return render(request, 'base/home.html', context)
 # 
 def nietverhuurdePage(request):
@@ -628,7 +629,12 @@ def update_kluis(request, pk,kol):
 
 def kluis(request, pk):
     locker = Locker.objects.get(id=pk)
+    lockers = Locker.objects.all().filter(verhuurd=True)
+    topics = Topic.objects.all()[0:5]
     form = LockerForm(instance=locker)
+    if request.user.email != locker.email:
+        messages.error(request, f'{locker.kluisnummer} : Is niet uw locker')
+        return render(request, 'base/lockers.html', {'lockers': lockers,'topics':topics})
 
     if request.method == 'POST':
         form = LockerForm(request.POST, request.FILES, instance=locker)
