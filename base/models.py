@@ -34,6 +34,8 @@ class Topic(models.Model):
 
 class Ploeg(models.Model):
     name = models.CharField(max_length=200)
+    participants = models.ManyToManyField(
+        User, related_name='teammembers', blank=True)
 
     def __str__(self):
         return self.name

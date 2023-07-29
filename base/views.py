@@ -332,38 +332,23 @@ def ploegenPage(request):
     q = request.GET.get('q') if request.GET.get('q') != None else ''
     ploegen = Ploeg.objects.filter(name__icontains=q)
     return render(request, 'base/ploegen.html', {'ploegen': ploegen})
+
+def lockersPage(request):
+    q = request.GET.get('q') if request.GET.get('q') != None else ''
+    lockers = Locker.objects.filter(kluisnummer__icontains=q,verhuurd=True)
+    return render(request, 'base/lockers.html', {'lockers': lockers})
+
 def ploegPage(request, pk):
     ploeg = Ploeg.objects.get(name=pk)
-    # topics = Ploeg.objects.filter(name__icontains=q)
+    participants = ploeg.participants.all()
     print(pk)
     form = PloegForm(instance=ploeg)
 
     if request.method == 'POST':
         form = PloegForm(request.POST, request.FILES, instance=ploeg)
         if form.is_valid():
-            # if locker.verhuurd == False:
-            #     users_found=User.objects.all().values_list('email',flat=True)
-            #     overigelockers = Locker.objects.filter(
-            #         Q(verhuurd=False)&
-            #         Q(email=request.user.email)
-            #     ).order_by('kluisnummer').update(verhuurd=False)
-            #     try:
-            #         locker2 = Locker.objects.get(kluisnummer=locker.kluisnummer,email=locker.email)
-            #     except IndexError:
-            #         print( 'except verhuurd of niet',locker.kluisnummer,locker.verhuurd)
-            # if locker.verhuurd == True:
-            #     locker.email=request.user.email
-                
-            #     print('hoofdhuurder')
-            #     overigelockers = Locker.objects.filter(
-            #         Q(verhuurd=False)&
-            #         Q(email=locker.email)
-            #     ).order_by('kluisnummer').update(code=0)
-            #     print(overigelockers)
-
             form.save()
             return redirect('ploegen')
-
     return render(request, 'base/update-ploeg.html', {'form': form})
 
 def ploegPage_org(request,pk):
@@ -384,10 +369,10 @@ def ploegPage_org(request,pk):
     # return render(request, 'base/ploegen.html', {'form': form})
 
     return render(request, 'base/ploegen.html', {'ploeg': ploeg})
-def lockersPage(request,pk):
-    q = request.GET.get('q') if request.GET.get('q') != None else ''
-    lockers = Locker.objects.filter(kluisnummer__icontains=q,verhuurd=True)
-    return render(request, 'base/lockers.html', {'lockers': lockers})
+# def lockersPage(request,pk):
+#     q = request.GET.get('q') if request.GET.get('q') != None else ''
+#     lockers = Locker.objects.filter(kluisnummer__icontains=q,verhuurd=True)
+#     return render(request, 'base/lockers.html', {'lockers': lockers})
 
 def lockerPage(request,pk):
     locker = Locker.objects.get(id=pk)
