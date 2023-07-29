@@ -161,6 +161,7 @@ def home(request):
     for i in range (0,13):
         kopmtrx.append(hdr[i])
     topics = Topic.objects.all()[0:5]
+    room_messages = Message.objects.all()
     # room_count = rooms.count()
     # room_messages = Message.objects.filter(
     #     Q(room__topic__name__icontains=q))[0:3]   
@@ -172,7 +173,7 @@ def home(request):
                 'kopmtrx': kopmtrx,
                'cabinetsused': cabinetsused, 
             #    'yourlocker': yourlocker, 
-            #    'room_messages': room_messages
+               'room_messages': room_messages
                }
     return render(request, 'base/home.html', context)
 # 
