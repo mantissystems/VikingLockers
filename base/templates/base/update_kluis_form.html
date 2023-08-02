@@ -24,7 +24,6 @@
           <h3>Locker:  {{kluis.id}} {{kluis.kluisnummer}} </h3>
           
           {% comment %}
-          <h3>Locatie:({{oorspronkelijkmatriksnummer}}) {{kluis.id}}:{{kluis.kluisnummer}}  </h3>
           {% endcomment %}
           {% endif %}
         </div>
@@ -36,22 +35,6 @@
             <ul>
 
             <label for="huurder">
-              {% for hh in hoofdhuurder %}
-             <li>
-               {{hh.name|capfirst}}: Hoofdhuurder
-
-             </li> 
-             {% if hh.owners.count > 1 %}
-             {% for h in hh.owners %}
-             <li>
-              {{h.name|capfirst}}: onderhuurder
-
-            </li> 
-            {% endfor %}
-             {% endif %}
-              {% comment %}
-              {% endcomment %}
-             {% endfor %}
                   </label
               
                 name="huurder"> 

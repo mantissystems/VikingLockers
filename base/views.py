@@ -303,8 +303,8 @@ def updateUser(request):
                 messages.success(request, f'Uw locker opheffen?: {user.locker}')
                 print('locker opheffen?')
             # print(user.ploeg)
-            ploeg, created = Ploeg.objects.get_or_create(name=user.ploeg)
-            locker, created = Locker.objects.get_or_create(kluisnummer=user.locker,
+            ploeg, created = Ploeg.objects.update_or_create(name=user.ploeg)
+            locker, created = Locker.objects.update_or_create(kluisnummer=user.locker,
                                                            email=user.email,
                                                            kluisje=user.locker)
 
@@ -411,8 +411,16 @@ def lockerPage(request,pk):
             #                                                kluisje=user.locker)
             form.save()
             return redirect('update_locker', pk=locker.id)
+    vikingers=User.objects.all().order_by('username')
+    context = {
+                'vikingers':vikingers,
+                'kluis': locker,
+                'hoofdhuurder':request.user,
+                # 'huurders': huurders,
+            }
+    return render(request, 'base/update_kluis_form.html', context)
 
-    return render(request, 'base/update_kluis_form.html', {'form': form})
+    # return render(request, 'base/update_kluis_form.html', {'form': form})
 
 @login_required(login_url='login')
 def updateRoom(request, pk):

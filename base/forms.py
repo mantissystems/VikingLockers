@@ -39,14 +39,17 @@ class PloegForm(ModelForm):
     class Meta:
         model = Ploeg
         fields = '__all__'
-        def __init__(self, *args, **kwargs):
-            super().__init__(*args, **kwargs)
-            widgets = {
-            'persons': forms.SelectMultiple(attrs={'readonly': 'True', 'disabled': 'True'})
-        }
-            where1='is_active=True'
-            self.fields['participants'].widget.attrs.update(size='20')
-            self.fields['participants'].queryset=User.objects.filter(where1).order_by('name')[0:2]
+        # def __init__(self, *args, **kwargs):
+        #     super().__init__(*args, **kwargs)
+        #     widgets = {
+        #     'category': forms.CheckboxSelectMultiple
+        # }
+        #     widgets = {
+        #     'persons': forms.SelectMultiple(attrs={'readonly': 'True', 'disabled': 'True'})
+        # }
+        #     where1='is_active=True'
+        #     self.fields['participants'].widget.attrs.update(size='20')
+        #     self.fields['participants'].queryset=User.objects.filter(where1).order_by('name')[0:2]
 class LockerForm(ModelForm):
     class Meta:
         model = Locker
