@@ -302,11 +302,32 @@ def updateUser(request):
             if user.locker == 'xx':
                 messages.success(request, f'Uw locker opheffen?: {user.locker}')
                 print('locker opheffen?')
+            # print(user.ploeg)
             ploeg, created = Ploeg.objects.get_or_create(name=user.ploeg)
             locker, created = Locker.objects.get_or_create(kluisnummer=user.locker,
                                                            email=user.email,
-                                                           kluisje=user.locker,
-                                                           verhuurd=True)
+                                                           kluisje=user.locker)
+
+            # try:
+            #     reedsbezet = Locker.objects.get(kluisnummer=user.locker,verhuurd=True)
+            #     if reedsbezet:
+            #         url = reverse('update-user')
+            #         messages.error(request, f'Reeds bezet. Het beleid is: 1 locker per lid.: verhuur van  {user.locker} wordt niet aangemaakt. Of is reeds aangemaakt bij 1e registratie')
+            #         return HttpResponseRedirect(url)
+            # except IndexError:
+            #     url = reverse('update-user')
+            #     print('fout',user.locker)
+            #     # messages.error(request, f'Het beleid is: 1 locker per lid.: verhuur van  {user.locker} wordt niet aangemaakt')
+            #     return HttpResponseRedirect(url)
+            try:
+                teambestaatal = Ploeg.objects.filter(name=user.ploeg)
+            except: 
+                Ploeg.DoesNotExist
+                url = reverse('update-user')
+                print('fout',user.ploeg)
+                ploeg, created = Ploeg.objects.get_or_create(name=user.ploeg)
+                messages.error(request, f'1 Teamleider per ploeg  {user.ploeg} wordt niet aangemaakt of was reeds aangemaakt tijdens registratie')
+                return HttpResponseRedirect(url)
             form.save()
             return redirect('user-profile', pk=user.id)
 
