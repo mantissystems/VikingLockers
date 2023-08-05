@@ -33,11 +33,11 @@
 
         <ul class="topics__list">
           <li>
-            <a href="{% url 'ploegen' %}" class="active">All <span>{{topics.count}}</span></a>
+            <a href="{% url 'ploegen' %}" class="active">All <span>{{ploegen.count}}</span></a>
           </li>
-          {% for topic in ploegen %}
+          {% for team in ploegen %}
           <li>
-            <a href="{% url 'ploeg' topic.name %}?q={{topic.name}}">{{ topic.name }} <span>{{topic.room_set.all.count}}</span></a>
+            <a href="{% url 'ploeg' team.name %}?q={{team.name}}">{{ team.name }} <span>{{team.participants.count}}</span></a>
           </li>
           {% endfor %}
 

@@ -54,8 +54,6 @@ def registerPage(request):
         pass
     else:
         messages.error(request, f'User email {pemail} already in use.')
-
-        # messages.error(request, 'User email already in use.')
         return HttpResponseRedirect('/info/')
 
 
@@ -366,38 +364,37 @@ def lockersPage(request):
 def ploegPage(request, pk):
     ploeg = Ploeg.objects.get(name=pk)
     participants = ploeg.participants.all()
-    print(pk)
+    ploegen = Ploeg.objects.all()
+    vikingers=User.objects.all().order_by('username')
     form = PloegForm(instance=ploeg)
+    context = {
+                'vikingers':vikingers,
+                'participants': participants,
+                'ploegen':ploegen,
+                'ploeg': ploeg,
+                'form': form,
+            }
+    if request.user.ploeg != ploeg.name:
+        messages.error(request, f"'{ploeg.name}' : Is niet uw ploeg")
+        return render(request, 'base/ploegen.html', context)
 
     if request.method == 'POST':
         form = PloegForm(request.POST, request.FILES, instance=ploeg)
+        teamlid= request.POST.get('teamlid')
+        teamlideraf= request.POST.get('teamlideraf')
         if form.is_valid():
+            print('form is valid')
+            if teamlid:
+                t=User.objects.get(id=teamlid)
+                ploeg.participants.add(t)
+            if teamlideraf:
+                t=User.objects.get(id=teamlideraf)
+                ploeg.participants.remove(t)
             form.save()
-            return redirect('ploegen')
-    return render(request, 'base/update-ploeg.html', {'form': form})
+            # return redirect('ploegen')
+            return redirect('ploeg', ploeg.name)
 
-def ploegPage_org(request,pk):
-    q = request.GET.get('q') if request.GET.get('q') != None else ''
-    ploeg = Ploeg.objects.get(name=pk)
-    topics = Ploeg.objects.filter(name__icontains=q)
-    print(pk)
-    form = PloegForm(instance=ploeg)
-
-    if request.method == 'POST':
-        form = PloegForm(request.POST, request.FILES, instance=ploeg)
-        if form.is_valid():
-            # print(user.ploeg)
-            # ploeg, created = Ploeg.objects.get_or_create(name=user.ploeg)
-            form.save()
-            return redirect('ploegen', pk=ploeg.id)
-
-    # return render(request, 'base/ploegen.html', {'form': form})
-
-    return render(request, 'base/ploegen.html', {'ploeg': ploeg})
-# def lockersPage(request,pk):
-#     q = request.GET.get('q') if request.GET.get('q') != None else ''
-#     lockers = Locker.objects.filter(kluisnummer__icontains=q,verhuurd=True)
-#     return render(request, 'base/lockers.html', {'lockers': lockers})
+    return render(request, 'base/update-ploeg.html', context) ##{'form': form})
 
 def lockerPage(request,pk):
     locker = Locker.objects.get(id=pk)
@@ -405,6 +402,11 @@ def lockerPage(request,pk):
     lockers=Locker.objects.all().filter(verhuurd=True)
     topics=Topic.objects.all()
     vikingers=User.objects.all().order_by('username')
+    context = {
+                'vikingers':vikingers,
+                'kluis': locker,
+                'form': form,
+            }
     if request.user.email != locker.email:
         messages.error(request, f'{locker.kluisnummer} : Is niet uw locker')
         return render(request, 'base/lockers.html', {'lockers': lockers,'topics':topics})
@@ -419,52 +421,19 @@ def lockerPage(request,pk):
         print('onderhuurder', onderhuurder,sleutels,slotcode)
         if form.is_valid():
             print('form is valid')
-        # else:
-            # print(formset.errors)
-#         label= request.POST.get('kluislabel')
-#         slot= request.POST.get('slot')
-#         your_name= request.POST.get('your_name')
-#         kls.userid=onderhuurder
-#         kls.verhuurd=True
-
-#         if slot:
-#             kls.type=slot
-#             kls.save()
-#         if slotcode:
-#             kls.code=slotcode
-#             kls.save()
-#         if sleutels:
-#             kls.sleutels=sleutels
-#             kls.save()
             if onderhuurder:
                 print('onderhuurder', onderhuurder)
                 h=User.objects.get(id=onderhuurder)
                 locker.owners.add(h)
-#             setattr(kls, 'verhuurd',True)
-#             kls.save()
+                return redirect('locker', locker.id)
             if huuropheffen:
 
                 h=User.objects.get(id=huuropheffen)
                 print('opheffen',h)
                 locker.owners.remove(h)
-#             setattr(kls, 'verhuurd',False)
-#             setattr(kls, 'email','info@mantissystems.nl')
-#             kls.save()
-
-
                 form.save()
-            return redirect('update_locker', locker.id)
-    context = {
-                'vikingers':vikingers,
-                'kluis': locker,
-                'form': form,
-                # 'hoofdhuurder':request.user,
-            }
+            return redirect('locker', locker.id)
     return render(request, 'base/update-locker.html', context)
-
-    # return render(request, 'base/update_kluis_form.html', context)
-# base/update-locker.html
-    # return render(request, 'base/update_kluis_form.html', {'form': form})
 
 @login_required(login_url='login')
 def updateRoom(request, pk):

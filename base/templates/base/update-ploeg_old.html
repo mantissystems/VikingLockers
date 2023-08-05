@@ -14,7 +14,7 @@
               </path>
             </svg>
           </a>
-          <h3>Edit your Team</h3>
+          <h3>Edit your team</h3>
         </div>
       </div>
       <div class="layout__body">
@@ -27,31 +27,7 @@
             {{field}}
           </div>
           {% endfor %}
-          
-          {% comment %}
-          {% endcomment %}
-          <div class="form__group">
-            <select id="teamlid" name="teamlid" onChange="redirectUrl()">
-              <option  value="" selected="selected">--- TEAMLID TOEVOEGEN:---</option>
-              {% for lid in vikingers %}
-              <option value="{{lid.id}}">{{lid.email|capfirst}}</option>
-              {% endfor %}
-            </select>
-          </div>
 
-          {% if ploeg.participants.count > 0 %}
-          <div class="form__group">
-              <select id="teamlideraf" name="teamlideraf" onChange="redirectUrl()">
-                <option  value="" selected="selected">--- TEAMLID VERWIJDEREN---</option>
-                {% for lid in ploeg.participants.all %}
-                 <option value="{{lid.id}}">{{lid.email|capfirst}}</option>
-                {% endfor %}
-              </select>
-  
-          </div>
-          {% endif %}
-          {% comment %}
-          {% endcomment %}
 
           <div class="form__action">
             <a class="btn btn--dark" href="{% url 'home' %}">Cancel</a>
@@ -59,6 +35,8 @@
             {% if request.user.is_superuser %}
             <a class="btn btn--dark" href="{% url 'admin:index' %}">Admin</a>
             {% comment %}
+            <a href="/hernummermatriks" class="btn btn-warning btn-sm">Hernummer</a>
+            <a href="/create-room" class="btn btn-warning btn-sm">Create Room</a>
             {% endcomment %}
           {% endif %}
           </div>

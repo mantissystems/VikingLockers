@@ -39,6 +39,19 @@
             </select>
           </div>
 
+          {% if kluis.owners.count > 0 %}
+          <div class="form__group">
+              <select id="huuropheffen" name="huuropheffen" onChange="redirectUrl()">
+                <option  value="" selected="selected">--- GEBRUIKER VERWIJDEREN---</option>
+                {% for org in kluis.owners.all %}
+                 <option value="{{org.id}}">{{org.email|capfirst}}</option>
+                {% endfor %}
+              </select>
+  
+          </div>
+          {% endif %}
+          {% comment %}
+          {% endcomment %}
 
           <div class="form__action">
             <a class="btn btn--dark" href="{% url 'home' %}">Cancel</a>

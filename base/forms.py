@@ -39,6 +39,7 @@ class PloegForm(ModelForm):
     class Meta:
         model = Ploeg
         fields = '__all__'
+        exclude=['participants']
         # def __init__(self, *args, **kwargs):
         #     super().__init__(*args, **kwargs)
         #     widgets = {
@@ -70,5 +71,5 @@ class LockerForm(ModelForm):
 class UserForm(ModelForm):
     class Meta:
         model = User
-        fields = ['avatar', 'name', 'username','ploeg','locker', 'email', 'bio']
+        fields = ['avatar', 'name', 'username','ploeg','locker', 'email']
         exclude = [ 'avatar']
