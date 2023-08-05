@@ -23,8 +23,8 @@ class MyUserCreationForm(UserCreationForm):
         fields = ['name', 'username', 'email', 'password1', 'password2']
         labels = {
         "email": "Your email. eg.: info@mail.nl",
-        "password1": "wil in flexpoule",
-        "Password2": "deel mij in als host",
+        "password": "minimum length 8",
+        "password2": "deel mij in als host",
         "username": "Your app-username",
         "name": "Your name",
         }
@@ -55,11 +55,16 @@ class LockerForm(ModelForm):
         model = Locker
         fields = '__all__'
         labels = {
-        "verhuurd": "Hoofdhuurder",
-        "owners": "mede gebruikers",
+        "verhuurd": "Verhuurd",
+        "owners": "onder huurders",
+        "sleutels": "Aantal Sleutels in omloop",
+        "code": "Code van codeslot",
+        "kluisje": "Locker nummer",
+        "type": "Type slot",
+
         }
+        exclude = ['topic','row', 'col','owners','kluisnummer']
         # exclude = ['topic','row', 'col','owners']
-        exclude = ['topic','row', 'col','owners']
 
 
 class UserForm(ModelForm):

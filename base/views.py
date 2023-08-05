@@ -53,7 +53,9 @@ def registerPage(request):
     except:
         pass
     else:
-        messages.error(request, 'User email already in use.')
+        messages.error(request, f'User email {pemail} already in use.')
+
+        # messages.error(request, 'User email already in use.')
         return HttpResponseRedirect('/info/')
 
 
@@ -69,7 +71,7 @@ def registerPage(request):
             return redirect('home')
         else:
             print('else')
-            messages.error(request, 'An error occurred during registration')
+            messages.error(request, 'An error occurred during registration: possibly email exists or wrong password')
             return HttpResponseRedirect('/info/')
 
     return render(request, 'base/login_register.html', {'form': form})
@@ -107,7 +109,7 @@ def home(request):
             if locker2:
                 # messages.success(request, f'Uw locker : {locker2.kluisnummer}')
                 # messages.info(request, mark_safe(f"Beheer uw locker via <a href='{locker2.id}/update_locker'>update_locker</a> {locker2.id}"))
-                messages.info(request, mark_safe(f"Beheer uw locker: <a href='{locker2.id}/kluis'>{locker2.kluisnummer}</a>"))
+                messages.info(request, mark_safe(f"Beheer uw locker: <a href='{locker2.id}/locker'>{locker2.kluisnummer}</a>"))
             else:
                 messages.info(request, f'U heeft nog geen  locker.')
         except:
@@ -400,26 +402,68 @@ def ploegPage_org(request,pk):
 def lockerPage(request,pk):
     locker = Locker.objects.get(id=pk)
     form = LockerForm(instance=locker)
-
+    lockers=Locker.objects.all().filter(verhuurd=True)
+    topics=Topic.objects.all()
+    vikingers=User.objects.all().order_by('username')
+    if request.user.email != locker.email:
+        messages.error(request, f'{locker.kluisnummer} : Is niet uw locker')
+        return render(request, 'base/lockers.html', {'lockers': lockers,'topics':topics})
+    
     if request.method == 'POST':
         form = LockerForm(request.POST, request.FILES, instance=locker)
+        onderhuurder= request.POST.get('onderhuurder')
+        slotcode= request.POST.get('code')
+        type= request.POST.get('type')
+        sleutels= request.POST.get('sleutels')
+        huuropheffen= request.POST.get('huuropheffen')
+        print('onderhuurder', onderhuurder,sleutels,slotcode)
         if form.is_valid():
-            # print(user.ploeg)
-            # ploeg, created = Ploeg.objects.get_or_create(name=user.ploeg)
-            # locker, created = Locker.objects.get_or_create(kluisnummer=user.locker,
-            #                                                email=user.email,
-            #                                                kluisje=user.locker)
-            form.save()
-            return redirect('update_locker', pk=locker.id)
-    vikingers=User.objects.all().order_by('username')
+            print('form is valid')
+        # else:
+            # print(formset.errors)
+#         label= request.POST.get('kluislabel')
+#         slot= request.POST.get('slot')
+#         your_name= request.POST.get('your_name')
+#         kls.userid=onderhuurder
+#         kls.verhuurd=True
+
+#         if slot:
+#             kls.type=slot
+#             kls.save()
+#         if slotcode:
+#             kls.code=slotcode
+#             kls.save()
+#         if sleutels:
+#             kls.sleutels=sleutels
+#             kls.save()
+            if onderhuurder:
+                print('onderhuurder', onderhuurder)
+                h=User.objects.get(id=onderhuurder)
+                locker.owners.add(h)
+#             setattr(kls, 'verhuurd',True)
+#             kls.save()
+            if huuropheffen:
+
+                h=User.objects.get(id=huuropheffen)
+                print('opheffen',h)
+                locker.owners.remove(h)
+#             setattr(kls, 'verhuurd',False)
+#             setattr(kls, 'email','info@mantissystems.nl')
+#             kls.save()
+
+
+                form.save()
+            return redirect('update_locker', locker.id)
     context = {
                 'vikingers':vikingers,
                 'kluis': locker,
-                'hoofdhuurder':request.user,
-                # 'huurders': huurders,
+                'form': form,
+                # 'hoofdhuurder':request.user,
             }
-    return render(request, 'base/update_kluis_form.html', context)
+    return render(request, 'base/update-locker.html', context)
 
+    # return render(request, 'base/update_kluis_form.html', context)
+# base/update-locker.html
     # return render(request, 'base/update_kluis_form.html', {'form': form})
 
 @login_required(login_url='login')
@@ -488,62 +532,6 @@ def deleteMessage(request, pk):
         return redirect('home')
     return render(request, 'base/delete.html', {'obj': message})
 
-# def kluis(request, pk):
-#     user=request.user    
-#     # kls=Locker.objects.filter(kluisnummer__icontains=pk)        
-#     kls=Locker.objects.get(id=pk)        
-#     hoofdhuurder=User.objects.filter(locker=request.user.locker)
-#     hoofdhuurder=User.objects.filter(email=request.user.email)
-#     opheffen= request.POST.get('opheffen')
-#     if request.user.email != kls.email:
-#         messages.error(request, f'U heeft geen toegang tot {kls.kluisnummer}')
-#         return redirect('home')
-#     if request.method == 'POST':
-#         huurder= request.POST.get('heeftkluis')
-#         label= request.POST.get('kluislabel')
-#         slot= request.POST.get('slot')
-#         slotcode= request.POST.get('code')
-#         sleutels= request.POST.get('sleutels')
-#         your_name= request.POST.get('your_name')
-#         huuropheffen= request.POST.get('huuropheffen')
-#         print('huuropheffen', huuropheffen,sleutels,slotcode)
-#         kls.userid=huurder
-#         kls.verhuurd=True
-
-#         if slot:
-#             kls.type=slot
-#             kls.save()
-#         if slotcode:
-#             kls.code=slotcode
-#             kls.save()
-#         if sleutels:
-#             kls.sleutels=sleutels
-#             kls.save()
-#         if huurder or your_name:
-#             h=User.objects.get(id=huurder)
-#             kls.owners.add(h)
-#             setattr(kls, 'verhuurd',True)
-#             kls.save()
-#         if huuropheffen:
-
-#             h=User.objects.get(id=huuropheffen)
-#             print('opheffen',h)
-#             kls.owners.remove(h)
-#             setattr(kls, 'verhuurd',False)
-#             setattr(kls, 'email','info@mantissystems.nl')
-#             kls.save()
-
-#         # return redirect('home')
-
-#     vikingers=User.objects.all().order_by('username')
-#     context = {
-#                 'vikingers':vikingers,
-#                 'kluis': kls,
-#                 'hoofdhuurder':hoofdhuurder,
-#                 # 'huurders': huurders,
-#             }
-#     return render(request, 'base/update_kluis_form.html', context)
-
 
 @login_required(login_url='login')
 def updateLocker(request,pk):
@@ -574,7 +562,7 @@ def updateLocker(request,pk):
                 print(overigelockers)
 
             form.save()
-            return redirect('kluis', pk=locker.id)
+            return redirect('locker', pk=locker.id)
 
     return render(request, 'base/update-locker.html', {'form': form})
 

@@ -33,12 +33,12 @@
 
         <ul class="topics__list">
           <li>
-            <a href="{% url 'topics' %}" class="active">All <span>{{topics.count}}</span></a>
+            <a href="{% url 'lockers' %}" class="active">All <span>{{lockers.count}}</span></a>
           </li>
           {% for locker in lockers %}
           <li>
             {% comment %}
-            <a href="{% url 'locker' locker.id %}?q={{locker.kluisnummer}}">{{ locker.kluisnummer }} <span>{{topic.room_set.all.count}}</span></a>
+            <a href="{% url 'locker' locker.id %}?q={{locker.kluisnummer}}">{{ locker.kluisnummer }} <span>{{locker.owners.all.count}}</span></a>
             <!-- <a href="{% url 'kluis' locker.id %}?q={{locker.kluisnummer}}">{{ locker.kluisnummer }} <span>{{topic.room_set.all.count}}</span></a> -->
             <!-- <a href="{% url 'update_kluis' locker.id %}?q={{locker.kluisnummer}}">{{ locker.kluisnummer }} <span>{{topic.room_set.all.count}}</span></a> -->
             <!-- <a href="{% url 'update_locker' locker.id %}?q={{locker.kluisnummer}}">{{ locker.kluisnummer }} <span>{{topic.room_set.all.count}}</span></a> -->

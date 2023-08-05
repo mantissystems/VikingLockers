@@ -63,7 +63,7 @@
             <option value={{kluis.type}} selected>{{kluis.type}} </option>
           </select>
           </div>
-          {% if hoofdhuurder.owners.count > 0 %}
+          {% if kluis.owners.count > 0 %}
           <div class="form__group">
               <select id="huuropheffen" name="huuropheffen" onChange="redirectUrl()">
                 <option  value="" selected="selected">--- GEBRUIKER VERWIJDEREN---</option>
@@ -74,8 +74,11 @@
   
           </div>
           {% endif %}
+          {% comment %}
+          {% endcomment %}
+
           <div class="form__group">
-              <select id="heeftkluis" name="heeftkluis" onChange="redirectUrl()">
+              <select id="onderhuurder" name="onderhuurder" onChange="redirectUrl()">
                 <option  value="" selected="selected">--- GEBRUIKER TOEVOEGEN:---</option>
                 {% for org in vikingers %}
                 <option value="{{org.id}}">{{org.email|capfirst}}</option>

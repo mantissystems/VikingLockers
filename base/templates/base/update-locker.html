@@ -14,7 +14,7 @@
               </path>
             </svg>
           </a>
-          <h3>Edit your profile</h3>
+          <h3>Edit your locker</h3>
         </div>
       </div>
       <div class="layout__body">
@@ -27,6 +27,17 @@
             {{field}}
           </div>
           {% endfor %}
+          
+          {% comment %}
+          {% endcomment %}
+          <div class="form__group">
+            <select id="onderhuurder" name="onderhuurder" onChange="redirectUrl()">
+              <option  value="" selected="selected">--- ONDERHUURDER TOEVOEGEN:---</option>
+              {% for org in vikingers %}
+              <option value="{{org.id}}">{{org.email|capfirst}}</option>
+              {% endfor %}
+            </select>
+          </div>
 
 
           <div class="form__action">
@@ -35,8 +46,6 @@
             {% if request.user.is_superuser %}
             <a class="btn btn--dark" href="{% url 'admin:index' %}">Admin</a>
             {% comment %}
-            <a href="/hernummermatriks" class="btn btn-warning btn-sm">Hernummer</a>
-            <a href="/create-room" class="btn btn-warning btn-sm">Create Room</a>
             {% endcomment %}
           {% endif %}
           </div>
