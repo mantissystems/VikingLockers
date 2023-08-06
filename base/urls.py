@@ -26,6 +26,8 @@ urlpatterns = [
     path('hernummermatriks/', views.hernummermatriks, name='hernummermatriks'),
     path('locker-blokken/', views.Blokken.as_view(), name='locker-blokken'),
     path('nietverhuurd/',views.nietverhuurdePage, name='nietverhuurd'),  
+    path('helptekst/', views.HelpTekstView.as_view(), name='helptekst'),
+
     # path('<str:pk>/kluis/',views.kluis, name='kluis'),  
     # path('<str:pk>/update_kluis/<str:kol>/',views.update_kluis, name='update_kluis'),  
     # path('room/<str:pk>/', views.room, name="room"),

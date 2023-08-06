@@ -1,13 +1,14 @@
 from django.contrib import admin
 
 # Register your models here.
-from .models import Room, Topic, Message,Matriks,Locker,Ploeg
+from .models import Room, Topic, Message,Locker,Ploeg,Helptekst
 from base.models import User,AbstractUser
 admin.site.register(Ploeg)
 admin.site.register(Room)
 admin.site.register(Topic)
 admin.site.register(Message)
-@admin.register(Matriks)
+admin.site.register(Helptekst)
+# @admin.register(Matriks)
 class matriksAdmin(admin.ModelAdmin):
     list_filter = ('naam','regel')
     list_display = ('naam','regel')

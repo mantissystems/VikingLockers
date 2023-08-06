@@ -26,19 +26,19 @@
                         <td></td>
                         <td>
                             Please register as a user.<br>
-                            All labels are renumbered.
+                            Fil out your current lockernumber.
                         </td>
                     </tr>
                     <tr>
                         <td></td>
                         <td>
-                            Locker numbers are sequenced per locker block
+                            Fill out your current Team if applicable
                         </td>
                     </tr>
                     <tr>
                         <td></td>
                         <td>
-                            Search wil query locker labels from the matrix
+                            One locker and one team per person is possible.
                         </td>
                     </tr>
                     <tr>
@@ -49,7 +49,7 @@
                         <td></td>
                         <td>
                             Please let other members use your locker.
-                            Pass names to us to let us manage the locker keys and locks
+                            Add names of registered users to your locker.
                         </td>
                     </tr>
                 </tbody>
@@ -88,7 +88,9 @@
 
           </div>
           <div class="activities__boxContent">
+            {% comment %}
             <p>replied to post “<a href="{% url 'room' message.room.id %}">{{message.room}}</a>”</p>
+            {% endcomment %}
             <div class="activities__boxRoomContent">
               {{message.body}}
             </div>

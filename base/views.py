@@ -5,14 +5,12 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth import authenticate, login, logout
 from django.urls import reverse
 # from viking.models import  Matriks,KluisjesRV
-from base.models import Room,Message,User,Topic,Matriks,Locker,Ploeg
+from base.models import Room,Message,User,Topic,Matriks,Locker,Ploeg,Helptekst
 from django.db.models import Q
 from base.forms import RoomForm, UserForm,  MyUserCreationForm,PloegForm,LockerForm
-from django.views.generic import(TemplateView)
+from django.views.generic import(TemplateView,ListView)
 from django.contrib.auth.models import AnonymousUser
 from django.contrib import messages
-
-# Create your views here.
 
 def loginPage(request):
     page = 'login'
@@ -216,6 +214,12 @@ def helpPage(request):
              'used':used,
              }
     return render(request, 'base/help.html', context)
+
+class HelpTekstView(ListView):
+    template_name = 'base/helptekst.html'
+    model = Helptekst
+    queryset = Helptekst.objects.all()
+
 
 def infoPage(request):
     page = 'info'
@@ -661,73 +665,6 @@ def decodeer(regel,de_matriks_kolom,column,cellengte):
 
     return oorspronkelijkmatriksnummer
 
-# def hernummermatriks_old(request):
-#     print('in hernummermatriks===============')
-#     # voor iedere cel in de Matriks per Room een kluisjesRV aanmaken ==================
-#     hdr=['kol1','kol2','kol3','kol4','kol5','kol6','kol7','kol8','kol9','kol10','kol11','kol12',]#'kol13',] #'kol14']
-#     begincell=0;cellengte=0;eindcell=0;kolomteller=0
-#     topics=Room.objects.all()
-#     for t in topics:
-#         matrix=Matriks.objects.filter(naam__icontains=t.name).exclude(y_as__in=(7,8,1,2,3,4,5,6)).order_by('y_as') #matriks bevat ingeladen data 1-8 tijdens testen
-#         kolomteller=0
-#         rij=0
-#         for m in matrix:
-#             for h in hdr:
-#                 de_matriks_kolom=h
-#                 inh=getattr(m,h)
-#                 if len(hdr)==kolomteller:
-#                     kolomteller=0
-#                 kolomteller+=1
-#                 rij+=1
-#                 oorspronkelijkmatriksnummer=decodeer(m.regel,de_matriks_kolom,kolomteller,cellengte=4)       
-#                 create,cre=KluisjesRV.objects.update_or_create(
-#                     kluisnummer=oorspronkelijkmatriksnummer,
-#                     kluisje=oorspronkelijkmatriksnummer,
-#                     topic=m.naam,
-#                     row=str(rij).zfill(2),
-#                     col=str(kolomteller).zfill(2),
-#                 )     
-#                 print(m.naam,de_matriks_kolom,inh,h,oorspronkelijkmatriksnummer)
-#                 print('users ===============')
-#                 # voor ieder geregistreerd kluisje een user aanmaken met ww viking123 ==================
-#         # for k in KluisjesRV.objects.all().exclude(email=None):
-#         for k in KluisjesRV.objects.all().exclude(email=''):
-#             print('kluisje-huurder', k.naamvoluit)
-#             email = k.email
-#             username = k.naamvoluit #.lower()
-#             password ='pbkdf2_sha256$390000$YrBnItyjcuUgxrlMGlWFPH$HBlBExsE2C5EcmEmhHvtDTkMl3PH+0E7EQJLrWER4cs=' 
-#             try:
-#                 user = User.objects.get(email = email)
-#                 k.huurders.add(user)
-
-#             except:
-#                 #  als je geen user vindt dan een user aanmaken.
-#                 # user toevoegen als huurder van het kluisje
-#                 if email!='':
-#                     user = authenticate(request, username=username, password=password)
-#                     voegtoe,user=User.objects.update_or_create(
-#                     email = email,
-#                     is_active=True,
-#                     last_name=k.naamvoluit,
-#                     username = username,
-#                     password=password,
-#                     )
-#                     k.huurders.add(voegtoe)
-#                     k.verhuurd=True
-#                     k.save()
-
-#             try:
-#                 k.huurders.add(voegtoe)
-#                 k.verhuurd=True
-#                 k.save()
-#             except:
-#                 print(k)
-#                 pass
-#         print('end users===============')
-
-#     print('einde hernummermatriks===============')
-#     context={}
-#     return render(request, 'base/home.html', context)
 
 class Blokken(TemplateView):
     template_name = 'base/home.html'

@@ -107,3 +107,9 @@ class Message(models.Model):
 
     def __str__(self):
         return self.body[0:50]
+
+class Helptekst(models.Model):
+    title = models.CharField(max_length=200, unique=True)
+    updated_on = models.DateTimeField(auto_now= True)
+    content = models.TextField()
+    created_on = models.DateTimeField(auto_now_add=True)
