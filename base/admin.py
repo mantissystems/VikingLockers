@@ -7,12 +7,12 @@ admin.site.register(Ploeg)
 admin.site.register(Room)
 admin.site.register(Topic)
 admin.site.register(Message)
-admin.site.register(Helptekst)
-# @admin.register(Matriks)
-class matriksAdmin(admin.ModelAdmin):
-    list_filter = ('naam','regel')
-    list_display = ('naam','regel')
-    search_fields = ('naam','regel')
+# admin.site.register(Helptekst)
+@admin.register(Helptekst)
+class helpAdmin(admin.ModelAdmin):
+    list_filter = ('title','content')
+    list_display = ('title','content')
+    search_fields = ('title','content')
 # @admin.register(KluisjesRV)
 # class kluisAdmin(admin.ModelAdmin):
 #     list_filter = ('topic','kluisnummer')

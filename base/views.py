@@ -142,28 +142,18 @@ def home(request):
         Q(description__icontains=q)|
         Q(name__in=rooms_found) 
     ).order_by('name').exclude(name='Wachtlijst')
-    if rooms.count() == 1000: 
-        messages.success(request, f'Searched for locker: {q}')
-        print('room id',rooms[0].id)
-        url = reverse('kluis', kwargs={"pk":rooms[0].id})
-        #  return reverse('my_named_url', kwargs={ "pk": self.pk }) <---voorbeeld
-        return HttpResponseRedirect(url)
-    # if rooms.count() >= 1:
+    # if rooms.count() == 1000: 
+        # messages.success(request, f'Searched for locker: {q}')
         # print('room id',rooms[0].id)
-        # url = reverse('home')
+        # url = reverse('kluis', kwargs={"pk":rooms[0].id})
         #  return reverse('my_named_url', kwargs={ "pk": self.pk }) <---voorbeeld
-        # return HttpResponseRedirect(url)
- 
+        # return HttpResponseRedirect(url) 
     hdr=['', 'kol1','kol2','kol3','kol4','kol5','kol6','kol7','kol8','kol9','kol10','kol11','kol12','kol13']  #LET OP: KOLOM NUL NIET VERGETEN
     kopmtrx=[]
     for i in range (0,13):
         kopmtrx.append(hdr[i])
     topics = Topic.objects.all()[0:5]
     room_messages = Message.objects.all()
-    # room_count = rooms.count()
-    # room_messages = Message.objects.filter(
-    #     Q(room__topic__name__icontains=q))[0:3]   
-    # rooms=lockers
     context = {'rooms': rooms, 
                'topics': topics,
                'results': results,
@@ -203,22 +193,34 @@ def activityPage(request):
     room_messages = Message.objects.all()
     return render(request, 'base/activity.html', {'room_messages': room_messages})
 
-def helpPage(request):
+# def helpPage(request):
     
-    room_messages = Message.objects.all()
-    fverhuurd=Q(verhuurd=True)
+#     room_messages = Message.objects.all()
+#     fverhuurd=Q(verhuurd=True)
 
-    verhuurd=Locker.objects.all().filter(fverhuurd)  #verzamel verhuurde kluisjes voor de room 
-    used=verhuurd.count()
-    context={'room_messages': room_messages,
-             'used':used,
-             }
-    return render(request, 'base/help.html', context)
+#     verhuurd=Locker.objects.all().filter(fverhuurd)  #verzamel verhuurde kluisjes voor de room 
+#     used=verhuurd.count()
+#     context={'room_messages': room_messages,
+#              'used':used,
+#              }
+#     return render(request, 'base/help.html', context)
 
-class HelpTekstView(ListView):
-    template_name = 'base/helptekst.html'
-    model = Helptekst
-    queryset = Helptekst.objects.all()
+def helpPage(request):
+    q = request.GET.get('q') if request.GET.get('q') != None else ''
+    helptekst=Helptekst.objects.filter(
+            Q(title__icontains=q)|
+            Q(content__icontains=q)
+        ).order_by('title')
+    return render(request, 'base/helptekst.html', {'helptekst': helptekst})
+
+# class HelpTekstView(ListView):
+#         # if 'helptekst' in q:
+#         # queryset = Helptekst.objects.all().filter(content__icontains=q)
+#         # print('q',q)
+
+#     template_name = 'base/helptekst.html'
+#     model = Helptekst
+#     queryset = Helptekst.objects.all()
 
 
 def infoPage(request):
@@ -226,7 +228,6 @@ def infoPage(request):
     room_messages = Message.objects.all()
     fverhuurd=Q(verhuurd=True)
     if request.user != AnonymousUser:
-        # user=User.objects.get(id=request.user.id)
         user=User.objects.first()
         yourlockers=Locker.objects.filter(
             Q(email__icontains=user.email)|
@@ -234,8 +235,6 @@ def infoPage(request):
         )
         page=''
         print('cnt..', yourlockers.count())
-    # joiner=Locker.objects.filter(owners__email__icontains=user.email)
-    # yourlockers=Locker.objects.filter(email__icontains=user.email)
     verhuurd=Locker.objects.all().filter(fverhuurd)  #verzamel verhuurde kluisjes voor de room 
     header_logged_in='U huurt bij ons: '
     header='Verhuurd: '

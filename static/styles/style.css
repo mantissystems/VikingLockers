@@ -269,8 +269,8 @@ a {
   margin: 9px 0;
   font-size: 0.8em;
   height: flex;
-  /* min-width: 480px; */
-  width: var(--phone-viking);
+  min-width: 480px;
+  /* width: var(--phone-viking); */
   border-radius: 15px 15px 0 0;
   overflow: hidden;
   box-shadow: 0 0 20px rgba(0, 0, 0, 0.15);
@@ -291,23 +291,23 @@ a {
 
 .viking-table tbody tr {
   border-bottom: 1px solid #dddddd;
-  line-height: 15px;
+  line-height: 16px;
   width: var(--phone-viking);
 }
 
-.viking-table tbody tr:nth-of-type(even) {
+/* .viking-table tbody tr:nth-of-type(even) {
   background-color: var(--color-dark-light);
 
-}
+} */
 
 .viking-table tbody tr:last-of-type {
   border-bottom: 2px solid #11b5e7;
 }
 
-.viking-table tbody tr.active-row {
+/* .viking-table tbody tr.active-row {
   font-weight: bold;
   color: var(--color-dark-medium);
-}
+} */
 
 .header {
   padding: 1.5rem;
