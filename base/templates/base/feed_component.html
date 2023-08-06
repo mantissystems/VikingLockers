@@ -12,8 +12,8 @@
         <div class="roomListRoom__actions">
             {% comment %}
             <a href="{% url 'kluis' kluis.id %}">{{ kluis.kluisnummer|highlight:q }}:{{t.username|slice:"0:12"}}... </a>
-            {% endcomment %}
             <span>created {{room.created|timesince}} ago</span>
+            {% endcomment %}
         </div>
     </div>
     <div class="roomListRoom__content">
@@ -48,6 +48,12 @@
     </div>
 </div>
 {% endfor %}
+<div class="room__message">
+    <form action="" method="POST">
+      {% csrf_token %}
+      <input name="body" placeholder="Write your request here..." />
+    </form>
+  </div>
 {% for room in resultssss %}
 <div class="roomListRoom">
     <div class="roomListRoom__header">

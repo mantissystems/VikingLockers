@@ -78,6 +78,7 @@ def home(request):
     q = request.GET.get('q') if request.GET.get('q') != None else ''
     lllockers=Matriks.objects.all()     
     lockers=Locker.objects.all().filter(verhuurd=True)     
+    messagelocker=Locker.objects.all().first()     
     from django.db.models import Count
     results = (Locker.objects
     .values('kluisnummer')
@@ -97,6 +98,14 @@ def home(request):
     .annotate(dcount=Count('kluisnummer'))
     .order_by()
     )       
+    if request.method == 'POST':
+            message = Message.objects.create(
+            user=request.user,
+            locker=messagelocker,
+            body=request.POST.get('body')
+        )
+            print(message.body)
+
     if request.user.is_authenticated:
         print('5.logged-in-user:', request.user)
         try:
@@ -193,34 +202,14 @@ def activityPage(request):
     room_messages = Message.objects.all()
     return render(request, 'base/activity.html', {'room_messages': room_messages})
 
-# def helpPage(request):
-    
-#     room_messages = Message.objects.all()
-#     fverhuurd=Q(verhuurd=True)
-
-#     verhuurd=Locker.objects.all().filter(fverhuurd)  #verzamel verhuurde kluisjes voor de room 
-#     used=verhuurd.count()
-#     context={'room_messages': room_messages,
-#              'used':used,
-#              }
-#     return render(request, 'base/help.html', context)
-
 def helpPage(request):
     q = request.GET.get('q') if request.GET.get('q') != None else ''
     helptekst=Helptekst.objects.filter(
+            # Q(publish=True)
             Q(title__icontains=q)|
             Q(content__icontains=q)
-        ).order_by('title')
+        ).order_by('seq').exclude(publish=False)
     return render(request, 'base/helptekst.html', {'helptekst': helptekst})
-
-# class HelpTekstView(ListView):
-#         # if 'helptekst' in q:
-#         # queryset = Helptekst.objects.all().filter(content__icontains=q)
-#         # print('q',q)
-
-#     template_name = 'base/helptekst.html'
-#     model = Helptekst
-#     queryset = Helptekst.objects.all()
 
 
 def infoPage(request):

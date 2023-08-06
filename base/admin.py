@@ -11,7 +11,7 @@ admin.site.register(Message)
 @admin.register(Helptekst)
 class helpAdmin(admin.ModelAdmin):
     list_filter = ('title','content')
-    list_display = ('title','content')
+    list_display = ('title','content','seq','publish')
     search_fields = ('title','content')
 # @admin.register(KluisjesRV)
 # class kluisAdmin(admin.ModelAdmin):

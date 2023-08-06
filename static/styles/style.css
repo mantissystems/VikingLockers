@@ -287,6 +287,7 @@ a {
   color: var(--color-dark-medium);
   background-color: #11b5e7;
   padding: 8px 8px;
+  text-align: left;
 }
 
 .viking-table tbody tr {

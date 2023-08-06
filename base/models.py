@@ -112,4 +112,7 @@ class Helptekst(models.Model):
     title = models.CharField(max_length=200, unique=True)
     updated_on = models.DateTimeField(auto_now= True)
     content = models.TextField()
+    seq = models.CharField(max_length=18,default='----')     
+    publish=models.BooleanField(default=False)
+
     created_on = models.DateTimeField(auto_now_add=True)
