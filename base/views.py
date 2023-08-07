@@ -5,7 +5,7 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth import authenticate, login, logout
 from django.urls import reverse
 # from viking.models import  Matriks,KluisjesRV
-from base.models import Room,Message,User,Topic,Matriks,Locker,Ploeg,Helptekst
+from base.models import Room,Message,User,Topic,Matriks,Locker,Ploeg,Helptekst,Bericht
 from django.db.models import Q
 from base.forms import RoomForm, UserForm,  MyUserCreationForm,PloegForm,LockerForm
 from django.views.generic import(TemplateView,ListView)
@@ -99,7 +99,7 @@ def home(request):
     .order_by()
     )       
     if request.method == 'POST':
-            message = Message.objects.create(
+            message = Bericht.objects.create(
             user=request.user,
             locker=messagelocker,
             body=request.POST.get('body')
@@ -163,13 +163,14 @@ def home(request):
         kopmtrx.append(hdr[i])
     topics = Topic.objects.all()[0:5]
     room_messages = Message.objects.all()
+    berichten=Bericht.objects.all()
     context = {'rooms': rooms, 
                'topics': topics,
                'results': results,
                 'lockers': lockers,
                 'kopmtrx': kopmtrx,
                'cabinetsused': cabinetsused, 
-            #    'yourlocker': yourlocker, 
+               'berichten': berichten, 
                'room_messages': room_messages
                }
     return render(request, 'base/home.html', context)

@@ -42,28 +42,29 @@
         </a>
         <p class="roomListRoom__topic">{{room.kluisnummer}}</p>
         {% comment %}
-
+        <div class="roomListRoom__meta">
+        </div>
+    
         results
         {% endcomment %}
     </div>
 </div>
 {% endfor %}
+
 <div class="room__message">
     <form action="" method="POST">
       {% csrf_token %}
       <input name="body" placeholder="Write your request here..." />
     </form>
   </div>
-{% for room in resultssss %}
+{% for msg in berichten %}
 <div class="roomListRoom">
     <div class="roomListRoom__header">
         <div class="roomListRoom__actions">
         </div>
     </div>
-    <div class="roomListRoom__content">
-        <a href="{% url 'locker' 20 %}">{{room.kluisnummer}} | {{room.dcount}} huurders </a>
-    </div>
-    <div class="roomListRoom__meta">
+    <div class="activities__boxContent">
+        {{msg.id}} {{msg.body}}  {{msg.user}} 
     </div>
 </div>
 {% endfor %}
