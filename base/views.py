@@ -469,6 +469,8 @@ def createRoom(request):
 def berichtenPage(request):
     q = request.GET.get('q') if request.GET.get('q') != None else ''
     berichten = Bericht.objects.filter(body__icontains=q)
+    if q!='' or q !=None:
+        berichten = Bericht.objects.all()
     return render(request, 'base/berichten.html', {'berichten': berichten})
 
 
