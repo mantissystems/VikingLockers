@@ -2,7 +2,7 @@
     <div class="activities__header">
         <h2>Requests</h2>
     </div>
-    {% for message in room_messages %}
+    {% for message in berichten %}
     <div class="activities__box">
         <div class="activities__boxHeader roomListRoom__header">
             <a href="{% url 'user-profile' message.user.id %}" class="roomListRoom__author">
@@ -17,7 +17,7 @@
 
             {% if request.user == message.user %}
             <div class="roomListRoom__actions">
-                <a href="{% url 'delete-message' message.id %}">
+                <a href="{% url 'delete-bericht' message.id %}">
                     <svg version="1.1" xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32">
                         <title>remove</title>
                         <path
@@ -31,9 +31,9 @@
         </div>
         <div class="activities__boxContent">
             {% comment %}
-            <p>remark to Locker “<a href="{% url 'room' message.room.id %}">{{message.room}}</a>”</p>
-            <div class="activities__boxRoomContent">{{message.body}}</div>
+            <p>remark to Locker “<a href="{% url 'room' message.locker.id %}">{{message.locker}}</a>”</p>
             {% endcomment %}  
+            <div class="activities__boxRoomContent">{{message.body}}</div>
         </div>
     </div>
     {% endfor %}

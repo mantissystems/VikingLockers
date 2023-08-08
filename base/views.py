@@ -151,19 +151,13 @@ def home(request):
         Q(description__icontains=q)|
         Q(name__in=rooms_found) 
     ).order_by('name').exclude(name='Wachtlijst')
-    # if rooms.count() == 1000: 
-        # messages.success(request, f'Searched for locker: {q}')
-        # print('room id',rooms[0].id)
-        # url = reverse('kluis', kwargs={"pk":rooms[0].id})
-        #  return reverse('my_named_url', kwargs={ "pk": self.pk }) <---voorbeeld
-        # return HttpResponseRedirect(url) 
     hdr=['', 'kol1','kol2','kol3','kol4','kol5','kol6','kol7','kol8','kol9','kol10','kol11','kol12','kol13']  #LET OP: KOLOM NUL NIET VERGETEN
     kopmtrx=[]
     for i in range (0,13):
         kopmtrx.append(hdr[i])
     topics = Topic.objects.all()[0:5]
     room_messages = Message.objects.all()
-    berichten=Bericht.objects.all()
+    berichten=Bericht.objects.all().filter(user=request.user.id)
     context = {'rooms': rooms, 
                'topics': topics,
                'results': results,
@@ -288,7 +282,11 @@ def room(request, pk):
 def updateUser(request):
     user = request.user
     form = UserForm(instance=user)
-
+    berichten=Bericht.objects.all().filter(user=request.user.id)
+    context = {
+                'berichten':berichten,
+                'form': form,
+            }
     if request.method == 'POST':
         form = UserForm(request.POST, request.FILES, instance=user)
         if form.is_valid():
@@ -300,18 +298,6 @@ def updateUser(request):
             locker, created = Locker.objects.update_or_create(kluisnummer=user.locker,
                                                            email=user.email,
                                                            kluisje=user.locker)
-
-            # try:
-            #     reedsbezet = Locker.objects.get(kluisnummer=user.locker,verhuurd=True)
-            #     if reedsbezet:
-            #         url = reverse('update-user')
-            #         messages.error(request, f'Reeds bezet. Het beleid is: 1 locker per lid.: verhuur van  {user.locker} wordt niet aangemaakt. Of is reeds aangemaakt bij 1e registratie')
-            #         return HttpResponseRedirect(url)
-            # except IndexError:
-            #     url = reverse('update-user')
-            #     print('fout',user.locker)
-            #     # messages.error(request, f'Het beleid is: 1 locker per lid.: verhuur van  {user.locker} wordt niet aangemaakt')
-            #     return HttpResponseRedirect(url)
             try:
                 teambestaatal = Ploeg.objects.filter(name=user.ploeg)
             except: 
@@ -323,8 +309,7 @@ def updateUser(request):
                 return HttpResponseRedirect(url)
             form.save()
             return redirect('user-profile', pk=user.id)
-
-    return render(request, 'base/update-user.html', {'form': form})
+    return render(request, 'base/update-user.html', context)
 
 
 def userProfile(request, pk):
@@ -481,6 +466,11 @@ def createRoom(request):
     context = {'form': form, 'topics': topics}
     return render(request, 'base/room_form.html', context)
 
+def berichtenPage(request):
+    q = request.GET.get('q') if request.GET.get('q') != None else ''
+    berichten = Bericht.objects.filter(body__icontains=q)
+    return render(request, 'base/berichten.html', {'berichten': berichten})
+
 
 @login_required(login_url='login')
 def deleteMessage(request, pk):
@@ -494,6 +484,17 @@ def deleteMessage(request, pk):
         return redirect('home')
     return render(request, 'base/delete.html', {'obj': message})
 
+@login_required(login_url='login')
+def deleteBericht(request, pk):
+    message = Bericht.objects.get(id=pk)
+
+    if request.user != message.user:
+        return HttpResponse('Your are not allowed here!!')
+
+    if request.method == 'POST':
+        message.delete()
+        return redirect('home')
+    return render(request, 'base/delete.html', {'obj': message})
 
 @login_required(login_url='login')
 def updateLocker(request,pk):

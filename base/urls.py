@@ -4,7 +4,6 @@ from . import views
 urlpatterns = [
     path('', views.home, name="home"),
     path('activity/', views.activityPage, name="activity"),
-    # path('help/', views.helpPage, name="help"),
     path('info/', views.infoPage, name="info"),
     path('room/<str:pk>/', views.lockerPage, name="room"),
     path('login/', views.loginPage, name="login"),
@@ -20,6 +19,7 @@ urlpatterns = [
     path('delete-room/<str:pk>/', views.deleteRoom, name="delete-room"),
      path('create-room/', views.createRoom, name="create-room"),
     path('delete-message/<str:pk>/', views.deleteMessage, name="delete-message"),
+    path('delete-bericht/<str:pk>/', views.deleteBericht, name="delete-bericht"),
     path('<str:pk>/locker/',views.lockerPage, name='locker'),  
     path('<str:pk>/update_locker/',views.updateLocker, name='update_locker'),  
     path('<str:row>/create_locker/<str:kol>/',views.create_locker, name='create_locker'),  
@@ -27,8 +27,9 @@ urlpatterns = [
     path('locker-blokken/', views.Blokken.as_view(), name='locker-blokken'),
     path('nietverhuurd/',views.nietverhuurdePage, name='nietverhuurd'),  
     path('helptekst/', views.helpPage, name='helptekst'),
+    path('berichten/', views.berichtenPage, name="berichten"),
     # path('helptekst/', views.HelpTekstView.as_view(), name='helptekst'),
-
+    # path('help/', views.helpPage, name="help"),
     # path('<str:pk>/kluis/',views.kluis, name='kluis'),  
     # path('<str:pk>/update_kluis/<str:kol>/',views.update_kluis, name='update_kluis'),  
     # path('room/<str:pk>/', views.room, name="room"),
