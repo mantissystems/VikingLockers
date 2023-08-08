@@ -1,19 +1,7 @@
 {% for room in lockers %}
 <div class="roomListRoom">
     <div class="roomListRoom__header">
-        {% comment %}
-        <a href="{% url 'user-profile' room.host.id %}" class="roomListRoom__author">
-            <div class="avatar avatar--small">
-                <img src="{{room.host.avatar.url}}" />
-            </div>
-            <span>@{{room.host.username}}</span>
-        </a>
-        {% endcomment %}
         <div class="roomListRoom__actions">
-            {% comment %}
-            <a href="{% url 'kluis' kluis.id %}">{{ kluis.kluisnummer|highlight:q }}:{{t.username|slice:"0:12"}}... </a>
-            <span>created {{room.created|timesince}} ago</span>
-            {% endcomment %}
         </div>
     </div>
     <div class="roomListRoom__content">
@@ -56,7 +44,7 @@
     {% for message in berichten %}
     <div class="activities__box">
       <div class="activities__boxHeader roomListRoom__header">
-{{message.body}}
+{{message.body}} ==> {{message.user.name}}
         {% if request.user == message.user %}
         <div class="roomListRoom__actions">
           <a href="{% url 'delete-bericht' message.id %}">

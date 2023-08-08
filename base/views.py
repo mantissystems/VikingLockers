@@ -495,7 +495,7 @@ def deleteBericht(request, pk):
 
     if request.method == 'POST':
         message.delete()
-        return redirect('home')
+        return redirect('berichten')
     return render(request, 'base/delete.html', {'obj': message})
 
 @login_required(login_url='login')
