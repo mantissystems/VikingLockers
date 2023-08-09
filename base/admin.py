@@ -14,9 +14,9 @@ class helpAdmin(admin.ModelAdmin):
     search_fields = ('title','content')
 @admin.register(Bericht)
 class kluisAdmin(admin.ModelAdmin):
-    list_filter = ('locker','user')
-    list_display = ('locker','body')
-    search_fields = ('locker','body')
+    list_filter = ('user','user')
+    list_display = ('user','body')
+    search_fields = ('user','body')
 @admin.register(User)
 class UserAdmin(admin.ModelAdmin):
     list_filter = ('is_active','is_staff')

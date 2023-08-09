@@ -142,10 +142,16 @@ def home(request):
                 print('7.use-user:', request.user)
                 # messages.info(request, f'Ubent niet ingelogd. Svp Inloggen / Registreren')
                 # return HttpResponseRedirect('/info/')
-
+    berichten=Bericht.objects.all() ##.filter(user=request.user.id)
     if q!='' or q !=None:
         rooms_found = Matriks.objects.filter(regel__icontains=q).values_list('naam',flat=True)
         lockers=Locker.objects.filter(kluisnummer__icontains=q).exclude(verhuurd=False)
+        # berichten2 = Bericht.objects.filter(body__icontains=q)
+                # messages.error(request, f'{pk} {kol}: Niet gevonden')
+        # if berichten2:
+        #     url = reverse('berichten',) ## kwargs={'row': pk,'kol': kol})
+        # return HttpResponseRedirect(url)
+
     rooms = Room.objects.filter(
         Q(name__icontains=q) |
         Q(description__icontains=q)|
@@ -157,7 +163,6 @@ def home(request):
         kopmtrx.append(hdr[i])
     topics = Topic.objects.all()[0:5]
     room_messages = Message.objects.all()
-    berichten=Bericht.objects.all().filter(user=request.user.id)
     context = {'rooms': rooms, 
                'topics': topics,
                'results': results,
@@ -468,9 +473,19 @@ def createRoom(request):
 
 def berichtenPage(request):
     q = request.GET.get('q') if request.GET.get('q') != None else ''
-    berichten = Bericht.objects.filter(body__icontains=q)
     if q!='' or q !=None:
+        berichten = Bericht.objects.filter(body__icontains=q)
+    else:
         berichten = Bericht.objects.all()
+    messagelocker=Locker.objects.all().first()     
+    if request.method == 'POST':
+        message = Bericht.objects.create(
+        user=request.user,
+        locker=messagelocker,
+        body=request.POST.get('body')
+        )
+    print(q)
+
     return render(request, 'base/berichten.html', {'berichten': berichten})
 
 
@@ -490,7 +505,7 @@ def deleteMessage(request, pk):
 def deleteBericht(request, pk):
     message = Bericht.objects.get(id=pk)
 
-    if request.user != message.user:
+    if request.user != message.user and not request.user.is_superuser:
         return HttpResponse('Your are not allowed here!!')
 
     if request.method == 'POST':
