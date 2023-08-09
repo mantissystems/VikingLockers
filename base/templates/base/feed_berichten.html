@@ -5,9 +5,6 @@
         </div>
     </div>
     <div class="roomListRoom__content">
-        {% comment %}
-        <a href="{% url 'update_locker' room.id %}">{{room.kluisnummer}}| {{room.email|slice:"0:12"}}... {{room.verhuurd}} </a>
-        {% endcomment %}
     </div>
     <div class="roomListRoom__meta">
         <a href="{% url 'locker' room.id %}" class="roomListRoom__joined">
@@ -29,12 +26,6 @@
             {{room.owners.all.count}}{{results.dcount}} onderhuurder(s)
         </a>
         <p class="roomListRoom__topic">{{room.kluisnummer}}</p>
-        {% comment %}
-        <div class="roomListRoom__meta">
-        </div>
-    
-        results
-        {% endcomment %}
     </div>
 </div>
 {% endfor %}

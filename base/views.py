@@ -76,7 +76,7 @@ def home(request):
     from django.utils.safestring import mark_safe
     messages.add_message(request, messages.INFO, "Welkom bij Viking Lockers.")    
     q = request.GET.get('q') if request.GET.get('q') != None else ''
-    lllockers=Matriks.objects.all()     
+    # lllockers=Matriks.objects.all()     
     lockers=Locker.objects.all().filter(verhuurd=True)     
     messagelocker=Locker.objects.all().first()     
     from django.db.models import Count
@@ -112,8 +112,6 @@ def home(request):
             user=User.objects.get(id=request.user.id)
             locker2 = Locker.objects.get(kluisnummer=user.locker,email=user.email,verhuurd=True)
             if locker2:
-                # messages.success(request, f'Uw locker : {locker2.kluisnummer}')
-                # messages.info(request, mark_safe(f"Beheer uw locker via <a href='{locker2.id}/update_locker'>update_locker</a> {locker2.id}"))
                 messages.info(request, mark_safe(f"Beheer uw locker: <a href='{locker2.id}/locker'>{locker2.kluisnummer}</a>"))
             else:
                 messages.info(request, f'U heeft nog geen  locker.')
@@ -140,34 +138,31 @@ def home(request):
                 pass
             else:
                 print('7.use-user:', request.user)
-                # messages.info(request, f'Ubent niet ingelogd. Svp Inloggen / Registreren')
-                # return HttpResponseRedirect('/info/')
     berichten=Bericht.objects.all() ##.filter(user=request.user.id)
+    url = reverse('berichten',)
     if q!='' or q !=None:
         rooms_found = Matriks.objects.filter(regel__icontains=q).values_list('naam',flat=True)
         lockers=Locker.objects.filter(kluisnummer__icontains=q).exclude(verhuurd=False)
-        # berichten2 = Bericht.objects.filter(body__icontains=q)
-                # messages.error(request, f'{pk} {kol}: Niet gevonden')
-        # if berichten2:
-        #     url = reverse('berichten',) ## kwargs={'row': pk,'kol': kol})
-        # return HttpResponseRedirect(url)
+        berichten2 = Bericht.objects.filter(body__icontains=q)
+        if berichten2:
+            return HttpResponseRedirect(url)
 
     rooms = Room.objects.filter(
         Q(name__icontains=q) |
         Q(description__icontains=q)|
         Q(name__in=rooms_found) 
     ).order_by('name').exclude(name='Wachtlijst')
-    hdr=['', 'kol1','kol2','kol3','kol4','kol5','kol6','kol7','kol8','kol9','kol10','kol11','kol12','kol13']  #LET OP: KOLOM NUL NIET VERGETEN
-    kopmtrx=[]
-    for i in range (0,13):
-        kopmtrx.append(hdr[i])
+    # hdr=['', 'kol1','kol2','kol3','kol4','kol5','kol6','kol7','kol8','kol9','kol10','kol11','kol12','kol13']  #LET OP: KOLOM NUL NIET VERGETEN
+    # kopmtrx=[]
+    # for i in range (0,13):
+    #     kopmtrx.append(hdr[i])
     topics = Topic.objects.all()[0:5]
     room_messages = Message.objects.all()
     context = {'rooms': rooms, 
                'topics': topics,
                'results': results,
                 'lockers': lockers,
-                'kopmtrx': kopmtrx,
+                # 'kopmtrx': kopmtrx,
                'cabinetsused': cabinetsused, 
                'berichten': berichten, 
                'room_messages': room_messages

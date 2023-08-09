@@ -45,15 +45,15 @@
       {% if request.user.is_superuser %}
       {% endif %}
       {% include 'base/feed_component.html' %}
+      {% include 'base/activity_component.html' %}
       {% endcomment %}
-      {% include 'base/feed_member_lockers.html' %}
-
 
     </div>
     <!-- Room List End -->
 
     <!-- Activities Start -->
-    {% include 'base/activity_component.html' %}
+    {% include 'base/feed_berichten.html' %}
+
     <!-- Activities End -->
   </div>
 </main>

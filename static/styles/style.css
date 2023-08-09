@@ -267,10 +267,10 @@ a {
 .viking-table {
   border-collapse: collapse;
   margin: 9px 0;
-  font-size: 0.8em;
+  font-size: 0.6em;
   height: flex;
-  min-width: 480px;
-  /* width: var(--phone-viking); */
+  /* min-width: 480px; */
+  width: var(--phone-viking);
   border-radius: 15px 15px 0 0;
   overflow: hidden;
   box-shadow: 0 0 20px rgba(0, 0, 0, 0.15);
@@ -289,7 +289,9 @@ a {
   padding: 8px 8px;
   text-align: left;
 }
-
+.viking-table td{
+  text-align: justify;
+}
 .viking-table tbody tr {
   border-bottom: 1px solid #dddddd;
   line-height: 16px;
