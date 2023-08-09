@@ -12,6 +12,8 @@
   --color-bg: #2d2d39;
   --color-success: #5dd693;
   --color-error: #fc4b0b;
+  --phone-width: 460px;
+  --phone-viking: flex;
 }
 
 /*========== base styles ==========*/

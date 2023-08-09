@@ -144,8 +144,10 @@ def home(request):
         rooms_found = Matriks.objects.filter(regel__icontains=q).values_list('naam',flat=True)
         lockers=Locker.objects.filter(kluisnummer__icontains=q).exclude(verhuurd=False)
         berichten2 = Bericht.objects.filter(body__icontains=q)
-        if berichten2:
-            return HttpResponseRedirect(url)
+    else:
+        berichten=Bericht.objects.all() ##.filter(user=request.user.id)
+        # if berichten2:
+        #     return HttpResponseRedirect(url)
 
     rooms = Room.objects.filter(
         Q(name__icontains=q) |
