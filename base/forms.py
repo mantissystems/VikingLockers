@@ -64,7 +64,7 @@ class LockerForm(ModelForm):
         "type": "Type slot",
 
         }
-        exclude = ['topic','row', 'col','owners','kluisnummer']
+        exclude = ['topic','row', 'col','owners','kluisnummer','verhuurd']
         # exclude = ['topic','row', 'col','owners']
 
 
