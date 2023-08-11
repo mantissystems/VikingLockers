@@ -59,8 +59,8 @@ def registerPage(request):
         form = MyUserCreationForm(request.POST)
         if form.is_valid():
             user = form.save(commit=False)
-            user.username = user.username.lower()
-            user.last_name = user.username.lower()
+            user.username = user.name.lower()
+            user.last_name = user.name.lower()
             print(user.username)
             user.save()
             login(request, user)

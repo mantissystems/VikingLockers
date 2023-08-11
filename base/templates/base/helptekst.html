@@ -37,7 +37,7 @@
             <span>{{topic.title}}</span>
             <a href="{% url 'home' %}?q=helptekst {{topic.title}}"> <span>{{topic.title}}</span>{{ topic.content }} </a>
             {% endcomment %}
-            <a href="{% url 'helptekst' %}" class="active">CONTENT <span> {{helptekst.count}} </span></a>
+            <a href="{% url 'helptekst' %}" class="active">All CONTENT <span> {{helptekst.count}} </span></a>
           </li>
           <table class="viking-table">
             <tr>

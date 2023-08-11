@@ -15,8 +15,6 @@
                 </svg>
                 <input name="q" placeholder="Search Locker..." />
             </label>
-            {% comment %}
-            {% endcomment %}
         </form>
         <nav class="header__menu">
 
@@ -24,9 +22,12 @@
             <!-- Logged In -->
             {% if request.user.is_authenticated %}
             <div class="header__user">
+                {% comment %}
                 <a href="{% url 'user-profile' request.user.id %}">
                     <p>{{request.user.username}} <span>logged in @{{request.user.username}}</span></p>
                 </a>
+                    {% endcomment %}
+                    <p> <span>logged in</span></p>
                 <button class="dropdown-button">
                     <svg version="1.1" xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32">
                         <title>chevron-down</title>
@@ -44,6 +45,7 @@
             {% endif %}
 
             <div class="dropdown-menu">
+                {% comment %}
                 <a href="{% url 'update-user' %}" class="dropdown-link"><svg version="1.1"
                         xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32">
                         <title>tools</title>
@@ -52,7 +54,8 @@
                         </path>
                     </svg>
                     Profile</a>
-                    
+                    {% endcomment %}
+
                     <a href="{% url 'helptekst' %}" class="dropdown-link"><svg version="1.1" xmlns="http://www.w3.org/2000/svg"
                         width="32" height="32" viewBox="0 0 32 32">
                         <title>help-page</title>

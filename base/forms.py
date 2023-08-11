@@ -21,6 +21,7 @@ class MyUserCreationForm(UserCreationForm):
     class Meta:
         model = User
         fields = ['name', 'username', 'email', 'password1', 'password2']
+        exclude = ['username']
         labels = {
         "email": "Your email. eg.: info@mail.nl",
         "password": "minimum length 8",
