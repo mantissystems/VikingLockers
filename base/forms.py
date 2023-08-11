@@ -72,4 +72,4 @@ class UserForm(ModelForm):
     class Meta:
         model = User
         fields = ['avatar', 'name', 'username','ploeg','locker', 'email']
-        exclude = [ 'avatar']
+        exclude = [ 'avatar','ploeg']
