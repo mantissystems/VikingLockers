@@ -285,6 +285,7 @@ def updateUser(request):
     user = request.user
     form = UserForm(instance=user)
     berichten=Bericht.objects.all().filter(user=request.user.id)
+    team='nieuw'
     context = {
                 'berichten':berichten,
                 'form': form,
@@ -296,7 +297,8 @@ def updateUser(request):
                 messages.success(request, f'Uw locker opheffen?: {user.locker}')
                 print('locker opheffen?')
             # print(user.ploeg)
-            ploeg, created = Ploeg.objects.update_or_create(name=user.ploeg)
+            # ploeg, created = Ploeg.objects.update_or_create(name=user.ploeg)
+            ploeg, created = Ploeg.objects.get_or_create(name=team)
             locker, created = Locker.objects.update_or_create(kluisnummer=user.locker,
                                                            email=user.email,
                                                            kluisje=user.locker)
@@ -306,8 +308,9 @@ def updateUser(request):
                 Ploeg.DoesNotExist
                 url = reverse('update-user')
                 print('fout',user.ploeg)
-                ploeg, created = Ploeg.objects.get_or_create(name=user.ploeg)
-                messages.error(request, f'1 Teamleider per ploeg  {user.ploeg} wordt niet aangemaakt of was reeds aangemaakt tijdens registratie')
+                # ploeg, created = Ploeg.objects.get_or_create(name=user.ploeg)
+                ploeg, created = Ploeg.objects.get_or_create(name=team)
+                # messages.error(request, f'1 Teamleider per ploeg  {user.ploeg} wordt niet aangemaakt of was reeds aangemaakt tijdens registratie')
                 return HttpResponseRedirect(url)
             form.save()
             return redirect('user-profile', pk=user.id)
