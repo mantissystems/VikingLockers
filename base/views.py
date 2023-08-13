@@ -201,12 +201,13 @@ def activityPage(request):
 
 def helpPage(request):
     q = request.GET.get('q') if request.GET.get('q') != None else ''
+    aantalusers=User.objects.all()
     helptekst=Helptekst.objects.filter(
             # Q(publish=True)
             Q(title__icontains=q)|
             Q(content__icontains=q)
         ).order_by('seq').exclude(publish=False)
-    return render(request, 'base/helptekst.html', {'helptekst': helptekst})
+    return render(request, 'base/helptekst.html', {'helptekst': helptekst,'aantalusers':aantalusers})
 
 
 def infoPage(request):
