@@ -72,5 +72,6 @@ class LockerForm(ModelForm):
 class UserForm(ModelForm):
     class Meta:
         model = User
-        fields = ['avatar', 'name', 'username','ploeg','locker', 'email']
-        exclude = [ 'avatar','ploeg']
+        # fields= '__all__'
+        fields = ['avatar', 'name', 'username','locker', 'email']
+        exclude = [ 'avatar','ploeg','bio']

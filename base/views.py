@@ -1,3 +1,4 @@
+
 from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import redirect, render
 from django.contrib import messages
@@ -329,6 +330,33 @@ def userProfile(request, pk):
                'room_messages': room_messages, 'topics': topics,'lockers':lockers,'member_lockers':member_lockers}
     return render(request, 'base/profile.html', context)
 
+@login_required(login_url='login')
+def updateProfile(request,pk):
+    user = User.objects.all().get(id=pk)
+    form = UserForm(instance=user)
+    print(form)
+    berichten=Bericht.objects.all().filter(user=request.user.id)
+    locker= request.POST.get('locker')
+    context = {
+                'berichten':berichten,
+                'form': form,
+            }
+    if request.method == 'POST':
+        form = UserForm(request.POST, request.FILES, instance=user)
+        locker, created = Locker.objects.update_or_create(kluisnummer=locker,
+                                                           email=user.email,
+                                                           verhuurd=True,
+                                                           kluisje=locker)
+        # form.save()
+
+        if form.is_valid():
+            locker, created = Locker.objects.update_or_create(kluisnummer=locker,
+                                                           email=user.email,
+                                                           verhuurd=True,
+                                                           kluisje=locker)
+            form.save()
+            return redirect('update-profile', pk=user.id)
+    return render(request, 'base/update-profile.html', context)
 
 def topicsPage(request):
     q = request.GET.get('q') if request.GET.get('q') != None else ''
@@ -344,6 +372,11 @@ def lockersPage(request):
     q = request.GET.get('q') if request.GET.get('q') != None else ''
     lockers = Locker.objects.filter(kluisnummer__icontains=q,verhuurd=True)
     return render(request, 'base/lockers.html', {'lockers': lockers})
+
+def profilePage(request):
+    q = request.GET.get('q') if request.GET.get('q') != None else ''
+    profiles = User.objects.filter(name__icontains=q)
+    return render(request, 'base/profiles.html', {'profiles': profiles})
 
 def ploegPage(request, pk):
     ploeg = Ploeg.objects.get(name=pk)
@@ -391,7 +424,8 @@ def lockerPage(request,pk):
                 'kluis': locker,
                 'form': form,
             }
-    if request.user.email != locker.email:
+    
+    if request.user.email != locker.email and not request.user.is_superuser:
         messages.error(request, f'{locker.kluisnummer} : Is niet uw locker')
         return render(request, 'base/lockers.html', {'lockers': lockers,'topics':topics})
     
