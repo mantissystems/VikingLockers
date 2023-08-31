@@ -41,7 +41,7 @@
   
         </div>
       </div>
-      <h2>Verhuurde Lockers</h2>
+      <h2>Verhuurde Lockers {{lockers.count }} van 120</h2>
       {% include 'base/feed_component.html' %}
       {% if request.user.is_superuser %}
       {% endif %}

@@ -12,6 +12,12 @@ from base.forms import RoomForm, UserForm,  MyUserCreationForm,PloegForm,LockerF
 from django.views.generic import(TemplateView,ListView)
 from django.contrib.auth.models import AnonymousUser
 from django.contrib import messages
+from rest_framework.decorators import api_view, permission_classes
+from rest_framework.permissions import IsAuthenticated, IsAdminUser
+from rest_framework.response import Response
+from django.contrib.auth.hashers import make_password
+# from base.serializers import UserSerializer, UserSerializerWithToken
+
 
 def loginPage(request):
     page = 'login'
@@ -62,7 +68,26 @@ def registerPage(request):
             user = form.save(commit=False)
             user.username = user.name.lower()
             user.last_name = user.name.lower()
-            print(user.username)
+            body=request.POST.get('name')
+    
+
+        #     try:
+        #         u=User.objects.get(username=usr2)
+        #         print('username', user.username,u.id,usr2)
+        #     except User.DoesNotExist:
+        #         print('except =====')
+        #         # username mag meerdere keren voorkomen met verschillende emailadressen
+        #     finally:
+        #         # user.save()
+        #         messages.error(request, 'An error occurred during registration: name exists;  email exists; wrong password')
+        #     # login(request, user)
+        #     # return redirect('home')
+        # else:
+        #     print('else =====')
+        #     messages.error(request, 'An error occurred during registration: possibly email exists or wrong password')
+        #     return HttpResponseRedirect('/info/')
+
+            # print(user.username)
             user.save()
             login(request, user)
             return redirect('home')
@@ -77,7 +102,6 @@ def home(request):
     from django.utils.safestring import mark_safe
     messages.add_message(request, messages.INFO, "Welkom bij Viking Lockers.")    
     q = request.GET.get('q') if request.GET.get('q') != None else ''
-    # lllockers=Matriks.objects.all()     
     lockers=Locker.objects.all().filter(verhuurd=True)     
     messagelocker=Locker.objects.all().first()     
     from django.db.models import Count
@@ -143,25 +167,32 @@ def home(request):
     url = reverse('berichten',)
     if q!='' or q !=None:
         rooms_found = Matriks.objects.filter(regel__icontains=q).values_list('naam',flat=True)
-        lockers=Locker.objects.filter(kluisnummer__icontains=q).exclude(verhuurd=False)
+        # lockers=Locker.objects.filter(kluisnummer__icontains=q).exclude(verhuurd=False)
+        lockers =Locker.objects.filter(
+        Q(kluisnummer__icontains=q) |
+        Q(email__icontains=q)
+        # Q(name__in=rooms_found) 
+        ).order_by('kluisnummer').exclude(verhuurd=False)
+
         berichten2 = Bericht.objects.filter(body__icontains=q)
     else:
         berichten=Bericht.objects.all() ##.filter(user=request.user.id)
         # if berichten2:
         #     return HttpResponseRedirect(url)
 
-    rooms = Room.objects.filter(
-        Q(name__icontains=q) |
-        Q(description__icontains=q)|
-        Q(name__in=rooms_found) 
-    ).order_by('name').exclude(name='Wachtlijst')
+    # rooms = Room.objects.filter(
+    #     Q(name__icontains=q) |
+    #     Q(description__icontains=q)|
+    #     Q(name__in=rooms_found) 
+    # ).order_by('name').exclude(name='Wachtlijst')
     # hdr=['', 'kol1','kol2','kol3','kol4','kol5','kol6','kol7','kol8','kol9','kol10','kol11','kol12','kol13']  #LET OP: KOLOM NUL NIET VERGETEN
     # kopmtrx=[]
     # for i in range (0,13):
     #     kopmtrx.append(hdr[i])
     topics = Topic.objects.all()[0:5]
     room_messages = Message.objects.all()
-    context = {'rooms': rooms, 
+    context = {
+        # 'rooms': rooms, 
                'topics': topics,
                'results': results,
                 'lockers': lockers,
@@ -344,16 +375,16 @@ def updateProfile(request,pk):
     if request.method == 'POST':
         form = UserForm(request.POST, request.FILES, instance=user)
         locker, created = Locker.objects.update_or_create(kluisnummer=locker,
-                                                           email=user.email,
-                                                           verhuurd=True,
-                                                           kluisje=locker)
+                    email=user.email,
+                    verhuurd=True,
+                    kluisje=locker)
         # form.save()
 
         if form.is_valid():
             locker, created = Locker.objects.update_or_create(kluisnummer=locker,
-                                                           email=user.email,
-                                                           verhuurd=True,
-                                                           kluisje=locker)
+            email=user.email,
+            verhuurd=True,
+            kluisje=locker)
             form.save()
             return redirect('update-profile', pk=user.id)
     return render(request, 'base/update-profile.html', context)
@@ -370,7 +401,7 @@ def ploegenPage(request):
 
 def lockersPage(request):
     q = request.GET.get('q') if request.GET.get('q') != None else ''
-    lockers = Locker.objects.filter(kluisnummer__icontains=q,verhuurd=True)
+    lockers = Locker.objects.filter(kluisnummer__icontains=q,verhuurd=True) #[0:15]
     return render(request, 'base/lockers.html', {'lockers': lockers})
 
 def profilePage(request):

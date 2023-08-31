@@ -16,7 +16,8 @@
             {% endcomment %}
         </div>
     </div>
-    <div class="roomListRoom__content">
+    <div class="roomListRoom__meta">
+      {{room.email|slice:"0:12"}}...
         {% comment %}
         <a href="{% url 'update_locker' room.id %}">{{room.kluisnummer}}| {{room.email|slice:"0:12"}}... {{room.verhuurd}} </a>
         {% endcomment %}

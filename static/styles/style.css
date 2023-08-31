@@ -842,6 +842,7 @@ a {
 ================================*/
 
 .create-room.layout .layout__box {
+  margin-top: 10rem;
   max-width: 68rem;
 }
 
