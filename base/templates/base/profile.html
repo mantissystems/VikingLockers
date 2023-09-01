@@ -18,12 +18,13 @@
             
           </div>
         </div>
+        {% if request.user == user or request.user.is_superuser %}
 
         {% endcomment %}
         <div class="profile__info">
           <h3>{{user.name}}</h3>
           <p>@|{{user.username}}</p>
-            {% if request.user == user or request.user.is_superuser %}
+            {% if request.user.is_superuser %}
 
           <a href="{% url 'update-profile' user.id%}" class="btn btn--main btn--pill">Edit Profile</a>
           {% endif %}
