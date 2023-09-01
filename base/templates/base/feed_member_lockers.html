@@ -1,4 +1,4 @@
-{% for room in member_lockers %}
+{% for room in lockers %}
 <div class="roomListRoom">
     <div class="roomListRoom__header">
         {% comment %}
@@ -12,12 +12,12 @@
         <div class="roomListRoom__actions">
             {% comment %}
             <a href="{% url 'kluis' kluis.id %}">{{ kluis.kluisnummer|highlight:q }}:{{t.username|slice:"0:12"}}... </a>
-            {% endcomment %}
             <span>created {{room.created|timesince}} ago</span>
+            {% endcomment %}
         </div>
     </div>
     <div class="roomListRoom__content">
-        <a href="{% url 'update_locker' room.id %}">{{room.kluisnummer}}| {{room.email|slice:"0:12"}}... {{room.verhuurd}} </a>
+        <a href="{% url 'locker' room.id %}">{{room.kluisnummer}}| {{room.email|slice:"0:12"}}... {{room.verhuurd}} </a>
     </div>
     <div class="roomListRoom__meta">
         {% comment %}
@@ -42,19 +42,6 @@
         <p class="roomListRoom__topic">{{room.topic.name}}</p>
         results
         {% endcomment %}
-    </div>
-</div>
-{% endfor %}
-{% for room in resultssss %}
-<div class="roomListRoom">
-    <div class="roomListRoom__header">
-        <div class="roomListRoom__actions">
-        </div>
-    </div>
-    <div class="roomListRoom__content">
-        <a href="{% url 'locker' 20 %}">{{room.kluisnummer}} | {{room.dcount}} huurders </a>
-    </div>
-    <div class="roomListRoom__meta">
     </div>
 </div>
 {% endfor %}

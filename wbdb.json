@@ -4238,6 +4238,97 @@
   }
 },
 {
+  "model": "admin.logentry",
+  "pk": 327,
+  "fields": {
+    "action_time": "2023-08-30T14:39:13.691Z",
+    "user": 1,
+    "content_type": 24,
+    "object_id": "29",
+    "object_repr": "Locker object (29)",
+    "action_flag": 3,
+    "change_message": ""
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 328,
+  "fields": {
+    "action_time": "2023-08-30T14:39:13.866Z",
+    "user": 1,
+    "content_type": 24,
+    "object_id": "30",
+    "object_repr": "Locker object (30)",
+    "action_flag": 3,
+    "change_message": ""
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 329,
+  "fields": {
+    "action_time": "2023-08-30T19:40:15.111Z",
+    "user": 1,
+    "content_type": 24,
+    "object_id": "48",
+    "object_repr": "Locker object (48)",
+    "action_flag": 3,
+    "change_message": ""
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 330,
+  "fields": {
+    "action_time": "2023-08-30T19:40:15.129Z",
+    "user": 1,
+    "content_type": 24,
+    "object_id": "50",
+    "object_repr": "Locker object (50)",
+    "action_flag": 3,
+    "change_message": ""
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 331,
+  "fields": {
+    "action_time": "2023-08-30T19:41:28.634Z",
+    "user": 1,
+    "content_type": 24,
+    "object_id": "43",
+    "object_repr": "Locker object (43)",
+    "action_flag": 3,
+    "change_message": ""
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 332,
+  "fields": {
+    "action_time": "2023-08-31T18:34:37.314Z",
+    "user": 1,
+    "content_type": 24,
+    "object_id": "42",
+    "object_repr": "Locker object (42)",
+    "action_flag": 3,
+    "change_message": ""
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 333,
+  "fields": {
+    "action_time": "2023-08-31T23:07:00.411Z",
+    "user": 1,
+    "content_type": 24,
+    "object_id": "24",
+    "object_repr": "Locker object (24)",
+    "action_flag": 3,
+    "change_message": ""
+  }
+},
+{
   "model": "auth.permission",
   "pk": 1,
   "fields": {
@@ -5471,6 +5562,14 @@
 },
 {
   "model": "sessions.session",
+  "pk": "18xx3b7mdvbwiyv46jcczsyjtale5pzc",
+  "fields": {
+    "session_data": "e30:1qbSrd:PVGBTa1unH2_3SJFvEq8D13XZ6YAc--uoTzHKVCXD5M",
+    "expire_date": "2023-09-13T21:36:37.127Z"
+  }
+},
+{
+  "model": "sessions.session",
   "pk": "1kkttqiblv36i3p73vjr2xskjov17j9o",
   "fields": {
     "session_data": ".eJxVjEEOgjAQRe_StWmo7XQGl-45A5lOB0FNSSisjHdXEha6_e-9_zI9b-vYb1WXfsrmYlzrzel3TSwPLTvKdy632cpc1mVKdlfsQavt5qzP6-H-HYxcx2_dErjBx4g5Cjh03JxBk5Cqj9ow-QiBMKlwFiRRyGEYsIGg4NEjmfcHJqU4Kw:1qaWlE:XibteSEYPiv9wbUneCy-N_5XsNqx4VgsAcC4Ic-3k08",
@@ -5483,14 +5582,6 @@
   "fields": {
     "session_data": ".eJxVjEEOwiAQRe_C2hDG0gIu3fcMZGBmpGpoUtqV8e7apAvd_vfef6mI21ri1niJE6mLAnX63RLmB9cd0B3rbdZ5rusyJb0r-qBNjzPx83q4fwcFW_nWgsAQOnLSd_5sB-8NAwAN4vrMaNELm4Sdk-AhmEQChDZ5kyXYRKDeH-cQOGQ:1q0x1m:eqWrFIY3-7q45nA6sn6trHySHiJv7wI1U29ACgKWrH4",
     "expire_date": "2023-06-05T04:20:10.082Z"
-  }
-},
-{
-  "model": "sessions.session",
-  "pk": "2c8nn2d32t4mza32hxagh1wux24x65d0",
-  "fields": {
-    "session_data": ".eJxVjEEOwiAQRe_C2hDG0gIu3fcMZGBmpGpoUtqV8e7apAvd_vfef6mI21ri1niJE6mLAnX63RLmB9cd0B3rbdZ5rusyJb0r-qBNjzPx83q4fwcFW_nWgsAQOnLSd_5sB-8NAwAN4vrMaNELm4Sdk-AhmEQChDZ5kyXYRKDeH-cQOGQ:1qb3Wp:QcpLsfgUGLqAaocrRhFsTdI5dZJl63rAhmBb47ucYIo",
-    "expire_date": "2023-09-12T18:33:27.879Z"
   }
 },
 {
@@ -5571,6 +5662,14 @@
   "fields": {
     "session_data": ".eJxVjEEOwiAQRe_C2hDG0gIu3fcMZGBmpGpoUtqV8e7apAvd_vfef6mI21ri1niJE6mLAnX63RLmB9cd0B3rbdZ5rusyJb0r-qBNjzPx83q4fwcFW_nWgsAQOnLSd_5sB-8NAwAN4vrMaNELm4Sdk-AhmEQChDZ5kyXYRKDeH-cQOGQ:1qb4EV:zF6PIQSVw8BH1GMzAATsyDgSEtH2n2CQrpb0AcykOL4",
     "expire_date": "2023-09-12T19:18:35.862Z"
+  }
+},
+{
+  "model": "sessions.session",
+  "pk": "8u4u14olvfdrd8qjz6glasj7kc1ni9v2",
+  "fields": {
+    "session_data": ".eJxVjMEOwiAQBf-FsyGwUFg8evcbCLAgVQNJaU_Gf9cmPej1zcx7MR-2tfpt5MXPxM4MwLHT7xpDeuS2I7qHdus89bYuc-S7wg86-LVTfl4O9--ghlG_tSpFAkprnLBCFAsSNGnIZIKzhfKErpBMSKgkuoCScIpZKFA6WmGAvT8PyTdc:1qbkwy:IVNJlWX0mAMfp_ahSWjloO_08Nq_K2-paFJ2aXduZlA",
+    "expire_date": "2023-09-14T16:55:20.369Z"
   }
 },
 {
@@ -5687,6 +5786,22 @@
 },
 {
   "model": "sessions.session",
+  "pk": "h2iluxgutnjwxzlximsx9uieoxb9tx82",
+  "fields": {
+    "session_data": "e30:1qbT6P:HkIQPZHerAod09hRpbomuT-GnzFrK7V4zSiUmn9ZyQ4",
+    "expire_date": "2023-09-13T21:51:53.456Z"
+  }
+},
+{
+  "model": "sessions.session",
+  "pk": "hzpinvns8stkd4zto2nz033wtjul5kvi",
+  "fields": {
+    "session_data": "e30:1qbT9w:R7nbLhXItKiryjxGRaD-zNa496ot1u9fFjIRGipUYZc",
+    "expire_date": "2023-09-13T21:55:32.615Z"
+  }
+},
+{
+  "model": "sessions.session",
   "pk": "jynu9lt4zo2mwr1a5lppvxa2c7y6erg8",
   "fields": {
     "session_data": ".eJxVjMsOwiAQAP-FsyEsS3l49N5vIAsLUjVtUtqT8d9Nkx70OjOZt4i0by3uvaxxYnEVWoG4_NJE-VnmQ_GD5vsi8zJv65TkkcjTdjkuXF63s_0bNOrtGFu0zAVUwOQGLsEDkB0YcvKojcumuhyqqTh4DFqHZKxVilQF7ZBQfL4TPTdF:1qadQB:JyFJBihQ7zC9IO7ohIv7WjGLG0wwBnzr4CvOCgU0NIA",
@@ -5695,10 +5810,26 @@
 },
 {
   "model": "sessions.session",
+  "pk": "k6quw73qpbu701is69dffc8ox1qp6eej",
+  "fields": {
+    "session_data": ".eJxVjDsOwjAQBe_iGln-rT-U9DlDZO9ucAA5UpxUiLujSCmgfTPz3mLM-1bHvfM6ziSuwlglLr9ryfjkdiB65HZfJC5tW-ciD0WetMthIX7dTvfvoOZej1rrgBRCgaJBBZMgsjeovLPgJgg-asKozBTRBk0WtUUH4Dgx-6RIfL4FNjdT:1qbwJH:eZsIRtLnydJ3Am-KMDwE3AMbQg2Sj5ktxKYkyey7gKs",
+    "expire_date": "2023-09-15T05:03:07.571Z"
+  }
+},
+{
+  "model": "sessions.session",
   "pk": "kfaf5bhzgg5yckhjm96h81hzavqei0zj",
   "fields": {
     "session_data": ".eJxVjMsOwiAURP-FtSFckMd16d5vIHABqRqalHZl_HdL0oWuJplzZt7Mh22tfut58VNiFwbuzE6_bQz0zG2g9AjtPnOa27pMkQ-FH7Tz25zy63q4fwc19LqvpRNoQ1RQCCMYpRBAF0nCgTREBYoMYgQKctYVaVErtZNsyKDV7PMFGCs3uA:1qUkBz:3ADqB16SHiJBRP3qCazXPxN5eraQJ-LC8XaGxDxfmg8",
     "expire_date": "2023-08-26T08:41:51.845Z"
+  }
+},
+{
+  "model": "sessions.session",
+  "pk": "l3421pudp6ij3m7vuxbq333hqhpk6k4l",
+  "fields": {
+    "session_data": ".eJxVjDsOwjAQRO_iGlm7_sVQ0nMGa-21cQA5UpxUiLuTSCmgG817M28RaF1qWHuew8jiIhQqcfptI6VnbjviB7X7JNPUlnmMclfkQbu8TZxf18P9O6jU67YGzp4gW0U2gkMwxQ7AUSet2auILoLXoJmcswa3ZNCUM6LhQoMHKz5fE4o3Gw:1qbPr1:asSpYp2aWOP4zAHFNwlP953Cw-_V-Q4UKwvL4tYVpaA",
+    "expire_date": "2023-09-13T18:23:47.867Z"
   }
 },
 {
@@ -5743,6 +5874,22 @@
 },
 {
   "model": "sessions.session",
+  "pk": "qkd2m15fd69earwe91m5zy5d0c4zkci5",
+  "fields": {
+    "session_data": "e30:1qbSyL:GMtr_osWRb-Akl-azSED-PFtmdRVihz8RTeJME_-_Iw",
+    "expire_date": "2023-09-13T21:43:33.193Z"
+  }
+},
+{
+  "model": "sessions.session",
+  "pk": "qo7vd054q1ohts5hut2q3l81znns89sg",
+  "fields": {
+    "session_data": ".eJxVjMsOwiAQRf-FtSEzvAIu3fsNZAaoVA0kpV0Z_12bdKHbe865LxFpW2vcRlninMVZKARx-l2Z0qO0HeU7tVuXqbd1mVnuijzokNeey_NyuH8HlUb91uw0JAhoWHlGNjZkcNYHyGiVJw-pBJdAh4RGM-aJJu1cAWXQFGVRvD8EBDcs:1qbHm4:t91gOut6Cm3m9iUVz7N0l-VvANSolMw2cOJ6TOBJk4g",
+    "expire_date": "2023-09-13T09:46:08.745Z"
+  }
+},
+{
+  "model": "sessions.session",
   "pk": "qolsgorvh7nrhe8g2mqlxdbeor6ywgmy",
   "fields": {
     "session_data": ".eJxVjEEOwiAQRe_C2hDG0gIu3fcMZGBmpGpoUtqV8e7apAvd_vfef6mI21ri1niJE6mLAnX63RLmB9cd0B3rbdZ5rusyJb0r-qBNjzPx83q4fwcFW_nWgsAQOnLSd_5sB-8NAwAN4vrMaNELm4Sdk-AhmEQChDZ5kyXYRKDeH-cQOGQ:1qI01X:mONo7xSoxGGoj97_Eiqb2n9O3mbYZJL7XD0LYVIFsDw",
@@ -5775,6 +5922,14 @@
 },
 {
   "model": "sessions.session",
+  "pk": "rq41b5xqds7ie33wouojryzoaubyg6mk",
+  "fields": {
+    "session_data": ".eJxVjEEOwiAQRe_C2hDG0gIu3fcMZGBmpGpoUtqV8e7apAvd_vfef6mI21ri1niJE6mLAnX63RLmB9cd0B3rbdZ5rusyJb0r-qBNjzPx83q4fwcFW_nWgsAQOnLSd_5sB-8NAwAN4vrMaNELm4Sdk-AhmEQChDZ5kyXYRKDeH-cQOGQ:1qbmDh:Nlt1TdOVKXjO4aa7eRxq9FSoy-rgIhUHTwDTPA8TgZo",
+    "expire_date": "2023-09-14T18:16:41.812Z"
+  }
+},
+{
+  "model": "sessions.session",
   "pk": "t1ev7yvkyaaknoivmleluldrg3nb7vy5",
   "fields": {
     "session_data": ".eJxVjDsOwjAQBe_iGln-m1DScwZrvbvGAeRIcVIh7k4ipYD2zcx7iwTrUtPaeU4jiYvQgxOn3zUDPrntiB7Q7pPEqS3zmOWuyIN2eZuIX9fD_Tuo0OtWG7DgAkcdixk8KefZk9XBBDSxoEcCBRvJiLaggszKFkvMZ3JgjBOfLzRdOOQ:1qaXSg:vimIUVqi3w4xNk3JefmvwhF7R2NMkch3enOM5UrwnHg",
@@ -5791,10 +5946,10 @@
 },
 {
   "model": "sessions.session",
-  "pk": "vc5ab5o2cnd4w71glym70ahc0yaw8ou4",
+  "pk": "vz0m9nln6q2k7h6zow5lqtoqgcfw4ra3",
   "fields": {
-    "session_data": ".eJxVjEEOwiAQRe_C2hDG0gIu3fcMZGBmpGpoUtqV8e7apAvd_vfef6mI21ri1niJE6mLAnX63RLmB9cd0B3rbdZ5rusyJb0r-qBNjzPx83q4fwcFW_nWgsAQOnLSd_5sB-8NAwAN4vrMaNELm4Sdk-AhmEQChDZ5kyXYRKDeH-cQOGQ:1qbDOw:CkQJ7s84BRH9t6yE7iHOF4_iQLdCOs0OwhCvjBrJ1-k",
-    "expire_date": "2023-09-13T05:05:58.173Z"
+    "session_data": ".eJxVjMEOwiAQRP-FsyGwSgGP3vsNZIFdqRpISnsy_rtt0oPeJvPezFsEXJcS1k5zmLK4CgAnTr9txPSkuqP8wHpvMrW6zFOUuyIP2uXYMr1uh_t3ULCXbc2ezpcBnDUWwQ-atwhAmZIizSYmYg2WnY2A3pBDiKQUataUjU8sPl8uADjY:1qbUDw:kegbP2c3ALOb5KOcgUU-uLXLaaFNBHZ0i5WPz65M3dQ",
+    "expire_date": "2023-09-13T23:03:44.300Z"
   }
 },
 {
@@ -5827,6 +5982,14 @@
   "fields": {
     "session_data": ".eJxVjDsOwjAQBe_iGln4F3sp6TmDtetdSADZUpxUiLtDpBTQvpl5L5VxXca8dpnzxOqkTAJ1-F0Jy0PqhviO9dZ0aXWZJ9Kbonfa9aWxPM-7-3cwYh-_NUUHZojWhpIScDRFSuTE6B0yEHqyIIk9kvP-CIMb2IEEGwCvQhDU-wMvlThf:1qafUb:6U03jOG4GQOaBpq2vAKNi3cW1sT--4jyHcJcFyFwrLU",
     "expire_date": "2023-09-11T16:53:33.592Z"
+  }
+},
+{
+  "model": "sessions.session",
+  "pk": "xfod8sshrarn7yqhgsidjxk891wshra6",
+  "fields": {
+    "session_data": ".eJxVjDsOwjAQBe_iGllex4ZdSnrOEO36gwPIluKkQtwdIqWA9s3Me6mR16WMa0_zOEV1VhZAHX5X4fBIdUPxzvXWdGh1mSfRm6J32vW1xfS87O7fQeFevjWQYbEGmRwys6UgCINnyMFkR-JtIDQ-igdMkZANoM10PHnnjPhBvT8iCDee:1qbPmN:nyJG4euwtFKBNUxnxbg_R2X83Pl8SzHk5QIGWEkOxGo",
+    "expire_date": "2023-09-13T18:18:59.962Z"
   }
 },
 {
@@ -5866,7 +6029,7 @@
   "pk": 1,
   "fields": {
     "password": "pbkdf2_sha256$390000$rpQgHiuSfhcF8lZlN7HQML$RDiOEXSeIAREafU0Tnvc9vgV82yf2zx4TW1/f/CTw1o=",
-    "last_login": "2023-08-30T05:05:58.010Z",
+    "last_login": "2023-09-01T05:01:41.255Z",
     "is_superuser": true,
     "username": "wim",
     "first_name": "wim",
@@ -5875,10 +6038,9 @@
     "is_active": true,
     "date_joined": "2023-05-13T08:48:16Z",
     "name": "wim bakker",
-    "ploeg": "Nieuw",
+    "ploeg": "nieuw",
     "locker": "H40",
     "email": "wej.bakker@mantisbv.nl",
-    "bio": "de lockermanager on-line :-)",
     "avatar": "dennis_eqjfwsv.jpg",
     "groups": [],
     "user_permissions": []
@@ -5901,7 +6063,6 @@
     "ploeg": null,
     "locker": null,
     "email": "e.s.vansoest@gmail.com",
-    "bio": null,
     "avatar": "avatar.svg",
     "groups": [],
     "user_permissions": []
@@ -5915,16 +6076,15 @@
     "last_login": "2023-08-12T08:41:51.842Z",
     "is_superuser": false,
     "username": "ruud van ginkel",
-    "first_name": "",
+    "first_name": "ruud van ginkel",
     "last_name": "ruud van ginkel",
     "is_staff": false,
     "is_active": true,
     "date_joined": "2023-08-12T08:41:51.606Z",
     "name": "Ruud van GINKEL",
     "ploeg": null,
-    "locker": null,
+    "locker": "H56",
     "email": "r.van.ginkel@hetnet.nl",
-    "bio": null,
     "avatar": "avatar.svg",
     "groups": [],
     "user_permissions": []
@@ -5947,7 +6107,6 @@
     "ploeg": null,
     "locker": null,
     "email": "nap.janneke@gmail.com",
-    "bio": null,
     "avatar": "avatar.svg",
     "groups": [],
     "user_permissions": []
@@ -5970,7 +6129,6 @@
     "ploeg": null,
     "locker": null,
     "email": "willie@ambeleij.demon.nl",
-    "bio": null,
     "avatar": "avatar.svg",
     "groups": [],
     "user_permissions": []
@@ -5993,7 +6151,6 @@
     "ploeg": null,
     "locker": null,
     "email": "t.elst@wxs.nl",
-    "bio": null,
     "avatar": "avatar.svg",
     "groups": [],
     "user_permissions": []
@@ -6007,7 +6164,7 @@
     "last_login": "2023-08-28T05:19:16.160Z",
     "is_superuser": false,
     "username": "evelien van dongen",
-    "first_name": "",
+    "first_name": "evelien van dongen",
     "last_name": "evelien van dongen",
     "is_staff": false,
     "is_active": true,
@@ -6016,7 +6173,6 @@
     "ploeg": null,
     "locker": null,
     "email": "lienvandongen@gmail.com",
-    "bio": null,
     "avatar": "avatar.svg",
     "groups": [],
     "user_permissions": []
@@ -6039,7 +6195,6 @@
     "ploeg": null,
     "locker": null,
     "email": "info@schepeladvies.nl",
-    "bio": null,
     "avatar": "avatar.svg",
     "groups": [],
     "user_permissions": []
@@ -6062,7 +6217,6 @@
     "ploeg": null,
     "locker": null,
     "email": "whmgorissen@gmail.com",
-    "bio": null,
     "avatar": "avatar.svg",
     "groups": [],
     "user_permissions": []
@@ -6085,7 +6239,6 @@
     "ploeg": null,
     "locker": null,
     "email": "olgavkempen@xs4all.nl",
-    "bio": null,
     "avatar": "avatar.svg",
     "groups": [],
     "user_permissions": []
@@ -6108,7 +6261,6 @@
     "ploeg": null,
     "locker": null,
     "email": "tamerlan@xs4all.nl",
-    "bio": null,
     "avatar": "avatar.svg",
     "groups": [],
     "user_permissions": []
@@ -6131,7 +6283,6 @@
     "ploeg": null,
     "locker": null,
     "email": "haroldthijssen@hetnet.nl",
-    "bio": null,
     "avatar": "avatar.svg",
     "groups": [],
     "user_permissions": []
@@ -6152,9 +6303,8 @@
     "date_joined": "2023-08-28T08:25:53.757Z",
     "name": "Leo",
     "ploeg": null,
-    "locker": null,
+    "locker": "H03",
     "email": "leovandenbroek@casema.nl",
-    "bio": null,
     "avatar": "avatar.svg",
     "groups": [],
     "user_permissions": []
@@ -6177,7 +6327,6 @@
     "ploeg": null,
     "locker": null,
     "email": "linooij@gmail.com",
-    "bio": null,
     "avatar": "avatar.svg",
     "groups": [],
     "user_permissions": []
@@ -6200,7 +6349,6 @@
     "ploeg": null,
     "locker": null,
     "email": "p.kwantes@kpnmail.nl",
-    "bio": null,
     "avatar": "avatar.svg",
     "groups": [],
     "user_permissions": []
@@ -6223,7 +6371,6 @@
     "ploeg": null,
     "locker": null,
     "email": "petra.gerritsen@spletters.nl",
-    "bio": null,
     "avatar": "avatar.svg",
     "groups": [],
     "user_permissions": []
@@ -6246,7 +6393,6 @@
     "ploeg": null,
     "locker": null,
     "email": "miranda_megens@yahoo.com",
-    "bio": null,
     "avatar": "avatar.svg",
     "groups": [],
     "user_permissions": []
@@ -6269,7 +6415,6 @@
     "ploeg": null,
     "locker": null,
     "email": "maryke@casema.nl",
-    "bio": null,
     "avatar": "avatar.svg",
     "groups": [],
     "user_permissions": []
@@ -6292,7 +6437,6 @@
     "ploeg": null,
     "locker": null,
     "email": "wyki24@gmail.com",
-    "bio": null,
     "avatar": "avatar.svg",
     "groups": [],
     "user_permissions": []
@@ -6315,7 +6459,6 @@
     "ploeg": null,
     "locker": null,
     "email": "erikvdstruijs@xs4all.nl",
-    "bio": null,
     "avatar": "avatar.svg",
     "groups": [],
     "user_permissions": []
@@ -6338,7 +6481,6 @@
     "ploeg": null,
     "locker": null,
     "email": "harmke.van.dam@xs4all.nl",
-    "bio": null,
     "avatar": "avatar.svg",
     "groups": [],
     "user_permissions": []
@@ -6361,7 +6503,6 @@
     "ploeg": null,
     "locker": null,
     "email": "marian@schuver.com",
-    "bio": null,
     "avatar": "avatar.svg",
     "groups": [],
     "user_permissions": []
@@ -6384,7 +6525,6 @@
     "ploeg": null,
     "locker": null,
     "email": "baaijen@ziggo.nl",
-    "bio": null,
     "avatar": "avatar.svg",
     "groups": [],
     "user_permissions": []
@@ -6407,7 +6547,6 @@
     "ploeg": null,
     "locker": null,
     "email": "martinreniers@hotmail.com",
-    "bio": null,
     "avatar": "avatar.svg",
     "groups": [],
     "user_permissions": []
@@ -6430,7 +6569,6 @@
     "ploeg": null,
     "locker": null,
     "email": "gertjan@miedemageluid.nl",
-    "bio": null,
     "avatar": "avatar.svg",
     "groups": [],
     "user_permissions": []
@@ -6453,7 +6591,160 @@
     "ploeg": null,
     "locker": null,
     "email": "petradeleede@gmail.com",
-    "bio": null,
+    "avatar": "avatar.svg",
+    "groups": [],
+    "user_permissions": []
+  }
+},
+{
+  "model": "base.user",
+  "pk": 210,
+  "fields": {
+    "password": "pbkdf2_sha256$390000$8xEPhEbplZzqWrLm2xNVZ2$K/7QfH5bKhahA9SMNu1EFfqmmPdRU2bCvIApoBkywmg=",
+    "last_login": "2023-08-30T09:46:08.742Z",
+    "is_superuser": false,
+    "username": "ellen beverdam",
+    "first_name": "",
+    "last_name": "ellen beverdam",
+    "is_staff": false,
+    "is_active": true,
+    "date_joined": "2023-08-30T09:46:08.504Z",
+    "name": "Ellen Beverdam",
+    "ploeg": null,
+    "locker": null,
+    "email": "ellenbeverdam@xs4all.nl",
+    "avatar": "avatar.svg",
+    "groups": [],
+    "user_permissions": []
+  }
+},
+{
+  "model": "base.user",
+  "pk": 211,
+  "fields": {
+    "password": "pbkdf2_sha256$390000$9OBHpkB6oJnWuu16Urarf3$VOktNSHBan36CYTlZqskrYYtbln1ChLuwrMvudELhUA=",
+    "last_login": "2023-08-30T18:18:59.959Z",
+    "is_superuser": false,
+    "username": "diana de rijk",
+    "first_name": "",
+    "last_name": "diana de rijk",
+    "is_staff": false,
+    "is_active": true,
+    "date_joined": "2023-08-30T18:18:59.722Z",
+    "name": "Diana de Rijk",
+    "ploeg": null,
+    "locker": null,
+    "email": "derijkdiana@gmail.com",
+    "avatar": "avatar.svg",
+    "groups": [],
+    "user_permissions": []
+  }
+},
+{
+  "model": "base.user",
+  "pk": 212,
+  "fields": {
+    "password": "pbkdf2_sha256$390000$nEbZBiSMsXhNOocgd2zPH7$ibwaqHqGbOue0uOOKH7Cw3RL03gBP/qHHxUk2RL8oRg=",
+    "last_login": "2023-08-30T18:23:47.863Z",
+    "is_superuser": false,
+    "username": "anouk rijs",
+    "first_name": "",
+    "last_name": "anouk rijs",
+    "is_staff": false,
+    "is_active": true,
+    "date_joined": "2023-08-30T18:23:47.594Z",
+    "name": "Anouk Rijs",
+    "ploeg": null,
+    "locker": null,
+    "email": "anoukrijs@hotmail.com",
+    "avatar": "avatar.svg",
+    "groups": [],
+    "user_permissions": []
+  }
+},
+{
+  "model": "base.user",
+  "pk": 213,
+  "fields": {
+    "password": "pbkdf2_sha256$390000$7WbKbd1bqU6f8KkxUuQf8t$YSjknU+Iq6guwv+wydQz3YCzNFOAdbdy8BdXav1ZXSY=",
+    "last_login": "2023-08-30T19:24:39.930Z",
+    "is_superuser": false,
+    "username": "sh",
+    "first_name": "",
+    "last_name": "sh",
+    "is_staff": false,
+    "is_active": true,
+    "date_joined": "2023-08-30T19:24:39.674Z",
+    "name": "Sh",
+    "ploeg": null,
+    "locker": "D36",
+    "email": "info@haazer.nl",
+    "avatar": "avatar.svg",
+    "groups": [],
+    "user_permissions": []
+  }
+},
+{
+  "model": "base.user",
+  "pk": 228,
+  "fields": {
+    "password": "pbkdf2_sha256$390000$dl7JB4jkLdkoqbwNI5C4vH$Lv4W6+bE9v6A5NZ9xQL8bo0dtCbrR303Aywb4oNBJfI=",
+    "last_login": "2023-08-30T23:03:44.296Z",
+    "is_superuser": false,
+    "username": "tomas klos",
+    "first_name": "",
+    "last_name": "tomas klos",
+    "is_staff": false,
+    "is_active": true,
+    "date_joined": "2023-08-30T23:03:44.036Z",
+    "name": "Tomas Klos",
+    "ploeg": null,
+    "locker": null,
+    "email": "tomasklos@proton.me",
+    "avatar": "avatar.svg",
+    "groups": [],
+    "user_permissions": []
+  }
+},
+{
+  "model": "base.user",
+  "pk": 229,
+  "fields": {
+    "password": "pbkdf2_sha256$390000$lVJ6iejiW4cdTHi8a6r3ha$WNahqK26rOoMR1qVP2kzFZqBMe/Np4DpEWrivr3z+YA=",
+    "last_login": "2023-08-31T16:55:20.365Z",
+    "is_superuser": false,
+    "username": "maarten van den akker",
+    "first_name": "",
+    "last_name": "maarten van den akker",
+    "is_staff": false,
+    "is_active": true,
+    "date_joined": "2023-08-31T16:55:20.119Z",
+    "name": "Maarten Van Den Akker",
+    "ploeg": null,
+    "locker": null,
+    "email": "maarten.vd.akker@gmail.com",
+    "avatar": "avatar.svg",
+    "groups": [],
+    "user_permissions": []
+  }
+},
+{
+  "model": "base.user",
+  "pk": 230,
+  "fields": {
+    "password": "pbkdf2_sha256$390000$QvnvCcmWVw7FDQaUOvRimd$Lq8xu3oGxoFRM3EaxOJmo2074kJ/zE8Ki3xIR0xfsvw=",
+    "last_login": "2023-09-01T05:11:09.271Z",
+    "is_superuser": false,
+    "username": "wimpie",
+    "first_name": "",
+    "last_name": "wimpie",
+    "is_staff": false,
+    "is_active": true,
+    "date_joined": "2023-08-31T23:32:00.912Z",
+    "name": "wimpie",
+    "ploeg": null,
+    "locker": null,
+    "email": "w.vandenbosch@planet.nl",
     "avatar": "avatar.svg",
     "groups": [],
     "user_permissions": []
@@ -7696,24 +7987,6 @@
 },
 {
   "model": "base.locker",
-  "pk": 24,
-  "fields": {
-    "kluisnummer": "H56",
-    "email": "wej.bakker@mantisbv.nl",
-    "kluisje": "H56",
-    "type": "C",
-    "topic": "----",
-    "row": "----",
-    "col": "----",
-    "verhuurd": true,
-    "sleutels": "----",
-    "code": "398",
-    "created": "2023-07-09T15:48:28.451Z",
-    "owners": []
-  }
-},
-{
-  "model": "base.locker",
   "pk": 25,
   "fields": {
     "kluisnummer": "H40",
@@ -7750,55 +8023,325 @@
 },
 {
   "model": "base.locker",
-  "pk": 28,
+  "pk": 32,
   "fields": {
-    "kluisnummer": "H40-2",
-    "email": "wej.bakker@mantisbv.nl",
-    "kluisje": "H40-2",
+    "kluisnummer": "D32",
+    "email": "lienvandongen@gmail.com",
+    "kluisje": "D32",
     "type": "--",
     "topic": "----",
     "row": "----",
     "col": "----",
-    "verhuurd": false,
+    "verhuurd": true,
     "sleutels": "----",
     "code": "----",
-    "created": "2023-08-10T17:35:26.437Z",
+    "created": "2023-08-30T17:04:53.964Z",
     "owners": []
   }
 },
 {
   "model": "base.locker",
-  "pk": 29,
+  "pk": 33,
   "fields": {
-    "kluisnummer": "H40-1",
-    "email": "wej.bakker@mantisbv.nl",
-    "kluisje": "H40-1",
+    "kluisnummer": "H24",
+    "email": "gertjan@miedemageluid.nl",
+    "kluisje": "H24",
     "type": "--",
     "topic": "----",
     "row": "----",
     "col": "----",
-    "verhuurd": false,
+    "verhuurd": true,
     "sleutels": "----",
     "code": "----",
-    "created": "2023-08-11T04:31:49.681Z",
+    "created": "2023-08-30T17:12:57.353Z",
     "owners": []
   }
 },
 {
   "model": "base.locker",
-  "pk": 30,
+  "pk": 34,
   "fields": {
-    "kluisnummer": "nieuw",
-    "email": "nieuw@nieuw.nl",
-    "kluisje": "nieuw",
+    "kluisnummer": "D33",
+    "email": "baaijen@ziggo.nl",
+    "kluisje": "D33",
     "type": "--",
     "topic": "----",
     "row": "----",
     "col": "----",
-    "verhuurd": false,
+    "verhuurd": true,
     "sleutels": "----",
     "code": "----",
-    "created": "2023-08-11T04:47:55.469Z",
+    "created": "2023-08-30T17:16:44.623Z",
+    "owners": []
+  }
+},
+{
+  "model": "base.locker",
+  "pk": 35,
+  "fields": {
+    "kluisnummer": "D26",
+    "email": "harmke.van.dam@xs4all.nl",
+    "kluisje": "D26",
+    "type": "--",
+    "topic": "----",
+    "row": "----",
+    "col": "----",
+    "verhuurd": true,
+    "sleutels": "----",
+    "code": "----",
+    "created": "2023-08-30T17:34:43.247Z",
+    "owners": []
+  }
+},
+{
+  "model": "base.locker",
+  "pk": 36,
+  "fields": {
+    "kluisnummer": "D44",
+    "email": "info@schepeladvies.nl",
+    "kluisje": "D44",
+    "type": "--",
+    "topic": "----",
+    "row": "----",
+    "col": "----",
+    "verhuurd": true,
+    "sleutels": "----",
+    "code": "----",
+    "created": "2023-08-30T17:35:26.112Z",
+    "owners": []
+  }
+},
+{
+  "model": "base.locker",
+  "pk": 37,
+  "fields": {
+    "kluisnummer": "H42",
+    "email": "erikvdstruijs@xs4all.nl",
+    "kluisje": "H42",
+    "type": "--",
+    "topic": "----",
+    "row": "----",
+    "col": "----",
+    "verhuurd": true,
+    "sleutels": "----",
+    "code": "----",
+    "created": "2023-08-30T17:35:57.029Z",
+    "owners": []
+  }
+},
+{
+  "model": "base.locker",
+  "pk": 38,
+  "fields": {
+    "kluisnummer": "D31",
+    "email": "miranda_megens@yahoo.com",
+    "kluisje": "D31",
+    "type": "--",
+    "topic": "----",
+    "row": "----",
+    "col": "----",
+    "verhuurd": true,
+    "sleutels": "----",
+    "code": "----",
+    "created": "2023-08-30T17:36:44.429Z",
+    "owners": []
+  }
+},
+{
+  "model": "base.locker",
+  "pk": 39,
+  "fields": {
+    "kluisnummer": "D64",
+    "email": "petra.gerritsen@spletters.nl",
+    "kluisje": "D64",
+    "type": "--",
+    "topic": "----",
+    "row": "----",
+    "col": "----",
+    "verhuurd": true,
+    "sleutels": "----",
+    "code": "----",
+    "created": "2023-08-30T17:37:22.212Z",
+    "owners": []
+  }
+},
+{
+  "model": "base.locker",
+  "pk": 40,
+  "fields": {
+    "kluisnummer": "D41",
+    "email": "linooij@gmail.com",
+    "kluisje": "D41",
+    "type": "--",
+    "topic": "----",
+    "row": "----",
+    "col": "----",
+    "verhuurd": true,
+    "sleutels": "----",
+    "code": "----",
+    "created": "2023-08-30T18:58:18.953Z",
+    "owners": []
+  }
+},
+{
+  "model": "base.locker",
+  "pk": 41,
+  "fields": {
+    "kluisnummer": "H03",
+    "email": "leovandenbroek@casema.nl",
+    "kluisje": "H03",
+    "type": "--",
+    "topic": "----",
+    "row": "----",
+    "col": "----",
+    "verhuurd": true,
+    "sleutels": "----",
+    "code": "----",
+    "created": "2023-08-30T18:59:47.145Z",
+    "owners": []
+  }
+},
+{
+  "model": "base.locker",
+  "pk": 44,
+  "fields": {
+    "kluisnummer": "D69",
+    "email": "olgavkempen@xs4all.nl",
+    "kluisje": "D69",
+    "type": "--",
+    "topic": "----",
+    "row": "----",
+    "col": "----",
+    "verhuurd": true,
+    "sleutels": "----",
+    "code": "----",
+    "created": "2023-08-30T19:10:32.392Z",
+    "owners": []
+  }
+},
+{
+  "model": "base.locker",
+  "pk": 45,
+  "fields": {
+    "kluisnummer": "D25",
+    "email": "t.elst@wxs.nl",
+    "kluisje": "D25",
+    "type": "--",
+    "topic": "----",
+    "row": "----",
+    "col": "----",
+    "verhuurd": true,
+    "sleutels": "----",
+    "code": "----",
+    "created": "2023-08-30T19:11:57.466Z",
+    "owners": []
+  }
+},
+{
+  "model": "base.locker",
+  "pk": 46,
+  "fields": {
+    "kluisnummer": "D46",
+    "email": "derijkdiana@gmail.com",
+    "kluisje": "D46",
+    "type": "--",
+    "topic": "----",
+    "row": "----",
+    "col": "----",
+    "verhuurd": true,
+    "sleutels": "----",
+    "code": "----",
+    "created": "2023-08-30T19:14:19.447Z",
+    "owners": []
+  }
+},
+{
+  "model": "base.locker",
+  "pk": 47,
+  "fields": {
+    "kluisnummer": "D66",
+    "email": "info@haazer.nl",
+    "kluisje": "D66",
+    "type": "--",
+    "topic": "----",
+    "row": "----",
+    "col": "----",
+    "verhuurd": true,
+    "sleutels": "----",
+    "code": "----",
+    "created": "2023-08-30T19:34:39.739Z",
+    "owners": []
+  }
+},
+{
+  "model": "base.locker",
+  "pk": 49,
+  "fields": {
+    "kluisnummer": "D36",
+    "email": "info@haazer.nl",
+    "kluisje": "D36",
+    "type": "--",
+    "topic": "----",
+    "row": "----",
+    "col": "----",
+    "verhuurd": true,
+    "sleutels": "----",
+    "code": "----",
+    "created": "2023-08-30T19:38:51.037Z",
+    "owners": []
+  }
+},
+{
+  "model": "base.locker",
+  "pk": 51,
+  "fields": {
+    "kluisnummer": "H48",
+    "email": "tomasklos@proton.me",
+    "kluisje": "H48",
+    "type": "--",
+    "topic": "----",
+    "row": "----",
+    "col": "----",
+    "verhuurd": true,
+    "sleutels": "----",
+    "code": "----",
+    "created": "2023-08-31T05:24:19.348Z",
+    "owners": []
+  }
+},
+{
+  "model": "base.locker",
+  "pk": 52,
+  "fields": {
+    "kluisnummer": "H47",
+    "email": "maarten.vd.akker@gmail.com",
+    "kluisje": "H47",
+    "type": "--",
+    "topic": "----",
+    "row": "----",
+    "col": "----",
+    "verhuurd": true,
+    "sleutels": "----",
+    "code": "----",
+    "created": "2023-08-31T20:49:10.606Z",
+    "owners": []
+  }
+},
+{
+  "model": "base.locker",
+  "pk": 53,
+  "fields": {
+    "kluisnummer": "H56",
+    "email": "r.van.ginkel@hetnet.nl",
+    "kluisje": "H56",
+    "type": "--",
+    "topic": "----",
+    "row": "----",
+    "col": "----",
+    "verhuurd": true,
+    "sleutels": "----",
+    "code": "----",
+    "created": "2023-08-31T23:04:03.940Z",
     "owners": []
   }
 },
@@ -7903,17 +8446,6 @@
 },
 {
   "model": "base.bericht",
-  "pk": 50,
-  "fields": {
-    "user": 196,
-    "locker": 25,
-    "body": "Ik snap niet wat jullie hier willen zien??",
-    "updated": "2023-08-28T08:32:00.199Z",
-    "created": "2023-08-28T08:32:00.199Z"
-  }
-},
-{
-  "model": "base.bericht",
   "pk": 51,
   "fields": {
     "user": 198,
@@ -7998,6 +8530,72 @@
     "body": "locker H24",
     "updated": "2023-08-29T18:20:22.506Z",
     "created": "2023-08-29T18:20:22.506Z"
+  }
+},
+{
+  "model": "base.bericht",
+  "pk": 60,
+  "fields": {
+    "user": 211,
+    "locker": 35,
+    "body": "ik heb een locker maar weet nummer niet meer. 46?",
+    "updated": "2023-08-30T18:21:09.154Z",
+    "created": "2023-08-30T18:21:09.154Z"
+  }
+},
+{
+  "model": "base.bericht",
+  "pk": 61,
+  "fields": {
+    "user": 213,
+    "locker": 45,
+    "body": "D36 heb ik",
+    "updated": "2023-08-30T19:26:49.136Z",
+    "created": "2023-08-30T19:26:49.136Z"
+  }
+},
+{
+  "model": "base.bericht",
+  "pk": 62,
+  "fields": {
+    "user": 228,
+    "locker": 45,
+    "body": "Ik heb locker 48 in de herenkleedkamer",
+    "updated": "2023-08-30T23:04:42.765Z",
+    "created": "2023-08-30T23:04:42.765Z"
+  }
+},
+{
+  "model": "base.bericht",
+  "pk": 63,
+  "fields": {
+    "user": 229,
+    "locker": 45,
+    "body": "Wij hebben Kluis 47 in gebruik (Viking  top8)",
+    "updated": "2023-08-31T18:32:09.316Z",
+    "created": "2023-08-31T18:32:09.316Z"
+  }
+},
+{
+  "model": "base.bericht",
+  "pk": 64,
+  "fields": {
+    "user": 1,
+    "locker": 45,
+    "body": "Carel en Ruud H56",
+    "updated": "2023-08-31T23:08:23.758Z",
+    "created": "2023-08-31T23:08:23.758Z"
+  }
+},
+{
+  "model": "base.bericht",
+  "pk": 65,
+  "fields": {
+    "user": 1,
+    "locker": 45,
+    "body": "Wim en WimB H40",
+    "updated": "2023-09-01T00:28:28.388Z",
+    "created": "2023-09-01T00:28:28.388Z"
   }
 },
 {

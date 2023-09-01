@@ -16,9 +16,9 @@ from rest_framework.decorators import api_view, permission_classes
 from rest_framework.permissions import IsAuthenticated, IsAdminUser
 from rest_framework.response import Response
 from django.contrib.auth.hashers import make_password
+from django.db import connection
+from collections import namedtuple
 # from base.serializers import UserSerializer, UserSerializerWithToken
-
-
 def loginPage(request):
     page = 'login'
     if request.user.is_authenticated:
@@ -50,51 +50,31 @@ def logoutUser(request):
     return redirect('home')
 
 def registerPage(request):
+    email_used=bool
     form = MyUserCreationForm()
     pemail=request.POST.get('email')
-    print(pemail)
-    try:
-        usr=User.objects.get(email=pemail)
-    except:
-        pass
-    else:
-        messages.error(request, f'User email {pemail} already in use.')
-        return HttpResponseRedirect('/info/')
-
-
     if request.method == 'POST':
         form = MyUserCreationForm(request.POST)
         if form.is_valid():
+            print('valid')
             user = form.save(commit=False)
             user.username = user.name.lower()
             user.last_name = user.name.lower()
-            body=request.POST.get('name')
-    
-
-        #     try:
-        #         u=User.objects.get(username=usr2)
-        #         print('username', user.username,u.id,usr2)
-        #     except User.DoesNotExist:
-        #         print('except =====')
-        #         # username mag meerdere keren voorkomen met verschillende emailadressen
-        #     finally:
-        #         # user.save()
-        #         messages.error(request, 'An error occurred during registration: name exists;  email exists; wrong password')
-        #     # login(request, user)
-        #     # return redirect('home')
-        # else:
-        #     print('else =====')
-        #     messages.error(request, 'An error occurred during registration: possibly email exists or wrong password')
-        #     return HttpResponseRedirect('/info/')
-
-            # print(user.username)
-            user.save()
-            login(request, user)
-            return redirect('home')
-        else:
-            print('else')
-            messages.error(request, 'An error occurred during registration: possibly email exists or wrong password')
-            return HttpResponseRedirect('/info/')
+            # Q(username__icontains=request.POST.get('name')) |
+            users =User.objects.filter(
+            Q(username=request.POST.get('name')) |
+            Q(email=request.POST.get('email'))
+            ).order_by('username') #.exclude(verhuurd=False)
+            print(users)
+            if users:
+                messages.error(request, f'[Email]  and/or [Username] already in use.')
+                print('double', users)
+                return HttpResponseRedirect('/info/')
+            else:
+                print('single',request.POST.get('name'),request.POST.get('email'))
+                user.save()
+                login(request, user)
+                return redirect('home')
 
     return render(request, 'base/login_register.html', {'form': form})
 
@@ -167,36 +147,22 @@ def home(request):
     url = reverse('berichten',)
     if q!='' or q !=None:
         rooms_found = Matriks.objects.filter(regel__icontains=q).values_list('naam',flat=True)
-        # lockers=Locker.objects.filter(kluisnummer__icontains=q).exclude(verhuurd=False)
         lockers =Locker.objects.filter(
         Q(kluisnummer__icontains=q) |
         Q(email__icontains=q)
-        # Q(name__in=rooms_found) 
         ).order_by('kluisnummer').exclude(verhuurd=False)
-
         berichten2 = Bericht.objects.filter(body__icontains=q)
     else:
         berichten=Bericht.objects.all() ##.filter(user=request.user.id)
         # if berichten2:
         #     return HttpResponseRedirect(url)
 
-    # rooms = Room.objects.filter(
-    #     Q(name__icontains=q) |
-    #     Q(description__icontains=q)|
-    #     Q(name__in=rooms_found) 
-    # ).order_by('name').exclude(name='Wachtlijst')
-    # hdr=['', 'kol1','kol2','kol3','kol4','kol5','kol6','kol7','kol8','kol9','kol10','kol11','kol12','kol13']  #LET OP: KOLOM NUL NIET VERGETEN
-    # kopmtrx=[]
-    # for i in range (0,13):
-    #     kopmtrx.append(hdr[i])
     topics = Topic.objects.all()[0:5]
     room_messages = Message.objects.all()
     context = {
-        # 'rooms': rooms, 
                'topics': topics,
                'results': results,
                 'lockers': lockers,
-                # 'kopmtrx': kopmtrx,
                'cabinetsused': cabinetsused, 
                'berichten': berichten, 
                'room_messages': room_messages
@@ -363,14 +329,15 @@ def userProfile(request, pk):
 
 @login_required(login_url='login')
 def updateProfile(request,pk):
-    user = User.objects.all().get(id=pk)
+    user = User.objects.get(id=pk)
     form = UserForm(instance=user)
-    print(form)
+    # print(form)
     berichten=Bericht.objects.all().filter(user=request.user.id)
-    locker= request.POST.get('locker')
+    locker= user.locker #request.POST.get('locker')
     context = {
                 'berichten':berichten,
                 'form': form,
+                'locker': locker,
             }
     if request.method == 'POST':
         form = UserForm(request.POST, request.FILES, instance=user)
@@ -458,7 +425,7 @@ def lockerPage(request,pk):
     
     if request.user.email != locker.email and not request.user.is_superuser:
         messages.error(request, f'{locker.kluisnummer} : Is niet uw locker')
-        return render(request, 'base/lockers.html', {'lockers': lockers,'topics':topics})
+        return render(request, 'base/berichten.html', {'lockers': lockers,'topics':topics})
     
     if request.method == 'POST':
         form = LockerForm(request.POST, request.FILES, instance=locker)
@@ -691,42 +658,16 @@ def update_kluis(request, pk,kol):
             }
     return render(request, 'base/update_kluis_form.html', context)
 
-def kluis(request, pk):
-    locker = Locker.objects.get(id=pk)
-    lockers = Locker.objects.all().filter(verhuurd=True)
-    topics = Topic.objects.all()[0:5]
-    form = LockerForm(instance=locker)
-    if request.user.email != locker.email:
-        messages.error(request, f'{locker.kluisnummer} : Is niet uw locker')
-        return render(request, 'base/lockers.html', {'lockers': lockers,'topics':topics})
 
-    if request.method == 'POST':
-        form = LockerForm(request.POST, request.FILES, instance=locker)
-        if form.is_valid():
-            if locker.verhuurd == False:
-                users_found=User.objects.all().values_list('email',flat=True)
-                overigelockers = Locker.objects.filter(
-                    Q(verhuurd=False)&
-                    Q(email=request.user.email)
-                ).order_by('kluisnummer').update(verhuurd=False)
-                try:
-                    locker2 = Locker.objects.get(kluisnummer=locker.kluisnummer,email=locker.email)
-                except IndexError:
-                    print( 'except verhuurd of niet',locker.kluisnummer,locker.verhuurd)
-            if locker.verhuurd == True:
-                locker.email=request.user.email
-                
-                print('hoofdhuurder')
-                overigelockers = Locker.objects.filter(
-                    Q(verhuurd=False)&
-                    Q(email=locker.email)
-                ).order_by('kluisnummer').update(code=0)
-                print(overigelockers)
+def lockersPage2(request):
+    q = request.GET.get('q') if request.GET.get('q') != None else ''
+    # lockers = Locker.objects.filter(kluisnummer__icontains=q,verhuurd=True) #[0:15]
+    lockers =Locker.objects.filter(
+        Q(kluisnummer__icontains=q) |
+        Q(email__icontains=q)
+        ).order_by('kluisnummer').exclude(verhuurd=False)
 
-            form.save()
-            return redirect('kluis', pk=locker.id)
-
-    return render(request, 'base/update-locker.html', {'form': form})
+    return render(request, 'base/kluisjes.html', {'lockers': lockers})
 
 def decodeer(regel,de_matriks_kolom,column,cellengte):
     begincell=(0+column)*column*cellengte
@@ -870,3 +811,19 @@ def create_locker(request,row,kol):
             return render(request, 'base/locker-add.html', {'column': kol,'row':row,'oorspronkelijkmatriksnummer':oorspronkelijkmatriksnummer })
             # return redirect('home')
     return render(request, 'base/locker-add.html', {'column': kol,'row':row,'oorspronkelijkmatriksnummer':oorspronkelijkmatriksnummer })
+
+
+def namedtuplefetchall(cursor):
+    "Return all rows from a cursor as a namedtuple"
+    desc = cursor.description
+    nt_result = namedtuple('Result', [col[0] for col in desc])
+    return [nt_result(*row) for row in cursor.fetchall()]
+
+def resetsequence(*args):        
+    cursor = connection.cursor() 
+    cursor.execute("SELECT * FROM sqlite_sequence");
+    results = namedtuplefetchall(cursor)
+    # print(args[0])
+    tabel=args[0]
+    sql="UPDATE sqlite_sequence SET seq =0 where name='" + tabel + "'"
+    cursor.execute(sql)
