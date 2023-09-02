@@ -30,5 +30,5 @@ class kluisAdmin(admin.ModelAdmin):
 @admin.register(Excellijst)
 class kluisAdmin(admin.ModelAdmin):
     list_filter = ('email','kluisnummer')
-    list_display = ('kluisnummer','email')
+    list_display = ('kluisnummer','type','email')
     search_fields = ('kluisnummer','email')
