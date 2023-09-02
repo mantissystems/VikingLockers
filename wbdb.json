@@ -4329,6 +4329,32 @@
   }
 },
 {
+  "model": "admin.logentry",
+  "pk": 334,
+  "fields": {
+    "action_time": "2023-09-01T10:38:29.326Z",
+    "user": 1,
+    "content_type": 6,
+    "object_id": "230",
+    "object_repr": "w.vandenbosch@planet.nl",
+    "action_flag": 3,
+    "change_message": ""
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 335,
+  "fields": {
+    "action_time": "2023-09-01T10:57:40.909Z",
+    "user": 1,
+    "content_type": 6,
+    "object_id": "243",
+    "object_repr": "w.vandenbosch@planet.nlll",
+    "action_flag": 3,
+    "change_message": ""
+  }
+},
+{
   "model": "auth.permission",
   "pk": 1,
   "fields": {
@@ -5634,6 +5660,14 @@
 },
 {
   "model": "sessions.session",
+  "pk": "6guw801f1j18bcdw95wjubwrruia9k8t",
+  "fields": {
+    "session_data": ".eJxVjLsOAiEQAP-F2pALLC9Le7-BwO4ipwaSe1QX_13PXKHtzGQ2EdO61LjOPMWRxFkoAHH6pTnhg9uu6J7arUvsbZnGLPdEHnaW1078vBzt36CmuX7HyhCRN8XQQDkDJOc1YUiKtbfoXFHOZmTncQiO4cOBbQmkQRMp8XoDQt444A:1qc1rj:aCJu1WygV5XAEpGGO5hIe7VfIRFcQBFsiLnWc4MQCB4",
+    "expire_date": "2023-09-15T10:59:03.919Z"
+  }
+},
+{
+  "model": "sessions.session",
   "pk": "7g8rimp9ywjbpxmsgdfwo6pl95t1k3qh",
   "fields": {
     "session_data": ".eJxVjMEOwiAQRP-FsyGFLiAevfcbyC67StXQpLQn47_bJj3obTLvzbxVwnUpaW0yp5HVRZno1Om3JcxPqTviB9b7pPNUl3kkvSv6oE0PE8vrerh_BwVb2dZEPnLvAxpkYBMhUATogjBsQVw03rI4J-fe-pDZGu-AAG_SoYjz6vMFLoU4Sw:1qaXZK:MYW6FOkQvKUkm73SQGhds7Ay4q-ephoin3DeMnJSZtc",
@@ -5658,18 +5692,18 @@
 },
 {
   "model": "sessions.session",
-  "pk": "8sb7tpmg2rj0c6lb329jd6n9m09ykszr",
-  "fields": {
-    "session_data": ".eJxVjEEOwiAQRe_C2hDG0gIu3fcMZGBmpGpoUtqV8e7apAvd_vfef6mI21ri1niJE6mLAnX63RLmB9cd0B3rbdZ5rusyJb0r-qBNjzPx83q4fwcFW_nWgsAQOnLSd_5sB-8NAwAN4vrMaNELm4Sdk-AhmEQChDZ5kyXYRKDeH-cQOGQ:1qb4EV:zF6PIQSVw8BH1GMzAATsyDgSEtH2n2CQrpb0AcykOL4",
-    "expire_date": "2023-09-12T19:18:35.862Z"
-  }
-},
-{
-  "model": "sessions.session",
   "pk": "8u4u14olvfdrd8qjz6glasj7kc1ni9v2",
   "fields": {
     "session_data": ".eJxVjMEOwiAQBf-FsyGwUFg8evcbCLAgVQNJaU_Gf9cmPej1zcx7MR-2tfpt5MXPxM4MwLHT7xpDeuS2I7qHdus89bYuc-S7wg86-LVTfl4O9--ghlG_tSpFAkprnLBCFAsSNGnIZIKzhfKErpBMSKgkuoCScIpZKFA6WmGAvT8PyTdc:1qbkwy:IVNJlWX0mAMfp_ahSWjloO_08Nq_K2-paFJ2aXduZlA",
     "expire_date": "2023-09-14T16:55:20.369Z"
+  }
+},
+{
+  "model": "sessions.session",
+  "pk": "9eg6mzgpsqz15azhavralm6s2vjfpzs2",
+  "fields": {
+    "session_data": "e30:1qbycs:Jhs8r0eKchXKmUwdfTXLk_mI7EQQzT7XfKzW8VskHBw",
+    "expire_date": "2023-09-15T07:31:30.795Z"
   }
 },
 {
@@ -5762,6 +5796,14 @@
 },
 {
   "model": "sessions.session",
+  "pk": "fgrnaa6h9b029er3c6l19099z6uo0x93",
+  "fields": {
+    "session_data": ".eJxVjEEOwiAQRe_C2hDG0gIu3fcMZGBmpGpoUtqV8e7apAvd_vfef6mI21ri1niJE6mLAnX63RLmB9cd0B3rbdZ5rusyJb0r-qBNjzPx83q4fwcFW_nWgsAQOnLSd_5sB-8NAwAN4vrMaNELm4Sdk-AhmEQChDZ5kyXYRKDeH-cQOGQ:1qc2rT:2z7Lklt2iuuUUPbzSYTy2h3BzbfgzgvGeYNzaiXMSCw",
+    "expire_date": "2023-09-15T12:02:51.828Z"
+  }
+},
+{
+  "model": "sessions.session",
   "pk": "finque11ugog1c6ipd3azc8jnwitwtji",
   "fields": {
     "session_data": ".eJxVjEEOwiAQRe_C2hDG0gIu3fcMZGBmpGpoUtqV8e7apAvd_vfef6mI21ri1niJE6mLAnX63RLmB9cd0B3rbdZ5rusyJb0r-qBNjzPx83q4fwcFW_nWgsAQOnLSd_5sB-8NAwAN4vrMaNELm4Sdk-AhmEQChDZ5kyXYRKDeH-cQOGQ:1qUTU1:nlx_CzUF7wytlNCWv8MpqSDngN7_3hNpnDEq6vc3Ut8",
@@ -5806,14 +5848,6 @@
   "fields": {
     "session_data": ".eJxVjMsOwiAQAP-FsyEsS3l49N5vIAsLUjVtUtqT8d9Nkx70OjOZt4i0by3uvaxxYnEVWoG4_NJE-VnmQ_GD5vsi8zJv65TkkcjTdjkuXF63s_0bNOrtGFu0zAVUwOQGLsEDkB0YcvKojcumuhyqqTh4DFqHZKxVilQF7ZBQfL4TPTdF:1qadQB:JyFJBihQ7zC9IO7ohIv7WjGLG0wwBnzr4CvOCgU0NIA",
     "expire_date": "2023-09-11T14:40:51.688Z"
-  }
-},
-{
-  "model": "sessions.session",
-  "pk": "k6quw73qpbu701is69dffc8ox1qp6eej",
-  "fields": {
-    "session_data": ".eJxVjDsOwjAQBe_iGln-rT-U9DlDZO9ucAA5UpxUiLujSCmgfTPz3mLM-1bHvfM6ziSuwlglLr9ryfjkdiB65HZfJC5tW-ciD0WetMthIX7dTvfvoOZej1rrgBRCgaJBBZMgsjeovLPgJgg-asKozBTRBk0WtUUH4Dgx-6RIfL4FNjdT:1qbwJH:eZsIRtLnydJ3Am-KMDwE3AMbQg2Sj5ktxKYkyey7gKs",
-    "expire_date": "2023-09-15T05:03:07.571Z"
   }
 },
 {
@@ -6025,11 +6059,19 @@
   }
 },
 {
+  "model": "sessions.session",
+  "pk": "zzjv03c944ogljcjut3xynlyhhr80xx6",
+  "fields": {
+    "session_data": ".eJxVjLsOAiEQAP-F2pALLC9Le7-BwO4ipwaSe1QX_13PXKHtzGQ2EdO61LjOPMWRxFkoAHH6pTnhg9uu6J7arUvsbZnGLPdEHnaW1078vBzt36CmuX7HyhCRN8XQQDkDJOc1YUiKtbfoXFHOZmTncQiO4cOBbQmkQRMp8XoDQt444A:1qc38F:v8Xxv688sYT_C-RC5WdX180h96Qwg65X3Y_ZN4ju-oU",
+    "expire_date": "2023-09-15T12:20:11.686Z"
+  }
+},
+{
   "model": "base.user",
   "pk": 1,
   "fields": {
     "password": "pbkdf2_sha256$390000$rpQgHiuSfhcF8lZlN7HQML$RDiOEXSeIAREafU0Tnvc9vgV82yf2zx4TW1/f/CTw1o=",
-    "last_login": "2023-09-01T05:01:41.255Z",
+    "last_login": "2023-09-01T12:03:18.676Z",
     "is_superuser": true,
     "username": "wim",
     "first_name": "wim",
@@ -6730,18 +6772,18 @@
 },
 {
   "model": "base.user",
-  "pk": 230,
+  "pk": 244,
   "fields": {
-    "password": "pbkdf2_sha256$390000$QvnvCcmWVw7FDQaUOvRimd$Lq8xu3oGxoFRM3EaxOJmo2074kJ/zE8Ki3xIR0xfsvw=",
-    "last_login": "2023-09-01T05:11:09.271Z",
+    "password": "pbkdf2_sha256$390000$MbAy3r2ahV6QE6xFilyWG5$Hkuz0s9MNtjJ066lD0v9N2tnUv2ZuZLALt2rIL1QSAQ=",
+    "last_login": "2023-09-01T12:20:11.661Z",
     "is_superuser": false,
-    "username": "wimpie",
+    "username": "willem",
     "first_name": "",
-    "last_name": "wimpie",
+    "last_name": "willem",
     "is_staff": false,
     "is_active": true,
-    "date_joined": "2023-08-31T23:32:00.912Z",
-    "name": "wimpie",
+    "date_joined": "2023-09-01T10:59:01.245Z",
+    "name": "willem",
     "ploeg": null,
     "locker": null,
     "email": "w.vandenbosch@planet.nl",
@@ -8000,7 +8042,9 @@
     "sleutels": "----",
     "code": "----",
     "created": "2023-07-11T19:04:59.462Z",
-    "owners": []
+    "owners": [
+      1
+    ]
   }
 },
 {
@@ -8596,6 +8640,17 @@
     "body": "Wim en WimB H40",
     "updated": "2023-09-01T00:28:28.388Z",
     "created": "2023-09-01T00:28:28.388Z"
+  }
+},
+{
+  "model": "base.bericht",
+  "pk": 66,
+  "fields": {
+    "user": 244,
+    "locker": 45,
+    "body": "I Bolwijn op de wachtlijst",
+    "updated": "2023-09-01T14:54:57.088Z",
+    "created": "2023-09-01T14:54:57.088Z"
   }
 },
 {

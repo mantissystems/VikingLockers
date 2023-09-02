@@ -18,6 +18,8 @@ from rest_framework.response import Response
 from django.contrib.auth.hashers import make_password
 from django.db import connection
 from collections import namedtuple
+from rest_framework import status
+
 # from base.serializers import UserSerializer, UserSerializerWithToken
 def loginPage(request):
     page = 'login'
@@ -67,14 +69,18 @@ def registerPage(request):
             ).order_by('username') #.exclude(verhuurd=False)
             print(users)
             if users:
+                #  message = {'detail': 'User with this email already exists'}
                 messages.error(request, f'[Email]  and/or [Username] already in use.')
                 print('double', users)
-                return HttpResponseRedirect('/info/')
+                # message = {'detail': 'User with this email already exists'}
+                # return Response(message, status=status.HTTP_400_BAD_REQUEST)
+
+                return HttpResponseRedirect('/')
             else:
                 print('single',request.POST.get('name'),request.POST.get('email'))
                 user.save()
                 login(request, user)
-                return redirect('home')
+                return redirect('/')
 
     return render(request, 'base/login_register.html', {'form': form})
 
