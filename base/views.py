@@ -153,7 +153,7 @@ def home(request):
     url = reverse('berichten',)
     if q!='' or q !=None:
         rooms_found = Matriks.objects.filter(regel__icontains=q).values_list('naam',flat=True)
-        if 'xls' in q:
+        if 'xls' in q.lower():
             lijst='excellijst'
             x = q.replace("xls ", "")
             q=x
@@ -464,23 +464,23 @@ def excel_regelPage(request,pk):
         if form.is_valid():
             print('form is valid')
             if kluis:
-                created = Locker.objects.update_or_create(kluisnummer=kluis,
+                created = Locker.objects.update_or_create(kluisnummer=kluis.id,
                     email=excel.email,
                     verhuurd=True,
-                    kluisje=kluis)
+                    kluisje=kluis.id)
 
             if onderhuurder:
                 print('onderhuurder', onderhuurder)
                 h=User.objects.get(id=onderhuurder)
                 # excel.owners.add(h)
-                return redirect('locker', excel.id)
+                return redirect('locker', kluis.id)
             if huuropheffen:
 
                 h=User.objects.get(id=huuropheffen)
                 print('opheffen',h)
                 # locker.owners.remove(h)
                 form.save()
-            return redirect('excel-regel', excel.id)
+            return redirect('excel-regel', kluis.id)
     return render(request, 'base/update-locker.html', context)
 
 @login_required(login_url='login')
