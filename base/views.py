@@ -6,7 +6,7 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth import authenticate, login, logout
 from django.urls import reverse
 # from viking.models import  Matriks,KluisjesRV
-from base.models import Room,Message,User,Topic,Matriks,Locker,Ploeg,Helptekst,Bericht
+from base.models import Room,Message,User,Topic,Matriks,Locker,Ploeg,Helptekst,Bericht,Excellijst
 from django.db.models import Q
 from base.forms import RoomForm, UserForm,  MyUserCreationForm,PloegForm,LockerForm
 from django.views.generic import(TemplateView,ListView)
@@ -377,6 +377,11 @@ def lockersPage(request):
     lockers = Locker.objects.filter(kluisnummer__icontains=q,verhuurd=True) #[0:15]
     return render(request, 'base/lockers.html', {'lockers': lockers})
 
+def excelPage(request):
+    q = request.GET.get('q') if request.GET.get('q') != None else ''
+    lockers = Excellijst.objects.filter(kluisnummer__icontains=q)
+    return render(request, 'base/excellijst.html', {'lockers': lockers})
+
 def profilePage(request):
     q = request.GET.get('q') if request.GET.get('q') != None else ''
     profiles = User.objects.filter(name__icontains=q)
@@ -416,6 +421,66 @@ def ploegPage(request, pk):
             return redirect('ploeg', ploeg.name)
 
     return render(request, 'base/update-ploeg.html', context) ##{'form': form})
+
+def excel_regelPage(request,pk):
+    locker = Excellijst.objects.get(id=pk)
+    form = LockerForm(instance=locker)
+    lockers=Excellijst.objects.all()
+    topics=Topic.objects.all()
+    vikingers=User.objects.all().order_by('username')
+    context = {
+                'vikingers':vikingers,
+                'kluis': locker,
+                'form': form,
+            }
+    
+    # if request.user.email != locker.email and not request.user.is_superuser:
+    #     messages.error(request, f'{locker.kluisnummer} : Is niet uw locker')
+    #     return render(request, 'base/berichten.html', {'lockers': lockers,'topics':topics})
+    
+    # if request.method == 'POST':
+    #     form = LockerForm(request.POST, request.FILES, instance=locker)
+    #     onderhuurder= request.POST.get('onderhuurder')
+    #     slotcode= request.POST.get('code')
+    #     type= request.POST.get('type')
+    #     sleutels= request.POST.get('sleutels')
+    #     huuropheffen= request.POST.get('huuropheffen')
+    #     print('onderhuurder', onderhuurder,sleutels,slotcode)
+    #     if form.is_valid():
+    #         print('form is valid')
+    #         if onderhuurder:
+    #             print('onderhuurder', onderhuurder)
+    #             h=User.objects.get(id=onderhuurder)
+    #             locker.owners.add(h)
+    #             return redirect('locker', locker.id)
+    #         if huuropheffen:
+
+    #             h=User.objects.get(id=huuropheffen)
+    #             print('opheffen',h)
+    #             locker.owners.remove(h)
+    #             form.save()
+    #         return redirect('locker', locker.id)
+    return render(request, 'base/update-locker.html', context)
+
+@login_required(login_url='login')
+def updateRoom(request, pk):
+    room = Room.objects.get(id=pk)
+    form = RoomForm(instance=room)
+    topics = Topic.objects.all()
+    # if request.user != room.host:
+    #     return HttpResponse('Your are not allowed here!!')
+
+    if request.method == 'POST':
+        topic_name = request.POST.get('topic')
+        topic, created = Topic.objects.get_or_create(name=topic_name)
+        room.name = request.POST.get('name')
+        room.topic = topic
+        room.description = request.POST.get('description')
+        room.save()
+        return redirect('home')
+
+    context = {'form': form, 'topics': topics, 'room': room}
+    return render(request, 'base/room_form.html', context)
 
 def lockerPage(request,pk):
     locker = Locker.objects.get(id=pk)

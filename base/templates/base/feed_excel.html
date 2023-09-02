@@ -1,0 +1,40 @@
+{% for room in lockers %}
+<div class="roomListRoom">
+    <div class="roomListRoom__header">
+        <div class="roomListRoom__actions">
+        </div>
+    </div>
+    <div class="activities__boxHeader roomListRoom__header">
+        <a href="{% url 'excel-regel' room.id %}">{{room.kluisnummer}}| {{room.email|slice:"0:12"}}...  </a>
+    </div>
+    <div class="activities__boxContent">
+        {% for message in room.owners.all %}
+        <div class="activities__boxRoomContent">{{message.email|slice:"0:13"}}....</div>
+        {% endfor %}
+    </div>
+
+    {% for message in room.owners.allll %}
+    <div class="activities__box">
+        <div class="activities__boxHeader roomListRoom__header">
+            <a href="{% url 'user-profile' request.user.id %}" class="roomListRoom__author">
+                {% comment %}
+
+                <p>
+                    @{{message.email}}
+                    <span>{{message.kluisje}} ago</span>
+                </p>
+                {% endcomment %}
+
+            </a>
+
+        </div>
+        <div class="activities__boxContent">
+            {% for message in room.owners.all %}
+            <div class="activities__boxRoomContent">{{message.email}}</div>
+            {% endfor %}
+        </div>
+    </div>
+    {% endfor %}
+
+</div>
+{% endfor %}
