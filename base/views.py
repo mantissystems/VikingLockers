@@ -152,6 +152,7 @@ def home(request):
     berichten=Bericht.objects.all() ##.filter(user=request.user.id)
     url = reverse('berichten',)
     if q!='' or q !=None:
+        lijst='home'
         rooms_found = Matriks.objects.filter(regel__icontains=q).values_list('naam',flat=True)
         if 'xls' in q.lower():
             lijst='excellijst'
