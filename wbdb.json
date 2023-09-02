@@ -4355,6 +4355,45 @@
   }
 },
 {
+  "model": "admin.logentry",
+  "pk": 336,
+  "fields": {
+    "action_time": "2023-09-02T10:51:31.592Z",
+    "user": 1,
+    "content_type": 28,
+    "object_id": "207",
+    "object_repr": "Excellijst object (207)",
+    "action_flag": 2,
+    "change_message": "[{\"changed\": {\"fields\": [\"Kluisnummer\"]}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 337,
+  "fields": {
+    "action_time": "2023-09-02T12:43:39.423Z",
+    "user": 1,
+    "content_type": 24,
+    "object_id": "54",
+    "object_repr": "Locker object (54)",
+    "action_flag": 2,
+    "change_message": "[{\"changed\": {\"fields\": [\"Kluisje\"]}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 338,
+  "fields": {
+    "action_time": "2023-09-02T12:44:03.990Z",
+    "user": 1,
+    "content_type": 24,
+    "object_id": "54",
+    "object_repr": "Locker object (54)",
+    "action_flag": 2,
+    "change_message": "[{\"changed\": {\"fields\": [\"Kluisnummer\"]}}]"
+  }
+},
+{
   "model": "auth.permission",
   "pk": 1,
   "fields": {
@@ -5736,6 +5775,14 @@
 },
 {
   "model": "sessions.session",
+  "pk": "95beg65c24zu80hxew19tt1ljxekqtt3",
+  "fields": {
+    "session_data": ".eJxVjEEOwiAQRe_C2hDG0gIu3fcMZGBmpGpoUtqV8e7apAvd_vfef6mI21ri1niJE6mLAnX63RLmB9cd0B3rbdZ5rusyJb0r-qBNjzPx83q4fwcFW_nWgsAQOnLSd_5sB-8NAwAN4vrMaNELm4Sdk-AhmEQChDZ5kyXYRKDeH-cQOGQ:1qcNn4:5BB1EowAJTWwgCf5pCAvyPhWzS7CGAgH5fVwfEXE8zs",
+    "expire_date": "2023-09-16T10:23:42.671Z"
+  }
+},
+{
+  "model": "sessions.session",
   "pk": "9eg6mzgpsqz15azhavralm6s2vjfpzs2",
   "fields": {
     "session_data": "e30:1qbycs:Jhs8r0eKchXKmUwdfTXLk_mI7EQQzT7XfKzW8VskHBw",
@@ -5828,6 +5875,14 @@
   "fields": {
     "session_data": ".eJxVjEEOwiAQRe_C2hDG0gIu3fcMZGBmpGpoUtqV8e7apAvd_vfef6mI21ri1niJE6mLAnX63RLmB9cd0B3rbdZ5rusyJb0r-qBNjzPx83q4fwcFW_nWgsAQOnLSd_5sB-8NAwAN4vrMaNELm4Sdk-AhmEQChDZ5kyXYRKDeH-cQOGQ:1q0wdc:QYtxzU5A1mm-p_8-Xe_2PHr7grtzBnYAJ4OPnBMNS2M",
     "expire_date": "2023-06-05T03:55:12.701Z"
+  }
+},
+{
+  "model": "sessions.session",
+  "pk": "f92y5c6qtlzjy833upg6ipp7re67xqrc",
+  "fields": {
+    "session_data": ".eJxVjEEOwiAQRe_C2hDG0gIu3fcMZGBmpGpoUtqV8e7apAvd_vfef6mI21ri1niJE6mLAnX63RLmB9cd0B3rbdZ5rusyJb0r-qBNjzPx83q4fwcFW_nWgsAQOnLSd_5sB-8NAwAN4vrMaNELm4Sdk-AhmEQChDZ5kyXYRKDeH-cQOGQ:1qcMWX:SR-_XIMgrroANmJNd8sZEWIxJ1ICdhzV08_0KSCd3-E",
+    "expire_date": "2023-09-16T09:02:33.659Z"
   }
 },
 {
@@ -6064,26 +6119,10 @@
 },
 {
   "model": "sessions.session",
-  "pk": "xk2lq448vrq9jmv9qwbtty7u6jix3nis",
-  "fields": {
-    "session_data": ".eJxVjEEOwiAQRe_C2hDG0gIu3fcMZGBmpGpoUtqV8e7apAvd_vfef6mI21ri1niJE6mLAnX63RLmB9cd0B3rbdZ5rusyJb0r-qBNjzPx83q4fwcFW_nWgsAQOnLSd_5sB-8NAwAN4vrMaNELm4Sdk-AhmEQChDZ5kyXYRKDeH-cQOGQ:1qc6zl:oqTU3OtDXRlVd_oXiWyIpLeQh3uNK60wc1Q3axCYvAQ",
-    "expire_date": "2023-09-15T16:27:41.298Z"
-  }
-},
-{
-  "model": "sessions.session",
   "pk": "z7amh5jpaur6rm3ltjy5vnuitm5ugzag",
   "fields": {
     "session_data": ".eJxVjEEOwiAQRe_C2hDG0gIu3fcMZGBmpGpoUtqV8e7apAvd_vfef6mI21ri1niJE6mLAnX63RLmB9cd0B3rbdZ5rusyJb0r-qBNjzPx83q4fwcFW_nWgsAQOnLSd_5sB-8NAwAN4vrMaNELm4Sdk-AhmEQChDZ5kyXYRKDeH-cQOGQ:1qXKTo:bgxB_nzDGERu6JI2IMznwUFF9DtHe4fhaRg1yh_4TSg",
     "expire_date": "2023-09-02T11:50:56.245Z"
-  }
-},
-{
-  "model": "sessions.session",
-  "pk": "zf50k9ja2gpg8bd45zsyu4ajo6udonsj",
-  "fields": {
-    "session_data": ".eJxVjEEOwiAQRe_C2hDG0gIu3fcMZGBmpGpoUtqV8e7apAvd_vfef6mI21ri1niJE6mLAnX63RLmB9cd0B3rbdZ5rusyJb0r-qBNjzPx83q4fwcFW_nWgsAQOnLSd_5sB-8NAwAN4vrMaNELm4Sdk-AhmEQChDZ5kyXYRKDeH-cQOGQ:1qcKiF:9hkJ3YEHzWnsGJM_yVdxBB50Jpv402Gn6mHx_4OSNcw",
-    "expire_date": "2023-09-16T07:06:31.262Z"
   }
 },
 {
@@ -6107,7 +6146,7 @@
   "pk": 1,
   "fields": {
     "password": "pbkdf2_sha256$390000$rpQgHiuSfhcF8lZlN7HQML$RDiOEXSeIAREafU0Tnvc9vgV82yf2zx4TW1/f/CTw1o=",
-    "last_login": "2023-09-02T07:06:31.097Z",
+    "last_login": "2023-09-02T10:23:42.506Z",
     "is_superuser": true,
     "username": "wim",
     "first_name": "wim",
@@ -6811,7 +6850,7 @@
   "pk": 244,
   "fields": {
     "password": "pbkdf2_sha256$390000$MbAy3r2ahV6QE6xFilyWG5$Hkuz0s9MNtjJ066lD0v9N2tnUv2ZuZLALt2rIL1QSAQ=",
-    "last_login": "2023-09-01T19:52:51.701Z",
+    "last_login": "2023-09-02T10:18:33.034Z",
     "is_superuser": false,
     "username": "willem",
     "first_name": "",
@@ -6845,6 +6884,28 @@
     "ploeg": null,
     "locker": null,
     "email": "peterhingstman@gmail.com",
+    "avatar": "avatar.svg",
+    "groups": [],
+    "user_permissions": []
+  }
+},
+{
+  "model": "base.user",
+  "pk": 246,
+  "fields": {
+    "password": "pbkdf2_sha256$390000$aTyhEG2gbE8S7PnIvRyGZ6$N28I8arV0C8K+mEI2FKsVNBx0Yvw7gWr1RMsRBIDoTs=",
+    "last_login": "2023-09-02T09:01:44.415Z",
+    "is_superuser": false,
+    "username": "carel",
+    "first_name": "",
+    "last_name": "carel",
+    "is_staff": false,
+    "is_active": true,
+    "date_joined": "2023-09-02T09:01:44.139Z",
+    "name": "Carel",
+    "ploeg": null,
+    "locker": null,
+    "email": "c.reuser@yahoo.com",
     "avatar": "avatar.svg",
     "groups": [],
     "user_permissions": []
@@ -8444,6 +8505,44 @@
     "sleutels": "----",
     "code": "----",
     "created": "2023-08-31T23:04:03.940Z",
+    "owners": [
+      246
+    ]
+  }
+},
+{
+  "model": "base.locker",
+  "pk": 54,
+  "fields": {
+    "kluisnummer": "H22",
+    "email": "p.hingstman@hccnet.nl",
+    "kluisje": "H22",
+    "type": "--",
+    "topic": "----",
+    "row": "----",
+    "col": "----",
+    "verhuurd": true,
+    "sleutels": "----",
+    "code": "----",
+    "created": "2023-09-02T10:40:43.167Z",
+    "owners": []
+  }
+},
+{
+  "model": "base.locker",
+  "pk": 55,
+  "fields": {
+    "kluisnummer": "H22",
+    "email": "p.hingstman@hccnet.nl",
+    "kluisje": "H22",
+    "type": "--",
+    "topic": "----",
+    "row": "----",
+    "col": "----",
+    "verhuurd": true,
+    "sleutels": "----",
+    "code": "----",
+    "created": "2023-09-02T11:31:00.839Z",
     "owners": []
   }
 },
@@ -9399,9 +9498,9 @@
   "model": "base.excellijst",
   "pk": 207,
   "fields": {
-    "kluisnummer": "Heren 22",
+    "kluisnummer": "Heren22",
     "email": "p.hingstman@hccnet.nl",
-    "type": "hang",
+    "type": "--",
     "sleutels": "1",
     "code": "1",
     "created": "2023-01-03T00:00:00Z"
@@ -9833,6 +9932,18 @@
   "fields": {
     "kluisnummer": "Heren 70",
     "email": "gelangeveld@gmail.com",
+    "type": "hang",
+    "sleutels": "1",
+    "code": "1",
+    "created": "2023-01-03T00:00:00Z"
+  }
+},
+{
+  "model": "base.excellijst",
+  "pk": 244,
+  "fields": {
+    "kluisnummer": "Heren 22",
+    "email": "p.hingstman@hccnet.nl",
     "type": "hang",
     "sleutels": "1",
     "code": "1",

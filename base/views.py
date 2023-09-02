@@ -169,6 +169,7 @@ def home(request):
 
     excellockers =Excellijst.objects.filter(
     Q(kluisnummer__icontains=q) |
+    Q(type__icontains=q) |
     Q(email__icontains=q)
     ).order_by('kluisnummer')
     # print(q,lijst,excellockers)
