@@ -42,6 +42,10 @@
         </div>
       </div>
       <h2>Verhuurde Lockers {{lockers.count }} van 120</h2>
+      {% if excellockers %}
+      {% include 'base/feed_excel.html' %}
+      {% endif %}
+      
       {% include 'base/feed_component.html' %}
       {% if request.user.is_superuser %}
       {% endif %}

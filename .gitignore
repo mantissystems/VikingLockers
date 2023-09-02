@@ -5,6 +5,7 @@
 
 ### Django ###
 obs*
+wbdb.json
 *.log
 *.pot
 *.pyc

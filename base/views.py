@@ -8,7 +8,7 @@ from django.urls import reverse
 # from viking.models import  Matriks,KluisjesRV
 from base.models import Room,Message,User,Topic,Matriks,Locker,Ploeg,Helptekst,Bericht,Excellijst
 from django.db.models import Q
-from base.forms import RoomForm, UserForm,  MyUserCreationForm,PloegForm,LockerForm
+from base.forms import RoomForm, UserForm,  MyUserCreationForm,PloegForm,LockerForm,ExcelForm
 from django.views.generic import(TemplateView,ListView)
 from django.contrib.auth.models import AnonymousUser
 from django.contrib import messages
@@ -85,6 +85,7 @@ def registerPage(request):
     return render(request, 'base/login_register.html', {'form': form})
 
 def home(request):
+    lijst='home'
     from django.utils.safestring import mark_safe
     messages.add_message(request, messages.INFO, "Welkom bij Viking Lockers.")    
     q = request.GET.get('q') if request.GET.get('q') != None else ''
@@ -118,7 +119,6 @@ def home(request):
             print(message.body)
 
     if request.user.is_authenticated:
-        print('5.logged-in-user:', request.user)
         try:
             user=User.objects.get(id=request.user.id)
             locker2 = Locker.objects.get(kluisnummer=user.locker,email=user.email,verhuurd=True)
@@ -153,6 +153,10 @@ def home(request):
     url = reverse('berichten',)
     if q!='' or q !=None:
         rooms_found = Matriks.objects.filter(regel__icontains=q).values_list('naam',flat=True)
+        if 'xls' in q:
+            lijst='excellijst'
+            x = q.replace("xls ", "")
+            q=x
         lockers =Locker.objects.filter(
         Q(kluisnummer__icontains=q) |
         Q(email__icontains=q)
@@ -163,12 +167,21 @@ def home(request):
         # if berichten2:
         #     return HttpResponseRedirect(url)
 
+    excellockers =Excellijst.objects.filter(
+    Q(kluisnummer__icontains=q) |
+    Q(email__icontains=q)
+    ).order_by('kluisnummer')
+    # print(q,lijst,excellockers)
     topics = Topic.objects.all()[0:5]
     room_messages = Message.objects.all()
+    # expression_if_true if condition else expression_if_false
+    lockers=excellockers if lijst=='excellijst' else lockers
     context = {
                'topics': topics,
+               'lijst':lijst,
                'results': results,
                 'lockers': lockers,
+                'excellockers': excellockers,
                'cabinetsused': cabinetsused, 
                'berichten': berichten, 
                'room_messages': room_messages
@@ -379,8 +392,9 @@ def lockersPage(request):
 
 def excelPage(request):
     q = request.GET.get('q') if request.GET.get('q') != None else ''
+    lijst='excellijst'
     lockers = Excellijst.objects.filter(kluisnummer__icontains=q)
-    return render(request, 'base/excellijst.html', {'lockers': lockers})
+    return render(request, 'base/excellijst.html', {'lockers': lockers,'excellijst':lijst})
 
 def profilePage(request):
     q = request.GET.get('q') if request.GET.get('q') != None else ''
@@ -423,14 +437,14 @@ def ploegPage(request, pk):
     return render(request, 'base/update-ploeg.html', context) ##{'form': form})
 
 def excel_regelPage(request,pk):
-    locker = Excellijst.objects.get(id=pk)
-    form = LockerForm(instance=locker)
+    excel = Excellijst.objects.get(id=pk)
+    form = ExcelForm(instance=excel)
     lockers=Excellijst.objects.all()
     topics=Topic.objects.all()
     vikingers=User.objects.all().order_by('username')
     context = {
                 'vikingers':vikingers,
-                'kluis': locker,
+                'kluis': excel,
                 'form': form,
             }
     
@@ -438,28 +452,35 @@ def excel_regelPage(request,pk):
     #     messages.error(request, f'{locker.kluisnummer} : Is niet uw locker')
     #     return render(request, 'base/berichten.html', {'lockers': lockers,'topics':topics})
     
-    # if request.method == 'POST':
-    #     form = LockerForm(request.POST, request.FILES, instance=locker)
-    #     onderhuurder= request.POST.get('onderhuurder')
-    #     slotcode= request.POST.get('code')
-    #     type= request.POST.get('type')
-    #     sleutels= request.POST.get('sleutels')
-    #     huuropheffen= request.POST.get('huuropheffen')
-    #     print('onderhuurder', onderhuurder,sleutels,slotcode)
-    #     if form.is_valid():
-    #         print('form is valid')
-    #         if onderhuurder:
-    #             print('onderhuurder', onderhuurder)
-    #             h=User.objects.get(id=onderhuurder)
-    #             locker.owners.add(h)
-    #             return redirect('locker', locker.id)
-    #         if huuropheffen:
+    if request.method == 'POST':
+        form = ExcelForm(request.POST, request.FILES, instance=excel)
+        onderhuurder= request.POST.get('onderhuurder')
+        slotcode= request.POST.get('code')
+        type= request.POST.get('type')
+        kluis= request.POST.get('kluisnummer')
+        sleutels= request.POST.get('sleutels')
+        huuropheffen= request.POST.get('huuropheffen')
+        print('onderhuurder',kluis, onderhuurder,sleutels,slotcode)
+        if form.is_valid():
+            print('form is valid')
+            if kluis:
+                created = Locker.objects.update_or_create(kluisnummer=kluis,
+                    email=excel.email,
+                    verhuurd=True,
+                    kluisje=kluis)
 
-    #             h=User.objects.get(id=huuropheffen)
-    #             print('opheffen',h)
-    #             locker.owners.remove(h)
-    #             form.save()
-    #         return redirect('locker', locker.id)
+            if onderhuurder:
+                print('onderhuurder', onderhuurder)
+                h=User.objects.get(id=onderhuurder)
+                # excel.owners.add(h)
+                return redirect('locker', excel.id)
+            if huuropheffen:
+
+                h=User.objects.get(id=huuropheffen)
+                print('opheffen',h)
+                # locker.owners.remove(h)
+                form.save()
+            return redirect('excel-regel', excel.id)
     return render(request, 'base/update-locker.html', context)
 
 @login_required(login_url='login')

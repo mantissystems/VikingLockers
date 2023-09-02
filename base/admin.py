@@ -1,7 +1,7 @@
 from django.contrib import admin
 
 # Register your models here.
-from .models import Room, Topic, Message,Locker,Ploeg,Helptekst,Bericht
+from .models import Room, Topic, Message,Locker,Ploeg,Helptekst,Bericht,Excellijst
 from base.models import User,AbstractUser
 admin.site.register(Ploeg)
 admin.site.register(Room)
@@ -27,3 +27,8 @@ class kluisAdmin(admin.ModelAdmin):
     list_filter = ('topic','kluisnummer')
     list_display = ('topic','kluisnummer','email')
     search_fields = ('topic','kluisnummer','email')
+@admin.register(Excellijst)
+class kluisAdmin(admin.ModelAdmin):
+    list_filter = ('email','kluisnummer')
+    list_display = ('kluisnummer','email')
+    search_fields = ('kluisnummer','email')

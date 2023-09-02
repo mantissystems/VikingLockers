@@ -1,6 +1,6 @@
 from django.forms import ModelForm
 from django.contrib.auth.forms import UserCreationForm
-from .models import Room, User,Ploeg,Locker
+from .models import Room, User,Ploeg,Locker,Excellijst
 import io
 from django import forms
 import csv
@@ -67,6 +67,20 @@ class LockerForm(ModelForm):
         }
         exclude = ['topic','row', 'col','owners','kluisnummer','verhuurd']
         # exclude = ['topic','row', 'col','owners']
+class ExcelForm(ModelForm):
+    class Meta:
+        model = Excellijst
+        fields = '__all__'
+        # labels = {
+        # "verhuurd": "Verhuurd",
+        # "owners": "onder huurders",
+        # "sleutels": "Aantal Sleutels in omloop",
+        # "code": "Code van codeslot",
+        # "kluisje": "Locker nummer",
+        # "type": "Type slot",
+
+        # }
+        # exclude = ['topic','row', 'col','owners','kluisnummer','verhuurd']
 
 
 class UserForm(ModelForm):
