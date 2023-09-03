@@ -57,25 +57,28 @@ def registerPage(request):
     pemail=request.POST.get('email')
     if request.method == 'POST':
         form = MyUserCreationForm(request.POST)
+        if not form.is_valid():
+            post_email = form.cleaned_data.get('email') # Extracting the email value from the form
+            if User.objects.filter(email=post_email).exists():
+                print('invalid')
+            messages.error(request, f'[Email]  and/or [Username] already in use.')
+
         if form.is_valid():
             print('valid')
             user = form.save(commit=False)
             user.username = user.name.lower()
             user.last_name = user.name.lower()
-            # Q(username__icontains=request.POST.get('name')) |
             users =User.objects.filter(
             Q(username=request.POST.get('name')) |
             Q(email=request.POST.get('email'))
             ).order_by('username') #.exclude(verhuurd=False)
             print(users)
             if users:
-                #  message = {'detail': 'User with this email already exists'}
-                messages.error(request, f'[Email]  and/or [Username] already in use.')
+            #     messages.error(request, 'Invalid form submission.')
+            #     messages.error(request, form.errors)
+            #     messages.error(request, f'[Email]  and/or [Username] already in use.')
                 print('double', users)
-                # message = {'detail': 'User with this email already exists'}
-                # return Response(message, status=status.HTTP_400_BAD_REQUEST)
-
-                return HttpResponseRedirect('/')
+            #     return HttpResponseRedirect('/')
             else:
                 print('single',request.POST.get('name'),request.POST.get('email'))
                 user.save()
@@ -89,6 +92,7 @@ def home(request):
     from django.utils.safestring import mark_safe
     messages.add_message(request, messages.INFO, "Welkom bij Viking Lockers.")    
     q = request.GET.get('q') if request.GET.get('q') != None else ''
+    qq=q.lower()
     lockers=Locker.objects.all().filter(verhuurd=True)     
     messagelocker=Locker.objects.all().first()     
     from django.db.models import Count
@@ -154,9 +158,10 @@ def home(request):
     if q!='' or q !=None:
         lijst='home'
         rooms_found = Matriks.objects.filter(regel__icontains=q).values_list('naam',flat=True)
-        if 'xls' in q.lower():
+        if 'xls' in qq:
             lijst='excellijst'
-            x = q.replace("xls ", "")
+            print(q,qq)
+            x = qq.replace("xls ", "")
             q=x
         lockers =Locker.objects.filter(
         Q(kluisnummer__icontains=q) |
@@ -240,7 +245,7 @@ def infoPage(request):
             Q(verhuurd=True)
         )
         page=''
-        print('cnt..', yourlockers.count())
+        print('infoPage cnt..', yourlockers.count())
     verhuurd=Locker.objects.all().filter(fverhuurd)  #verzamel verhuurde kluisjes voor de room 
     header_logged_in='U huurt bij ons: '
     header='Verhuurd: '
@@ -377,6 +382,44 @@ def updateProfile(request,pk):
             return redirect('update-profile', pk=user.id)
     return render(request, 'base/update-profile.html', context)
 
+@login_required(login_url='login')
+def myProfile(request):
+    user = request.user
+    form = UserForm(instance=user)
+    # print(form)
+    berichten=Bericht.objects.all().filter(user=request.user.id)
+    locker= request.POST.get('locker')
+    context = {
+                'berichten':berichten,
+                'form': form,
+                'locker': locker,
+            }
+    if request.method == 'POST':
+                # fields = ['avatar', 'name', 'username','locker', 'email']
+        form.name=request.POST.get('name')
+        form.name=request.POST.get('name')
+        form.email=request.POST.get('email')
+        form.locker=request.POST.get('locker')
+        form.verhuurd=False
+        if request.POST.get('locker'):
+            print('requested', request.POST.get('locker'))            
+            locker, created = Locker.objects.update_or_create(
+            kluisnummer=request.POST.get('locker'),
+            email=request.POST.get('locker'),
+            verhuurd=False,
+            kluisje=request.POST.get('locker'))
+        if not form.is_valid():
+            print('invalid')
+        if form.is_valid():
+            locker, created = Locker.objects.update_or_create(
+            kluisnummer=request.POST.get('locker'),
+            email=user.email,
+            verhuurd=False,
+            kluisje=request.POST.get('locker'))
+            form.save()
+            return redirect('update-profile', pk=user.id)
+    return render(request, 'base/update-profile.html', context)
+
 def topicsPage(request):
     q = request.GET.get('q') if request.GET.get('q') != None else ''
     topics = Topic.objects.filter(name__icontains=q)
@@ -391,6 +434,11 @@ def lockersPage(request):
     q = request.GET.get('q') if request.GET.get('q') != None else ''
     lockers = Locker.objects.filter(kluisnummer__icontains=q,verhuurd=True) #[0:15]
     return render(request, 'base/lockers.html', {'lockers': lockers})
+def vrijelockersPage(request):
+    q = request.GET.get('q') if request.GET.get('q') != None else ''
+    lijst='vrijelockerslijst'
+    lockers = Excellijst.objects.filter(excel__icontains='--')
+    return render(request, 'base/excellijst.html', {'lockers': lockers,'vrijelockerslijst':lijst})
 
 def excelPage(request):
     q = request.GET.get('q') if request.GET.get('q') != None else ''

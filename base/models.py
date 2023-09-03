@@ -98,6 +98,7 @@ class Locker(models.Model):
 class Excellijst(models.Model):
     kluisnummer = models.CharField(max_length=200)
     email = models.CharField(max_length=200)
+    excel = models.CharField(max_length=200,default='----')     
     type = models.CharField(max_length=18, choices=SLOT,default='--')     
     sleutels = models.CharField(max_length=18,default='----')     
     code = models.CharField(max_length=18,default='----')     

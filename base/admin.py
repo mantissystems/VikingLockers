@@ -29,6 +29,6 @@ class kluisAdmin(admin.ModelAdmin):
     search_fields = ('topic','kluisnummer','email')
 @admin.register(Excellijst)
 class kluisAdmin(admin.ModelAdmin):
-    list_filter = ('email','kluisnummer')
-    list_display = ('kluisnummer','type','email')
-    search_fields = ('kluisnummer','email')
+    list_filter = ('email','kluisnummer','excel')
+    list_display = ('kluisnummer','excel','email')
+    search_fields = ('kluisnummer','email','excel')

@@ -4,7 +4,7 @@ from .models import Room, User,Ploeg,Locker,Excellijst
 import io
 from django import forms
 import csv
-
+from django.core.exceptions import ValidationError
 class DataForm(forms.Form):
     data_file= forms.FileField()
     model=User

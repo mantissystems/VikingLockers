@@ -4,7 +4,6 @@
 
 <main class="layout layout--3">
   <div class="container">
-
     <!-- Topics Start -->
     {% include 'base/topics_component.html' %}
 
@@ -55,9 +54,11 @@
     <!-- Room List End -->
 
     <!-- Activities Start -->
+    {% include 'base/messages.html' %}
+
     {% comment %}
-    {% endcomment %}
     {% include 'base/activity_component.html' %}
+    {% endcomment %}
 
 
     <!-- Activities End -->

@@ -37,7 +37,7 @@
   
         </div>
       </div>
-      <h2>Excel {{lockers.count}}</h2>
+      <h2>Excel {{lockers.count}} {{vrijelockerslijst}} </h2>
       {% include 'base/feed_excel.html' %}
       {% if request.user.is_superuser %}
       {% endif %}
