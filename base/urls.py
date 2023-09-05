@@ -12,7 +12,6 @@ urlpatterns = [
     path('register/', views.registerPage, name="register"),
     path('update-user/', views.updateUser, name="update-user"),
     path('update-person/<str:pk>', views.PersonUpdate.as_view(), name="update-person"),
-    # path('<int:pk>/', views.PersonUpdateView, name='person_change'),    
     path('profile/<str:pk>/', views.userProfile, name="user-profile"),
     path('profile/', views.myProfile, name="profile"),
     path('topics/', views.topicsPage, name="topics"),

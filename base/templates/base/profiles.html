@@ -33,7 +33,7 @@
 
         <ul class="topics__list">
           <li>
-            <a href="{% url 'profiles' %}" class="active">All <span>{{profiles.count}}</span></a>
+            <a href="{% url 'profiles' %}" class="active">All |naam | hoofdhuurder | onderhuurder| wachtlijst |<span>{{profiles.count}}</span></a>
           </li>
           {% for profile in profiles %}
           <li>
@@ -44,7 +44,7 @@
             <!-- <a href="{% url 'update_profile' profile.id %}?q={{profile.kluisnummer}}">{{ profile.kluisnummer }} <span>{{topic.room_set.all.count}}</span></a> -->
             {% endcomment %}
   
-            <a href="{% url 'update-person' profile.id %}?q={{profile.id}}">{{ profile.name }} <span>{{topic.room_set.all.count}}</span></a>
+            <a href="{% url 'update-person' profile.id %}?q={{profile.id}}">{{ profile.name }} | {{profile.hoofdhuurder}} | {{profile.onderhuur}}|{{profile.wachtlijst}} | <span>{{topic.room_set.all.count}}</span></a>
           </li>
           {% endfor %}
 
