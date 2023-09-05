@@ -4,11 +4,11 @@ from django.shortcuts import redirect, render
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import authenticate, login, logout
-from django.urls import reverse
-# from viking.models import  Matriks,KluisjesRV
-from base.models import Room,Message,User,Topic,Matriks,Locker,Ploeg,Helptekst,Bericht,Excellijst
+from django.urls import reverse, reverse_lazy
+from django.views.generic import ListView, CreateView, UpdateView
+from base.models import Room,Message,User,Topic,Matriks,Locker,Ploeg,Helptekst,Bericht,Excellijst,Person
 from django.db.models import Q
-from base.forms import RoomForm, UserForm,  MyUserCreationForm,PloegForm,LockerForm,ExcelForm
+from base.forms import RoomForm, UserForm,  MyUserCreationForm,PloegForm,LockerForm,ExcelForm,PersonForm
 from django.views.generic import(TemplateView,ListView)
 from django.contrib.auth.models import AnonymousUser
 from django.contrib import messages
@@ -353,34 +353,27 @@ def userProfile(request, pk):
                'room_messages': room_messages, 'topics': topics,'lockers':lockers,'member_lockers':member_lockers}
     return render(request, 'base/profile.html', context)
 
-@login_required(login_url='login')
-def updateProfile(request,pk):
-    user = User.objects.get(id=pk)
-    form = UserForm(instance=user)
-    # print(form)
-    berichten=Bericht.objects.all().filter(user=request.user.id)
-    locker= user.locker #request.POST.get('locker')
-    context = {
-                'berichten':berichten,
-                'form': form,
-                'locker': locker,
-            }
-    if request.method == 'POST':
-        form = UserForm(request.POST, request.FILES, instance=user)
-        locker, created = Locker.objects.update_or_create(kluisnummer=locker,
-                    email=user.email,
-                    verhuurd=True,
-                    kluisje=locker)
-        # form.save()
+# @login_required(login_url='login')
+# def updatePerson(request,pk):
+#     person = Person.objects.get(id=pk)
+#     form = PersonForm(instance=person)
+#     locker= request.POST.get('locker')
+#     huur= request.POST.get('hoofhuurder')
+#     wacht= request.POST.get('wachtlijst')
+#     onder= request.POST.get('onderhuur')
+#     email= request.POST.get('email')
+#     context = {
+#                 'form': form,
+#                 'locker': locker,
+#             }
+#     if request.method == 'POST':
+#         if form.is_valid():
+#             print('valid')
 
-        if form.is_valid():
-            locker, created = Locker.objects.update_or_create(kluisnummer=locker,
-            email=user.email,
-            verhuurd=True,
-            kluisje=locker)
-            form.save()
-            return redirect('update-profile', pk=user.id)
-    return render(request, 'base/update-profile.html', context)
+#         if not form.is_valid():
+#             print('invalid')
+#             return redirect('update-person', pk=person.id)
+#     return render(request, 'base/update-person.html', context)
 
 @login_required(login_url='login')
 def myProfile(request):
@@ -443,12 +436,20 @@ def vrijelockersPage(request):
 def excelPage(request):
     q = request.GET.get('q') if request.GET.get('q') != None else ''
     lijst='excellijst'
+    menuoptie='bijwerken'
     lockers = Excellijst.objects.filter(kluisnummer__icontains=q)
-    return render(request, 'base/excellijst.html', {'lockers': lockers,'excellijst':lijst})
+    if request.method == 'POST':
+        # qs_flat=User.objects.all().values_list('email')
+        # qs=Excellijst.objects.all()
+        lockers = Excellijst.objects.filter(kluisnummer__icontains=q)
+        return redirect('home')
+    # return render(request, 'base/delete.html', {'obj': room})
+    return render(request, 'base/delete.html', {'lockers': lockers,'excellijst':lijst,'menuoptie':menuoptie})
 
 def profilePage(request):
     q = request.GET.get('q') if request.GET.get('q') != None else ''
-    profiles = User.objects.filter(name__icontains=q)
+    # profiles = User.objects.filter(name__icontains=q)
+    profiles = Person.objects.all() #filter(name__icontains=q)
     return render(request, 'base/profiles.html', {'profiles': profiles})
 
 def ploegPage(request, pk):
@@ -553,6 +554,32 @@ def updateRoom(request, pk):
     context = {'form': form, 'topics': topics, 'room': room}
     return render(request, 'base/room_form.html', context)
 
+@login_required(login_url='login')
+
+
+class PersonUpdateView(UpdateView):
+    model = Person
+    fields = ["__all__"]
+    template_name_suffix = "_update-person.html"
+# def updatePerson(request, pk):
+#     person = Person.objects.get(id=pk)
+#     form = PersonForm(instance=person)
+#     print(person)
+#     if request.method == 'POST':
+#         email = request.POST.get('email')
+#         # topic, created = Topic.objects.get_or_create(name=topic_name)
+#         person.name = request.POST.get('name')
+#         onderhuur  = request.POST.getlist('onderhuur')
+#         wachtlijst = request.POST.getlist('wachtlijst')
+#         hoofdhuurder = request.POST.getlist('hoofdhuurder')
+#         print(email,onderhuur,hoofdhuurder,wachtlijst)
+#         # person.wachtlijst=True
+#         # person.save()
+#         return redirect('home')
+
+#     context = {'form': form, 'person': person}
+#     return render(request, 'base/update-person.html', context)
+
 def lockerPage(request,pk):
     locker = Locker.objects.get(id=pk)
     form = LockerForm(instance=locker)
@@ -645,6 +672,21 @@ def createRoom(request):
 
     context = {'form': form, 'topics': topics}
     return render(request, 'base/room_form.html', context)
+
+@login_required(login_url='login')
+def createPerson(request):
+    form = PersonForm()
+    if request.method == 'POST':
+
+        Person.objects.create(
+            locker=request.POST.get('locker'),
+            name=request.POST.get('name'),
+            email=request.POST.get('email'),
+        )
+        return redirect('home')
+
+    context = {'form': form}
+    return render(request, 'base/person_form.html', context)
 
 def berichtenPage(request):
     q = request.GET.get('q') if request.GET.get('q') != None else ''

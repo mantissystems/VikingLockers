@@ -1,6 +1,6 @@
 from django.forms import ModelForm
 from django.contrib.auth.forms import UserCreationForm
-from .models import Room, User,Ploeg,Locker,Excellijst
+from .models import Room, User,Ploeg,Locker,Excellijst,Person
 import io
 from django import forms
 import csv
@@ -29,6 +29,11 @@ class MyUserCreationForm(UserCreationForm):
         "username": "Your app-username",
         "name": "Your name",
         }
+
+class PersonForm(ModelForm):
+    class Meta:
+        model = Person
+        fields = '__all__'
 
 class RoomForm(ModelForm):
     class Meta:

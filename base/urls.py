@@ -1,5 +1,6 @@
 from django.urls import path
 from . import views
+from base.views import PersonUpdateView
 
 urlpatterns = [
     path('', views.home, name="home"),
@@ -10,7 +11,8 @@ urlpatterns = [
     path('logout/', views.logoutUser, name="logout"),
     path('register/', views.registerPage, name="register"),
     path('update-user/', views.updateUser, name="update-user"),
-    path('update-profile/<str:pk>', views.updateProfile, name="update-profile"),
+    path('update-person/<str:pk>', views.PersonUpdateView, name="update-person"),
+    # path('<int:pk>/', views.PersonUpdateView, name='person_change'),    
     path('profile/<str:pk>/', views.userProfile, name="user-profile"),
     path('profile/', views.myProfile, name="profile"),
     path('topics/', views.topicsPage, name="topics"),
@@ -23,6 +25,7 @@ urlpatterns = [
     path('update-room/<str:pk>/', views.updateRoom, name="update-room"),
     path('delete-room/<str:pk>/', views.deleteRoom, name="delete-room"),
      path('create-room/', views.createRoom, name="create-room"),
+     path('create-person/', views.createPerson, name="create-person"),
     path('delete-message/<str:pk>/', views.deleteMessage, name="delete-message"),
     path('delete-bericht/<str:pk>/', views.deleteBericht, name="delete-bericht"),
     path('<str:pk>/locker/',views.lockerPage, name='locker'),  

@@ -32,6 +32,26 @@ class Topic(models.Model):
     def __str__(self):
         return self.name
 
+class Person(models.Model):
+    name = models.CharField(max_length=200, null=True)
+    onderhuur=models.BooleanField(default=False)
+    wachtlijst=models.BooleanField(default=False)
+    hoofdhuurder=models.BooleanField(default=False)
+    locker = models.CharField(max_length=200, null=True)
+    email = models.EmailField(unique=True, null=True)
+
+    class Meta:
+        ordering = ['name']
+
+    def __str__(self):
+        return self.name
+
+class Topic(models.Model):
+    name = models.CharField(max_length=200)
+
+    def __str__(self):
+        return self.name
+
 class Ploeg(models.Model):
     name = models.CharField(max_length=200)
     participants = models.ManyToManyField(

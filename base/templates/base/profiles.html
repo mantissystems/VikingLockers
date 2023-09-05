@@ -14,7 +14,7 @@
               </path>
             </svg>
           </a>
-          <h3>Browse Profiles</h3>
+          <h3>Browse Persons</h3>
         </div>
       </div>
 
@@ -44,7 +44,7 @@
             <!-- <a href="{% url 'update_profile' profile.id %}?q={{profile.kluisnummer}}">{{ profile.kluisnummer }} <span>{{topic.room_set.all.count}}</span></a> -->
             {% endcomment %}
   
-            <a href="{% url 'update-profile' profile.id %}?q={{profile.id}}">{{ profile.name }} <span>{{topic.room_set.all.count}}</span></a>
+            <a href="{% url 'update-person' profile.id %}?q={{profile.id}}">{{ profile.name }} <span>{{topic.room_set.all.count}}</span></a>
           </li>
           {% endfor %}
 
