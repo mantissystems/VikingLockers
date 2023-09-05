@@ -5,7 +5,7 @@ from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import authenticate, login, logout
 from django.urls import reverse, reverse_lazy
-from django.views.generic import ListView, CreateView, UpdateView
+# from viking.models import  Matriks,KluisjesRV
 from base.models import Room,Message,User,Topic,Matriks,Locker,Ploeg,Helptekst,Bericht,Excellijst,Person
 from django.db.models import Q
 from base.forms import RoomForm, UserForm,  MyUserCreationForm,PloegForm,LockerForm,ExcelForm,PersonForm
@@ -19,7 +19,7 @@ from django.contrib.auth.hashers import make_password
 from django.db import connection
 from collections import namedtuple
 from rest_framework import status
-
+from django.views.generic.edit import CreateView, UpdateView
 # from base.serializers import UserSerializer, UserSerializerWithToken
 def loginPage(request):
     page = 'login'
@@ -554,31 +554,16 @@ def updateRoom(request, pk):
     context = {'form': form, 'topics': topics, 'room': room}
     return render(request, 'base/room_form.html', context)
 
-@login_required(login_url='login')
+# @login_required(login_url='login')   
 
-
-class PersonUpdateView(UpdateView):
+class PersonUpdate(UpdateView):
     model = Person
-    fields = ["__all__"]
-    template_name_suffix = "_update-person.html"
-# def updatePerson(request, pk):
-#     person = Person.objects.get(id=pk)
-#     form = PersonForm(instance=person)
-#     print(person)
-#     if request.method == 'POST':
-#         email = request.POST.get('email')
-#         # topic, created = Topic.objects.get_or_create(name=topic_name)
-#         person.name = request.POST.get('name')
-#         onderhuur  = request.POST.getlist('onderhuur')
-#         wachtlijst = request.POST.getlist('wachtlijst')
-#         hoofdhuurder = request.POST.getlist('hoofdhuurder')
-#         print(email,onderhuur,hoofdhuurder,wachtlijst)
-#         # person.wachtlijst=True
-#         # person.save()
-#         return redirect('home')
-
-#     context = {'form': form, 'person': person}
-#     return render(request, 'base/update-person.html', context)
+    fields = '__all__'
+    success_url = reverse_lazy('profiles')
+    
+    def form_valid(self, form):
+        messages.success(self.request, "The person was updated successfully.")
+        return super(PersonUpdate,self).form_valid(form)
 
 def lockerPage(request,pk):
     locker = Locker.objects.get(id=pk)

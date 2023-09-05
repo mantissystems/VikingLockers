@@ -1,4 +1,40 @@
-{% extends 'main.html' %}
+{%extends 'main.html'%}
+{% comment %}
+{%block content%}
+
+<div class="center">
+ <form method="post" novalidate class="card">
+ 	{%csrf_token %}
+ 	<h2>{% if person %} Update {%else %} Create {%endif%} Task</h2>
+	{% for field in form %}
+		{% if field.name == 'completed' %}
+			<p>
+				{{ field.label_tag }}
+				{{ field }}
+			</p>
+			{% if field.errors %}
+        		<small class="error">{{ field.errors|striptags  }}</small> 
+        	{% endif %}
+		{% else %}
+    		{{ field.label_tag }} 
+        	{{ field }}
+        	{% if field.errors %}
+        		<small class="error">{{ field.errors|striptags  }}</small> 
+        	{% endif %}
+        {% endif %}
+	{% endfor %}
+	
+	<div class="form-buttons">
+		<input type="submit" value="Save" class="btn btn-primary"/>
+		<a href="{%url 'profiles'%}" class="btn btn-outline">Cancel</a>
+	</div>
+	
+
+</form>
+</div>
+
+{%endblock content%}
+{% endcomment %}
 
 {% block content %}
 <main class="create-room layout">
@@ -14,57 +50,46 @@
               </path>
             </svg>
           </a>
-          <h3>Create/Update Study Room</h3>
+          <h3>Create/Update Person</h3>
         </div>
       </div>
       <div class="layout__body">
-        <form class="form" action="" method="POST">
-          {% csrf_token %}
-
-          <div class="form__group">
-            <label for="room_topic">Enter a Topic</label>
-            <input required type="text" value="{{room.topic.name}}" name="topic" list="topic-list" />
-            <datalist id="topic-list">
-              <select id="room_topic">
-                {% for topic in topics %}
-                <option value="{{topic.name}}">{{topic.name}}</option>
-                {% endfor %}
-              </select>
-            </datalist>
-          </div>
-
-
-          <div class="form__group">
-            <label for="room_name">Room Name</label>
-            {{form.name}}
-          </div>
-
-          <div class="form__group">
-            <label for="room_description">Room Description</label>
-            {{form.description}}
-          </div>
-
-          <!-- <div class="form__group">
-            <label for="room_topic">Topic</label>
-            <input required type="text" name="topic" id="room_topic" list="topic-list" />
-            <datalist id="topic-list">
-              <select id="room_topic">
-                <option value="">Select your topic</option>
-                <option value="Python">Python</option>
-                <option value="Django">Django</option>
-              </select>
-            </datalist>
-
-          </div> -->
-
-
-          <div class="form__action">
-            <a class="btn btn--dark" href="{{request.META.HTTP_REFERER}}">Cancel</a>
-            <button class="btn btn--main" type="submit">Submit</button>
-          </div>
-        </form>
-      </div>
+        <form method="post" novalidate class="card">
+          {%csrf_token %}
+          <h2>{% if person %} Update {% else %} Create {% endif %} Person</h2>
+         {% for field in form %}
+           {% if field.name == 'completed' %}
+           <label for="profile_pic">{{field.label}}</label>
+           <div class="form__group">
+             {{field}}
+           </div>
+     
+             {% if field.errors %}
+                   <small class="error">{{ field.errors|striptags  }}</small> 
+                 {% endif %}
+           {% else %}
+           <label for="profile_pic">{{field.label}}</label>
+           <div class="form__group">
+             {{field}}
+           </div>
+                  {% if field.errors %}
+                   <small class="error">{{ field.errors|striptags  }}</small> 
+                 {% endif %}
+               {% endif %}
+         {% endfor %}
+         
+         <div class="form-buttons">
+           <input type="submit" value="Save" class="btn btn-primary"/>
+           <a href="{%url 'profiles'%}" class="btn btn-outline">Cancel</a>
+         </div>
+         
+       
+       </form>
+             </div>
     </div>
   </div>
 </main>
 {% endblock content %}
+{% comment %}
+
+{% endcomment %}
