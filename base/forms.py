@@ -35,6 +35,12 @@ class PersonForm(ModelForm):
         model = Person
         fields = '__all__'
 
+class WachtlijstForm(ModelForm):
+    class Meta:
+        model = Person
+        fields = '__all__'
+        exclude = ['hoofdhuurder', 'onderhuur']
+
 class RoomForm(ModelForm):
     class Meta:
         model = Room

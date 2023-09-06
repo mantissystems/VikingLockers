@@ -8,7 +8,7 @@ from django.urls import reverse, reverse_lazy
 # from viking.models import  Matriks,KluisjesRV
 from base.models import Room,Message,User,Topic,Matriks,Locker,Ploeg,Helptekst,Bericht,Excellijst,Person
 from django.db.models import Q
-from base.forms import RoomForm, UserForm,  MyUserCreationForm,PloegForm,LockerForm,ExcelForm,PersonForm
+from base.forms import RoomForm, UserForm,  MyUserCreationForm,PloegForm,LockerForm,ExcelForm,PersonForm,WachtlijstForm
 from django.views.generic import(TemplateView,ListView)
 from django.contrib.auth.models import AnonymousUser
 from django.contrib import messages
@@ -658,20 +658,14 @@ def createRoom(request):
     context = {'form': form, 'topics': topics}
     return render(request, 'base/room_form.html', context)
 
-@login_required(login_url='login')
-def createPerson(request):
-    form = PersonForm()
-    if request.method == 'POST':
-
-        Person.objects.create(
-            locker=request.POST.get('locker'),
-            name=request.POST.get('name'),
-            email=request.POST.get('email'),
-        )
-        return redirect('home')
-
-    context = {'form': form}
-    return render(request, 'base/person_form.html', context)
+class CreatePerson(CreateView):
+    model = Person
+    fields = ['name','email','wachtlijst',]
+    success_url = reverse_lazy('profiles')
+    
+    def form_valid(self, form):
+        messages.success(self.request, "U bent op de wachtlijst geplaatst.")
+        return super(CreatePerson,self).form_valid(form)
 
 def berichtenPage(request):
     q = request.GET.get('q') if request.GET.get('q') != None else ''

@@ -19,6 +19,7 @@
       </div>
 
       <div class="topics-page layout__body">
+        {% comment %}
         <form action="" method="GET" class="header__search">
           <label>
             <svg version="1.1" xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32">
@@ -30,20 +31,14 @@
             <input name="q" placeholder="Search profile" />
           </label>
         </form>
+        {% endcomment %}
 
         <ul class="topics__list">
           <li>
             <a href="{% url 'profiles' %}" class="active">All |naam | hoofdhuurder | onderhuurder| wachtlijst |<span>{{profiles.count}}</span></a>
           </li>
           {% for profile in profiles %}
-          <li>
-            {% comment %}
-            <a href="{% url 'locker' locker.id %}?q={{locker.kluisnummer}}">{{ profile.name }} <span>{{profile.owners.all.count}}</span></a>
-            <!-- <a href="{% url 'kluis' profile.id %}?q={{profile.kluisnummer}}">{{ profile.kluisnummer }} <span>{{topic.room_set.all.count}}</span></a> -->
-            <!-- <a href="{% url 'update_kluis' profile.id %}?q={{profile.kluisnummer}}">{{ profile.kluisnummer }} <span>{{topic.room_set.all.count}}</span></a> -->
-            <!-- <a href="{% url 'update_profile' profile.id %}?q={{profile.kluisnummer}}">{{ profile.kluisnummer }} <span>{{topic.room_set.all.count}}</span></a> -->
-            {% endcomment %}
-  
+          <li>  
             <a href="{% url 'update-person' profile.id %}?q={{profile.id}}">{{ profile.name }} | {{profile.hoofdhuurder}} | {{profile.onderhuur}}|{{profile.wachtlijst}} | <span>{{topic.room_set.all.count}}</span></a>
           </li>
           {% endfor %}

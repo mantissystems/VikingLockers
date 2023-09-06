@@ -46,12 +46,6 @@ class Person(models.Model):
     def __str__(self):
         return self.name
 
-class Topic(models.Model):
-    name = models.CharField(max_length=200)
-
-    def __str__(self):
-        return self.name
-
 class Ploeg(models.Model):
     name = models.CharField(max_length=200)
     participants = models.ManyToManyField(
