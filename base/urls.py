@@ -1,6 +1,6 @@
 from django.urls import path
 from . import views
-# from base.views import PersonUpdateView
+from django.contrib.auth.decorators import login_required
 
 urlpatterns = [
     path('', views.home, name="home"),
@@ -25,6 +25,8 @@ urlpatterns = [
     path('delete-room/<str:pk>/', views.deleteRoom, name="delete-room"),
      path('create-room/', views.createRoom, name="create-room"),
      path('create-person/', views.CreatePerson.as_view(), name="create-person"),
+     path('delete-person/<str:pk>',login_required(views.PersonDeleteView.as_view()),name='delete-person'),
+    # path('delete-person/<str:pk>', views.PersonDeleteView.as_view(), name="delete-person"),
     path('delete-message/<str:pk>/', views.deleteMessage, name="delete-message"),
     path('delete-bericht/<str:pk>/', views.deleteBericht, name="delete-bericht"),
     path('<str:pk>/locker/',views.lockerPage, name='locker'),  

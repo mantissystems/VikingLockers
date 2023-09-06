@@ -81,6 +81,9 @@
          <div class="form-buttons">
            <input type="submit" value="Save" class="btn btn-primary"/>
            <a href="{%url 'home'%}" class="btn btn-outline">Cancel</a>
+           {% if person %}
+                     <a href="{% url 'delete-person' person.id %}" class="btn btn--link">Delete</a>
+{% endif %}
          </div>
          
        

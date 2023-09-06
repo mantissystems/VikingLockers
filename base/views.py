@@ -19,7 +19,7 @@ from django.contrib.auth.hashers import make_password
 from django.db import connection
 from collections import namedtuple
 from rest_framework import status
-from django.views.generic.edit import CreateView, UpdateView
+from django.views.generic.edit import CreateView, UpdateView,DeleteView
 # from base.serializers import UserSerializer, UserSerializerWithToken
 def loginPage(request):
     page = 'login'
@@ -564,7 +564,13 @@ class PersonUpdate(UpdateView):
     def form_valid(self, form):
         messages.success(self.request, "The person was updated successfully.")
         return super(PersonUpdate,self).form_valid(form)
-
+    
+class PersonDeleteView(DeleteView):
+    model = Person
+    success_url ="/"
+     
+    template_name = "base/delete.html"
+    
 def lockerPage(request,pk):
     locker = Locker.objects.get(id=pk)
     form = LockerForm(instance=locker)
@@ -660,7 +666,7 @@ def createRoom(request):
 
 class CreatePerson(CreateView):
     model = Person
-    fields = ['name','email','wachtlijst',]
+    fields = ['name','email',]
     success_url = reverse_lazy('home')
     
     def form_valid(self, form):
