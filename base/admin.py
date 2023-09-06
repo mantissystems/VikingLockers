@@ -1,7 +1,7 @@
 from django.contrib import admin
 
 # Register your models here.
-from .models import Room, Topic, Message,Locker,Ploeg,Helptekst,Bericht,Excellijst,Person
+from .models import Room, Topic, Message,Locker,Ploeg,Helptekst,Bericht,Excellijst,Person,Facturatielijst
 from base.models import User,AbstractUser
 admin.site.register(Ploeg)
 admin.site.register(Room)
@@ -37,3 +37,8 @@ class kluisAdmin(admin.ModelAdmin):
     list_filter = ('email','kluisnummer','excel')
     list_display = ('kluisnummer','excel','email')
     search_fields = ('kluisnummer','email','excel')
+@admin.register(Facturatielijst)
+class factuurAdmin(admin.ModelAdmin):
+    list_filter = ('email','in_excel','is_registered')
+    list_display = ('email','is_registered','in_excel','type')
+    search_fields = ('email','type')

@@ -5,7 +5,7 @@
         </div>
     </div>
     <div class="activities__boxHeader roomListRoom__header">
-        <a href="{% url 'excel-regel' room.id %}">{{room.kluisnummer}}| {{room.email|slice:"0:12"}}... |{{room.excel}} </a>
+        <a href="{% url 'excel-regel' room.id %}">{{room.is_registered}}| {{room.email|slice:"0:12"}}... |{{room.in_excel}} |{{room.type}} </a>
     </div>
     <div class="activities__boxContent">
         {% for message in room.owners.all %}
@@ -13,17 +13,17 @@
         {% endfor %}
     </div>
 
+    {% comment %}
+
     {% for message in room.owners.allll %}
     <div class="activities__box">
         <div class="activities__boxHeader roomListRoom__header">
             <a href="{% url 'user-profile' request.user.id %}" class="roomListRoom__author">
-                {% comment %}
 
                 <p>
                     @{{message.email}}
                     <span>{{message.kluisje}} ago</span>
                 </p>
-                {% endcomment %}
 
             </a>
 
@@ -35,6 +35,7 @@
         </div>
     </div>
     {% endfor %}
+    {% endcomment %}
 
 </div>
 {% endfor %}

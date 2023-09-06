@@ -4394,6 +4394,58 @@
   }
 },
 {
+  "model": "admin.logentry",
+  "pk": 339,
+  "fields": {
+    "action_time": "2023-09-03T04:48:34.983Z",
+    "user": 1,
+    "content_type": 26,
+    "object_id": "4",
+    "object_repr": "Helptekst object (4)",
+    "action_flag": 2,
+    "change_message": "[{\"changed\": {\"fields\": [\"Title\", \"Content\", \"Publish\"]}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 340,
+  "fields": {
+    "action_time": "2023-09-03T04:50:24.339Z",
+    "user": 1,
+    "content_type": 26,
+    "object_id": "4",
+    "object_repr": "Helptekst object (4)",
+    "action_flag": 2,
+    "change_message": "[{\"changed\": {\"fields\": [\"Content\"]}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 341,
+  "fields": {
+    "action_time": "2023-09-05T16:38:47.846Z",
+    "user": 1,
+    "content_type": 29,
+    "object_id": "2",
+    "object_repr": "Cees van der Velde",
+    "action_flag": 3,
+    "change_message": ""
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 342,
+  "fields": {
+    "action_time": "2023-09-05T16:49:40.047Z",
+    "user": 1,
+    "content_type": 29,
+    "object_id": "5",
+    "object_repr": "Cees van der Velde",
+    "action_flag": 2,
+    "change_message": "[{\"changed\": {\"fields\": [\"Onderhuur\"]}}]"
+  }
+},
+{
   "model": "auth.permission",
   "pk": 1,
   "fields": {
@@ -5438,6 +5490,42 @@
   }
 },
 {
+  "model": "auth.permission",
+  "pk": 117,
+  "fields": {
+    "name": "Can add person",
+    "content_type": 29,
+    "codename": "add_person"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 118,
+  "fields": {
+    "name": "Can change person",
+    "content_type": 29,
+    "codename": "change_person"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 119,
+  "fields": {
+    "name": "Can delete person",
+    "content_type": 29,
+    "codename": "delete_person"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 120,
+  "fields": {
+    "name": "Can view person",
+    "content_type": 29,
+    "codename": "view_person"
+  }
+},
+{
   "model": "contenttypes.contenttype",
   "pk": 1,
   "fields": {
@@ -5662,6 +5750,14 @@
   }
 },
 {
+  "model": "contenttypes.contenttype",
+  "pk": 29,
+  "fields": {
+    "app_label": "base",
+    "model": "person"
+  }
+},
+{
   "model": "sessions.session",
   "pk": "0rqbfnv1805rwwxtfamxhg7bh0s3pkca",
   "fields": {
@@ -5743,6 +5839,14 @@
 },
 {
   "model": "sessions.session",
+  "pk": "53e5i3zec2xlfyregsrq8l7w0850193c",
+  "fields": {
+    "session_data": ".eJxVjMsOwiAQRf-FtSHDQx4u3fcbyMCAVA0kpV0Z_12bdKHbe865LxZwW2vYRl7CTOzCpLbs9LtGTI_cdkR3bLfOU2_rMke-K_ygg0-d8vN6uH8HFUf91ilFo2Ih5-TZavQFNAqtVYEsHNrkJBFZBCBRMnqPCBKdIWN1UgSWvT9HaDjC:1qcmzX:oaHpaiYrJziYyXXxdJy8kdB4qj7cA2WDtYm2_rKdYRQ",
+    "expire_date": "2023-09-17T13:18:15.436Z"
+  }
+},
+{
+  "model": "sessions.session",
   "pk": "7g8rimp9ywjbpxmsgdfwo6pl95t1k3qh",
   "fields": {
     "session_data": ".eJxVjMEOwiAQRP-FsyGFLiAevfcbyC67StXQpLQn47_bJj3obTLvzbxVwnUpaW0yp5HVRZno1Om3JcxPqTviB9b7pPNUl3kkvSv6oE0PE8vrerh_BwVb2dZEPnLvAxpkYBMhUATogjBsQVw03rI4J-fe-pDZGu-AAG_SoYjz6vMFLoU4Sw:1qaXZK:MYW6FOkQvKUkm73SQGhds7Ay4q-ephoin3DeMnJSZtc",
@@ -5771,14 +5875,6 @@
   "fields": {
     "session_data": ".eJxVjMEOwiAQBf-FsyGwUFg8evcbCLAgVQNJaU_Gf9cmPej1zcx7MR-2tfpt5MXPxM4MwLHT7xpDeuS2I7qHdus89bYuc-S7wg86-LVTfl4O9--ghlG_tSpFAkprnLBCFAsSNGnIZIKzhfKErpBMSKgkuoCScIpZKFA6WmGAvT8PyTdc:1qbkwy:IVNJlWX0mAMfp_ahSWjloO_08Nq_K2-paFJ2aXduZlA",
     "expire_date": "2023-09-14T16:55:20.369Z"
-  }
-},
-{
-  "model": "sessions.session",
-  "pk": "95beg65c24zu80hxew19tt1ljxekqtt3",
-  "fields": {
-    "session_data": ".eJxVjEEOwiAQRe_C2hDG0gIu3fcMZGBmpGpoUtqV8e7apAvd_vfef6mI21ri1niJE6mLAnX63RLmB9cd0B3rbdZ5rusyJb0r-qBNjzPx83q4fwcFW_nWgsAQOnLSd_5sB-8NAwAN4vrMaNELm4Sdk-AhmEQChDZ5kyXYRKDeH-cQOGQ:1qcNn4:5BB1EowAJTWwgCf5pCAvyPhWzS7CGAgH5fVwfEXE8zs",
-    "expire_date": "2023-09-16T10:23:42.671Z"
   }
 },
 {
@@ -5819,6 +5915,14 @@
   "fields": {
     "session_data": ".eJxVjDsOwjAQBe_iGln-fyjpOYO1Xq9xADlSnFSIu0OkFNC-mXkvlmBbW9oGLWkq7MyU0Oz0u2bAB_UdlTv028xx7usyZb4r_KCDX-dCz8vh_h00GO1bG6-LLFZRVD4HqYUPxkJE0mRdxCqcIZDBoaw2O-elrSKHAE4EwFw9e38AD_o35g:1qaiQk:S2u8LuVQt6TUXft7JopYuLnq3D3rigfJMC8sTMDHd3s",
     "expire_date": "2023-09-11T20:01:46.040Z"
+  }
+},
+{
+  "model": "sessions.session",
+  "pk": "c75bxtdndb4xipxipf3m5e2gj2seta0z",
+  "fields": {
+    "session_data": ".eJxVjDsOwyAQBe9CHSFYvk6Z3mdAC4uDkwgkY1dR7h5bcpG0b-bNmwXc1hK2npcwE7sy0AO7_K4R0zPXA9ED673x1Oq6zJEfCj9p52Oj_Lqd7l-gYC_7e1KUpEeS5FEYnyUpm7yCKIzZK6QJk40oJQ5OgRI2g3YE5JzWfpLAPl9JRjhW:1qdY97:PNL6HjprN35aMjBXezeeGNkL3-hjR3ZXLJphJm-r0HQ",
+    "expire_date": "2023-09-19T15:39:17.500Z"
   }
 },
 {
@@ -5879,14 +5983,6 @@
 },
 {
   "model": "sessions.session",
-  "pk": "f92y5c6qtlzjy833upg6ipp7re67xqrc",
-  "fields": {
-    "session_data": ".eJxVjEEOwiAQRe_C2hDG0gIu3fcMZGBmpGpoUtqV8e7apAvd_vfef6mI21ri1niJE6mLAnX63RLmB9cd0B3rbdZ5rusyJb0r-qBNjzPx83q4fwcFW_nWgsAQOnLSd_5sB-8NAwAN4vrMaNELm4Sdk-AhmEQChDZ5kyXYRKDeH-cQOGQ:1qcMWX:SR-_XIMgrroANmJNd8sZEWIxJ1ICdhzV08_0KSCd3-E",
-    "expire_date": "2023-09-16T09:02:33.659Z"
-  }
-},
-{
-  "model": "sessions.session",
   "pk": "finque11ugog1c6ipd3azc8jnwitwtji",
   "fields": {
     "session_data": ".eJxVjEEOwiAQRe_C2hDG0gIu3fcMZGBmpGpoUtqV8e7apAvd_vfef6mI21ri1niJE6mLAnX63RLmB9cd0B3rbdZ5rusyJb0r-qBNjzPx83q4fwcFW_nWgsAQOnLSd_5sB-8NAwAN4vrMaNELm4Sdk-AhmEQChDZ5kyXYRKDeH-cQOGQ:1qUTU1:nlx_CzUF7wytlNCWv8MpqSDngN7_3hNpnDEq6vc3Ut8",
@@ -5923,6 +6019,14 @@
   "fields": {
     "session_data": "e30:1qbT9w:R7nbLhXItKiryjxGRaD-zNa496ot1u9fFjIRGipUYZc",
     "expire_date": "2023-09-13T21:55:32.615Z"
+  }
+},
+{
+  "model": "sessions.session",
+  "pk": "ij1ps4497d0stqu2adoo5nnrm5sab5ko",
+  "fields": {
+    "session_data": ".eJxVjEEOwiAQRe_C2hDG0gIu3fcMZGBmpGpoUtqV8e7apAvd_vfef6mI21ri1niJE6mLAnX63RLmB9cd0B3rbdZ5rusyJb0r-qBNjzPx83q4fwcFW_nWgsAQOnLSd_5sB-8NAwAN4vrMaNELm4Sdk-AhmEQChDZ5kyXYRKDeH-cQOGQ:1qdtnh:ce4GOSpHjhVJ8dDx0IOT-Afo5_6XplDScxxn_1IZ-Hs",
+    "expire_date": "2023-09-20T14:46:37.382Z"
   }
 },
 {
@@ -5971,6 +6075,14 @@
   "fields": {
     "session_data": ".eJxVjDsOwjAQBe_iGlne9ScxJX3OEK3XCwkgW4qTCnF3iJQC2jcz76VG2tZp3Jos45zVWUEf1Ol3TcQPKTvKdyq3qrmWdZmT3hV90KaHmuV5Ody_g4na9K2tGOGI1z54k0JvcxBE6pIAd2A8ojVOPDpw1nMyDDl1iJ5ByMUIpN4fGrE3jg:1qaOGS:oZR58xzOLVFuVTV1KEUclVc9Q8GFmhRDApwtYUnzFqQ",
     "expire_date": "2023-09-10T22:29:48.485Z"
+  }
+},
+{
+  "model": "sessions.session",
+  "pk": "prgvylk5iutano3w5rufod3jojv1x714",
+  "fields": {
+    "session_data": ".eJxVjEEOwiAQRe_C2hDG0gIu3fcMZGBmpGpoUtqV8e7apAvd_vfef6mI21ri1niJE6mLAnX63RLmB9cd0B3rbdZ5rusyJb0r-qBNjzPx83q4fwcFW_nWgsAQOnLSd_5sB-8NAwAN4vrMaNELm4Sdk-AhmEQChDZ5kyXYRKDeH-cQOGQ:1qcVBc:gMa4QJdaS8XjQiw9KC9Os8iZUvNvdVy8464J8e7hFPQ",
+    "expire_date": "2023-09-16T18:17:32.777Z"
   }
 },
 {
@@ -6055,6 +6167,14 @@
 },
 {
   "model": "sessions.session",
+  "pk": "udsb07r4e4ogtw8aqr8jfw9258i6s68l",
+  "fields": {
+    "session_data": ".eJxVjDsOwyAQBe9CHSEWzC9lep8BLSwEJxGWjF1FuXtsyUXSvpl5bxZwW2vYel7CROzKpAZ2-V0jpmduB6IHtvvM09zWZYr8UPhJOx9nyq_b6f4dVOx1r4sni4IKqCQRKAP6QRlQNklnyUktbMEIRpsIgE7hoL2RyovdM5Ay-3wBKP83nQ:1qdrKu:JHVyYVAcrpeTS0wIT9oDba7eT5_bdRuxnN8gpcIuDZE",
+    "expire_date": "2023-09-20T12:08:44.790Z"
+  }
+},
+{
+  "model": "sessions.session",
   "pk": "v3z7nyuzdn5ayasc7b6nij8jtdl489j0",
   "fields": {
     "session_data": ".eJxVjsEOwiAQRP-FsyEshVI8eu83kF12I1XTJqU9Gf_dkvSg13kzk_dWCfetpL3KmiZWVwWDV5fflDA_ZW6IHzjfF52XeVsn0q2iT1r1uLC8bmf376BgLccaxWHogUEMi82WPcVge-8hdp21xnnDYMmQp8Eg8yHionBwAETN6vMFIXQ3jQ:1qaNH7:NDDMnqGgSJCOFCEPjrdr_YiTCzTzSpNTUFACoZJVefA",
@@ -6119,6 +6239,14 @@
 },
 {
   "model": "sessions.session",
+  "pk": "y6ow3njq2wk3su8d96wg5u7is01sgyud",
+  "fields": {
+    "session_data": ".eJxVjEEOwiAQRe_C2hDG0gIu3fcMZGBmpGpoUtqV8e7apAvd_vfef6mI21ri1niJE6mLAnX63RLmB9cd0B3rbdZ5rusyJb0r-qBNjzPx83q4fwcFW_nWgsAQOnLSd_5sB-8NAwAN4vrMaNELm4Sdk-AhmEQChDZ5kyXYRKDeH-cQOGQ:1qdpwz:0wa3LZHL8YWKkQUiZOvvS3nKcFObyj3Mu2fBrBH5dsw",
+    "expire_date": "2023-09-20T10:39:57.996Z"
+  }
+},
+{
+  "model": "sessions.session",
   "pk": "z7amh5jpaur6rm3ltjy5vnuitm5ugzag",
   "fields": {
     "session_data": ".eJxVjEEOwiAQRe_C2hDG0gIu3fcMZGBmpGpoUtqV8e7apAvd_vfef6mI21ri1niJE6mLAnX63RLmB9cd0B3rbdZ5rusyJb0r-qBNjzPx83q4fwcFW_nWgsAQOnLSd_5sB-8NAwAN4vrMaNELm4Sdk-AhmEQChDZ5kyXYRKDeH-cQOGQ:1qXKTo:bgxB_nzDGERu6JI2IMznwUFF9DtHe4fhaRg1yh_4TSg",
@@ -6146,7 +6274,7 @@
   "pk": 1,
   "fields": {
     "password": "pbkdf2_sha256$390000$rpQgHiuSfhcF8lZlN7HQML$RDiOEXSeIAREafU0Tnvc9vgV82yf2zx4TW1/f/CTw1o=",
-    "last_login": "2023-09-02T10:23:42.506Z",
+    "last_login": "2023-09-06T14:46:37.360Z",
     "is_superuser": true,
     "username": "wim",
     "first_name": "wim",
@@ -6784,7 +6912,7 @@
   "pk": 213,
   "fields": {
     "password": "pbkdf2_sha256$390000$7WbKbd1bqU6f8KkxUuQf8t$YSjknU+Iq6guwv+wydQz3YCzNFOAdbdy8BdXav1ZXSY=",
-    "last_login": "2023-08-30T19:24:39.930Z",
+    "last_login": "2023-09-06T10:32:18.004Z",
     "is_superuser": false,
     "username": "sh",
     "first_name": "",
@@ -6850,7 +6978,7 @@
   "pk": 244,
   "fields": {
     "password": "pbkdf2_sha256$390000$MbAy3r2ahV6QE6xFilyWG5$Hkuz0s9MNtjJ066lD0v9N2tnUv2ZuZLALt2rIL1QSAQ=",
-    "last_login": "2023-09-02T10:18:33.034Z",
+    "last_login": "2023-09-06T09:19:15.034Z",
     "is_superuser": false,
     "username": "willem",
     "first_name": "",
@@ -6912,10 +7040,168 @@
   }
 },
 {
+  "model": "base.user",
+  "pk": 247,
+  "fields": {
+    "password": "pbkdf2_sha256$390000$SEe6FDacStgEyNaqxSC1QW$1InWmBKtB6T4MUi/KDXTqWLLJ72Xi4HCQAykjPft19I=",
+    "last_login": "2023-09-03T13:18:15.419Z",
+    "is_superuser": false,
+    "username": "marcel li",
+    "first_name": "",
+    "last_name": "marcel li",
+    "is_staff": false,
+    "is_active": true,
+    "date_joined": "2023-09-03T13:18:15.104Z",
+    "name": "Marcel Li",
+    "ploeg": null,
+    "locker": null,
+    "email": "linssentandarts@gmail.com",
+    "avatar": "avatar.svg",
+    "groups": [],
+    "user_permissions": []
+  }
+},
+{
+  "model": "base.user",
+  "pk": 248,
+  "fields": {
+    "password": "pbkdf2_sha256$390000$11ue88P5s8a7Gav9ikPMAq$py0ecOQ2v/zFXfDvXo082ujUCAUN4ZANAejrfkLIleg=",
+    "last_login": "2023-09-03T18:15:24.119Z",
+    "is_superuser": false,
+    "username": "milena",
+    "first_name": "",
+    "last_name": "milena",
+    "is_staff": false,
+    "is_active": true,
+    "date_joined": "2023-09-03T18:15:21.669Z",
+    "name": "milena",
+    "ploeg": null,
+    "locker": null,
+    "email": "m.d.knappstein@gmail.com",
+    "avatar": "avatar.svg",
+    "groups": [],
+    "user_permissions": []
+  }
+},
+{
+  "model": "base.user",
+  "pk": 249,
+  "fields": {
+    "password": "pbkdf2_sha256$390000$KDfZvgOHJxtEzVHgaenJM1$2EvfpFdShwag2JdMUMLFmkMrzDnotiJVUmScupAr8mQ=",
+    "last_login": "2023-09-05T15:39:17.476Z",
+    "is_superuser": false,
+    "username": "kees wierenga",
+    "first_name": "",
+    "last_name": "kees wierenga",
+    "is_staff": false,
+    "is_active": true,
+    "date_joined": "2023-09-05T15:39:17.122Z",
+    "name": "Kees Wierenga",
+    "ploeg": null,
+    "locker": null,
+    "email": "cwierenga73@gmail.com",
+    "avatar": "avatar.svg",
+    "groups": [],
+    "user_permissions": []
+  }
+},
+{
+  "model": "base.user",
+  "pk": 250,
+  "fields": {
+    "password": "pbkdf2_sha256$390000$wf4LO5F2SxXEJCY7JFc57F$HKAtgFADKkkuN3rbEEDaXofHu1hC0SOwcVgel3/WDrc=",
+    "last_login": "2023-09-06T10:20:32.588Z",
+    "is_superuser": false,
+    "username": "aletta stein",
+    "first_name": "",
+    "last_name": "aletta stein",
+    "is_staff": false,
+    "is_active": true,
+    "date_joined": "2023-09-06T10:20:32.307Z",
+    "name": "Aletta Stein",
+    "ploeg": null,
+    "locker": null,
+    "email": "Steinaletta@gmail.com",
+    "avatar": "avatar.svg",
+    "groups": [],
+    "user_permissions": []
+  }
+},
+{
+  "model": "base.user",
+  "pk": 251,
+  "fields": {
+    "password": "pbkdf2_sha256$390000$RbZg1wxNTz6veFkK7i9Dff$n4ynwgakdtfCJJbZPRrP1qu8LbdTB2nm4NINIagJy4M=",
+    "last_login": "2023-09-06T12:08:44.765Z",
+    "is_superuser": false,
+    "username": "meta",
+    "first_name": "",
+    "last_name": "meta",
+    "is_staff": false,
+    "is_active": true,
+    "date_joined": "2023-09-06T12:08:44.439Z",
+    "name": "meta",
+    "ploeg": null,
+    "locker": null,
+    "email": "meta_rijks@hotmail.com",
+    "avatar": "avatar.svg",
+    "groups": [],
+    "user_permissions": []
+  }
+},
+{
   "model": "base.topic",
   "pk": 1,
   "fields": {
     "name": "Lockers"
+  }
+},
+{
+  "model": "base.person",
+  "pk": 1,
+  "fields": {
+    "name": "Bart Hofenk",
+    "onderhuur": true,
+    "wachtlijst": false,
+    "hoofdhuurder": false,
+    "locker": "H47",
+    "email": "bart.hofenk@gmail.com"
+  }
+},
+{
+  "model": "base.person",
+  "pk": 3,
+  "fields": {
+    "name": "i. bolwijn",
+    "onderhuur": false,
+    "wachtlijst": true,
+    "hoofdhuurder": false,
+    "locker": "wachtlijst",
+    "email": "ibolwijn@mantis.nl"
+  }
+},
+{
+  "model": "base.person",
+  "pk": 4,
+  "fields": {
+    "name": "cornalien stolker",
+    "onderhuur": false,
+    "wachtlijst": true,
+    "hoofdhuurder": false,
+    "locker": "wachtlijst",
+    "email": "c.stolker@mantis.nl"
+  }
+},
+{
+  "model": "base.person",
+  "pk": 5,
+  "fields": {
+    "name": "Cees van der Velde",
+    "onderhuur": false,
+    "wachtlijst": false,
+    "hoofdhuurder": false,
+    "locker": "H47",
+    "email": "ceesvelde@gmail.com"
   }
 },
 {
@@ -8547,11 +8833,30 @@
   }
 },
 {
+  "model": "base.locker",
+  "pk": 57,
+  "fields": {
+    "kluisnummer": "wachtlijst",
+    "email": "wachtlijst",
+    "kluisje": "wachtlijst",
+    "type": "--",
+    "topic": "----",
+    "row": "----",
+    "col": "----",
+    "verhuurd": false,
+    "sleutels": "----",
+    "code": "----",
+    "created": "2023-09-03T19:03:38.272Z",
+    "owners": []
+  }
+},
+{
   "model": "base.excellijst",
   "pk": 128,
   "fields": {
     "kluisnummer": "Dames 01",
     "email": "r.krabbe@hetnet.nl",
+    "excel": "----",
     "type": "hang",
     "sleutels": "1",
     "code": "1",
@@ -8564,7 +8869,8 @@
   "fields": {
     "kluisnummer": "Dames 04",
     "email": "aamrensink@gmail.com",
-    "type": "hang",
+    "excel": "Dames 04",
+    "type": "Dames 04",
     "sleutels": "1",
     "code": "1",
     "created": "2023-01-03T00:00:00Z"
@@ -8576,7 +8882,8 @@
   "fields": {
     "kluisnummer": "Dames 05",
     "email": "cmeermin@airpost.net",
-    "type": "hang",
+    "excel": "Dames 05",
+    "type": "Dames 05",
     "sleutels": "1",
     "code": "1",
     "created": "2023-01-03T00:00:00Z"
@@ -8588,7 +8895,8 @@
   "fields": {
     "kluisnummer": "Dames 07",
     "email": "vvanderkuil@me.com",
-    "type": "hang",
+    "excel": "Dames 07",
+    "type": "Dames 07",
     "sleutels": "1",
     "code": "1",
     "created": "2023-01-03T00:00:00Z"
@@ -8600,7 +8908,8 @@
   "fields": {
     "kluisnummer": "Dames 08",
     "email": "wyki24@gmail.com",
-    "type": "hang",
+    "excel": "Dames 08",
+    "type": "Dames 08",
     "sleutels": "1",
     "code": "1",
     "created": "2023-01-03T00:00:00Z"
@@ -8612,7 +8921,8 @@
   "fields": {
     "kluisnummer": "Dames 09",
     "email": "petradeleede@gmail.com",
-    "type": "hang",
+    "excel": "Dames 09",
+    "type": "Dames 09",
     "sleutels": "1",
     "code": "1",
     "created": "2023-01-03T00:00:00Z"
@@ -8624,7 +8934,8 @@
   "fields": {
     "kluisnummer": "Dames 12",
     "email": "f_euwe@hotmail.com",
-    "type": "hang",
+    "excel": "Dames 12",
+    "type": "Dames 12",
     "sleutels": "1",
     "code": "1",
     "created": "2023-01-03T00:00:00Z"
@@ -8636,7 +8947,8 @@
   "fields": {
     "kluisnummer": "Dames 13",
     "email": "miranda@miraud.nl",
-    "type": "hang",
+    "excel": "Dames 13",
+    "type": "Dames 13",
     "sleutels": "1",
     "code": "1",
     "created": "2023-01-03T00:00:00Z"
@@ -8648,7 +8960,8 @@
   "fields": {
     "kluisnummer": "Dames 14",
     "email": "w.brokervandongen@upcmail.nl",
-    "type": "hang",
+    "excel": "Dames 14",
+    "type": "Dames 14",
     "sleutels": "1",
     "code": "1",
     "created": "2023-01-03T00:00:00Z"
@@ -8660,7 +8973,8 @@
   "fields": {
     "kluisnummer": "Dames 15",
     "email": "maaike@vangulik.org",
-    "type": "hang",
+    "excel": "Dames 15",
+    "type": "Dames 15",
     "sleutels": "1",
     "code": "1",
     "created": "2023-01-03T00:00:00Z"
@@ -8672,7 +8986,8 @@
   "fields": {
     "kluisnummer": "Dames 16",
     "email": "lkaboord@kpnmail.nl",
-    "type": "hang",
+    "excel": "Dames 16",
+    "type": "Dames 16",
     "sleutels": "1",
     "code": "1",
     "created": "2023-01-03T00:00:00Z"
@@ -8684,7 +8999,8 @@
   "fields": {
     "kluisnummer": "Dames 19",
     "email": "nadinevanwijk@gmail.com",
-    "type": "hang",
+    "excel": "Dames 19",
+    "type": "Dames 19",
     "sleutels": "1",
     "code": "1",
     "created": "2023-01-03T00:00:00Z"
@@ -8696,7 +9012,8 @@
   "fields": {
     "kluisnummer": "Dames 20",
     "email": "ebeverdam@xs4all.nl",
-    "type": "hang",
+    "excel": "Dames 20",
+    "type": "Dames 20",
     "sleutels": "1",
     "code": "1",
     "created": "2023-01-03T00:00:00Z"
@@ -8708,7 +9025,8 @@
   "fields": {
     "kluisnummer": "Dames 21",
     "email": "n.l.m.cappaert@gmail.com",
-    "type": "hang",
+    "excel": "Dames 21",
+    "type": "Dames 21",
     "sleutels": "1",
     "code": "1",
     "created": "2023-01-03T00:00:00Z"
@@ -8720,6 +9038,7 @@
   "fields": {
     "kluisnummer": "Dames 23",
     "email": "birgitte.aertssen@gmail.com",
+    "excel": "----",
     "type": "hang",
     "sleutels": "1",
     "code": "1",
@@ -8732,6 +9051,7 @@
   "fields": {
     "kluisnummer": "Dames 24",
     "email": "willemijnsprangers@gmail.com",
+    "excel": "----",
     "type": "hang",
     "sleutels": "1",
     "code": "1",
@@ -8744,7 +9064,8 @@
   "fields": {
     "kluisnummer": "Dames A-25",
     "email": "t.elst@wxs.nl",
-    "type": "hang",
+    "excel": "Dames A-25",
+    "type": "Dames A-25",
     "sleutels": "1",
     "code": "1",
     "created": "2023-01-03T00:00:00Z"
@@ -8756,6 +9077,7 @@
   "fields": {
     "kluisnummer": "Dames A-26",
     "email": "stapvdam@xs4all.nl",
+    "excel": "----",
     "type": "hang",
     "sleutels": "1",
     "code": "1",
@@ -8768,7 +9090,8 @@
   "fields": {
     "kluisnummer": "Dames A-27",
     "email": "anoukrijs@hotmail.com",
-    "type": "hang",
+    "excel": "Dames A-27",
+    "type": "Dames A-27",
     "sleutels": "1",
     "code": "1",
     "created": "2023-01-03T00:00:00Z"
@@ -8780,7 +9103,8 @@
   "fields": {
     "kluisnummer": "Dames A-31",
     "email": "miranda_megens@yahoo.com",
-    "type": "hang",
+    "excel": "Dames A-31",
+    "type": "Dames A-31",
     "sleutels": "1",
     "code": "1",
     "created": "2023-01-03T00:00:00Z"
@@ -8792,7 +9116,8 @@
   "fields": {
     "kluisnummer": "Dames A-32",
     "email": "jessica@ambeleij.demon.nl",
-    "type": "hang",
+    "excel": "Dames A-32",
+    "type": "Dames A-32",
     "sleutels": "1",
     "code": "1",
     "created": "2023-01-03T00:00:00Z"
@@ -8804,7 +9129,8 @@
   "fields": {
     "kluisnummer": "Dames A-35",
     "email": "fhtap@xs4all.nl",
-    "type": "hang",
+    "excel": "Dames A-35",
+    "type": "Dames A-35",
     "sleutels": "1",
     "code": "1",
     "created": "2023-01-03T00:00:00Z"
@@ -8816,7 +9142,8 @@
   "fields": {
     "kluisnummer": "Dames A-36",
     "email": "haazer@zonnet.nl",
-    "type": "hang",
+    "excel": "Dames A-36",
+    "type": "Dames A-36",
     "sleutels": "1",
     "code": "1",
     "created": "2023-01-03T00:00:00Z"
@@ -8828,7 +9155,8 @@
   "fields": {
     "kluisnummer": "Dames A-38",
     "email": "Gbvanderheide@hetnet.nl",
-    "type": "hang",
+    "excel": "Dames A-38",
+    "type": "Dames A-38",
     "sleutels": "1",
     "code": "1",
     "created": "2023-01-03T00:00:00Z"
@@ -8840,7 +9168,8 @@
   "fields": {
     "kluisnummer": "Dames A-41",
     "email": "linooij@gmail.com",
-    "type": "hang",
+    "excel": "Dames A-41",
+    "type": "Dames A-41",
     "sleutels": "1",
     "code": "1",
     "created": "2023-01-03T00:00:00Z"
@@ -8852,6 +9181,7 @@
   "fields": {
     "kluisnummer": "Dames A-42",
     "email": "onbekend",
+    "excel": "----",
     "type": "hang",
     "sleutels": "1",
     "code": "1",
@@ -8864,6 +9194,7 @@
   "fields": {
     "kluisnummer": "Dames A-43",
     "email": "derijkdiana@gmail.com",
+    "excel": "----",
     "type": "hang",
     "sleutels": "1",
     "code": "1",
@@ -8876,7 +9207,8 @@
   "fields": {
     "kluisnummer": "Dames A-44",
     "email": "h.r.geusebroek@gmail.com",
-    "type": "hang",
+    "excel": "Dames A-44",
+    "type": "Dames A-44",
     "sleutels": "1",
     "code": "1",
     "created": "2023-01-03T00:00:00Z"
@@ -8888,7 +9220,8 @@
   "fields": {
     "kluisnummer": "Dames A-45",
     "email": "marianscheltema@gmail.com",
-    "type": "hang",
+    "excel": "Dames A-45",
+    "type": "Dames A-45",
     "sleutels": "1",
     "code": "1",
     "created": "2023-01-03T00:00:00Z"
@@ -8900,6 +9233,7 @@
   "fields": {
     "kluisnummer": "Dames A-46",
     "email": "onbekend",
+    "excel": "----",
     "type": "hang",
     "sleutels": "1",
     "code": "1",
@@ -8912,6 +9246,7 @@
   "fields": {
     "kluisnummer": "Dames A-48",
     "email": "anjotona@hotmail.com",
+    "excel": "----",
     "type": "hang",
     "sleutels": "1",
     "code": "1",
@@ -8924,7 +9259,8 @@
   "fields": {
     "kluisnummer": "Dames B-25",
     "email": "nc.heerema@gmail.com",
-    "type": "hang",
+    "excel": "Dames B-25",
+    "type": "Dames B-25",
     "sleutels": "1",
     "code": "1",
     "created": "2023-01-03T00:00:00Z"
@@ -8936,7 +9272,8 @@
   "fields": {
     "kluisnummer": "Dames B-26",
     "email": "nap.janneke@gmail.com",
-    "type": "hang",
+    "excel": "Dames B-26",
+    "type": "Dames B-26",
     "sleutels": "1",
     "code": "1",
     "created": "2023-01-03T00:00:00Z"
@@ -8948,7 +9285,8 @@
   "fields": {
     "kluisnummer": "Dames B-27",
     "email": "gerdakwantes@gmail.com",
-    "type": "hang",
+    "excel": "Dames B-27",
+    "type": "Dames B-27",
     "sleutels": "1",
     "code": "1",
     "created": "2023-01-03T00:00:00Z"
@@ -8960,7 +9298,8 @@
   "fields": {
     "kluisnummer": "Dames B-28",
     "email": "carappeldoorn@ziggo.nl",
-    "type": "hang",
+    "excel": "Dames B-28",
+    "type": "Dames B-28",
     "sleutels": "1",
     "code": "1",
     "created": "2023-01-03T00:00:00Z"
@@ -8972,6 +9311,7 @@
   "fields": {
     "kluisnummer": "Dames B-29",
     "email": "carolina.scheepstra@inholland.nl",
+    "excel": "----",
     "type": "hang",
     "sleutels": "1",
     "code": "1",
@@ -8984,6 +9324,7 @@
   "fields": {
     "kluisnummer": "Dames B-30",
     "email": "bente.scheffer@xs4all.nl",
+    "excel": "----",
     "type": "hang",
     "sleutels": "1",
     "code": "1",
@@ -8996,7 +9337,8 @@
   "fields": {
     "kluisnummer": "Dames B-31",
     "email": "catharina.moison@gmail.com",
-    "type": "hang",
+    "excel": "Dames B-31",
+    "type": "Dames B-31",
     "sleutels": "1",
     "code": "1",
     "created": "2023-01-03T00:00:00Z"
@@ -9008,6 +9350,7 @@
   "fields": {
     "kluisnummer": "Dames B-32",
     "email": "onbekend",
+    "excel": "----",
     "type": "hang",
     "sleutels": "1",
     "code": "1",
@@ -9020,7 +9363,8 @@
   "fields": {
     "kluisnummer": "Dames B-33",
     "email": "baaijen@ziggo.nl",
-    "type": "hang",
+    "excel": "Dames B-33",
+    "type": "Dames B-33",
     "sleutels": "1",
     "code": "1",
     "created": "2023-01-03T00:00:00Z"
@@ -9032,7 +9376,8 @@
   "fields": {
     "kluisnummer": "Dames B-34",
     "email": "elluf@hotmail.com",
-    "type": "hang",
+    "excel": "Dames B-34",
+    "type": "Dames B-34",
     "sleutels": "1",
     "code": "1",
     "created": "2023-01-03T00:00:00Z"
@@ -9044,7 +9389,8 @@
   "fields": {
     "kluisnummer": "Dames B-35",
     "email": "LSmit1@Xs4all.nl",
-    "type": "hang",
+    "excel": "Dames B-35",
+    "type": "Dames B-35",
     "sleutels": "1",
     "code": "1",
     "created": "2023-01-03T00:00:00Z"
@@ -9056,7 +9402,8 @@
   "fields": {
     "kluisnummer": "Dames B-38",
     "email": "maryke@casema.nl",
-    "type": "hang",
+    "excel": "Dames B-38",
+    "type": "Dames B-38",
     "sleutels": "1",
     "code": "1",
     "created": "2023-01-03T00:00:00Z"
@@ -9068,7 +9415,8 @@
   "fields": {
     "kluisnummer": "Dames B-39",
     "email": "iekeschiferli27@gmail.com",
-    "type": "hang",
+    "excel": "Dames B-39",
+    "type": "Dames B-39",
     "sleutels": "1",
     "code": "1",
     "created": "2023-01-03T00:00:00Z"
@@ -9080,7 +9428,8 @@
   "fields": {
     "kluisnummer": "Dames B-40",
     "email": "paulienlasterie@gmail.com",
-    "type": "hang",
+    "excel": "Dames B-40",
+    "type": "Dames B-40",
     "sleutels": "1",
     "code": "1",
     "created": "2023-01-03T00:00:00Z"
@@ -9092,7 +9441,8 @@
   "fields": {
     "kluisnummer": "Dames B-41",
     "email": "jce.groot@casema.nl",
-    "type": "hang",
+    "excel": "Dames B-41",
+    "type": "Dames B-41",
     "sleutels": "1",
     "code": "1",
     "created": "2023-01-03T00:00:00Z"
@@ -9104,6 +9454,7 @@
   "fields": {
     "kluisnummer": "Dames B-44",
     "email": "marjolein@schepeladvies.nl",
+    "excel": "----",
     "type": "hang",
     "sleutels": "1",
     "code": "1",
@@ -9116,7 +9467,8 @@
   "fields": {
     "kluisnummer": "Dames B-45",
     "email": "corien@dapnijkerk.nl",
-    "type": "hang",
+    "excel": "Dames B-45",
+    "type": "Dames B-45",
     "sleutels": "1",
     "code": "1",
     "created": "2023-01-03T00:00:00Z"
@@ -9128,7 +9480,8 @@
   "fields": {
     "kluisnummer": "Dames C-51",
     "email": "mail2mira@yahoo.com",
-    "type": "hang",
+    "excel": "Dames C-51",
+    "type": "Dames C-51",
     "sleutels": "1",
     "code": "1",
     "created": "2023-01-03T00:00:00Z"
@@ -9140,7 +9493,8 @@
   "fields": {
     "kluisnummer": "Dames C-54",
     "email": "smorgens2@gmail.com",
-    "type": "hang",
+    "excel": "Dames C-54",
+    "type": "Dames C-54",
     "sleutels": "1",
     "code": "1",
     "created": "2023-01-03T00:00:00Z"
@@ -9152,6 +9506,7 @@
   "fields": {
     "kluisnummer": "Dames c-56",
     "email": "ingeloes@gmail.com",
+    "excel": "----",
     "type": "hang",
     "sleutels": "1",
     "code": "1",
@@ -9164,7 +9519,8 @@
   "fields": {
     "kluisnummer": "Dames C-57",
     "email": "wilmahanskamp@hotmail.com",
-    "type": "hang",
+    "excel": "Dames C-57",
+    "type": "Dames C-57",
     "sleutels": "1",
     "code": "1",
     "created": "2023-01-03T00:00:00Z"
@@ -9176,7 +9532,8 @@
   "fields": {
     "kluisnummer": "Dames C-59",
     "email": "teaudevosvansteenwijk@gmail.com",
-    "type": "hang",
+    "excel": "Dames C-59",
+    "type": "Dames C-59",
     "sleutels": "1",
     "code": "1",
     "created": "2023-01-03T00:00:00Z"
@@ -9188,6 +9545,7 @@
   "fields": {
     "kluisnummer": "Dames C-61",
     "email": "manonburger1@gmail.com",
+    "excel": "----",
     "type": "hang",
     "sleutels": "1",
     "code": "1",
@@ -9200,7 +9558,8 @@
   "fields": {
     "kluisnummer": "Dames C-62",
     "email": "leonievb1@gmail.com",
-    "type": "hang",
+    "excel": "Dames C-62",
+    "type": "Dames C-62",
     "sleutels": "1",
     "code": "1",
     "created": "2023-01-03T00:00:00Z"
@@ -9212,7 +9571,8 @@
   "fields": {
     "kluisnummer": "Dames C-64",
     "email": "petra.gerritsen@spletters.nl",
-    "type": "hang",
+    "excel": "Dames C-64",
+    "type": "Dames C-64",
     "sleutels": "1",
     "code": "1",
     "created": "2023-01-03T00:00:00Z"
@@ -9224,7 +9584,8 @@
   "fields": {
     "kluisnummer": "Dames C-65",
     "email": "mhrijks@planet.nl",
-    "type": "hang",
+    "excel": "Dames C-65",
+    "type": "Dames C-65",
     "sleutels": "1",
     "code": "1",
     "created": "2023-01-03T00:00:00Z"
@@ -9236,7 +9597,8 @@
   "fields": {
     "kluisnummer": "Dames C-68",
     "email": "gerdakruithof@icloud.com",
-    "type": "hang",
+    "excel": "Dames C-68",
+    "type": "Dames C-68",
     "sleutels": "1",
     "code": "1",
     "created": "2023-01-03T00:00:00Z"
@@ -9248,6 +9610,7 @@
   "fields": {
     "kluisnummer": "Dames C-69",
     "email": "ellenvandun@casema.nl",
+    "excel": "----",
     "type": "hang",
     "sleutels": "1",
     "code": "1",
@@ -9260,7 +9623,8 @@
   "fields": {
     "kluisnummer": "Dames C-70",
     "email": "hl.sinlan@t-mobilethuis.nl",
-    "type": "hang",
+    "excel": "Dames C-70",
+    "type": "Dames C-70",
     "sleutels": "1",
     "code": "1",
     "created": "2023-01-03T00:00:00Z"
@@ -9272,6 +9636,7 @@
   "fields": {
     "kluisnummer": "Dames C-71",
     "email": "ankmeyer@xs4all.nl",
+    "excel": "----",
     "type": "hang",
     "sleutels": "1",
     "code": "1",
@@ -9284,7 +9649,8 @@
   "fields": {
     "kluisnummer": "Heren 01",
     "email": "rikderoodevos@kpnmail.nl",
-    "type": "hang",
+    "excel": "Heren 01",
+    "type": "Heren 01",
     "sleutels": "1",
     "code": "1",
     "created": "2023-01-03T00:00:00Z"
@@ -9296,7 +9662,8 @@
   "fields": {
     "kluisnummer": "Heren 02",
     "email": "willie@ambeleij.demon.nl",
-    "type": "hang",
+    "excel": "Heren 02",
+    "type": "Heren 02",
     "sleutels": "1",
     "code": "1",
     "created": "2023-01-03T00:00:00Z"
@@ -9308,7 +9675,8 @@
   "fields": {
     "kluisnummer": "Heren 03",
     "email": "leovandenbroek@casema.nl",
-    "type": "hang",
+    "excel": "Heren 03",
+    "type": "Heren 03",
     "sleutels": "1",
     "code": "1",
     "created": "2023-01-03T00:00:00Z"
@@ -9320,7 +9688,8 @@
   "fields": {
     "kluisnummer": "Heren 04",
     "email": "cor@corscheffers.nl",
-    "type": "hang",
+    "excel": "Heren 04",
+    "type": "Heren 04",
     "sleutels": "1",
     "code": "1",
     "created": "2023-01-03T00:00:00Z"
@@ -9332,6 +9701,7 @@
   "fields": {
     "kluisnummer": "Heren 05",
     "email": "onbekend",
+    "excel": "----",
     "type": "hang",
     "sleutels": "1",
     "code": "1",
@@ -9344,6 +9714,7 @@
   "fields": {
     "kluisnummer": "Heren 06",
     "email": "edwin.foppen@gmail.com",
+    "excel": "----",
     "type": "hang",
     "sleutels": "1",
     "code": "1",
@@ -9356,6 +9727,7 @@
   "fields": {
     "kluisnummer": "Heren 07",
     "email": "joh.vanwijk@ziggo.nl",
+    "excel": "----",
     "type": "hang",
     "sleutels": "1",
     "code": "1",
@@ -9368,6 +9740,7 @@
   "fields": {
     "kluisnummer": "Heren 08",
     "email": "sjoerdhagedoorn@gmail.com",
+    "excel": "----",
     "type": "hang",
     "sleutels": "1",
     "code": "1",
@@ -9380,6 +9753,7 @@
   "fields": {
     "kluisnummer": "Heren 09",
     "email": "pepijn.reyn@clz.nl",
+    "excel": "----",
     "type": "hang",
     "sleutels": "1",
     "code": "1",
@@ -9392,7 +9766,8 @@
   "fields": {
     "kluisnummer": "Heren 10",
     "email": "whmgorissen@gmail.com",
-    "type": "hang",
+    "excel": "Heren 10",
+    "type": "Heren 10",
     "sleutels": "1",
     "code": "1",
     "created": "2023-01-03T00:00:00Z"
@@ -9404,7 +9779,8 @@
   "fields": {
     "kluisnummer": "Heren 11",
     "email": "tijmen@vangulik.org",
-    "type": "hang",
+    "excel": "Heren 11",
+    "type": "Heren 11",
     "sleutels": "1",
     "code": "1",
     "created": "2023-01-03T00:00:00Z"
@@ -9416,7 +9792,8 @@
   "fields": {
     "kluisnummer": "Heren 12",
     "email": "rayszjf@hotmail.com",
-    "type": "hang",
+    "excel": "Heren 12",
+    "type": "Heren 12",
     "sleutels": "1",
     "code": "1",
     "created": "2023-01-03T00:00:00Z"
@@ -9428,7 +9805,8 @@
   "fields": {
     "kluisnummer": "Heren 13",
     "email": "hugo@linnenbank.org",
-    "type": "hang",
+    "excel": "Heren 13",
+    "type": "Heren 13",
     "sleutels": "1",
     "code": "1",
     "created": "2023-01-03T00:00:00Z"
@@ -9440,7 +9818,8 @@
   "fields": {
     "kluisnummer": "Heren 14",
     "email": "roeien@jeroenbollen.nl",
-    "type": "hang",
+    "excel": "Heren 14",
+    "type": "Heren 14",
     "sleutels": "1",
     "code": "1",
     "created": "2023-01-03T00:00:00Z"
@@ -9452,7 +9831,8 @@
   "fields": {
     "kluisnummer": "Heren 16",
     "email": "peter.prak@me.com",
-    "type": "hang",
+    "excel": "Heren 16",
+    "type": "Heren 16",
     "sleutels": "1",
     "code": "1",
     "created": "2023-01-03T00:00:00Z"
@@ -9464,7 +9844,8 @@
   "fields": {
     "kluisnummer": "Heren 19",
     "email": "ecr.bak@online.nl",
-    "type": "hang",
+    "excel": "Heren 19",
+    "type": "Heren 19",
     "sleutels": "1",
     "code": "1",
     "created": "2023-01-03T00:00:00Z"
@@ -9476,7 +9857,8 @@
   "fields": {
     "kluisnummer": "Heren 20",
     "email": "Tamerlan@xs4all.nl",
-    "type": "hang",
+    "excel": "Heren 20",
+    "type": "Heren 20",
     "sleutels": "1",
     "code": "1",
     "created": "2023-01-03T00:00:00Z"
@@ -9488,6 +9870,7 @@
   "fields": {
     "kluisnummer": "Heren 21",
     "email": "jurjen@kolmerweb.nl",
+    "excel": "----",
     "type": "hang",
     "sleutels": "1",
     "code": "1",
@@ -9500,7 +9883,8 @@
   "fields": {
     "kluisnummer": "Heren22",
     "email": "p.hingstman@hccnet.nl",
-    "type": "--",
+    "excel": "Heren 22",
+    "type": "Heren 22",
     "sleutels": "1",
     "code": "1",
     "created": "2023-01-03T00:00:00Z"
@@ -9512,7 +9896,8 @@
   "fields": {
     "kluisnummer": "Heren 23",
     "email": "thmm.visser@ziggo.nl",
-    "type": "hang",
+    "excel": "Heren 23",
+    "type": "Heren 23",
     "sleutels": "1",
     "code": "1",
     "created": "2023-01-03T00:00:00Z"
@@ -9524,7 +9909,8 @@
   "fields": {
     "kluisnummer": "Heren 24",
     "email": "gertjan@miedemageluid.nl",
-    "type": "hang",
+    "excel": "Heren 24",
+    "type": "Heren 24",
     "sleutels": "1",
     "code": "1",
     "created": "2023-01-03T00:00:00Z"
@@ -9536,6 +9922,7 @@
   "fields": {
     "kluisnummer": "Heren 25",
     "email": "laurensd007@gmail.com",
+    "excel": "----",
     "type": "hang",
     "sleutels": "1",
     "code": "1",
@@ -9548,7 +9935,8 @@
   "fields": {
     "kluisnummer": "Heren 26",
     "email": "martinreniers@hotmail.com",
-    "type": "hang",
+    "excel": "Heren 26",
+    "type": "Heren 26",
     "sleutels": "1",
     "code": "1",
     "created": "2023-01-03T00:00:00Z"
@@ -9560,6 +9948,7 @@
   "fields": {
     "kluisnummer": "Heren 27",
     "email": "p.kwantes@ziggo.nl",
+    "excel": "----",
     "type": "hang",
     "sleutels": "1",
     "code": "1",
@@ -9572,7 +9961,8 @@
   "fields": {
     "kluisnummer": "Heren 29",
     "email": "gerard.ranke@ziggo.nl",
-    "type": "hang",
+    "excel": "Heren 29",
+    "type": "Heren 29",
     "sleutels": "1",
     "code": "1",
     "created": "2023-01-03T00:00:00Z"
@@ -9584,7 +9974,8 @@
   "fields": {
     "kluisnummer": "Heren 30",
     "email": "goldtuk@telfort.nl",
-    "type": "hang",
+    "excel": "Heren 30",
+    "type": "Heren 30",
     "sleutels": "1",
     "code": "1",
     "created": "2023-01-03T00:00:00Z"
@@ -9596,7 +9987,8 @@
   "fields": {
     "kluisnummer": "Heren 32",
     "email": "JTombrock@ziggo.nl",
-    "type": "hang",
+    "excel": "Heren 32",
+    "type": "Heren 32",
     "sleutels": "1",
     "code": "1",
     "created": "2023-01-03T00:00:00Z"
@@ -9608,7 +10000,8 @@
   "fields": {
     "kluisnummer": "Heren 33",
     "email": "dickbaars@kpnplanet.nl",
-    "type": "hang",
+    "excel": "Heren 33",
+    "type": "Heren 33",
     "sleutels": "1",
     "code": "1",
     "created": "2023-01-03T00:00:00Z"
@@ -9620,7 +10013,8 @@
   "fields": {
     "kluisnummer": "Heren 35",
     "email": "joannemieke@kpnmail.nl",
-    "type": "hang",
+    "excel": "Heren 35",
+    "type": "Heren 35",
     "sleutels": "1",
     "code": "1",
     "created": "2023-01-03T00:00:00Z"
@@ -9632,7 +10026,8 @@
   "fields": {
     "kluisnummer": "Heren 37",
     "email": "paco@redleafs.nl",
-    "type": "hang",
+    "excel": "Heren 37",
+    "type": "Heren 37",
     "sleutels": "1",
     "code": "1",
     "created": "2023-01-03T00:00:00Z"
@@ -9644,7 +10039,8 @@
   "fields": {
     "kluisnummer": "Heren 38",
     "email": "linssentandarts@gmail.com",
-    "type": "hang",
+    "excel": "Heren 38",
+    "type": "Heren 38",
     "sleutels": "1",
     "code": "1",
     "created": "2023-01-03T00:00:00Z"
@@ -9656,7 +10052,8 @@
   "fields": {
     "kluisnummer": "Heren 39",
     "email": "H.j.kiewiet@hccnet.nl",
-    "type": "hang",
+    "excel": "Heren 39",
+    "type": "Heren 39",
     "sleutels": "1",
     "code": "1",
     "created": "2023-01-03T00:00:00Z"
@@ -9668,7 +10065,8 @@
   "fields": {
     "kluisnummer": "Heren 40",
     "email": "w.vandenbosch@planet.nl",
-    "type": "hang",
+    "excel": "Heren 40",
+    "type": "Heren 40",
     "sleutels": "1",
     "code": "1",
     "created": "2023-01-03T00:00:00Z"
@@ -9680,7 +10078,8 @@
   "fields": {
     "kluisnummer": "Heren 41",
     "email": "peterknappstein@seilemaaker.nl",
-    "type": "hang",
+    "excel": "Heren 41",
+    "type": "Heren 41",
     "sleutels": "1",
     "code": "1",
     "created": "2023-01-03T00:00:00Z"
@@ -9692,7 +10091,8 @@
   "fields": {
     "kluisnummer": "Heren 42",
     "email": "erikvanderstruijs@xs4all.nl",
-    "type": "hang",
+    "excel": "Heren 42",
+    "type": "Heren 42",
     "sleutels": "1",
     "code": "1",
     "created": "2023-01-03T00:00:00Z"
@@ -9704,7 +10104,8 @@
   "fields": {
     "kluisnummer": "Heren 43",
     "email": "bertappeldoorn@ziggo.nl",
-    "type": "hang",
+    "excel": "Heren 43",
+    "type": "Heren 43",
     "sleutels": "1",
     "code": "1",
     "created": "2023-01-03T00:00:00Z"
@@ -9716,7 +10117,8 @@
   "fields": {
     "kluisnummer": "Heren 44",
     "email": "sjduijn@yahoo.com",
-    "type": "hang",
+    "excel": "Heren 44",
+    "type": "Heren 44",
     "sleutels": "1",
     "code": "1",
     "created": "2023-01-03T00:00:00Z"
@@ -9728,7 +10130,8 @@
   "fields": {
     "kluisnummer": "Heren 45",
     "email": "Haroldthijssen@hetnet.nl",
-    "type": "hang",
+    "excel": "Heren 45",
+    "type": "Heren 45",
     "sleutels": "1",
     "code": "1",
     "created": "2023-01-03T00:00:00Z"
@@ -9740,6 +10143,7 @@
   "fields": {
     "kluisnummer": "Heren 47",
     "email": "simon.glazenborg@gmail.com",
+    "excel": "----",
     "type": "hang",
     "sleutels": "1",
     "code": "1",
@@ -9752,7 +10156,8 @@
   "fields": {
     "kluisnummer": "Heren 48",
     "email": "tomasklos@gmail.com",
-    "type": "hang",
+    "excel": "Heren 48",
+    "type": "Heren 48",
     "sleutels": "1",
     "code": "1",
     "created": "2023-01-03T00:00:00Z"
@@ -9764,6 +10169,7 @@
   "fields": {
     "kluisnummer": "Heren 51",
     "email": "hbekenkamp-viking@casema.nl",
+    "excel": "----",
     "type": "hang",
     "sleutels": "1",
     "code": "1",
@@ -9776,7 +10182,8 @@
   "fields": {
     "kluisnummer": "Heren 52",
     "email": "whdgroot@gmail.com",
-    "type": "hang",
+    "excel": "Heren 52",
+    "type": "Heren 52",
     "sleutels": "1",
     "code": "1",
     "created": "2023-01-03T00:00:00Z"
@@ -9788,6 +10195,7 @@
   "fields": {
     "kluisnummer": "Heren 53",
     "email": "c.wierenga@ziggo.nl",
+    "excel": "----",
     "type": "hang",
     "sleutels": "1",
     "code": "1",
@@ -9800,7 +10208,8 @@
   "fields": {
     "kluisnummer": "Heren 55",
     "email": "avdort@gmail.com",
-    "type": "hang",
+    "excel": "Heren 55",
+    "type": "Heren 55",
     "sleutels": "1",
     "code": "1",
     "created": "2023-01-03T00:00:00Z"
@@ -9812,7 +10221,8 @@
   "fields": {
     "kluisnummer": "Heren 56",
     "email": "cmreuser@yahoo.com",
-    "type": "hang",
+    "excel": "Heren 56",
+    "type": "Heren 56",
     "sleutels": "1",
     "code": "1",
     "created": "2023-01-03T00:00:00Z"
@@ -9824,6 +10234,7 @@
   "fields": {
     "kluisnummer": "Heren 57",
     "email": "eongko@yahoo.com",
+    "excel": "----",
     "type": "hang",
     "sleutels": "1",
     "code": "1",
@@ -9836,6 +10247,7 @@
   "fields": {
     "kluisnummer": "Heren 58",
     "email": "peter.m.kerkhoven@gmail.com",
+    "excel": "----",
     "type": "hang",
     "sleutels": "1",
     "code": "1",
@@ -9848,7 +10260,8 @@
   "fields": {
     "kluisnummer": "Heren 59",
     "email": "wessel.goossens@gmail.com",
-    "type": "hang",
+    "excel": "Heren 59",
+    "type": "Heren 59",
     "sleutels": "1",
     "code": "1",
     "created": "2023-01-03T00:00:00Z"
@@ -9860,7 +10273,8 @@
   "fields": {
     "kluisnummer": "Heren 61",
     "email": "essen-van@ziggo.nl",
-    "type": "hang",
+    "excel": "Heren 61",
+    "type": "Heren 61",
     "sleutels": "1",
     "code": "1",
     "created": "2023-01-03T00:00:00Z"
@@ -9872,7 +10286,8 @@
   "fields": {
     "kluisnummer": "Heren 63",
     "email": "martinwileenbiertje@hotmail.com",
-    "type": "hang",
+    "excel": "Heren 63",
+    "type": "Heren 63",
     "sleutels": "1",
     "code": "1",
     "created": "2023-01-03T00:00:00Z"
@@ -9884,7 +10299,8 @@
   "fields": {
     "kluisnummer": "Heren 64",
     "email": "info@vanmanen.biz",
-    "type": "hang",
+    "excel": "Heren 64",
+    "type": "Heren 64",
     "sleutels": "1",
     "code": "1",
     "created": "2023-01-03T00:00:00Z"
@@ -9896,7 +10312,8 @@
   "fields": {
     "kluisnummer": "Heren 65",
     "email": "gerardvanbruggen64@hetnet.nl",
-    "type": "hang",
+    "excel": "Heren 65",
+    "type": "Heren 65",
     "sleutels": "1",
     "code": "1",
     "created": "2023-01-03T00:00:00Z"
@@ -9908,7 +10325,8 @@
   "fields": {
     "kluisnummer": "Heren 67",
     "email": "rtenvoorde@datelvision.nl",
-    "type": "hang",
+    "excel": "Heren 67",
+    "type": "Heren 67",
     "sleutels": "1",
     "code": "1",
     "created": "2023-01-03T00:00:00Z"
@@ -9920,7 +10338,8 @@
   "fields": {
     "kluisnummer": "Heren 69",
     "email": "die123@casema.nl",
-    "type": "hang",
+    "excel": "Heren 69",
+    "type": "Heren 69",
     "sleutels": "1",
     "code": "1",
     "created": "2023-01-03T00:00:00Z"
@@ -9932,7 +10351,8 @@
   "fields": {
     "kluisnummer": "Heren 70",
     "email": "gelangeveld@gmail.com",
-    "type": "hang",
+    "excel": "Heren 70",
+    "type": "Heren 70",
     "sleutels": "1",
     "code": "1",
     "created": "2023-01-03T00:00:00Z"
@@ -9944,7 +10364,8 @@
   "fields": {
     "kluisnummer": "Heren 22",
     "email": "p.hingstman@hccnet.nl",
-    "type": "hang",
+    "excel": "Heren 22",
+    "type": "Heren 22",
     "sleutels": "1",
     "code": "1",
     "created": "2023-01-03T00:00:00Z"
@@ -10215,6 +10636,50 @@
   }
 },
 {
+  "model": "base.bericht",
+  "pk": 67,
+  "fields": {
+    "user": 250,
+    "locker": 45,
+    "body": "18",
+    "updated": "2023-09-06T10:23:03.770Z",
+    "created": "2023-09-06T10:23:03.770Z"
+  }
+},
+{
+  "model": "base.bericht",
+  "pk": 68,
+  "fields": {
+    "user": 251,
+    "locker": 45,
+    "body": "",
+    "updated": "2023-09-06T12:09:36.025Z",
+    "created": "2023-09-06T12:09:36.025Z"
+  }
+},
+{
+  "model": "base.bericht",
+  "pk": 69,
+  "fields": {
+    "user": 251,
+    "locker": 45,
+    "body": "D65",
+    "updated": "2023-09-06T12:09:50.838Z",
+    "created": "2023-09-06T12:09:50.838Z"
+  }
+},
+{
+  "model": "base.bericht",
+  "pk": 70,
+  "fields": {
+    "user": 249,
+    "locker": 45,
+    "body": "Ik heb kluisje H53. Gr. Kees Wierenga",
+    "updated": "2023-09-06T13:29:37.443Z",
+    "created": "2023-09-06T13:29:37.443Z"
+  }
+},
+{
   "model": "base.helptekst",
   "pk": 1,
   "fields": {
@@ -10254,11 +10719,11 @@
   "model": "base.helptekst",
   "pk": 4,
   "fields": {
-    "title": "Profiel; ploegleden",
-    "updated_on": "2023-08-06T17:53:01.703Z",
-    "content": "Vul zonodig de ploegleden aan in uw ploeg",
+    "title": "Zoeken",
+    "updated_on": "2023-09-03T04:50:24.337Z",
+    "content": "Zoekennaar e-mail, lockernummer. \r\nZet ‘xls’ er voor om vorige excelgegevens te vinden",
     "seq": "05",
-    "publish": false,
+    "publish": true,
     "created_on": "2023-08-06T12:28:08.879Z"
   }
 },

@@ -39,6 +39,7 @@
       </div>
       <h2>Excel {{lockers.count}} {{vrijelockerslijst}} </h2>
       {% include 'base/feed_excel.html' %}
+
       {% if request.user.is_superuser %}
       {% endif %}
     </div>
@@ -46,8 +47,8 @@
 
     <!-- Activities Start -->
     {% comment %}
-    {% endcomment %}
     {% include 'base/activity_component.html' %}
+    {% endcomment %}
 
 
     <!-- Activities End -->

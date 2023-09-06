@@ -6,7 +6,7 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth import authenticate, login, logout
 from django.urls import reverse, reverse_lazy
 # from viking.models import  Matriks,KluisjesRV
-from base.models import Room,Message,User,Topic,Matriks,Locker,Ploeg,Helptekst,Bericht,Excellijst,Person
+from base.models import Room,Message,User,Topic,Locker,Ploeg,Helptekst,Bericht,Excellijst,Person,Facturatielijst
 from django.db.models import Q
 from base.forms import RoomForm, UserForm,  MyUserCreationForm,PloegForm,LockerForm,ExcelForm,PersonForm,WachtlijstForm
 from django.views.generic import(TemplateView,ListView)
@@ -21,6 +21,7 @@ from collections import namedtuple
 from rest_framework import status
 from django.views.generic.edit import CreateView, UpdateView,DeleteView
 # from base.serializers import UserSerializer, UserSerializerWithToken
+
 def loginPage(request):
     page = 'login'
     if request.user.is_authenticated:
@@ -101,11 +102,11 @@ def home(request):
     .annotate(dcount=Count('kluisnummer'))
     .order_by()
     )   
-    cabinetsused = (Matriks.objects
-    .values('naam')
-    .annotate(dcount=Count('regel'))
-    .order_by()
-    )   
+    # cabinetsused = (Matriks.objects
+    # .values('naam')
+    # .annotate(dcount=Count('regel'))
+    # .order_by()
+    # )   
     joiner=Locker.objects.none
     cnt=0
     joincnt=0
@@ -157,7 +158,7 @@ def home(request):
     url = reverse('berichten',)
     if q!='' or q !=None:
         lijst='home'
-        rooms_found = Matriks.objects.filter(regel__icontains=q).values_list('naam',flat=True)
+        # rooms_found = Matriks.objects.filter(regel__icontains=q).values_list('naam',flat=True)
         if 'xls' in qq:
             lijst='excellijst'
             print(q,qq)
@@ -189,7 +190,7 @@ def home(request):
                'results': results,
                 'lockers': lockers,
                 'excellockers': excellockers,
-               'cabinetsused': cabinetsused, 
+            #    'cabinetsused': cabinetsused, 
                'berichten': berichten, 
                'room_messages': room_messages
                }
@@ -430,7 +431,15 @@ def lockersPage(request):
 def vrijelockersPage(request):
     q = request.GET.get('q') if request.GET.get('q') != None else ''
     lijst='vrijelockerslijst'
-    lockers = Excellijst.objects.filter(excel__icontains='--')
+    # vergelijk facturatielijst van heden met de oude excellijst; ===> in_excel; waarde=lockernummer
+    # vergelijk facturatielijst van heden met de registraties; ===> is_registered; waarde=lockernummer
+    # lockers = Facturatielijst.objects.all() ##.filter(excel__icontains='--')
+    lockers = Facturatielijst.objects.filter(
+                    Q(in_excel__icontains='excel')&
+                    Q(is_registered__icontains='regis')
+                    # Q(is_registered=None) #.filter(type='vrij')
+                ).order_by('email') #.filter(type='vrij') ##.update(verhuurd=False)
+
     return render(request, 'base/excellijst.html', {'lockers': lockers,'vrijelockerslijst':lijst})
 
 def excelPage(request):
@@ -439,8 +448,18 @@ def excelPage(request):
     menuoptie='bijwerken'
     lockers = Excellijst.objects.filter(kluisnummer__icontains=q)
     if request.method == 'POST':
-        # qs_flat=User.objects.all().values_list('email')
-        # qs=Excellijst.objects.all()
+        qs=Facturatielijst.objects.all()
+        for f in qs:
+            if User.objects.filter(email=f.email).exists():
+                f.is_registered='registered'
+                f.save()
+            elif Excellijst.objects.filter(email=f.email).exists():
+                f.in_excel='in_excel'
+                f.save()
+            else:
+                f.type='vrij'
+                f.save()
+            
         lockers = Excellijst.objects.filter(kluisnummer__icontains=q)
         return redirect('home')
     # return render(request, 'base/delete.html', {'obj': room})
