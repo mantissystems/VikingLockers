@@ -661,7 +661,7 @@ def createRoom(request):
 class CreatePerson(CreateView):
     model = Person
     fields = ['name','email','wachtlijst',]
-    success_url = reverse_lazy('profiles')
+    success_url = reverse_lazy('home')
     
     def form_valid(self, form):
         messages.success(self.request, "U bent op de wachtlijst geplaatst.")
