@@ -34,6 +34,10 @@ class PersonForm(ModelForm):
     class Meta:
         model = Person
         fields = '__all__'
+class UserForm(ModelForm):
+    class Meta:
+        model = User
+        fields = '__all__'
 
 class WachtlijstForm(ModelForm):
     class Meta:

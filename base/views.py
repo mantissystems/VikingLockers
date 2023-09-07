@@ -342,6 +342,22 @@ def updateUser(request):
             return redirect('user-profile', pk=user.id)
     return render(request, 'base/update-user.html', context)
 
+class updateUser2(UpdateView):
+    model = User
+    fields = ['name','email','locker']
+    success_url = reverse_lazy('home')
+    
+    def form_valid(self, form):
+        messages.success(self.request, "Wijzigingen in user zijn opgeslagen.")
+        locker = form.cleaned_data['locker']  
+        email = form.cleaned_data['email'] 
+        if locker:
+            Locker.objects.update_or_create(kluisnummer=locker,
+                                                           email=email,
+                                                           verhuurd=True,
+                                                           )
+            # print(locker)
+        return super(updateUser2,self).form_valid(form)
 
 def userProfile(request, pk):
     user = User.objects.get(id=pk)
@@ -419,10 +435,10 @@ def topicsPage(request):
     topics = Topic.objects.filter(name__icontains=q)
     return render(request, 'base/topics.html', {'topics': topics})
 
-def ploegenPage(request):
+def user_listPage(request):
     q = request.GET.get('q') if request.GET.get('q') != None else ''
-    ploegen = Ploeg.objects.filter(name__icontains=q)
-    return render(request, 'base/ploegen.html', {'ploegen': ploegen})
+    users = User.objects.filter(name__icontains=q)
+    return render(request, 'base/user_list.html', {'users': users})
 
 def lockersPage(request):
     q = request.GET.get('q') if request.GET.get('q') != None else ''
@@ -435,10 +451,10 @@ def vrijelockersPage(request):
     # vergelijk facturatielijst van heden met de registraties; ===> is_registered; waarde=lockernummer
     # lockers = Facturatielijst.objects.all() ##.filter(excel__icontains='--')
     lockers = Facturatielijst.objects.filter(
-                    Q(in_excel__icontains='excel')&
-                    Q(is_registered__icontains='regis')
+                    Q(kluisnummer__icontains='--')
+                    # Q(is_registered__icontains='regis')
                     # Q(is_registered=None) #.filter(type='vrij')
-                ).order_by('email') #.filter(type='vrij') ##.update(verhuurd=False)
+                ).order_by('kluisnummer') ##.exclude(kluisnummer__icontains='--') ##.update(verhuurd=False)
 
     return render(request, 'base/excellijst.html', {'lockers': lockers,'vrijelockerslijst':lijst})
 
@@ -455,10 +471,11 @@ def excelPage(request):
                 f.save()
             elif Excellijst.objects.filter(email=f.email).exists():
                 f.in_excel='in_excel'
-                f.save()
-            else:
+            elif  '--' in f.kluisnummer:
                 f.type='vrij'
                 f.save()
+            # else:
+            #     f.save()
             
         lockers = Excellijst.objects.filter(kluisnummer__icontains=q)
         return redirect('home')
@@ -853,7 +870,7 @@ def lockersPage2(request):
     lockers =Locker.objects.filter(
         Q(kluisnummer__icontains=q) |
         Q(email__icontains=q)
-        ).order_by('kluisnummer').exclude(verhuurd=False)
+        ).order_by('kluisnummer') #.exclude(verhuurd=False)
 
     return render(request, 'base/kluisjes.html', {'lockers': lockers})
 

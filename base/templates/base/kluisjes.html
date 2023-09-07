@@ -37,7 +37,7 @@
   
         </div>
       </div>
-      <h2>Lockers</h2>
+      <h2>{{lockers.count}} Lockers</h2> 
       {% include 'base/feed_member_lockers.html' %}
       {% if request.user.is_superuser %}
       {% endif %}
