@@ -274,7 +274,8 @@ a {
   /* min-width: 480px; */
   width: var(--phone-viking);
   border-radius: 15px 15px 0 0;
-  overflow: hidden;
+  overflow-y: scroll;
+  /* overflow: hidden; */
   box-shadow: 0 0 20px rgba(0, 0, 0, 0.15);
 }
 
