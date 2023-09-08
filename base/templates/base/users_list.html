@@ -7,6 +7,7 @@
         <th></th>
         <th></th>
         <th></th>
+        <th></th>
       </tr>
     </thead>
     <tbody>
@@ -15,13 +16,23 @@
 
       <td>{{user.id }}</td>
       <td>
-        <a href="{% url 'update-user2' user.id %}?q={{user.id}}">{{ user.username }} | {{user.locker}} </span></a> <br>
+        <a href="{% url 'update-user2' user.id %}?q={{user.id}}">{{user.email}} </span></a>
         <div style="height:100%;width:100%">
           </div>
         </a>
       </td>
-            <td> </td>
-      </td>
+            <td>
+                {{user.username}}
+                 </td>
+                 <td>
+                    <td>
+                        {% if user.locker == None %}
+                          ------
+                          {% else %}
+                          {{user.locker}}
+                        {% endif %}
+                      </td>                     </td>
+          
       {% endfor %}
       </tr>
     </tbody>

@@ -269,7 +269,7 @@ a {
 .viking-table {
   border-collapse: collapse;
   margin: 9px 0;
-  font-size: 0.6em;
+  font-size: 0.9em;
   height: flex;
   /* min-width: 480px; */
   width: var(--phone-viking);

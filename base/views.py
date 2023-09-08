@@ -601,7 +601,19 @@ def get_context_data(self, **kwargs):
 
     # template_name='base/user_list.html'
 def get_queryset(self): # new
-    queryset=User.objects.all() #.filter(is_lid=True).order_by('name')
+    queryset=User.objects.all().order_by('email')
+    return queryset
+paginate_by = 20
+
+class ExcelView (ListView):
+    model=Excellijst
+def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        return context
+
+    # template_name='base/user_list.html'
+def get_queryset(self): # new
+    queryset=Excellijst.objects.all().order_by('email')
     return queryset
 paginate_by = 20
 
