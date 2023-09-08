@@ -605,13 +605,25 @@ def get_queryset(self): # new
     return queryset
 paginate_by = 20
 
+class PersonListtView (ListView):
+    model=Person
+def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        # context["now"] = timezone.now()
+        return context
+
+    # template_name='base/user_list.html'
+def get_queryset(self): # new
+    queryset=Person.objects.all().order_by('email')
+    return queryset
+paginate_by = 20
+
 class ExcelView (ListView):
     model=Excellijst
 def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         return context
 
-    # template_name='base/user_list.html'
 def get_queryset(self): # new
     queryset=Excellijst.objects.all().order_by('email')
     return queryset
@@ -619,10 +631,19 @@ paginate_by = 20
 
 class PersonUpdate(UpdateView):
     model = Person
-    fields = '__all__'
+    fields = ['name','email','wachtlijst']
     success_url = reverse_lazy('profiles')
     
     def form_valid(self, form):
+        wachtlijst = form.cleaned_data['wachtlijst']  
+        email = form.cleaned_data['email'] 
+        # if wachtlijst:
+        #     Locker.objects.update_or_create(kluisnummer=locker,
+        #                                                    email=email,
+        #                                                    verhuurd=True,
+        #                                                    )
+            # print(locker)
+        return super(updateUser2,self).form_valid(form)
         messages.success(self.request, "The person was updated successfully.")
         return super(PersonUpdate,self).form_valid(form)
     

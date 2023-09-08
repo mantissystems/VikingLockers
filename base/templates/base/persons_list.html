@@ -3,8 +3,7 @@
     <thead>
       <hr>
       <tr>
-        <th>User geregistreerd:</th>
-        <th></th>
+        <th>Wachltijst:</th>
         <th></th>
         <th></th>
         <th></th>
@@ -15,8 +14,9 @@
       {% for user in object_list %}
       <tr>
 
+      <td>{{user.id }}</td>
       <td>
-        <a href="{% url 'update-user2' user.id %}?q={{user.id}}">{{user.email}} </span></a>
+        <a href="{% url 'update-person' user.id %}?q={{user.id}}">{{user.email}} </span></a>
         <div style="height:100%;width:100%">
           </div>
         </a>
@@ -26,17 +26,26 @@
                  </td>
                  <td>
                     <td>
-                        {% if user.excel == '----' %}
+                        {% if user.locker == None %}
                           ------
                           {% else %}
-                          {{user.excel}}
+                          {{user.locker}}
                         {% endif %}
-                      </td> 
-                    <td> 
-                      {{user.kluisnummer}}      
-                    </td>
+                      </td>                     </td>
           
       {% endfor %}
       </tr>
     </tbody>
   </table>
+  {% comment %}
+<ul>
+{% for user in object_list %}
+<li>{{ user.name }} - {{ user.email }}</li>
+
+    <a href="{% url 'update-user2' user.id %}?q={{user.id}}">{{ user.username }} | {{user.locker}} </span></a> <br>
+
+    {% empty %}
+    <li>No users yet.</li>
+{% endfor %}
+</ul>
+{% endcomment %}

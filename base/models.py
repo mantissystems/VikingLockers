@@ -132,7 +132,7 @@ class Excellijst(models.Model):
     created = models.DateTimeField(auto_now_add=True)
 
     class Meta:
-        ordering = ['kluisnummer']
+        ordering = ['email']
 
 class Message(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
