@@ -19,24 +19,23 @@
       </div>
 
       <div class="roomListRoom__actions">
-        <span>{{room.created|timesince}} ago</span>
     </div>
     <ul class="topics__list">
+      {% include 'base/users_list.html' %}
           <li>
             <a href="{% url 'users' %}" class="active">All |<span>{{users.count}}</span></a>
-          </li>
-          {% for profile in users %}
-          <li>  
-            <a href="{% url 'update-user2' profile.id %}?q={{profile.id}}">{{ profile.username }} | {{profile.hoofdhuurder}} | {{profile.onderhuur}}|{{profile.wachtlijst}} | <span>{{topic.room_set.all.count}}</span></a>
-          </li>
-          {% endfor %}
+          </div>
+        </div>
+        {% comment %}
+      </li>
+      {% for profile in users %}
+      <li>  
+        <a href="{% url 'update-user2' profile.id %}?q={{profile.id}}">{{ profile.username }} | {{profile.hoofdhuurder}} | {{profile.onderhuur}}|{{profile.wachtlijst}} | <span>{{topic.room_set.all.count}}</span></a>
+      </li>
+      {% endfor %}
 
-        </ul>
-      </div>
-    </div>
-    {% comment %}
+    </ul>
 
-    {% include 'base/topics_component.html' %}
 {% endcomment %}
 
   </div>

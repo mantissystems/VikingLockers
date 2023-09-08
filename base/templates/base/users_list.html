@@ -1,0 +1,12 @@
+<ul>
+{% for user in object_list %}
+{% comment %}
+<li>{{ user.name }} - {{ user.email }}</li>
+{% endcomment %}
+
+    <a href="{% url 'update-user2' user.id %}?q={{user.id}}">{{ user.username }}</span></a> <br>
+
+    {% empty %}
+    <li>No users yet.</li>
+{% endfor %}
+</ul>

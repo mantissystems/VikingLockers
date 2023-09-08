@@ -592,6 +592,19 @@ def updateRoom(request, pk):
 
 # @login_required(login_url='login')   
 
+class MemberListView (ListView):
+    model=User
+def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        # context["now"] = timezone.now()
+        return context
+
+    # template_name='base/user_list.html'
+def get_queryset(self): # new
+    queryset=User.objects.all() #.filter(is_lid=True).order_by('name')
+    return queryset
+paginate_by = 20
+
 class PersonUpdate(UpdateView):
     model = Person
     fields = '__all__'
