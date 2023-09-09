@@ -35,7 +35,7 @@
           <li>
             <a href="{% url 'lockers' %}" class="active">All <span>{{lockers.count}}</span></a>
           </li>
-          {% for locker in lockers %}
+          {% for locker in object_list %}
           <li>  
             <a href="{% url 'locker' locker.id %}?q={{locker.kluisnummer}}">{{ locker.kluisnummer }} <span></span></a>
           </li>

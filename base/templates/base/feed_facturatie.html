@@ -1,0 +1,47 @@
+
+<table class="viking-table">
+    <thead>
+      <hr>
+      <tr>
+        <th>Facturatielijst:</th>
+        <th></th>
+        <th></th>
+        <th></th>
+        <th></th>
+        <th></th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for locker in object_list %}
+      <tr>
+
+      <td>
+        {{locker.email}}
+        {% comment %}
+        <a href="{% url 'update-locker' locker.id %}?q={{locker.id}}">{{locker.email}} </span></a>
+        {% endcomment %}
+        <div style="height:100%;width:100%">
+          </div>
+        </a>
+      </td>
+            <td>
+                {{locker.kluisnummer}}
+                 </td>
+                 <td>
+                    <td>
+                        {% if locker.excel == '----' %}
+                          ------
+                          {% else %}
+                          {{locker.excel}}
+                        {% endif %}
+                      </td> 
+                      {% comment %}
+                      <td> 
+                      {{locker.kluisnummer}}      
+                    </td>
+                    {% endcomment %}
+          
+      {% endfor %}
+      </tr>
+    </tbody>
+  </table>

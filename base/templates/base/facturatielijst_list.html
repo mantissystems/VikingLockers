@@ -24,30 +24,17 @@
           </label>
         </form>
         <div class="mobile-menuItems">
-          {% comment %}
-          <a class="btn btn--main btn--pill" href="{% url 'topics' %}">Browse Topics</a>
-          <a class="btn btn--main btn--pill" href="{% url 'activity' %}">Recent Activities</a>
-          <a class="btn btn--main btn--pill" href="{% url 'ploegen' %}">Ploegen</a>
-          <a class="btn btn--main btn--pill" href="{% url 'lockers' %}">Lockers</a>
-          {% endcomment %}  
         </div>
       </div>
 
       <div class="roomList__header">
         <div>
-          {% comment %}
-          {% endcomment %}
   
         </div>
       </div>
-      <h2>Verhuurde Lockers {{lockers.count }} van 120</h2>
-      {{lijst}}
-      {% if lijst == 'excellijst' %}
-      <h2>Excel Lockers {{excellockers.count }} van 120</h2>
-      {% include 'base/feed_excel.html' %}
-      {% endif %}
+      <h2>Facturatielijst {{object_list.count }}</h2>
+      {% include 'base/feed_facturatie.html' %}
       
-      {% include 'base/feed_component.html' %}
       {% if request.user.is_superuser %}
       {% endif %}
     </div>
@@ -55,11 +42,7 @@
 
     <!-- Activities Start -->
     
-    {% comment %}
-    {% include 'base/messages.html' %}
-    {% endcomment %}
     {% include 'base/activity_component.html' %}
-
 
     <!-- Activities End -->
   </div>

@@ -8,6 +8,8 @@
         <th></th>
         <th></th>
         <th></th>
+        <th></th>
+        <th></th>
       </tr>
     </thead>
     <tbody>
@@ -29,9 +31,25 @@
                         {% if user.locker == None %}
                           ------
                           {% else %}
-                          {{user.locker}}
                         {% endif %}
-                      </td>                     </td>
+                      </td>  </td>
+                      <td>
+                        {% if user.hoofdhuurder == True %}
+                          hoofdhuurder
+                        {% endif %}
+                      </td>  </td>
+                      <td>
+                        {% if user.wachtlijst == True %}
+                          wachtlijst
+                        {% endif %}
+                      </td>  </td>
+                      <td>
+                        {% if user.onderhuur == True %}
+                          onderhuurder
+                        {% endif %}
+                      </td>  </td>
+
+
           
       {% endfor %}
       </tr>

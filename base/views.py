@@ -97,24 +97,19 @@ def home(request):
     lockers=Locker.objects.all().filter(verhuurd=True)     
     messagelocker=Locker.objects.all().first()     
     from django.db.models import Count
-    results = (Locker.objects
-    .values('kluisnummer')
-    .annotate(dcount=Count('kluisnummer'))
-    .order_by()
-    )   
-    # cabinetsused = (Matriks.objects
-    # .values('naam')
-    # .annotate(dcount=Count('regel'))
+    # results = (Locker.objects
+    # .values('kluisnummer')
+    # .annotate(dcount=Count('kluisnummer'))
     # .order_by()
     # )   
-    joiner=Locker.objects.none
-    cnt=0
-    joincnt=0
-    results = (Locker.objects
-    .values('kluisnummer')
-    .annotate(dcount=Count('kluisnummer'))
-    .order_by()
-    )       
+    # joiner=Locker.objects.none
+    # cnt=0
+    # joincnt=0
+    # results = (Locker.objects
+    # .values('kluisnummer')
+    # .annotate(dcount=Count('kluisnummer'))
+    # .order_by()
+    # )       
     if request.method == 'POST':
             message = Bericht.objects.create(
             user=request.user,
@@ -174,50 +169,62 @@ def home(request):
         # if berichten2:
         #     return HttpResponseRedirect(url)
 
-    excellockers =Excellijst.objects.filter(
-    Q(kluisnummer__icontains=q) |
-    Q(type__icontains=q) |
-    Q(email__icontains=q)
-    ).order_by('kluisnummer')
+    # excellockers =Excellijst.objects.filter(
+    # Q(kluisnummer__icontains=q) |
+    # Q(type__icontains=q) |
+    # Q(email__icontains=q)
+    # ).order_by('kluisnummer')
     # print(q,lijst,excellockers)
     topics = Topic.objects.all()[0:5]
     room_messages = Message.objects.all()
     # expression_if_true if condition else expression_if_false
-    lockers=excellockers if lijst=='excellijst' else lockers
+    # lockers=excellockers if lijst=='excellijst' else lockers
     context = {
                'topics': topics,
                'lijst':lijst,
-               'results': results,
+            #    'results': results,
                 'lockers': lockers,
-                'excellockers': excellockers,
+                # 'excellockers': excellockers,
             #    'cabinetsused': cabinetsused, 
                'berichten': berichten, 
                'room_messages': room_messages
                }
     return render(request, 'base/home.html', context)
-# 
-def nietverhuurdePage(request):
-    messages.add_message(request, messages.INFO, "NIET VERHUURDE LOCKERS aan geregistreerde users.")    
-    # q = request.GET.get('q') if request.GET.get('q') != None else ''
-    lockers=Locker.objects.all().filter(verhuurd=True)     
-    users_found=User.objects.all().values_list('email',flat=True)
-    # lockers=Locker.objects.filter(kluisnummer__icontains=q).exclude(verhuurd=True) 
-    open_lockers = Locker.objects.filter(
-        Q(verhuurd=False)&
-        Q(email__in=users_found) 
-    ).order_by('kluisnummer')
 
-    topics = Topic.objects.all()[0:5]
-    # room_messages = Message.objects.filter(
-    #     Q(room__topic__name__icontains=q))[0:3]   
-    # rooms=lockers
-    context = {
-        # 'rooms': rooms, 
-               'topics': topics,
-                'lockers': open_lockers,
-            #    'room_messages': room_messages
-               }
-    return render(request, 'base/home.html', context)
+class LockerView (ListView):
+    model=Locker
+def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        return context
+
+def get_queryset(self): # new
+    queryset=Locker.objects.all().order_by('email')
+    return queryset
+paginate_by = 20
+
+# 
+# def nietverhuurdePage(request):
+#     messages.add_message(request, messages.INFO, "NIET VERHUURDE LOCKERS aan geregistreerde users.")    
+#     # q = request.GET.get('q') if request.GET.get('q') != None else ''
+#     lockers=Locker.objects.all().filter(verhuurd=True)     
+#     users_found=User.objects.all().values_list('email',flat=True)
+#     # lockers=Locker.objects.filter(kluisnummer__icontains=q).exclude(verhuurd=True) 
+#     open_lockers = Locker.objects.filter(
+#         Q(verhuurd=False)&
+#         Q(email__in=users_found) 
+#     ).order_by('kluisnummer')
+
+#     topics = Topic.objects.all()[0:5]
+#     # room_messages = Message.objects.filter(
+#     #     Q(room__topic__name__icontains=q))[0:3]   
+#     # rooms=lockers
+#     context = {
+#         # 'rooms': rooms, 
+#                'topics': topics,
+#                 'lockers': open_lockers,
+#             #    'room_messages': room_messages
+#                }
+#     return render(request, 'base/home.html', context)
 
 # 
 def activityPage(request):
@@ -609,10 +616,8 @@ class PersonListtView (ListView):
     model=Person
 def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        # context["now"] = timezone.now()
         return context
 
-    # template_name='base/user_list.html'
 def get_queryset(self): # new
     queryset=Person.objects.all().order_by('email')
     return queryset
@@ -629,21 +634,43 @@ def get_queryset(self): # new
     return queryset
 paginate_by = 20
 
+class FacturatieView (ListView):
+    model=Facturatielijst
+def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        return context
+
+def get_queryset(self): # new
+    queryset=Facturatielijst.objects.all().order_by('email')
+    return queryset
+paginate_by = 20
+
 class PersonUpdate(UpdateView):
     model = Person
-    fields = ['name','email','wachtlijst']
+    fields = ['name','hoofdhuurder', 'email','wachtlijst','onderhuur']
     success_url = reverse_lazy('profiles')
     
     def form_valid(self, form):
+        hoofdhuurder = form.cleaned_data['hoofdhuurder']  
+        name = form.cleaned_data['name']  
+        onderhuurder = form.cleaned_data['onderhuur']  
         wachtlijst = form.cleaned_data['wachtlijst']  
         email = form.cleaned_data['email'] 
-        # if wachtlijst:
-        #     Locker.objects.update_or_create(kluisnummer=locker,
-        #                                                    email=email,
-        #                                                    verhuurd=True,
-        #                                                    )
-            # print(locker)
-        return super(updateUser2,self).form_valid(form)
+        print(onderhuurder)
+        viking= name.replace(" ", "")
+        string='pbkdf2_sha256$390000$MbAy3r2ahV6QE6xFilyWG5$Hkuz0s9MNtjJ066lD0v9N2tnUv2ZuZLALt2rIL1QSAQ='
+            #  viking123
+        if onderhuurder:
+            print('maak een user aan van type onderhuurder')
+            user=User.objects.update_or_create(username=viking,
+                                                           email=email,
+                                                           is_active=True,
+                                                           first_name=name,
+                                                           last_name=name,
+                                                           password=string,
+                                                           )
+            print(user)
+        return super(PersonUpdate,self).form_valid(form)
         messages.success(self.request, "The person was updated successfully.")
         return super(PersonUpdate,self).form_valid(form)
     
@@ -796,6 +823,20 @@ def deleteBericht(request, pk):
         message.delete()
         return redirect('berichten')
     return render(request, 'base/delete.html', {'obj': message})
+
+class LockerUpdate(UpdateView):
+    model = Locker
+    fields = ['kluisnummer','email','verhuurd','sleutels','code','kluisje']
+    # fields = ['name','email','wachtlijst']
+    # fields = '__all__'
+    # exclude=['topic']
+    success_url = reverse_lazy('lockers')
+    
+    def form_valid(self, form):
+        kluis = form.cleaned_data['kluisnummer']  
+        email = form.cleaned_data['email'] 
+        return super(LockerUpdate,self).form_valid(form)
+        messages.success(self.request, "The person was updated successfully.")
 
 @login_required(login_url='login')
 def updateLocker(request,pk):
