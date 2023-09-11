@@ -23,7 +23,6 @@
         	{% endif %}
         {% endif %}
 	{% endfor %}
-	
 	<div class="form-buttons">
 		<input type="submit" value="Save" class="btn btn-primary"/>
 		<a href="{%url 'profiles'%}" class="btn btn-outline">Cancel</a>
@@ -83,6 +82,22 @@
            <a href="{%url 'home'%}" class="btn btn-outline">Cancel</a>
            {% if person %}
                      <a href="{% url 'delete-person' person.id %}" class="btn btn--link">Delete</a>
+                     {% else %}
+                     {{request.user}}
+                     Login
+                    </button>
+                  </form>
+          
+                  <div class="auth__action">
+                    <p>Haven't signed up yet?</p>
+                    <hr>
+                    <a href="{% url 'registreer' %}" class="btn btn--link">Sign Up (Registreer)</a><hr>
+                    <a href="{% url 'create-person' %}" class="btn btn--link">Zet je op de Wachtlijst</a>
+                  </div>
+                </div>
+              </div>
+            </div>
+                             
 {% endif %}
          </div>
          

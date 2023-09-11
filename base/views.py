@@ -234,12 +234,33 @@ def activityPage(request):
 def helpPage(request):
     q = request.GET.get('q') if request.GET.get('q') != None else ''
     aantalusers=User.objects.all()
+    from django.db.models import Count
+    results = (User.objects
+    .values('owners')
+    .annotate(dcount=Count('email'))
+    .order_by()
+    )   
+    # results = (Locker.objects
+    # .values('kluisnummer')
+    # .annotate(dcount=Count('kluisnummer'))
+    # .order_by()
+    # )   
+    # joiner=Locker.objects.none
+    # cnt=0
+    # joincnt=0
+    # results = (Locker.objects
+    # .values('kluisnummer')
+    # .annotate(dcount=Count('kluisnummer'))
+    # .order_by()
+    # )       
+
     helptekst=Helptekst.objects.filter(
+            #    'results': results,
             # Q(publish=True)
             Q(title__icontains=q)|
             Q(content__icontains=q)
         ).order_by('seq').exclude(publish=False)
-    return render(request, 'base/helptekst.html', {'helptekst': helptekst,'aantalusers':aantalusers})
+    return render(request, 'base/helptekst.html', {'helptekst': helptekst,'aantalusers':aantalusers,'results': results,})
 
 
 def infoPage(request):
@@ -348,6 +369,23 @@ def updateUser(request):
             form.save()
             return redirect('user-profile', pk=user.id)
     return render(request, 'base/update-user.html', context)
+
+class CreateUser(CreateView):
+    model = User
+    fields = ['name','email',]
+    success_url = reverse_lazy('home')
+    print('usercreateview')
+    def form_valid(self, form):
+        messages.success(self.request, "Wijzigingen in user zijn opgeslagen.")
+        # locker = form.cleaned_data['locker']  
+        # email = form.cleaned_data['email'] 
+        # if locker:
+        #     Locker.objects.update_or_create(kluisnummer=locker,
+        #                                                    email=email,
+        #                                                    verhuurd=True,
+        #                                                    )
+            # print(locker)
+        return super(CreateUser,self).form_valid(form)
 
 class updateUser2(UpdateView):
     model = User
@@ -657,9 +695,17 @@ class PersonUpdate(UpdateView):
         wachtlijst = form.cleaned_data['wachtlijst']  
         email = form.cleaned_data['email'] 
         print(onderhuurder)
+        url = reverse('delete-person', kwargs={'pk': super().id})
         viking= name.replace(" ", "")
         string='pbkdf2_sha256$390000$MbAy3r2ahV6QE6xFilyWG5$Hkuz0s9MNtjJ066lD0v9N2tnUv2ZuZLALt2rIL1QSAQ='
             #  viking123
+        if Person.objects.filter(email=email).exists(): 
+            return HttpResponseRedirect(url)
+                # return HttpResponseRedirect('/delete-person/')
+
+        if Person.objects.filter(username=viking).exists():
+              return HttpResponseRedirect(url)
+            # return HttpResponseRedirect('/delete-person/')
         if onderhuurder:
             print('maak een user aan van type onderhuurder')
             user=User.objects.update_or_create(username=viking,
@@ -669,7 +715,8 @@ class PersonUpdate(UpdateView):
                                                            last_name=name,
                                                            password=string,
                                                            )
-            print(user)
+            # print(user)
+            return HttpResponseRedirect('/delete-person/')
         return super(PersonUpdate,self).form_valid(form)
         messages.success(self.request, "The person was updated successfully.")
         return super(PersonUpdate,self).form_valid(form)
@@ -679,7 +726,19 @@ class PersonDeleteView(DeleteView):
     success_url ="/"
      
     template_name = "base/delete.html"
-    
+def tel_aantal_registraties(request):
+    print('in tel_aantal_registraties===============')
+    qs_user = User.objects.all()
+    qs1=qs_user.values_list('email',flat=True)
+    qs_locker = Locker.objects.all()
+    qs_factuur = Facturatielijst.objects.all().filter(email__in=qs1)
+    qs3=qs_factuur.values_list('email',flat=True)
+    qs_excel = Excellijst.objects.all()
+    print(qs_user.count(),qs_locker.count(),qs_factuur.count(),qs_excel.count())
+    context={}
+    return render(request, 'base/home.html', context)
+
+
 def lockerPage(request,pk):
     locker = Locker.objects.get(id=pk)
     form = LockerForm(instance=locker)

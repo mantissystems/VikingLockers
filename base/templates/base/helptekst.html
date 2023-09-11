@@ -36,8 +36,9 @@
             {% comment %}
             <span>{{topic.title}}</span>
             <a href="{% url 'home' %}?q=helptekst {{topic.title}}"> <span>{{topic.title}}</span>{{ topic.content }} </a>
+            {{question.answer_set.count}}
             {% endcomment %}
-            <a href="{% url 'helptekst' %}" class="active"><span> aantal registraties: {{aantalusers.count}} van 120</span></a>
+            <a href="{% url 'helptekst' %}" class="active"><span> aantal registraties: {{persons.count}} van 120</span></a>
           </li>
           <table class="viking-table">
             <tr>

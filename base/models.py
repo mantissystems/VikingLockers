@@ -1,5 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import AbstractUser
+from django.urls import reverse
 # from django.contrib.auth.models import User
 
 class User(AbstractUser):
@@ -26,12 +27,14 @@ def imageURL(self):
 		except:
 			url = ''
 		return url
+def get_absolute_url(self):
+        return reverse("update-user", kwargs={"pk": self.pk})
+
 class Topic(models.Model):
     name = models.CharField(max_length=200)
 
     def __str__(self):
         return self.name
-
 class Person(models.Model):
     name = models.CharField(max_length=200, null=True)
     onderhuur=models.BooleanField(default=False)
