@@ -4,10 +4,8 @@
       <hr>
       <tr>
         <th>Huurder:</th>
-        <th></th>
         <th>Locker</th>
         <th>regis</th>
-        <th></th>
       </tr>
     </thead>
     <tbody>
@@ -17,28 +15,27 @@
       <td>
         {{locker.email}}
         {% comment %}
+        <th>xx</th>
+
         <a href="{% url 'update-locker' locker.id %}?q={{locker.id}}">{{locker.email}} </span></a>
-        {% endcomment %}
         <div style="height:100%;width:100%">
           </div>
+        {% endcomment %}
         </a>
       </td>
             <td>
                 {{locker.kluisnummer}}
                  </td>
-                 <td>
+                 {% comment %}
                     <td>
-                        {% if locker.excel == '----' %}
+                      {% if locker.excel == '----' %}
                           ------
                           {% else %}
-                          {{locker.excel}}
+                          {{locker.excel}} x===x
                         {% endif %}
+                        x=x
                       </td> 
-                      {% comment %}
-                      <td> 
-                      {{locker.kluisnummer}}      
-                    </td>
-                    {% endcomment %}
+                      {% endcomment %}
                     <td>{{locker.is_registered}}</td>
           
       {% endfor %}

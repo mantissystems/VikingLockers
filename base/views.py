@@ -814,21 +814,42 @@ def tel_aantal_registraties(request):
     qs1=qs_user.values_list('email',flat=True)
     qs_locker = Locker.objects.all()
     qs_factuur = Facturatielijst.objects.all() #.filter(email__in=qs1)
-    for q in qs_factuur:
-        if User.objects.filter(email=q.email).exists():
-            f=Facturatielijst.objects.all().filter(email=q.email).update(is_registered='==regis==')
+    # for q in qs_factuur:
+    #     if User.objects.filter(email=q.email).exists():
+    #         f=Facturatielijst.objects.all().filter(email=q.email).update(is_registered='==regis==')
+    #         try:
+    #             User.objects.get(email=q.email)
+    #         except: User.DoesNotExist
+    #         print(q.email)
+
     qs3=qs_factuur.values_list('email',flat=True)
     qs_excel = Excellijst.objects.all()
     print(qs_user.count(),qs_locker.count(),qs_factuur.count(),qs_excel.count())
     # def file_load_view(request):
+    #     # ============================================================
+    # header = ['name', 'area', 'country_code2', 'country_code3']
+    # data = [
+    # ['Albania', 28748, 'AL', 'ALB'],
+    # ['Algeria', 2381741, 'DZ', 'DZA'],
+    # ['American Samoa', 199, 'AS', 'ASM'],
+    # ['Andorra', 468, 'AD', 'AND'],
+    # ['Angola', 1246700, 'AO', 'AGO']]
+    # with open('countries.csv', 'w', encoding='UTF8', newline='') as f:
+    #     writer = csv.writer(f)
+    # # write the header
+    #     writer.writerow(header)
+    # # write multiple rows
+    #     writer.writerows(data)
+    # # ============================================================
+
     # Create the HttpResponse object with the appropriate CSV header.
     response = HttpResponse(content_type='text/csv')
     response['Content-Disposition'] = 'attachment; filename="facturatielijst.csv"'
     # excel: 20200830VolwassenLedenPloegmakelaar.xlsx (libreoffice calc)
     writer = csv.writer(response)
-    writer.writerow(['email', 'kluisnummer', 'is_registered', ])
+    writer.writerow(['huurder', 'locker', 'regis', ])
     tekst=Facturatielijst.objects.all().values_list('email','kluisnummer','is_registered')
-    print(tekst)
+    # print(tekst)
     for e in tekst:
         writer.writerow([e])
 
