@@ -3,6 +3,8 @@ from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import redirect, render
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
+# from django.utils.decorators import method_decorator
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth import authenticate, login, logout
 from django.urls import reverse, reverse_lazy
 # from viking.models import  Matriks,KluisjesRV
@@ -97,27 +99,13 @@ def home(request):
     lockers=Locker.objects.all().filter(verhuurd=True)     
     messagelocker=Locker.objects.all().first()     
     from django.db.models import Count
-    # results = (Locker.objects
-    # .values('kluisnummer')
-    # .annotate(dcount=Count('kluisnummer'))
-    # .order_by()
-    # )   
-    # joiner=Locker.objects.none
-    # cnt=0
-    # joincnt=0
-    # results = (Locker.objects
-    # .values('kluisnummer')
-    # .annotate(dcount=Count('kluisnummer'))
-    # .order_by()
-    # )       
     if request.method == 'POST':
             message = Bericht.objects.create(
             user=request.user,
             locker=messagelocker,
             body=request.POST.get('body')
         )
-            print(message.body)
-
+            # print(message.body)
     if request.user.is_authenticated:
         try:
             user=User.objects.get(id=request.user.id)
@@ -155,15 +143,23 @@ def home(request):
         lijst='home'
         # rooms_found = Matriks.objects.filter(regel__icontains=q).values_list('naam',flat=True)
         if 'xls' in qq:
-            lijst='excellijst'
-            print(q,qq)
             x = qq.replace("xls ", "")
             q=x
-        lockers =Locker.objects.filter(
+            lockers =Locker.objects.filter(
         Q(kluisnummer__icontains=q) |
         Q(email__icontains=q)
         ).order_by('kluisnummer').exclude(verhuurd=False)
-        berichten2 = Bericht.objects.filter(body__icontains=q)
+            url = "excellijst" + "?q=" +q 
+            queryset=Excellijst.objects.all().filter(email__icontains=q)
+            print(url)
+            return HttpResponseRedirect(url)
+        if 'fact' in qq:
+            x = qq.replace("fact ", "")
+            q=x
+            url = "facturatielijst" + "?q=" +q 
+            queryset=Facturatielijst.objects.all().filter(email__icontains=q)
+            print(url)
+            return HttpResponseRedirect(url)
     else:
         berichten=Bericht.objects.all() ##.filter(user=request.user.id)
         # if berichten2:
@@ -191,6 +187,7 @@ def home(request):
                }
     return render(request, 'base/home.html', context)
 
+
 class LockerView (ListView):
     model=Locker
 def get_context_data(self, **kwargs):
@@ -198,9 +195,17 @@ def get_context_data(self, **kwargs):
         return context
 
 def get_queryset(self): # new
-    queryset=Locker.objects.all().order_by('email')
+    users_found=User.objects.all().values_list('email',flat=True)
+    queryset = Locker.objects.filter(
+        Q(verhuurd=False)&
+        Q(email__in=users_found) 
+    ).order_by('kluisnummer')
     return queryset
-paginate_by = 20
+paginate_by = 10
+def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        return context
+
 
 # 
 # def nietverhuurdePage(request):
@@ -308,7 +313,7 @@ def room(request, pk):
         )
         room.participants.add(request.user)
         return redirect('room', pk=room.id)
-    heren=Matriks.objects.filter(naam__icontains=topic).exclude(y_as__in=(7,8,9)).order_by('y_as')
+    # heren=Matriks.objects.filter(naam__icontains=topic).exclude(y_as__in=(7,8,9)).order_by('y_as')
     hdr=['', 'kol1','kol2','kol3','kol4','kol5','kol6','kol7','kol8','kol9','kol10','kol11','kol12','kol13']  #LET OP: KOLOM NUL NIET VERGETEN
     kopmtrx=[]
     for i in range (0,9):
@@ -322,7 +327,7 @@ def room(request, pk):
     context = {
         'room': room,
                'topics': topics,
-                'heren': heren,
+                # 'heren': heren,
                 'ploegen': ploegen,
                 'verhuurd': verhuurd,
                 'kopmtrx': kopmtrx,
@@ -372,9 +377,9 @@ def updateUser(request):
 
 class CreateUser(CreateView):
     model = User
-    fields = ['name','email',]
+    fields = ['username','email',]
     success_url = reverse_lazy('home')
-    print('usercreateview')
+    # print('usercreateview')
     def form_valid(self, form):
         messages.success(self.request, "Wijzigingen in user zijn opgeslagen.")
         # locker = form.cleaned_data['locker']  
@@ -387,22 +392,26 @@ class CreateUser(CreateView):
             # print(locker)
         return super(CreateUser,self).form_valid(form)
 
-class updateUser2(UpdateView):
+class updateUser3(UpdateView):
     model = User
-    fields = ['name','email','locker']
-    success_url = reverse_lazy('home')
+    # fields='__all__'
+    fields = ['username','email','locker']
+    success_url = reverse_lazy('users')
     
     def form_valid(self, form):
-        messages.success(self.request, "Wijzigingen in user zijn opgeslagen.")
-        locker = form.cleaned_data['locker']  
+        kluis = form.cleaned_data['locker']  
         email = form.cleaned_data['email'] 
-        if locker:
-            Locker.objects.update_or_create(kluisnummer=locker,
-                                                           email=email,
-                                                           verhuurd=True,
-                                                           )
-            # print(locker)
-        return super(updateUser2,self).form_valid(form)
+        if kluis:
+            print(kluis)
+            locker, created = Locker.objects.update_or_create(
+            kluisnummer=kluis,
+            email=email,
+            verhuurd=False,
+            kluisje=kluis,
+            )
+
+        messages.success(self.request, "The user was updated successfully.")
+        return super(updateUser3,self).form_valid(form)
 
 def userProfile(request, pk):
     user = User.objects.get(id=pk)
@@ -641,16 +650,14 @@ class MemberListView (ListView):
     model=User
 def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        # context["now"] = timezone.now()
         return context
-
     # template_name='base/user_list.html'
 def get_queryset(self): # new
-    queryset=User.objects.all().order_by('email')
+    queryset=User.objects.all().order_by('username')
     return queryset
 paginate_by = 20
 
-class PersonListtView (ListView):
+class PersonListView (ListView):
     model=Person
 def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -662,26 +669,61 @@ def get_queryset(self): # new
 paginate_by = 20
 
 class ExcelView (ListView):
+    print('excelview')
     model=Excellijst
-def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
+    template_name='base/excellijst_list.html'
+    paginate_by=14
+    queryset=Excellijst.objects.all() 
+
+    def get_context_data(self,**kwargs):
+        q = self.request.GET.get('q') if self.request.GET.get('q') != None else ''
+        query = self.request.GET.get('q')
+        if query == None: query=""
+        queryset=Excellijst.objects.all().filter(email__icontains=query)
+        queryset = Excellijst.objects.filter(
+            Q(email__icontains=query)|
+            Q(type__icontains=query)|
+            Q(excel__icontains=query)|
+            Q(kluisnummer__icontains=query)
+            ).order_by('kluisnummer')
+        context = {
+            'query': query,
+            'object_list' :queryset,
+            }
         return context
-
-def get_queryset(self): # new
-    queryset=Excellijst.objects.all().order_by('email')
-    return queryset
-paginate_by = 20
-
-class FacturatieView (ListView):
+class FacturatieView (LoginRequiredMixin, ListView):
+    login_url='login'
     model=Facturatielijst
-def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
+    def get_context_data(self,**kwargs):
+        q = self.request.GET.get('q') if self.request.GET.get('q') != None else ''
+        query = self.request.GET.get('q')
+        if query == None: query=""
+        queryset = Facturatielijst.objects.filter(
+            Q(email__icontains=query)|
+            Q(kluisnummer__icontains=query)
+            ).order_by('kluisnummer')
+        context = {
+            'query': query,
+            'object_list' :queryset,
+            }
         return context
 
-def get_queryset(self): # new
-    queryset=Facturatielijst.objects.all().order_by('email')
-    return queryset
-paginate_by = 20
+
+class PersonUpdate_id( LoginRequiredMixin,UpdateView):
+    login_url = '/login/'
+    # redirect_field_name = 'redirect_to'
+    model = Person
+    # fields = ['name','email','verhuurd','sleutels','code','kluisje']
+
+    # fields = ['name','email','wachtlijst']
+    fields = '__all__'
+    success_url = reverse_lazy('profiles')
+    
+    def form_valid(self, form):
+        kluis = form.cleaned_data['locker']  
+        email = form.cleaned_data['email'] 
+        return super(PersonUpdate_id,self).form_valid(form)
+        messages.success(self.request, "The person was updated successfully.")
 
 class PersonUpdate(UpdateView):
     model = Person
@@ -695,7 +737,7 @@ class PersonUpdate(UpdateView):
         wachtlijst = form.cleaned_data['wachtlijst']  
         email = form.cleaned_data['email'] 
         print(onderhuurder)
-        url = reverse('delete-person', kwargs={'pk': super().id})
+        url = reverse('delete-person', kwargs={'pk': super().person.id})
         viking= name.replace(" ", "")
         string='pbkdf2_sha256$390000$MbAy3r2ahV6QE6xFilyWG5$Hkuz0s9MNtjJ066lD0v9N2tnUv2ZuZLALt2rIL1QSAQ='
             #  viking123
@@ -724,8 +766,13 @@ class PersonUpdate(UpdateView):
 class PersonDeleteView(DeleteView):
     model = Person
     success_url ="/"
-     
     template_name = "base/delete.html"
+
+class LockerDeleteView(DeleteView):
+    model = Locker
+    success_url ="/"    
+    template_name = "base/delete.html"
+
 def tel_aantal_registraties(request):
     print('in tel_aantal_registraties===============')
     qs_user = User.objects.all()
@@ -883,12 +930,17 @@ def deleteBericht(request, pk):
         return redirect('berichten')
     return render(request, 'base/delete.html', {'obj': message})
 
-class LockerUpdate(UpdateView):
+class LockerUpdate( LoginRequiredMixin,UpdateView):
+    login_url = '/login/'
+    # redirect_field_name = 'redirect_to'
     model = Locker
     fields = ['kluisnummer','email','verhuurd','sleutels','code','kluisje']
+        # if request.user.email != locker.email and not request.user.is_superuser:
+        # messages.error(request, f'{locker.kluisnummer} : Is niet uw locker')
+        # return render(request, 'base/berichten.html', {'lockers': lockers,'topics':topics})
+
     # fields = ['name','email','wachtlijst']
     # fields = '__all__'
-    # exclude=['topic']
     success_url = reverse_lazy('lockers')
     
     def form_valid(self, form):
@@ -933,26 +985,26 @@ def updateLocker(request,pk):
 @login_required(login_url='login')
 def update_kluis(request, pk,kol):
     column=int(kol)
-    matrix=Matriks.objects.get(id=pk)
+    # matrix=Matriks.objects.get(id=pk)
     rms = Locker.objects.all().filter(verhuurd=True)
     owner_count=0
-    rgl=matrix.y_as
+    # rgl=matrix.y_as
     # owners=[]    
     hdr=['', 'kol1','kol2','kol3','kol4','kol5','kol6','kol7','kol8','kol9','kol10','kol11','kol12','kol13']  #LET OP: KOLOM NUL NIET VERGETEN
     dematrikskolom=hdr[column];print(dematrikskolom)
-    kluisje=getattr(matrix,dematrikskolom)
-    matriksnaam=getattr(matrix,'naam')
+    # kluisje=getattr(matrix,dematrikskolom)
+    # matriksnaam=getattr(matrix,'naam')
     opheffen= request.POST.get('opheffen')
     column=int(kol)
-    regel=matrix.regel
-    oorspronkelijkmatriksnummer=decodeer(regel,dematrikskolom,column,cellengte=3)
-    print('oorspronkelijkmatriksnummer',oorspronkelijkmatriksnummer)
+    # regel=matrix.regel
+    # oorspronkelijkmatriksnummer=decodeer(regel,dematrikskolom,column,cellengte=3)
+    # print('oorspronkelijkmatriksnummer',oorspronkelijkmatriksnummer)
 
     try:
         kls=Locker.objects.get(email=opheffen)
         try:
             print(kls)
-            messages.error(request, f'{matriksnaam}: Geen huurders verder.')
+            # messages.error(request, f'{matriksnaam}: Geen huurders verder.')
             # return redirect('home')
         except:
             pass
@@ -1005,7 +1057,7 @@ def update_kluis(request, pk,kol):
                 'kluis': kls,
                 'verhuurd': rms,
                 # 'huurders': huurders,
-                'oorspronkelijkmatriksnummer':oorspronkelijkmatriksnummer,
+                # 'oorspronkelijkmatriksnummer':oorspronkelijkmatriksnummer,
             }
     return render(request, 'base/update_kluis_form.html', context)
 
@@ -1039,7 +1091,7 @@ class Blokken(TemplateView):
         begincell=0;cellengte=0;eindcell=0;kolomteller=0;rij=0
         topics=Room.objects.all().exclude(name='Wachtlijst')
         kasten= topics #['Heren','Adames','Bdames','Cdames','Ddames']
-        Matriks.objects.all().delete()
+        # Matriks.objects.all().delete()
         for k in kasten:
             regelteller=0
             print(k,len(hdr))
@@ -1078,14 +1130,14 @@ class Blokken(TemplateView):
                 print(s)
         #         # ALS DE MATRIKS AL IS AANGEMAAKT,NIET MEER UITVOEREN, wordt opgenomen in het instellingen bestand
                 regelteller+=1
-                Matriks.objects.update_or_create( 
-                        kop=s,
-                        regel=s,
-                        # ronde=r,
-                        # x_as=r,
-                        y_as=regelteller,
-                        naam=matrixnaam,
-                        )    
+                # Matriks.objects.update_or_create( 
+                #         kop=s,
+                #         regel=s,
+                #         # ronde=r,
+                #         # x_as=r,
+                #         y_as=regelteller,
+                #         naam=matrixnaam,
+                #         )    
                 # if regelteller==len(hdr):regelteller=0
                         
         return
@@ -1108,60 +1160,60 @@ def hernummermatriks(request):
 
     # matrix=Matriks.objects.filter(y_as__in=(1,2,3,4,5,6)).order_by('y_as').order_by('naam')
     # matrix=results
-    for r in matrixen:
-        print(r)
-        matrix=Matriks.objects.filter(naam=r) #.first()
-        for m in matrix:
-        # m=matrix
-            print(m)
-            rij=str(m.y_as)
-            cellengte=3
-            regel=m.regel
-            for kol in range(0,len(hdr)):
-                de_matriks_kolom=hdr[kol]
-                oorspronkelijkmatriksnummer=decodeer(regel,de_matriks_kolom,kol,cellengte)
-                print(m.naam,de_matriks_kolom,begincell,oorspronkelijkmatriksnummer)
-                setattr(m, de_matriks_kolom, oorspronkelijkmatriksnummer)
-                m.save()
-        context={}
+    # for r in matrixen:
+    #     print(r)
+        # matrix=Matriks.objects.filter(naam=r) #.first()
+        # for m in matrix:
+        # # m=matrix
+        #     print(m)
+        #     rij=str(m.y_as)
+        #     cellengte=3
+        #     regel=m.regel
+        #     for kol in range(0,len(hdr)):
+        #         de_matriks_kolom=hdr[kol]
+        #         oorspronkelijkmatriksnummer=decodeer(regel,de_matriks_kolom,kol,cellengte)
+        #         print(m.naam,de_matriks_kolom,begincell,oorspronkelijkmatriksnummer)
+        #         setattr(m, de_matriks_kolom, oorspronkelijkmatriksnummer)
+        #         m.save()
+    context={}
     return render(request, 'base/home.html', context)
 
 def create_locker(request,row,kol):
     hdr=['', 'kol1','kol2','kol3','kol4','kol5','kol6','kol7','kol8','kol9','kol10','kol11','kol12','kol13']  #LET OP: KOLOM NUL NIET VERGETEN
     column=int(kol)
     print('params',row,kol)
-    matrix=Matriks.objects.get(id=row)
+    # matrix=Matriks.objects.get(id=row)
     rms = Locker.objects.all()
-    rgl=matrix.y_as
+    # rgl=matrix.y_as
     dematrikskolom=hdr[column];print(dematrikskolom)
-    kluisje=getattr(matrix,dematrikskolom)
-    matriksnaam=getattr(matrix,'naam')
+    # kluisje=getattr(matrix,dematrikskolom)
+    # matriksnaam=getattr(matrix,'naam')
     column=int(kol)
-    regel=matrix.regel
-    oorspronkelijkmatriksnummer=decodeer(regel,dematrikskolom,column,cellengte=3)
-    print('locker:',oorspronkelijkmatriksnummer)
-    try:
-        l=Locker.objects.get(kluisnummer=oorspronkelijkmatriksnummer)
-        regel=l.regel
-    except:
-        print('except..not found..',regel,dematrikskolom,column,oorspronkelijkmatriksnummer)
-        email=request.user.email
-        print(row,kol,'create-locker?',email)
+    # regel=matrix.regel
+    # oorspronkelijkmatriksnummer=decodeer(regel,dematrikskolom,column,cellengte=3)
+    # print('locker:',oorspronkelijkmatriksnummer)
+    # try:
+        # l=Locker.objects.get(kluisnummer=oorspronkelijkmatriksnummer)
+        # regel=l.regel
+    # except:
+        # print('except..not found..',regel,dematrikskolom,column,oorspronkelijkmatriksnummer)
+        # email=request.user.email
+        # print(row,kol,'create-locker?',email)
 
-        if request.method == 'POST':
-            create,cre=Locker.objects.update_or_create(
-                            kluisnummer=oorspronkelijkmatriksnummer,
-                            kluisje=oorspronkelijkmatriksnummer,
-                            topic=matriksnaam,
-                            email=email,
-                            row=row.zfill(2),
-                            col=kol.zfill(2),
-                            verhuurd=True
-                            )
-            create.owners.add(request.user)
-            return render(request, 'base/locker-add.html', {'column': kol,'row':row,'oorspronkelijkmatriksnummer':oorspronkelijkmatriksnummer })
-            # return redirect('home')
-    return render(request, 'base/locker-add.html', {'column': kol,'row':row,'oorspronkelijkmatriksnummer':oorspronkelijkmatriksnummer })
+        # if request.method == 'POST':
+        #     create,cre=Locker.objects.update_or_create(
+        #                     kluisnummer=oorspronkelijkmatriksnummer,
+        #                     kluisje=oorspronkelijkmatriksnummer,
+        #                     topic=matriksnaam,
+        #                     email=email,
+        #                     row=row.zfill(2),
+        #                     col=kol.zfill(2),
+        #                     verhuurd=True
+        #                     )
+        #     create.owners.add(request.user)
+        #     return render(request, 'base/locker-add.html', {'column': kol,'row':row,'oorspronkelijkmatriksnummer':oorspronkelijkmatriksnummer })
+        #     # return redirect('home')
+    # return render(request, 'base/locker-add.html', {'column': kol,'row':row,'oorspronkelijkmatriksnummer':oorspronkelijkmatriksnummer })
 
 
 def namedtuplefetchall(cursor):

@@ -4,17 +4,14 @@ from django.urls import reverse
 # from django.contrib.auth.models import User
 
 class User(AbstractUser):
-    name = models.CharField(max_length=200, null=True)
+    username = models.CharField(max_length=200, null=True)
     ploeg = models.CharField(max_length=200, null=True)
     locker = models.CharField(max_length=200, null=True)
     email = models.EmailField(unique=True, null=True)
     # bio = models.TextField(null=True)
-
     avatar = models.ImageField(null=True, default="avatar.svg")
-
     USERNAME_FIELD = 'email'
-    REQUIRED_FIELDS = ['name','locker']
-
+    REQUIRED_FIELDS = ['username','locker']
 SLOT = [
             ('--', '--'),
             ('H', 'hang'),      #gebruiker heeft hangslot

@@ -20,7 +20,7 @@ class kluisAdmin(admin.ModelAdmin):
 @admin.register(User)
 class UserAdmin(admin.ModelAdmin):
     list_filter = ('is_active','is_staff')
-    list_display = ('last_name','email')
+    list_display = ('username','last_name','email')
     search_fields = ('last_name','email')
 @admin.register(Person)
 class UserAdmin(admin.ModelAdmin):
@@ -40,5 +40,5 @@ class kluisAdmin(admin.ModelAdmin):
 @admin.register(Facturatielijst)
 class factuurAdmin(admin.ModelAdmin):
     list_filter = ('email','in_excel','is_registered')
-    list_display = ('email','is_registered','in_excel','type')
+    list_display = ('email','kluisnummer','in_excel','type')
     search_fields = ('email','type')

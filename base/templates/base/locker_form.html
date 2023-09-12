@@ -21,7 +21,7 @@
           {%csrf_token %}
           <h2>{% if locker %} Update {% else %} Create {% endif %} Locker</h2>
          {% for field in form %}
-           {% if field.name == 'completed' %}
+           {% if field.name == 'verhuurd' %}
            <label for="profile_pic">{{field.label}}</label>
            <div class="form__group">
              {{field}}
@@ -44,8 +44,10 @@
          <div class="form-buttons">
            <input type="submit" value="Save" class="btn btn-primary"/>
            <a href="{%url 'home'%}" class="btn btn-outline">Cancel</a>
+           {% if request.user.is_superuser %}
+           <a href="{% url 'delete-locker' locker.id %}" class="btn btn--link">Delete</a>
+           {% endif %}
            {% if locker %}
-                     <a href="{% url 'delete-locker' locker.id %}" class="btn btn--link">Delete</a>
 {% endif %}
          </div>
          

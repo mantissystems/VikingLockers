@@ -1,13 +1,13 @@
-
+Lockerlist
 <table class="viking-table">
     <thead>
       <hr>
       <tr>
-        <th>User geregistreerd:</th>
+        <th>Lockers:</th>
         <th></th>
         <th></th>
         <th></th>
-        <th></th>
+        <th>Onderhuur</th>
         <th></th>
       </tr>
     </thead>
@@ -16,7 +16,7 @@
       <tr>
 
       <td>
-        <a href="{% url 'update-locker' locker.id %}?q={{locker.id}}">{{locker.email}} </span></a>
+        <a href="{% url 'update-locker' locker.id %}?q={{locker.id}}">{{locker.kluisnummer}} </span></a>
         <div style="height:100%;width:100%">
           </div>
         </a>
@@ -32,12 +32,9 @@
                           {{locker.excel}}
                         {% endif %}
                       </td> 
-                    <td> 
-                      {{locker.kluisnummer}}      
-                    </td>
                     <td>
                       {% for own in locker.owners.all %}
-                      {{own}} <br>
+                      {{own.email|slice:"9"}}... <br>
                       {% endfor %}
                       {% if locker.owner%}
                       {% endif %}

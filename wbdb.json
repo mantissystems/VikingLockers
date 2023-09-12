@@ -1,3 +1,4 @@
+excelview
 [
 {
   "model": "admin.logentry",
@@ -4446,6 +4447,110 @@
   }
 },
 {
+  "model": "admin.logentry",
+  "pk": 343,
+  "fields": {
+    "action_time": "2023-09-09T07:34:31.674Z",
+    "user": 1,
+    "content_type": 6,
+    "object_id": "253",
+    "object_repr": "bart.hofenk@gmail.com",
+    "action_flag": 3,
+    "change_message": ""
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 344,
+  "fields": {
+    "action_time": "2023-09-10T06:24:24.835Z",
+    "user": 1,
+    "content_type": 30,
+    "object_id": "91",
+    "object_repr": "Facturatielijst object (91)",
+    "action_flag": 3,
+    "change_message": ""
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 345,
+  "fields": {
+    "action_time": "2023-09-10T13:42:45.285Z",
+    "user": 1,
+    "content_type": 6,
+    "object_id": "259",
+    "object_repr": "f.w.vandendolder@gmail.com",
+    "action_flag": 2,
+    "change_message": "[{\"changed\": {\"fields\": [\"Name\", \"Ploeg\", \"Locker\"]}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 346,
+  "fields": {
+    "action_time": "2023-09-11T05:52:23.023Z",
+    "user": 1,
+    "content_type": 3,
+    "object_id": "1",
+    "object_repr": "Lidadmin",
+    "action_flag": 1,
+    "change_message": "[{\"added\": {}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 347,
+  "fields": {
+    "action_time": "2023-09-11T05:59:57.900Z",
+    "user": 1,
+    "content_type": 6,
+    "object_id": "244",
+    "object_repr": "w.vandenbosch@planet.nl",
+    "action_flag": 2,
+    "change_message": "[{\"changed\": {\"fields\": [\"Groups\", \"Ploeg\", \"Locker\"]}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 348,
+  "fields": {
+    "action_time": "2023-09-11T15:10:01.749Z",
+    "user": 1,
+    "content_type": 24,
+    "object_id": "23",
+    "object_repr": "Locker object (23)",
+    "action_flag": 3,
+    "change_message": ""
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 349,
+  "fields": {
+    "action_time": "2023-09-12T04:28:23.197Z",
+    "user": 1,
+    "content_type": 6,
+    "object_id": "283",
+    "object_repr": "w.vandenbosch@planet.nlll",
+    "action_flag": 3,
+    "change_message": ""
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 350,
+  "fields": {
+    "action_time": "2023-09-12T04:29:04.885Z",
+    "user": 1,
+    "content_type": 6,
+    "object_id": "282",
+    "object_repr": "w.vandenbosch@planet.nll",
+    "action_flag": 3,
+    "change_message": ""
+  }
+},
+{
   "model": "auth.permission",
   "pk": 1,
   "fields": {
@@ -5526,6 +5631,50 @@
   }
 },
 {
+  "model": "auth.permission",
+  "pk": 121,
+  "fields": {
+    "name": "Can add facturatielijst",
+    "content_type": 30,
+    "codename": "add_facturatielijst"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 122,
+  "fields": {
+    "name": "Can change facturatielijst",
+    "content_type": 30,
+    "codename": "change_facturatielijst"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 123,
+  "fields": {
+    "name": "Can delete facturatielijst",
+    "content_type": 30,
+    "codename": "delete_facturatielijst"
+  }
+},
+{
+  "model": "auth.permission",
+  "pk": 124,
+  "fields": {
+    "name": "Can view facturatielijst",
+    "content_type": 30,
+    "codename": "view_facturatielijst"
+  }
+},
+{
+  "model": "auth.group",
+  "pk": 1,
+  "fields": {
+    "name": "Lidadmin",
+    "permissions": []
+  }
+},
+{
   "model": "contenttypes.contenttype",
   "pk": 1,
   "fields": {
@@ -5758,6 +5907,14 @@
   }
 },
 {
+  "model": "contenttypes.contenttype",
+  "pk": 30,
+  "fields": {
+    "app_label": "base",
+    "model": "facturatielijst"
+  }
+},
+{
   "model": "sessions.session",
   "pk": "0rqbfnv1805rwwxtfamxhg7bh0s3pkca",
   "fields": {
@@ -5943,6 +6100,14 @@
 },
 {
   "model": "sessions.session",
+  "pk": "cxpe3g15ew38xm84agpx6gtoiwot0og9",
+  "fields": {
+    "session_data": ".eJxVjM0OwiAQhN-FsyEgf4tH7z4DWViQqqFJaU_Gd5cmPehtZr6ZebOA21rD1vMSJmIXdnaOnX7TiOmZ247oge0-8zS3dZki3yv8oJ3fZsqv69H9O6jY61gLQyomtFFoSlJlAVgsDF-stKDRF520Hyo6IzwJBx6InFEkFUHM7PMFOkU4Ug:1qfnGY:NfTbTcfvBBqzvvlhc5xH2rBVOM3z51W99LDaVxoCb2A",
+    "expire_date": "2023-09-25T20:12:14.247Z"
+  }
+},
+{
+  "model": "sessions.session",
   "pk": "d4cocrk3ijge7jfplnyqvurx58svcs9x",
   "fields": {
     "session_data": ".eJxVjEEOwiAQRe_C2hDG0gIu3fcMZGBmpGpoUtqV8e7apAvd_vfef6mI21ri1niJE6mLAnX63RLmB9cd0B3rbdZ5rusyJb0r-qBNjzPx83q4fwcFW_nWgsAQOnLSd_5sB-8NAwAN4vrMaNELm4Sdk-AhmEQChDZ5kyXYRKDeH-cQOGQ:1pyomp:Tgv_5d39FmFmd3ukUganYSOt5B5qxMyXk71M9EBzdko",
@@ -6015,18 +6180,18 @@
 },
 {
   "model": "sessions.session",
-  "pk": "hzpinvns8stkd4zto2nz033wtjul5kvi",
+  "pk": "h79agr71jw9ubtgosvx3oqly1009rp6n",
   "fields": {
-    "session_data": "e30:1qbT9w:R7nbLhXItKiryjxGRaD-zNa496ot1u9fFjIRGipUYZc",
-    "expire_date": "2023-09-13T21:55:32.615Z"
+    "session_data": ".eJxVjEEOwiAQRe_C2hDG0gIu3fcMZGBmpGpoUtqV8e7apAvd_vfef6mI21ri1niJE6mLAnX63RLmB9cd0B3rbdZ5rusyJb0r-qBNjzPx83q4fwcFW_nWgsAQOnLSd_5sB-8NAwAN4vrMaNELm4Sdk-AhmEQChDZ5kyXYRKDeH-cQOGQ:1qg1DY:9Oq5y4x0H_EiKvw3iX3x9dLOh86fySXFHsAkAtvtVek",
+    "expire_date": "2023-09-26T11:06:04.704Z"
   }
 },
 {
   "model": "sessions.session",
-  "pk": "ij1ps4497d0stqu2adoo5nnrm5sab5ko",
+  "pk": "hzpinvns8stkd4zto2nz033wtjul5kvi",
   "fields": {
-    "session_data": ".eJxVjEEOwiAQRe_C2hDG0gIu3fcMZGBmpGpoUtqV8e7apAvd_vfef6mI21ri1niJE6mLAnX63RLmB9cd0B3rbdZ5rusyJb0r-qBNjzPx83q4fwcFW_nWgsAQOnLSd_5sB-8NAwAN4vrMaNELm4Sdk-AhmEQChDZ5kyXYRKDeH-cQOGQ:1qdtnh:ce4GOSpHjhVJ8dDx0IOT-Afo5_6XplDScxxn_1IZ-Hs",
-    "expire_date": "2023-09-20T14:46:37.382Z"
+    "session_data": "e30:1qbT9w:R7nbLhXItKiryjxGRaD-zNa496ot1u9fFjIRGipUYZc",
+    "expire_date": "2023-09-13T21:55:32.615Z"
   }
 },
 {
@@ -6059,6 +6224,30 @@
   "fields": {
     "session_data": ".eJxVjEEOwiAQRe_C2hDG0gIu3fcMZGBmpGpoUtqV8e7apAvd_vfef6mI21ri1niJE6mLAnX63RLmB9cd0B3rbdZ5rusyJb0r-qBNjzPx83q4fwcFW_nWgsAQOnLSd_5sB-8NAwAN4vrMaNELm4Sdk-AhmEQChDZ5kyXYRKDeH-cQOGQ:1qUTXM:M5dj9HffQ_G32ZQskztB__L6Q7rGU_jImcec9wqUDZo",
     "expire_date": "2023-08-25T14:54:48.622Z"
+  }
+},
+{
+  "model": "sessions.session",
+  "pk": "n7tffjdxsgf1vxzysvwg9byfot5eyelc",
+  "fields": {
+    "session_data": ".eJxVjL0OwyAQg9-FuUKEI_x07J5nQAccJW1FpJBMVd-9QcrQerM_22_mcd-K3xutfk7syqSR7PKbBoxPqh2lB9b7wuNSt3UOvFf4SRuflkSv29n9OyjYSl8PImkIROAcWJkVOjMap4Q0qA5pOSQ9aksUtcUMh4GMCbUSVkkI7PMFEkw3iw:1qfaaT:0LqD6bT9G6mn5BlmKOfHwNzPWo4Xa7NYGfzn2M8NFOI",
+    "expire_date": "2023-09-25T06:39:57.686Z"
+  }
+},
+{
+  "model": "sessions.session",
+  "pk": "nm3pgymw2mtax3kuz6z0w6xsgm1d35wg",
+  "fields": {
+    "session_data": ".eJxVjEEOwiAQRe_C2hDG0gIu3fcMZGBmpGpoUtqV8e7apAvd_vfef6mI21ri1niJE6mLAnX63RLmB9cd0B3rbdZ5rusyJb0r-qBNjzPx83q4fwcFW_nWgsAQOnLSd_5sB-8NAwAN4vrMaNELm4Sdk-AhmEQChDZ5kyXYRKDeH-cQOGQ:1qfuxS:atDvNoGU_MAjPjueG2JarIda7AqpFKRErlAAYpO6gRY",
+    "expire_date": "2023-09-26T04:25:02.909Z"
+  }
+},
+{
+  "model": "sessions.session",
+  "pk": "ntjjehpwccb5llhefar5weo3dykqwbft",
+  "fields": {
+    "session_data": ".eJxVjEEOwiAQRe_C2hDG0gIu3fcMZGBmpGpoUtqV8e7apAvd_vfef6mI21ri1niJE6mLAnX63RLmB9cd0B3rbdZ5rusyJb0r-qBNjzPx83q4fwcFW_nWgsAQOnLSd_5sB-8NAwAN4vrMaNELm4Sdk-AhmEQChDZ5kyXYRKDeH-cQOGQ:1qfLQ1:7fK1Aa-ZZbhd3XysD679M9J7sELticbOkZSdC-mOQ-s",
+    "expire_date": "2023-09-24T14:28:09.315Z"
   }
 },
 {
@@ -6239,14 +6428,6 @@
 },
 {
   "model": "sessions.session",
-  "pk": "y6ow3njq2wk3su8d96wg5u7is01sgyud",
-  "fields": {
-    "session_data": ".eJxVjEEOwiAQRe_C2hDG0gIu3fcMZGBmpGpoUtqV8e7apAvd_vfef6mI21ri1niJE6mLAnX63RLmB9cd0B3rbdZ5rusyJb0r-qBNjzPx83q4fwcFW_nWgsAQOnLSd_5sB-8NAwAN4vrMaNELm4Sdk-AhmEQChDZ5kyXYRKDeH-cQOGQ:1qdpwz:0wa3LZHL8YWKkQUiZOvvS3nKcFObyj3Mu2fBrBH5dsw",
-    "expire_date": "2023-09-20T10:39:57.996Z"
-  }
-},
-{
-  "model": "sessions.session",
   "pk": "z7amh5jpaur6rm3ltjy5vnuitm5ugzag",
   "fields": {
     "session_data": ".eJxVjEEOwiAQRe_C2hDG0gIu3fcMZGBmpGpoUtqV8e7apAvd_vfef6mI21ri1niJE6mLAnX63RLmB9cd0B3rbdZ5rusyJb0r-qBNjzPx83q4fwcFW_nWgsAQOnLSd_5sB-8NAwAN4vrMaNELm4Sdk-AhmEQChDZ5kyXYRKDeH-cQOGQ:1qXKTo:bgxB_nzDGERu6JI2IMznwUFF9DtHe4fhaRg1yh_4TSg",
@@ -6274,15 +6455,14 @@
   "pk": 1,
   "fields": {
     "password": "pbkdf2_sha256$390000$rpQgHiuSfhcF8lZlN7HQML$RDiOEXSeIAREafU0Tnvc9vgV82yf2zx4TW1/f/CTw1o=",
-    "last_login": "2023-09-06T14:46:37.360Z",
+    "last_login": "2023-09-12T11:06:04.540Z",
     "is_superuser": true,
-    "username": "wim",
     "first_name": "wim",
     "last_name": "bakker",
     "is_staff": true,
     "is_active": true,
     "date_joined": "2023-05-13T08:48:16Z",
-    "name": "wim bakker",
+    "username": "wim",
     "ploeg": "nieuw",
     "locker": "H40",
     "email": "wej.bakker@mantisbv.nl",
@@ -6298,13 +6478,12 @@
     "password": "pbkdf2_sha256$390000$BqHeNhByYK1PxPjZT5aZxa$G8PJ90FUu82yctqCmZ7Y8/HI2zYYRY77ajFsx2edufE=",
     "last_login": "2023-08-06T14:50:52.504Z",
     "is_superuser": false,
-    "username": "eli",
     "first_name": "",
     "last_name": "eli",
     "is_staff": false,
     "is_active": true,
     "date_joined": "2023-08-06T14:50:52.253Z",
-    "name": "E",
+    "username": "eli",
     "ploeg": null,
     "locker": null,
     "email": "e.s.vansoest@gmail.com",
@@ -6320,13 +6499,12 @@
     "password": "pbkdf2_sha256$390000$CnRIBcBa5bxuB8qh8X7ywq$N1/d6rLkYsyWWynuy3NEv0tfABPu7gSI6Bq2MJm93+Y=",
     "last_login": "2023-08-12T08:41:51.842Z",
     "is_superuser": false,
-    "username": "ruud van ginkel",
     "first_name": "ruud van ginkel",
     "last_name": "ruud van ginkel",
     "is_staff": false,
     "is_active": true,
     "date_joined": "2023-08-12T08:41:51.606Z",
-    "name": "Ruud van GINKEL",
+    "username": "ruud van ginkel",
     "ploeg": null,
     "locker": "H56",
     "email": "r.van.ginkel@hetnet.nl",
@@ -6342,13 +6520,12 @@
     "password": "pbkdf2_sha256$390000$E4TmHgu1Ssx1MYoxOEP64E$FHvCR4BLD66FObYMSkuN8NrxfSEHGRoF4fWIyvOSzBQ=",
     "last_login": "2023-08-27T21:26:25.557Z",
     "is_superuser": false,
-    "username": "janneke nap",
     "first_name": "",
     "last_name": "janneke nap",
     "is_staff": false,
     "is_active": true,
     "date_joined": "2023-08-27T21:26:25.161Z",
-    "name": "Janneke Nap",
+    "username": "janneke nap",
     "ploeg": null,
     "locker": null,
     "email": "nap.janneke@gmail.com",
@@ -6364,13 +6541,12 @@
     "password": "pbkdf2_sha256$390000$2vIIE3odYDQWcsGgy7mfxR$Ys08CbYpDVw0u8DDjOtkAIamXRNMVXxRKN0AiPPDJoc=",
     "last_login": "2023-08-27T22:29:48.482Z",
     "is_superuser": false,
-    "username": "willie ambergen",
     "first_name": "",
     "last_name": "willie ambergen",
     "is_staff": false,
     "is_active": true,
     "date_joined": "2023-08-27T22:29:48.235Z",
-    "name": "Willie Ambergen",
+    "username": "willie ambergen",
     "ploeg": null,
     "locker": null,
     "email": "willie@ambeleij.demon.nl",
@@ -6386,13 +6562,12 @@
     "password": "pbkdf2_sha256$390000$FmaHLpTdg4TtTtASiLMAyL$3wqU6JIoqXNczJl0b3Dw/UakSOI7wTzzzc7qCRUrCp8=",
     "last_login": "2023-08-28T05:08:01.698Z",
     "is_superuser": false,
-    "username": "talitha van den elst",
     "first_name": "",
     "last_name": "talitha van den elst",
     "is_staff": false,
     "is_active": true,
     "date_joined": "2023-08-28T05:08:01.457Z",
-    "name": "Talitha Van Den Elst",
+    "username": "talitha van den elst",
     "ploeg": null,
     "locker": null,
     "email": "t.elst@wxs.nl",
@@ -6408,13 +6583,12 @@
     "password": "pbkdf2_sha256$390000$rhYRjAJjveKHEUvsbLAS9C$GEy8aKLjkIZeVzd1Ven1tBEC54x5q4blBIt4MDjwjqg=",
     "last_login": "2023-08-28T05:19:16.160Z",
     "is_superuser": false,
-    "username": "evelien van dongen",
     "first_name": "evelien van dongen",
     "last_name": "evelien van dongen",
     "is_staff": false,
     "is_active": true,
     "date_joined": "2023-08-28T05:19:15.876Z",
-    "name": "Evelien van Dongen",
+    "username": "evelien van dongen",
     "ploeg": null,
     "locker": null,
     "email": "lienvandongen@gmail.com",
@@ -6430,13 +6604,12 @@
     "password": "pbkdf2_sha256$390000$RhX7Ina8T9JhubkKIZBgUu$CFAguQGz2IB3iB4aXK2NL3SjIhoAEuXx4nguBilYIPo=",
     "last_login": "2023-08-28T16:53:33.571Z",
     "is_superuser": false,
-    "username": "marjolein schepel",
     "first_name": "",
     "last_name": "marjolein schepel",
     "is_staff": false,
     "is_active": true,
     "date_joined": "2023-08-28T05:25:43.725Z",
-    "name": "Marjolein Schepel",
+    "username": "marjolein schepel",
     "ploeg": null,
     "locker": null,
     "email": "info@schepeladvies.nl",
@@ -6452,13 +6625,12 @@
     "password": "pbkdf2_sha256$390000$bZPDvLzFFZO1qpdJpbYhp0$LbvFS/5MmyW/IVCvP5ZKr1RjjmrsZQ+WoAxIZruYW4I=",
     "last_login": "2023-08-28T05:35:37.555Z",
     "is_superuser": false,
-    "username": "wim gorissen",
     "first_name": "",
     "last_name": "wim gorissen",
     "is_staff": false,
     "is_active": true,
     "date_joined": "2023-08-28T05:35:37.314Z",
-    "name": "Wim Gorissen",
+    "username": "wim gorissen",
     "ploeg": null,
     "locker": null,
     "email": "whmgorissen@gmail.com",
@@ -6474,13 +6646,12 @@
     "password": "pbkdf2_sha256$390000$DKPcOP8gSRCLpKvQbMGU7Y$7uP2/pAV3KPtrDrMGZNDO3ujZgCukoC3ODh/Frt4NnE=",
     "last_login": "2023-08-28T07:11:57.523Z",
     "is_superuser": false,
-    "username": "olga van kempen",
     "first_name": "",
     "last_name": "olga van kempen",
     "is_staff": false,
     "is_active": true,
     "date_joined": "2023-08-28T07:11:57.229Z",
-    "name": "Olga Van Kempen",
+    "username": "olga van kempen",
     "ploeg": null,
     "locker": null,
     "email": "olgavkempen@xs4all.nl",
@@ -6496,13 +6667,12 @@
     "password": "pbkdf2_sha256$390000$tniYUsHPgI86vVy7qqhLIE$SUm937bg+sjr5fJ5BsDGgxtCIP1JdImrwLKDSK6mJeg=",
     "last_login": "2023-08-28T07:35:55.955Z",
     "is_superuser": false,
-    "username": "theo brok",
     "first_name": "",
     "last_name": "theo brok",
     "is_staff": false,
     "is_active": true,
     "date_joined": "2023-08-28T07:33:50.107Z",
-    "name": "Theo Brok",
+    "username": "theo brok",
     "ploeg": null,
     "locker": null,
     "email": "tamerlan@xs4all.nl",
@@ -6518,13 +6688,12 @@
     "password": "pbkdf2_sha256$390000$twN1M0FyXvkasmzOTIQLKr$MqKlLczr2R5noRc74MZnp3s15lBnOOyH/KNX0HByekU=",
     "last_login": "2023-08-28T08:19:02.567Z",
     "is_superuser": false,
-    "username": "harold thijssen",
     "first_name": "",
     "last_name": "harold thijssen",
     "is_staff": false,
     "is_active": true,
     "date_joined": "2023-08-28T08:19:02.330Z",
-    "name": "Harold Thijssen",
+    "username": "harold thijssen",
     "ploeg": null,
     "locker": null,
     "email": "haroldthijssen@hetnet.nl",
@@ -6540,13 +6709,12 @@
     "password": "pbkdf2_sha256$390000$22VY8QfOZP1OpL65RK4GUC$rYEe0Bf9i6yB0BmT9ElsCpJqaRFILyKmKv0p+D8tiB4=",
     "last_login": "2023-08-28T08:25:54.025Z",
     "is_superuser": false,
-    "username": "leo",
     "first_name": "",
     "last_name": "leo",
     "is_staff": false,
     "is_active": true,
     "date_joined": "2023-08-28T08:25:53.757Z",
-    "name": "Leo",
+    "username": "leo",
     "ploeg": null,
     "locker": "H03",
     "email": "leovandenbroek@casema.nl",
@@ -6562,13 +6730,12 @@
     "password": "pbkdf2_sha256$390000$e4jpnYLujHGymBXdB5Qsus$Hny/Qhr1Bgz/8rXdQhmHhC4UeZtaoO5zNSwm73j/wLQ=",
     "last_login": "2023-08-28T08:30:07.202Z",
     "is_superuser": false,
-    "username": "lieske de nooij",
     "first_name": "",
     "last_name": "lieske de nooij",
     "is_staff": false,
     "is_active": true,
     "date_joined": "2023-08-28T08:30:06.922Z",
-    "name": "Lieske de Nooij",
+    "username": "lieske de nooij",
     "ploeg": null,
     "locker": null,
     "email": "linooij@gmail.com",
@@ -6584,13 +6751,12 @@
     "password": "pbkdf2_sha256$390000$LrT5idKYlWWwCXe6eaIwQX$zpprwWRukt0EmPfFsPV5uBx98UXL94PWog3wr7vS5VA=",
     "last_login": "2023-08-28T08:42:07.404Z",
     "is_superuser": false,
-    "username": "pieter kwantes",
     "first_name": "",
     "last_name": "pieter kwantes",
     "is_staff": false,
     "is_active": true,
     "date_joined": "2023-08-28T08:42:07.127Z",
-    "name": "Pieter Kwantes",
+    "username": "pieter kwantes",
     "ploeg": null,
     "locker": null,
     "email": "p.kwantes@kpnmail.nl",
@@ -6606,13 +6772,12 @@
     "password": "pbkdf2_sha256$390000$UDM0vt52eiCfPBmzfIprDY$f6pwRHewn5m3otROfIG5w4pRVqleVo2aO1cmKewsK+0=",
     "last_login": "2023-08-28T08:43:05.785Z",
     "is_superuser": false,
-    "username": "petra gerritsen",
     "first_name": "",
     "last_name": "petra gerritsen",
     "is_staff": false,
     "is_active": true,
     "date_joined": "2023-08-28T08:43:05.515Z",
-    "name": "Petra Gerritsen",
+    "username": "petra gerritsen",
     "ploeg": null,
     "locker": null,
     "email": "petra.gerritsen@spletters.nl",
@@ -6628,13 +6793,12 @@
     "password": "pbkdf2_sha256$390000$KT3NJJSMpqJz8FbRdZ5BmW$+KQOPaOYVlejvGJ+puc//rwZ8v9UPALtRMOu9aTBprs=",
     "last_login": "2023-08-28T08:48:23.795Z",
     "is_superuser": false,
-    "username": "miranda megens",
     "first_name": "",
     "last_name": "miranda megens",
     "is_staff": false,
     "is_active": true,
     "date_joined": "2023-08-28T08:46:33.173Z",
-    "name": "Miranda Megens",
+    "username": "miranda megens",
     "ploeg": null,
     "locker": null,
     "email": "miranda_megens@yahoo.com",
@@ -6650,13 +6814,12 @@
     "password": "pbkdf2_sha256$390000$gEwbG5oEg5XK3B2f2mThKQ$WTHOmyhnB+blqUvThpXch6mKixKNYcDijuPOpv0fgvk=",
     "last_login": "2023-08-28T10:12:30.913Z",
     "is_superuser": false,
-    "username": "marijke",
     "first_name": "",
     "last_name": "marijke",
     "is_staff": false,
     "is_active": true,
     "date_joined": "2023-08-28T10:12:30.637Z",
-    "name": "Marijke",
+    "username": "marijke",
     "ploeg": null,
     "locker": null,
     "email": "maryke@casema.nl",
@@ -6672,13 +6835,12 @@
     "password": "pbkdf2_sha256$390000$bH6KU87NAb0qSWkNUVc6Kq$zlZ+5VDgUpyIj58Q495z5ukT8kox766dqwvOQqd0EoI=",
     "last_login": "2023-08-28T14:40:51.673Z",
     "is_superuser": false,
-    "username": "wyke",
     "first_name": "",
     "last_name": "wyke",
     "is_staff": false,
     "is_active": true,
     "date_joined": "2023-08-28T14:40:51.398Z",
-    "name": "wyke",
+    "username": "wyke",
     "ploeg": null,
     "locker": null,
     "email": "wyki24@gmail.com",
@@ -6694,13 +6856,12 @@
     "password": "pbkdf2_sha256$390000$NrT5ew9pGOvoFcY2CL7mlQ$dmiBs7w0YqRvBIsYHNVIvoCVv69RNJW7kpDJ3aHN71s=",
     "last_login": "2023-08-28T15:33:48.722Z",
     "is_superuser": false,
-    "username": "erik van der struijs",
     "first_name": "",
     "last_name": "erik van der struijs",
     "is_staff": false,
     "is_active": true,
     "date_joined": "2023-08-28T15:33:48.430Z",
-    "name": "Erik van der Struijs",
+    "username": "erik van der struijs",
     "ploeg": null,
     "locker": null,
     "email": "erikvdstruijs@xs4all.nl",
@@ -6716,13 +6877,12 @@
     "password": "pbkdf2_sha256$390000$s0gco55MyIeZVa4guOSW1O$SaZjBkHUL7whzvzZFXT76DHZnWV6735UAQu/VRhfULo=",
     "last_login": "2023-08-28T20:01:46.037Z",
     "is_superuser": false,
-    "username": "harmke van dam",
     "first_name": "",
     "last_name": "harmke van dam",
     "is_staff": false,
     "is_active": true,
     "date_joined": "2023-08-28T20:01:45.797Z",
-    "name": "Harmke van Dam",
+    "username": "harmke van dam",
     "ploeg": null,
     "locker": null,
     "email": "harmke.van.dam@xs4all.nl",
@@ -6738,13 +6898,12 @@
     "password": "pbkdf2_sha256$390000$d4dcLeOvoPMJEDz78fY0rl$S/niHXI5UulIsz30lLB4k6LBF37h6e/RBNwpOGfL4X4=",
     "last_login": "2023-08-29T07:45:51.060Z",
     "is_superuser": false,
-    "username": "marian schuver",
     "first_name": "",
     "last_name": "marian schuver",
     "is_staff": false,
     "is_active": true,
     "date_joined": "2023-08-29T07:45:50.820Z",
-    "name": "Marian Schuver",
+    "username": "marian schuver",
     "ploeg": null,
     "locker": null,
     "email": "marian@schuver.com",
@@ -6760,13 +6919,12 @@
     "password": "pbkdf2_sha256$390000$yaTMoVICA2pgRcTNu6dIEg$hKeA6QcA3dPYN2WCRmB1NdNGHpZzwiz+1v82T2ItdnE=",
     "last_login": "2023-08-29T09:51:07.250Z",
     "is_superuser": false,
-    "username": "ellis baaijen",
     "first_name": "",
     "last_name": "ellis baaijen",
     "is_staff": false,
     "is_active": true,
     "date_joined": "2023-08-29T09:51:07.015Z",
-    "name": "Ellis Baaijen",
+    "username": "ellis baaijen",
     "ploeg": null,
     "locker": null,
     "email": "baaijen@ziggo.nl",
@@ -6782,13 +6940,12 @@
     "password": "pbkdf2_sha256$390000$AP7sQDeE7kn7wzKtdsCFPD$Eg65BMmHWY5pYsdMJ9v5FFPGFL0ppvurKk07oF5dgwg=",
     "last_login": "2023-08-29T18:12:22.401Z",
     "is_superuser": false,
-    "username": "martin reniers",
     "first_name": "",
     "last_name": "martin reniers",
     "is_staff": false,
     "is_active": true,
     "date_joined": "2023-08-29T18:08:32.115Z",
-    "name": "Martin Reniers",
+    "username": "martin reniers",
     "ploeg": null,
     "locker": null,
     "email": "martinreniers@hotmail.com",
@@ -6804,13 +6961,12 @@
     "password": "pbkdf2_sha256$390000$Q5FhfjhcwBhLdHnzzCUKb5$n2g+3HBopU/pKX7bU1CH2FkhQ2MSiahdReTxBg+Qa4M=",
     "last_login": "2023-08-29T18:12:28.414Z",
     "is_superuser": false,
-    "username": "gertjan miedema",
     "first_name": "",
     "last_name": "gertjan miedema",
     "is_staff": false,
     "is_active": true,
     "date_joined": "2023-08-29T18:12:28.172Z",
-    "name": "Gertjan Miedema",
+    "username": "gertjan miedema",
     "ploeg": null,
     "locker": null,
     "email": "gertjan@miedemageluid.nl",
@@ -6826,13 +6982,12 @@
     "password": "pbkdf2_sha256$390000$v9XgnXscyuLsGHAT0YXgQB$ef47fQ5XqjocVYlhLM03Ynu7zPIeIpfC2Sc2MEdn7vo=",
     "last_login": "2023-08-29T19:37:14.186Z",
     "is_superuser": false,
-    "username": "petra de leede",
     "first_name": "",
     "last_name": "petra de leede",
     "is_staff": false,
     "is_active": true,
     "date_joined": "2023-08-29T19:37:13.939Z",
-    "name": "Petra de Leede",
+    "username": "petra de leede",
     "ploeg": null,
     "locker": null,
     "email": "petradeleede@gmail.com",
@@ -6848,13 +7003,12 @@
     "password": "pbkdf2_sha256$390000$8xEPhEbplZzqWrLm2xNVZ2$K/7QfH5bKhahA9SMNu1EFfqmmPdRU2bCvIApoBkywmg=",
     "last_login": "2023-08-30T09:46:08.742Z",
     "is_superuser": false,
-    "username": "ellen beverdam",
     "first_name": "",
     "last_name": "ellen beverdam",
     "is_staff": false,
     "is_active": true,
     "date_joined": "2023-08-30T09:46:08.504Z",
-    "name": "Ellen Beverdam",
+    "username": "ellen beverdam",
     "ploeg": null,
     "locker": null,
     "email": "ellenbeverdam@xs4all.nl",
@@ -6870,13 +7024,12 @@
     "password": "pbkdf2_sha256$390000$9OBHpkB6oJnWuu16Urarf3$VOktNSHBan36CYTlZqskrYYtbln1ChLuwrMvudELhUA=",
     "last_login": "2023-08-30T18:18:59.959Z",
     "is_superuser": false,
-    "username": "diana de rijk",
     "first_name": "",
     "last_name": "diana de rijk",
     "is_staff": false,
     "is_active": true,
     "date_joined": "2023-08-30T18:18:59.722Z",
-    "name": "Diana de Rijk",
+    "username": "diana de rijk",
     "ploeg": null,
     "locker": null,
     "email": "derijkdiana@gmail.com",
@@ -6892,13 +7045,12 @@
     "password": "pbkdf2_sha256$390000$nEbZBiSMsXhNOocgd2zPH7$ibwaqHqGbOue0uOOKH7Cw3RL03gBP/qHHxUk2RL8oRg=",
     "last_login": "2023-08-30T18:23:47.863Z",
     "is_superuser": false,
-    "username": "anouk rijs",
     "first_name": "",
     "last_name": "anouk rijs",
     "is_staff": false,
     "is_active": true,
     "date_joined": "2023-08-30T18:23:47.594Z",
-    "name": "Anouk Rijs",
+    "username": "anouk rijs",
     "ploeg": null,
     "locker": null,
     "email": "anoukrijs@hotmail.com",
@@ -6914,13 +7066,12 @@
     "password": "pbkdf2_sha256$390000$7WbKbd1bqU6f8KkxUuQf8t$YSjknU+Iq6guwv+wydQz3YCzNFOAdbdy8BdXav1ZXSY=",
     "last_login": "2023-09-06T10:32:18.004Z",
     "is_superuser": false,
-    "username": "sh",
     "first_name": "",
     "last_name": "sh",
     "is_staff": false,
     "is_active": true,
     "date_joined": "2023-08-30T19:24:39.674Z",
-    "name": "Sh",
+    "username": "sh",
     "ploeg": null,
     "locker": "D36",
     "email": "info@haazer.nl",
@@ -6936,15 +7087,14 @@
     "password": "pbkdf2_sha256$390000$dl7JB4jkLdkoqbwNI5C4vH$Lv4W6+bE9v6A5NZ9xQL8bo0dtCbrR303Aywb4oNBJfI=",
     "last_login": "2023-08-30T23:03:44.296Z",
     "is_superuser": false,
-    "username": "tomas klos",
     "first_name": "",
     "last_name": "tomas klos",
     "is_staff": false,
     "is_active": true,
     "date_joined": "2023-08-30T23:03:44.036Z",
-    "name": "Tomas Klos",
+    "username": "tomas klos",
     "ploeg": null,
-    "locker": null,
+    "locker": "Heren 48",
     "email": "tomasklos@proton.me",
     "avatar": "avatar.svg",
     "groups": [],
@@ -6958,13 +7108,12 @@
     "password": "pbkdf2_sha256$390000$lVJ6iejiW4cdTHi8a6r3ha$WNahqK26rOoMR1qVP2kzFZqBMe/Np4DpEWrivr3z+YA=",
     "last_login": "2023-08-31T16:55:20.365Z",
     "is_superuser": false,
-    "username": "maarten van den akker",
     "first_name": "",
     "last_name": "maarten van den akker",
     "is_staff": false,
     "is_active": true,
     "date_joined": "2023-08-31T16:55:20.119Z",
-    "name": "Maarten Van Den Akker",
+    "username": "maarten van den akker",
     "ploeg": null,
     "locker": null,
     "email": "maarten.vd.akker@gmail.com",
@@ -6978,20 +7127,21 @@
   "pk": 244,
   "fields": {
     "password": "pbkdf2_sha256$390000$MbAy3r2ahV6QE6xFilyWG5$Hkuz0s9MNtjJ066lD0v9N2tnUv2ZuZLALt2rIL1QSAQ=",
-    "last_login": "2023-09-06T09:19:15.034Z",
+    "last_login": "2023-09-12T08:56:23.707Z",
     "is_superuser": false,
-    "username": "willem",
     "first_name": "",
     "last_name": "willem",
     "is_staff": false,
     "is_active": true,
-    "date_joined": "2023-09-01T10:59:01.245Z",
-    "name": "willem",
-    "ploeg": null,
-    "locker": null,
+    "date_joined": "2023-09-01T10:59:01Z",
+    "username": "willem",
+    "ploeg": "Viking",
+    "locker": "H40",
     "email": "w.vandenbosch@planet.nl",
     "avatar": "avatar.svg",
-    "groups": [],
+    "groups": [
+      1
+    ],
     "user_permissions": []
   }
 },
@@ -7002,13 +7152,12 @@
     "password": "pbkdf2_sha256$390000$x4QvrUhiwDUU0ibbc6xESo$gQMOjCkyGvYB5Y81s2oYF45kaYtOzAkDbeLy/Qefgo4=",
     "last_login": "2023-09-02T04:49:34.207Z",
     "is_superuser": false,
-    "username": "peter",
     "first_name": "",
     "last_name": "peter",
     "is_staff": false,
     "is_active": true,
     "date_joined": "2023-09-02T04:49:31.765Z",
-    "name": "peter",
+    "username": "peter",
     "ploeg": null,
     "locker": null,
     "email": "peterhingstman@gmail.com",
@@ -7024,13 +7173,12 @@
     "password": "pbkdf2_sha256$390000$aTyhEG2gbE8S7PnIvRyGZ6$N28I8arV0C8K+mEI2FKsVNBx0Yvw7gWr1RMsRBIDoTs=",
     "last_login": "2023-09-02T09:01:44.415Z",
     "is_superuser": false,
-    "username": "carel",
     "first_name": "",
     "last_name": "carel",
     "is_staff": false,
     "is_active": true,
     "date_joined": "2023-09-02T09:01:44.139Z",
-    "name": "Carel",
+    "username": "carel",
     "ploeg": null,
     "locker": null,
     "email": "c.reuser@yahoo.com",
@@ -7046,13 +7194,12 @@
     "password": "pbkdf2_sha256$390000$SEe6FDacStgEyNaqxSC1QW$1InWmBKtB6T4MUi/KDXTqWLLJ72Xi4HCQAykjPft19I=",
     "last_login": "2023-09-03T13:18:15.419Z",
     "is_superuser": false,
-    "username": "marcel li",
     "first_name": "",
     "last_name": "marcel li",
     "is_staff": false,
     "is_active": true,
     "date_joined": "2023-09-03T13:18:15.104Z",
-    "name": "Marcel Li",
+    "username": "marcel li",
     "ploeg": null,
     "locker": null,
     "email": "linssentandarts@gmail.com",
@@ -7068,13 +7215,12 @@
     "password": "pbkdf2_sha256$390000$11ue88P5s8a7Gav9ikPMAq$py0ecOQ2v/zFXfDvXo082ujUCAUN4ZANAejrfkLIleg=",
     "last_login": "2023-09-03T18:15:24.119Z",
     "is_superuser": false,
-    "username": "milena",
     "first_name": "",
     "last_name": "milena",
     "is_staff": false,
     "is_active": true,
     "date_joined": "2023-09-03T18:15:21.669Z",
-    "name": "milena",
+    "username": "milena",
     "ploeg": null,
     "locker": null,
     "email": "m.d.knappstein@gmail.com",
@@ -7090,15 +7236,14 @@
     "password": "pbkdf2_sha256$390000$KDfZvgOHJxtEzVHgaenJM1$2EvfpFdShwag2JdMUMLFmkMrzDnotiJVUmScupAr8mQ=",
     "last_login": "2023-09-05T15:39:17.476Z",
     "is_superuser": false,
-    "username": "kees wierenga",
     "first_name": "",
     "last_name": "kees wierenga",
     "is_staff": false,
     "is_active": true,
     "date_joined": "2023-09-05T15:39:17.122Z",
-    "name": "Kees Wierenga",
+    "username": "kees wierenga",
     "ploeg": null,
-    "locker": null,
+    "locker": "H53",
     "email": "cwierenga73@gmail.com",
     "avatar": "avatar.svg",
     "groups": [],
@@ -7112,13 +7257,12 @@
     "password": "pbkdf2_sha256$390000$wf4LO5F2SxXEJCY7JFc57F$HKAtgFADKkkuN3rbEEDaXofHu1hC0SOwcVgel3/WDrc=",
     "last_login": "2023-09-06T10:20:32.588Z",
     "is_superuser": false,
-    "username": "aletta stein",
     "first_name": "",
     "last_name": "aletta stein",
     "is_staff": false,
     "is_active": true,
     "date_joined": "2023-09-06T10:20:32.307Z",
-    "name": "Aletta Stein",
+    "username": "aletta stein",
     "ploeg": null,
     "locker": null,
     "email": "Steinaletta@gmail.com",
@@ -7134,16 +7278,456 @@
     "password": "pbkdf2_sha256$390000$RbZg1wxNTz6veFkK7i9Dff$n4ynwgakdtfCJJbZPRrP1qu8LbdTB2nm4NINIagJy4M=",
     "last_login": "2023-09-06T12:08:44.765Z",
     "is_superuser": false,
-    "username": "meta",
     "first_name": "",
     "last_name": "meta",
     "is_staff": false,
     "is_active": true,
     "date_joined": "2023-09-06T12:08:44.439Z",
-    "name": "meta",
+    "username": "meta",
     "ploeg": null,
     "locker": null,
     "email": "meta_rijks@hotmail.com",
+    "avatar": "avatar.svg",
+    "groups": [],
+    "user_permissions": []
+  }
+},
+{
+  "model": "base.user",
+  "pk": 252,
+  "fields": {
+    "password": "pbkdf2_sha256$390000$wTmybPFSebKVkmNDxNkgxr$cymXXCbJOFjcIcRwbmnoG/HKynx/8ku5dFPQ6p8fZAU=",
+    "last_login": "2023-09-07T22:59:59.465Z",
+    "is_superuser": false,
+    "first_name": "",
+    "last_name": "stein",
+    "is_staff": false,
+    "is_active": true,
+    "date_joined": "2023-09-07T22:59:06.692Z",
+    "username": "stein",
+    "ploeg": null,
+    "locker": "Dames C65",
+    "email": "mhrijks@planet.nl",
+    "avatar": "avatar.svg",
+    "groups": [],
+    "user_permissions": []
+  }
+},
+{
+  "model": "base.user",
+  "pk": 256,
+  "fields": {
+    "password": "pbkdf2_sha256$390000$MbAy3r2ahV6QE6xFilyWG5$Hkuz0s9MNtjJ066lD0v9N2tnUv2ZuZLALt2rIL1QSAQ=",
+    "last_login": null,
+    "is_superuser": false,
+    "first_name": "Bart Hofenk",
+    "last_name": "Bart Hofenk",
+    "is_staff": false,
+    "is_active": true,
+    "date_joined": "2023-09-09T07:34:52.664Z",
+    "username": "BartHofenk",
+    "ploeg": null,
+    "locker": null,
+    "email": "bart.hofenk@gmail.com",
+    "avatar": "avatar.svg",
+    "groups": [],
+    "user_permissions": []
+  }
+},
+{
+  "model": "base.user",
+  "pk": 257,
+  "fields": {
+    "password": "pbkdf2_sha256$390000$MbAy3r2ahV6QE6xFilyWG5$Hkuz0s9MNtjJ066lD0v9N2tnUv2ZuZLALt2rIL1QSAQ=",
+    "last_login": null,
+    "is_superuser": false,
+    "first_name": "Cees van der Velde",
+    "last_name": "Cees van der Velde",
+    "is_staff": false,
+    "is_active": true,
+    "date_joined": "2023-09-09T07:55:38.509Z",
+    "username": "CeesvanderVelde",
+    "ploeg": null,
+    "locker": null,
+    "email": "ceesvelde@gmail.com",
+    "avatar": "avatar.svg",
+    "groups": [],
+    "user_permissions": []
+  }
+},
+{
+  "model": "base.user",
+  "pk": 258,
+  "fields": {
+    "password": "pbkdf2_sha256$390000$MbAy3r2ahV6QE6xFilyWG5$Hkuz0s9MNtjJ066lD0v9N2tnUv2ZuZLALt2rIL1QSAQ=",
+    "last_login": null,
+    "is_superuser": false,
+    "first_name": "Anne-Fleur Janssen",
+    "last_name": "Anne-Fleur Janssen",
+    "is_staff": false,
+    "is_active": true,
+    "date_joined": "2023-09-10T08:32:03.329Z",
+    "username": "Anne-FleurJanssen",
+    "ploeg": null,
+    "locker": null,
+    "email": "Anne-FleurJanssen@mantis.nl",
+    "avatar": "avatar.svg",
+    "groups": [],
+    "user_permissions": []
+  }
+},
+{
+  "model": "base.user",
+  "pk": 259,
+  "fields": {
+    "password": "pbkdf2_sha256$390000$MbAy3r2ahV6QE6xFilyWG5$Hkuz0s9MNtjJ066lD0v9N2tnUv2ZuZLALt2rIL1QSAQ=",
+    "last_login": "2023-09-10T13:46:22.325Z",
+    "is_superuser": false,
+    "first_name": "Floor",
+    "last_name": "Floor",
+    "is_staff": false,
+    "is_active": true,
+    "date_joined": "2023-09-10T08:38:25Z",
+    "username": "Floor",
+    "ploeg": "Viking",
+    "locker": "Dames A46",
+    "email": "f.w.vandendolder@gmail.com",
+    "avatar": "avatar.svg",
+    "groups": [],
+    "user_permissions": []
+  }
+},
+{
+  "model": "base.user",
+  "pk": 260,
+  "fields": {
+    "password": "pbkdf2_sha256$390000$MbAy3r2ahV6QE6xFilyWG5$Hkuz0s9MNtjJ066lD0v9N2tnUv2ZuZLALt2rIL1QSAQ=",
+    "last_login": null,
+    "is_superuser": false,
+    "first_name": "Aranka Windmeijer",
+    "last_name": "Aranka Windmeijer",
+    "is_staff": false,
+    "is_active": true,
+    "date_joined": "2023-09-10T08:40:44.827Z",
+    "username": "ArankaWindmeijer",
+    "ploeg": null,
+    "locker": null,
+    "email": "ArankaWindmeijer@mantis.nl",
+    "avatar": "avatar.svg",
+    "groups": [],
+    "user_permissions": []
+  }
+},
+{
+  "model": "base.user",
+  "pk": 261,
+  "fields": {
+    "password": "pbkdf2_sha256$390000$MbAy3r2ahV6QE6xFilyWG5$Hkuz0s9MNtjJ066lD0v9N2tnUv2ZuZLALt2rIL1QSAQ=",
+    "last_login": null,
+    "is_superuser": false,
+    "first_name": "Eefje van der Kaaden",
+    "last_name": "Eefje van der Kaaden",
+    "is_staff": false,
+    "is_active": true,
+    "date_joined": "2023-09-10T08:40:51.822Z",
+    "username": "EefjevanderKaaden",
+    "ploeg": null,
+    "locker": null,
+    "email": "EefjevanderKaaden@mantis.nl",
+    "avatar": "avatar.svg",
+    "groups": [],
+    "user_permissions": []
+  }
+},
+{
+  "model": "base.user",
+  "pk": 262,
+  "fields": {
+    "password": "pbkdf2_sha256$390000$MbAy3r2ahV6QE6xFilyWG5$Hkuz0s9MNtjJ066lD0v9N2tnUv2ZuZLALt2rIL1QSAQ=",
+    "last_login": null,
+    "is_superuser": false,
+    "first_name": "Eva Schuttert",
+    "last_name": "Eva Schuttert",
+    "is_staff": false,
+    "is_active": true,
+    "date_joined": "2023-09-10T08:41:00.571Z",
+    "username": "EvaSchuttert",
+    "ploeg": null,
+    "locker": null,
+    "email": "EvaSchuttert@mantis.nl",
+    "avatar": "avatar.svg",
+    "groups": [],
+    "user_permissions": []
+  }
+},
+{
+  "model": "base.user",
+  "pk": 263,
+  "fields": {
+    "password": "pbkdf2_sha256$390000$MbAy3r2ahV6QE6xFilyWG5$Hkuz0s9MNtjJ066lD0v9N2tnUv2ZuZLALt2rIL1QSAQ=",
+    "last_login": null,
+    "is_superuser": false,
+    "first_name": "Eveline Liefkens",
+    "last_name": "Eveline Liefkens",
+    "is_staff": false,
+    "is_active": true,
+    "date_joined": "2023-09-10T08:41:08.772Z",
+    "username": "EvelineLiefkens",
+    "ploeg": null,
+    "locker": null,
+    "email": "EvelineLiefkens@mantis.nl",
+    "avatar": "avatar.svg",
+    "groups": [],
+    "user_permissions": []
+  }
+},
+{
+  "model": "base.user",
+  "pk": 264,
+  "fields": {
+    "password": "pbkdf2_sha256$390000$MbAy3r2ahV6QE6xFilyWG5$Hkuz0s9MNtjJ066lD0v9N2tnUv2ZuZLALt2rIL1QSAQ=",
+    "last_login": null,
+    "is_superuser": false,
+    "first_name": "Evi Nijho",
+    "last_name": "Evi Nijho",
+    "is_staff": false,
+    "is_active": true,
+    "date_joined": "2023-09-10T08:41:16.050Z",
+    "username": "EviNijho",
+    "ploeg": null,
+    "locker": null,
+    "email": "EviNijhof@mantis.nl",
+    "avatar": "avatar.svg",
+    "groups": [],
+    "user_permissions": []
+  }
+},
+{
+  "model": "base.user",
+  "pk": 265,
+  "fields": {
+    "password": "pbkdf2_sha256$390000$MbAy3r2ahV6QE6xFilyWG5$Hkuz0s9MNtjJ066lD0v9N2tnUv2ZuZLALt2rIL1QSAQ=",
+    "last_login": null,
+    "is_superuser": false,
+    "first_name": "Iris Stofberg",
+    "last_name": "Iris Stofberg",
+    "is_staff": false,
+    "is_active": true,
+    "date_joined": "2023-09-10T08:41:25.771Z",
+    "username": "IrisStofberg",
+    "ploeg": null,
+    "locker": null,
+    "email": "Iristofberg@mantis.nl",
+    "avatar": "avatar.svg",
+    "groups": [],
+    "user_permissions": []
+  }
+},
+{
+  "model": "base.user",
+  "pk": 266,
+  "fields": {
+    "password": "pbkdf2_sha256$390000$MbAy3r2ahV6QE6xFilyWG5$Hkuz0s9MNtjJ066lD0v9N2tnUv2ZuZLALt2rIL1QSAQ=",
+    "last_login": null,
+    "is_superuser": false,
+    "first_name": "Janna Bosma",
+    "last_name": "Janna Bosma",
+    "is_staff": false,
+    "is_active": true,
+    "date_joined": "2023-09-10T08:41:33.192Z",
+    "username": "JannaBosma",
+    "ploeg": null,
+    "locker": null,
+    "email": "JannaBosma@mantis.bl",
+    "avatar": "avatar.svg",
+    "groups": [],
+    "user_permissions": []
+  }
+},
+{
+  "model": "base.user",
+  "pk": 267,
+  "fields": {
+    "password": "pbkdf2_sha256$390000$MbAy3r2ahV6QE6xFilyWG5$Hkuz0s9MNtjJ066lD0v9N2tnUv2ZuZLALt2rIL1QSAQ=",
+    "last_login": null,
+    "is_superuser": false,
+    "first_name": "Merel Huisman",
+    "last_name": "Merel Huisman",
+    "is_staff": false,
+    "is_active": true,
+    "date_joined": "2023-09-10T08:41:40.284Z",
+    "username": "MerelHuisman",
+    "ploeg": null,
+    "locker": null,
+    "email": "MerelHuisman@mantis.nl",
+    "avatar": "avatar.svg",
+    "groups": [],
+    "user_permissions": []
+  }
+},
+{
+  "model": "base.user",
+  "pk": 268,
+  "fields": {
+    "password": "pbkdf2_sha256$390000$MbAy3r2ahV6QE6xFilyWG5$Hkuz0s9MNtjJ066lD0v9N2tnUv2ZuZLALt2rIL1QSAQ=",
+    "last_login": null,
+    "is_superuser": false,
+    "first_name": "Mina Boogaard",
+    "last_name": "Mina Boogaard",
+    "is_staff": false,
+    "is_active": true,
+    "date_joined": "2023-09-10T08:41:46.853Z",
+    "username": "MinaBoogaard",
+    "ploeg": null,
+    "locker": null,
+    "email": "MinaBoogaard@mantis.nl",
+    "avatar": "avatar.svg",
+    "groups": [],
+    "user_permissions": []
+  }
+},
+{
+  "model": "base.user",
+  "pk": 269,
+  "fields": {
+    "password": "pbkdf2_sha256$390000$MbAy3r2ahV6QE6xFilyWG5$Hkuz0s9MNtjJ066lD0v9N2tnUv2ZuZLALt2rIL1QSAQ=",
+    "last_login": null,
+    "is_superuser": false,
+    "first_name": "Natalie Groothuis",
+    "last_name": "Natalie Groothuis",
+    "is_staff": false,
+    "is_active": true,
+    "date_joined": "2023-09-10T08:41:57.507Z",
+    "username": "NatalieGroothuis",
+    "ploeg": null,
+    "locker": null,
+    "email": "NatalieGroothuis@mantis.nl",
+    "avatar": "avatar.svg",
+    "groups": [],
+    "user_permissions": []
+  }
+},
+{
+  "model": "base.user",
+  "pk": 270,
+  "fields": {
+    "password": "pbkdf2_sha256$390000$MbAy3r2ahV6QE6xFilyWG5$Hkuz0s9MNtjJ066lD0v9N2tnUv2ZuZLALt2rIL1QSAQ=",
+    "last_login": null,
+    "is_superuser": false,
+    "first_name": "Vera Heijnert",
+    "last_name": "Vera Heijnert",
+    "is_staff": false,
+    "is_active": true,
+    "date_joined": "2023-09-10T08:42:09.149Z",
+    "username": "VeraHeijnert",
+    "ploeg": null,
+    "locker": null,
+    "email": "VeraHeijnert@mantis.nl",
+    "avatar": "avatar.svg",
+    "groups": [],
+    "user_permissions": []
+  }
+},
+{
+  "model": "base.user",
+  "pk": 271,
+  "fields": {
+    "password": "pbkdf2_sha256$390000$MbAy3r2ahV6QE6xFilyWG5$Hkuz0s9MNtjJ066lD0v9N2tnUv2ZuZLALt2rIL1QSAQ=",
+    "last_login": null,
+    "is_superuser": false,
+    "first_name": "Anne-Lynn Paalvast",
+    "last_name": "Anne-Lynn Paalvast",
+    "is_staff": false,
+    "is_active": true,
+    "date_joined": "2023-09-10T08:51:55.751Z",
+    "username": "Anne-LynnPaalvast",
+    "ploeg": null,
+    "locker": null,
+    "email": "AnneLynnPaalvast@mantis.nl",
+    "avatar": "avatar.svg",
+    "groups": [],
+    "user_permissions": []
+  }
+},
+{
+  "model": "base.user",
+  "pk": 272,
+  "fields": {
+    "password": "pbkdf2_sha256$390000$IVVma39kKJc5IxbNDnsQ0h$aF7OUqDdx9WV/uF8/HBqmgEBObEBru7mh9oBk8HuIlE=",
+    "last_login": "2023-09-11T20:27:35.823Z",
+    "is_superuser": false,
+    "first_name": "",
+    "last_name": "vera van de donk",
+    "is_staff": false,
+    "is_active": true,
+    "date_joined": "2023-09-11T06:39:57.346Z",
+    "username": "vera van de donk",
+    "ploeg": null,
+    "locker": "Dames 30",
+    "email": "veravandedonk@hotmail.com",
+    "avatar": "avatar.svg",
+    "groups": [],
+    "user_permissions": []
+  }
+},
+{
+  "model": "base.user",
+  "pk": 273,
+  "fields": {
+    "password": "",
+    "last_login": null,
+    "is_superuser": false,
+    "first_name": "",
+    "last_name": "",
+    "is_staff": false,
+    "is_active": true,
+    "date_joined": "2023-09-11T13:32:25.888Z",
+    "username": "",
+    "ploeg": null,
+    "locker": null,
+    "email": "wej.bakker@mantisbv.nll",
+    "avatar": "avatar.svg",
+    "groups": [],
+    "user_permissions": []
+  }
+},
+{
+  "model": "base.user",
+  "pk": 276,
+  "fields": {
+    "password": "",
+    "last_login": null,
+    "is_superuser": false,
+    "first_name": "",
+    "last_name": "",
+    "is_staff": false,
+    "is_active": true,
+    "date_joined": "2023-09-11T19:23:56.640Z",
+    "username": "wytze",
+    "ploeg": null,
+    "locker": null,
+    "email": "wytzezweep@gmail.com",
+    "avatar": "avatar.svg",
+    "groups": [],
+    "user_permissions": []
+  }
+},
+{
+  "model": "base.user",
+  "pk": 277,
+  "fields": {
+    "password": "pbkdf2_sha256$390000$ozUdx3mxJto40WfTXqK8af$JJaSm6g99DuZXYhFqQ/PxHDm7haDzufm2TOyymbaSYI=",
+    "last_login": "2023-09-11T20:12:14.243Z",
+    "is_superuser": false,
+    "first_name": "",
+    "last_name": "marike",
+    "is_staff": false,
+    "is_active": true,
+    "date_joined": "2023-09-11T20:12:13.957Z",
+    "username": "marike",
+    "ploeg": null,
+    "locker": null,
+    "email": "marikevandegraaff@gmail.com",
     "avatar": "avatar.svg",
     "groups": [],
     "user_permissions": []
@@ -7154,18 +7738,6 @@
   "pk": 1,
   "fields": {
     "name": "Lockers"
-  }
-},
-{
-  "model": "base.person",
-  "pk": 1,
-  "fields": {
-    "name": "Bart Hofenk",
-    "onderhuur": true,
-    "wachtlijst": false,
-    "hoofdhuurder": false,
-    "locker": "H47",
-    "email": "bart.hofenk@gmail.com"
   }
 },
 {
@@ -7194,14 +7766,194 @@
 },
 {
   "model": "base.person",
-  "pk": 5,
+  "pk": 10,
   "fields": {
-    "name": "Cees van der Velde",
+    "name": "Floor",
     "onderhuur": false,
     "wachtlijst": false,
+    "hoofdhuurder": true,
+    "locker": null,
+    "email": "f.w.vandendolder@gmail.com"
+  }
+},
+{
+  "model": "base.person",
+  "pk": 11,
+  "fields": {
+    "name": "Anne-Fleur Janssen",
+    "onderhuur": true,
+    "wachtlijst": false,
     "hoofdhuurder": false,
-    "locker": "H47",
-    "email": "ceesvelde@gmail.com"
+    "locker": null,
+    "email": "Anne-FleurJanssen@mantis.nl"
+  }
+},
+{
+  "model": "base.person",
+  "pk": 12,
+  "fields": {
+    "name": "Aranka Windmeijer",
+    "onderhuur": true,
+    "wachtlijst": false,
+    "hoofdhuurder": false,
+    "locker": null,
+    "email": "ArankaWindmeijer@mantis.nl"
+  }
+},
+{
+  "model": "base.person",
+  "pk": 13,
+  "fields": {
+    "name": "Eefje van der Kaaden",
+    "onderhuur": true,
+    "wachtlijst": false,
+    "hoofdhuurder": false,
+    "locker": null,
+    "email": "EefjevanderKaaden@mantis.nl"
+  }
+},
+{
+  "model": "base.person",
+  "pk": 14,
+  "fields": {
+    "name": "Eva Schuttert",
+    "onderhuur": true,
+    "wachtlijst": false,
+    "hoofdhuurder": false,
+    "locker": null,
+    "email": "EvaSchuttert@mantis.nl"
+  }
+},
+{
+  "model": "base.person",
+  "pk": 15,
+  "fields": {
+    "name": "Eveline Liefkens",
+    "onderhuur": true,
+    "wachtlijst": false,
+    "hoofdhuurder": false,
+    "locker": null,
+    "email": "EvelineLiefkens@mantis.nl"
+  }
+},
+{
+  "model": "base.person",
+  "pk": 16,
+  "fields": {
+    "name": "Evi Nijho",
+    "onderhuur": true,
+    "wachtlijst": false,
+    "hoofdhuurder": false,
+    "locker": null,
+    "email": "EviNijhof@mantis.nl"
+  }
+},
+{
+  "model": "base.person",
+  "pk": 17,
+  "fields": {
+    "name": "Iris Stofberg",
+    "onderhuur": true,
+    "wachtlijst": false,
+    "hoofdhuurder": false,
+    "locker": null,
+    "email": "Iristofberg@mantis.nl"
+  }
+},
+{
+  "model": "base.person",
+  "pk": 18,
+  "fields": {
+    "name": "Janna Bosma",
+    "onderhuur": true,
+    "wachtlijst": false,
+    "hoofdhuurder": false,
+    "locker": null,
+    "email": "JannaBosma@mantis.bl"
+  }
+},
+{
+  "model": "base.person",
+  "pk": 19,
+  "fields": {
+    "name": "Merel Huisman",
+    "onderhuur": true,
+    "wachtlijst": false,
+    "hoofdhuurder": false,
+    "locker": null,
+    "email": "MerelHuisman@mantis.nl"
+  }
+},
+{
+  "model": "base.person",
+  "pk": 20,
+  "fields": {
+    "name": "Mina Boogaard",
+    "onderhuur": true,
+    "wachtlijst": false,
+    "hoofdhuurder": false,
+    "locker": null,
+    "email": "MinaBoogaard@mantis.nl"
+  }
+},
+{
+  "model": "base.person",
+  "pk": 21,
+  "fields": {
+    "name": "Natalie Groothuis",
+    "onderhuur": true,
+    "wachtlijst": false,
+    "hoofdhuurder": false,
+    "locker": null,
+    "email": "NatalieGroothuis@mantis.nl"
+  }
+},
+{
+  "model": "base.person",
+  "pk": 22,
+  "fields": {
+    "name": "Vera Heijnert",
+    "onderhuur": true,
+    "wachtlijst": false,
+    "hoofdhuurder": false,
+    "locker": null,
+    "email": "VeraHeijnert@mantis.nl"
+  }
+},
+{
+  "model": "base.person",
+  "pk": 23,
+  "fields": {
+    "name": "Anne-Lynn Paalvast",
+    "onderhuur": true,
+    "wachtlijst": false,
+    "hoofdhuurder": false,
+    "locker": null,
+    "email": "AnneLynnPaalvast@mantis.nl"
+  }
+},
+{
+  "model": "base.person",
+  "pk": 24,
+  "fields": {
+    "name": "Meta",
+    "onderhuur": false,
+    "wachtlijst": false,
+    "hoofdhuurder": true,
+    "locker": null,
+    "email": "mhrijks@planet.nl"
+  }
+},
+{
+  "model": "base.person",
+  "pk": 25,
+  "fields": {
+    "name": "vera van de donk",
+    "onderhuur": false,
+    "wachtlijst": false,
+    "hoofdhuurder": true,
+    "locker": "Dames 30",
+    "email": "veravandedonk@hotmail.com"
   }
 },
 {
@@ -7287,1149 +8039,6 @@
     "updated": "2023-05-13T09:03:57.894Z",
     "created": "2023-05-13T09:03:57.894Z",
     "participants": []
-  }
-},
-{
-  "model": "base.matriks",
-  "pk": 541,
-  "fields": {
-    "naam": "DDames",
-    "ronde": "",
-    "kop": "D01D02D03D04D05D06D07D08",
-    "regel": "D01D02D03D04D05D06D07D08",
-    "x_as": 2,
-    "y_as": 1,
-    "kol1": "D01",
-    "kol2": "D02",
-    "kol3": "D03",
-    "kol4": "D04",
-    "kol5": "D05",
-    "kol6": "D06",
-    "kol7": "D07",
-    "kol8": "D08",
-    "kol9": "",
-    "kol10": "",
-    "kol11": "",
-    "kol12": "",
-    "kol13": ""
-  }
-},
-{
-  "model": "base.matriks",
-  "pk": 542,
-  "fields": {
-    "naam": "DDames",
-    "ronde": "",
-    "kop": "D09D10D11D12D13D14D15D16",
-    "regel": "D09D10D11D12D13D14D15D16",
-    "x_as": 2,
-    "y_as": 2,
-    "kol1": "D09",
-    "kol2": "D10",
-    "kol3": "D11",
-    "kol4": "D12",
-    "kol5": "D13",
-    "kol6": "D14",
-    "kol7": "D15",
-    "kol8": "D16",
-    "kol9": "",
-    "kol10": "",
-    "kol11": "",
-    "kol12": "",
-    "kol13": ""
-  }
-},
-{
-  "model": "base.matriks",
-  "pk": 543,
-  "fields": {
-    "naam": "DDames",
-    "ronde": "",
-    "kop": "D17D18D19D20D21D22D23D24",
-    "regel": "D17D18D19D20D21D22D23D24",
-    "x_as": 2,
-    "y_as": 3,
-    "kol1": "D17",
-    "kol2": "D18",
-    "kol3": "D19",
-    "kol4": "D20",
-    "kol5": "D21",
-    "kol6": "D22",
-    "kol7": "D23",
-    "kol8": "D24",
-    "kol9": "",
-    "kol10": "",
-    "kol11": "",
-    "kol12": "",
-    "kol13": ""
-  }
-},
-{
-  "model": "base.matriks",
-  "pk": 544,
-  "fields": {
-    "naam": "DDames",
-    "ronde": "",
-    "kop": "D25D26D27D28D29D30D31D32",
-    "regel": "D25D26D27D28D29D30D31D32",
-    "x_as": 2,
-    "y_as": 4,
-    "kol1": "D25",
-    "kol2": "D26",
-    "kol3": "D27",
-    "kol4": "D28",
-    "kol5": "D29",
-    "kol6": "D30",
-    "kol7": "D31",
-    "kol8": "D32",
-    "kol9": "",
-    "kol10": "",
-    "kol11": "",
-    "kol12": "",
-    "kol13": ""
-  }
-},
-{
-  "model": "base.matriks",
-  "pk": 545,
-  "fields": {
-    "naam": "DDames",
-    "ronde": "",
-    "kop": "D33D34D35D36D37D38D39D40",
-    "regel": "D33D34D35D36D37D38D39D40",
-    "x_as": 2,
-    "y_as": 5,
-    "kol1": "D33",
-    "kol2": "D34",
-    "kol3": "D35",
-    "kol4": "D36",
-    "kol5": "D37",
-    "kol6": "D38",
-    "kol7": "D39",
-    "kol8": "D40",
-    "kol9": "",
-    "kol10": "",
-    "kol11": "",
-    "kol12": "",
-    "kol13": ""
-  }
-},
-{
-  "model": "base.matriks",
-  "pk": 546,
-  "fields": {
-    "naam": "DDames",
-    "ronde": "",
-    "kop": "D41D42D43D44D45D46D47D48",
-    "regel": "D41D42D43D44D45D46D47D48",
-    "x_as": 2,
-    "y_as": 6,
-    "kol1": "D41",
-    "kol2": "D42",
-    "kol3": "D43",
-    "kol4": "D44",
-    "kol5": "D45",
-    "kol6": "D46",
-    "kol7": "D47",
-    "kol8": "D48",
-    "kol9": "",
-    "kol10": "",
-    "kol11": "",
-    "kol12": "",
-    "kol13": ""
-  }
-},
-{
-  "model": "base.matriks",
-  "pk": 547,
-  "fields": {
-    "naam": "DDames",
-    "ronde": "",
-    "kop": "D49D50D51D52D53D54D55D56",
-    "regel": "D49D50D51D52D53D54D55D56",
-    "x_as": 2,
-    "y_as": 7,
-    "kol1": "D49",
-    "kol2": "D50",
-    "kol3": "D51",
-    "kol4": "D52",
-    "kol5": "D53",
-    "kol6": "D54",
-    "kol7": "D55",
-    "kol8": "D56",
-    "kol9": "",
-    "kol10": "",
-    "kol11": "",
-    "kol12": "",
-    "kol13": ""
-  }
-},
-{
-  "model": "base.matriks",
-  "pk": 548,
-  "fields": {
-    "naam": "DDames",
-    "ronde": "",
-    "kop": "D57D58D59D60D61D62D63D64",
-    "regel": "D57D58D59D60D61D62D63D64",
-    "x_as": 2,
-    "y_as": 8,
-    "kol1": "D57",
-    "kol2": "D58",
-    "kol3": "D59",
-    "kol4": "D60",
-    "kol5": "D61",
-    "kol6": "D62",
-    "kol7": "D63",
-    "kol8": "D64",
-    "kol9": "",
-    "kol10": "",
-    "kol11": "",
-    "kol12": "",
-    "kol13": ""
-  }
-},
-{
-  "model": "base.matriks",
-  "pk": 549,
-  "fields": {
-    "naam": "DDames",
-    "ronde": "",
-    "kop": "D65D66D67D68D69D70D71D72",
-    "regel": "D65D66D67D68D69D70D71D72",
-    "x_as": 2,
-    "y_as": 9,
-    "kol1": "D65",
-    "kol2": "D66",
-    "kol3": "D67",
-    "kol4": "D68",
-    "kol5": "D69",
-    "kol6": "D70",
-    "kol7": "D71",
-    "kol8": "D72",
-    "kol9": "",
-    "kol10": "",
-    "kol11": "",
-    "kol12": "",
-    "kol13": ""
-  }
-},
-{
-  "model": "base.matriks",
-  "pk": 550,
-  "fields": {
-    "naam": "CDames",
-    "ronde": "",
-    "kop": "C01C02C03C04C05C06C07C08",
-    "regel": "C01C02C03C04C05C06C07C08",
-    "x_as": 2,
-    "y_as": 1,
-    "kol1": "C01",
-    "kol2": "C02",
-    "kol3": "C03",
-    "kol4": "C04",
-    "kol5": "C05",
-    "kol6": "C06",
-    "kol7": "C07",
-    "kol8": "C08",
-    "kol9": "",
-    "kol10": "",
-    "kol11": "",
-    "kol12": "",
-    "kol13": ""
-  }
-},
-{
-  "model": "base.matriks",
-  "pk": 551,
-  "fields": {
-    "naam": "CDames",
-    "ronde": "",
-    "kop": "C09C10C11C12C13C14C15C16",
-    "regel": "C09C10C11C12C13C14C15C16",
-    "x_as": 2,
-    "y_as": 2,
-    "kol1": "C09",
-    "kol2": "C10",
-    "kol3": "C11",
-    "kol4": "C12",
-    "kol5": "C13",
-    "kol6": "C14",
-    "kol7": "C15",
-    "kol8": "C16",
-    "kol9": "",
-    "kol10": "",
-    "kol11": "",
-    "kol12": "",
-    "kol13": ""
-  }
-},
-{
-  "model": "base.matriks",
-  "pk": 552,
-  "fields": {
-    "naam": "CDames",
-    "ronde": "",
-    "kop": "C17C18C19C20C21C22C23C24",
-    "regel": "C17C18C19C20C21C22C23C24",
-    "x_as": 2,
-    "y_as": 3,
-    "kol1": "C17",
-    "kol2": "C18",
-    "kol3": "C19",
-    "kol4": "C20",
-    "kol5": "C21",
-    "kol6": "C22",
-    "kol7": "C23",
-    "kol8": "C24",
-    "kol9": "",
-    "kol10": "",
-    "kol11": "",
-    "kol12": "",
-    "kol13": ""
-  }
-},
-{
-  "model": "base.matriks",
-  "pk": 553,
-  "fields": {
-    "naam": "CDames",
-    "ronde": "",
-    "kop": "C25C26C27C28C29C30C31C32",
-    "regel": "C25C26C27C28C29C30C31C32",
-    "x_as": 2,
-    "y_as": 4,
-    "kol1": "C25",
-    "kol2": "C26",
-    "kol3": "C27",
-    "kol4": "C28",
-    "kol5": "C29",
-    "kol6": "C30",
-    "kol7": "C31",
-    "kol8": "C32",
-    "kol9": "",
-    "kol10": "",
-    "kol11": "",
-    "kol12": "",
-    "kol13": ""
-  }
-},
-{
-  "model": "base.matriks",
-  "pk": 554,
-  "fields": {
-    "naam": "CDames",
-    "ronde": "",
-    "kop": "C33C34C35C36C37C38C39C40",
-    "regel": "C33C34C35C36C37C38C39C40",
-    "x_as": 2,
-    "y_as": 5,
-    "kol1": "C33",
-    "kol2": "C34",
-    "kol3": "C35",
-    "kol4": "C36",
-    "kol5": "C37",
-    "kol6": "C38",
-    "kol7": "C39",
-    "kol8": "C40",
-    "kol9": "",
-    "kol10": "",
-    "kol11": "",
-    "kol12": "",
-    "kol13": ""
-  }
-},
-{
-  "model": "base.matriks",
-  "pk": 555,
-  "fields": {
-    "naam": "CDames",
-    "ronde": "",
-    "kop": "C41C42C43C44C45C46C47C48",
-    "regel": "C41C42C43C44C45C46C47C48",
-    "x_as": 2,
-    "y_as": 6,
-    "kol1": "C41",
-    "kol2": "C42",
-    "kol3": "C43",
-    "kol4": "C44",
-    "kol5": "C45",
-    "kol6": "C46",
-    "kol7": "C47",
-    "kol8": "C48",
-    "kol9": "",
-    "kol10": "",
-    "kol11": "",
-    "kol12": "",
-    "kol13": ""
-  }
-},
-{
-  "model": "base.matriks",
-  "pk": 556,
-  "fields": {
-    "naam": "CDames",
-    "ronde": "",
-    "kop": "C49C50C51C52C53C54C55C56",
-    "regel": "C49C50C51C52C53C54C55C56",
-    "x_as": 2,
-    "y_as": 7,
-    "kol1": "C49",
-    "kol2": "C50",
-    "kol3": "C51",
-    "kol4": "C52",
-    "kol5": "C53",
-    "kol6": "C54",
-    "kol7": "C55",
-    "kol8": "C56",
-    "kol9": "",
-    "kol10": "",
-    "kol11": "",
-    "kol12": "",
-    "kol13": ""
-  }
-},
-{
-  "model": "base.matriks",
-  "pk": 557,
-  "fields": {
-    "naam": "CDames",
-    "ronde": "",
-    "kop": "C57C58C59C60C61C62C63C64",
-    "regel": "C57C58C59C60C61C62C63C64",
-    "x_as": 2,
-    "y_as": 8,
-    "kol1": "C57",
-    "kol2": "C58",
-    "kol3": "C59",
-    "kol4": "C60",
-    "kol5": "C61",
-    "kol6": "C62",
-    "kol7": "C63",
-    "kol8": "C64",
-    "kol9": "",
-    "kol10": "",
-    "kol11": "",
-    "kol12": "",
-    "kol13": ""
-  }
-},
-{
-  "model": "base.matriks",
-  "pk": 558,
-  "fields": {
-    "naam": "CDames",
-    "ronde": "",
-    "kop": "C65C66C67C68C69C70C71C72",
-    "regel": "C65C66C67C68C69C70C71C72",
-    "x_as": 2,
-    "y_as": 9,
-    "kol1": "C65",
-    "kol2": "C66",
-    "kol3": "C67",
-    "kol4": "C68",
-    "kol5": "C69",
-    "kol6": "C70",
-    "kol7": "C71",
-    "kol8": "C72",
-    "kol9": "",
-    "kol10": "",
-    "kol11": "",
-    "kol12": "",
-    "kol13": ""
-  }
-},
-{
-  "model": "base.matriks",
-  "pk": 559,
-  "fields": {
-    "naam": "BDames",
-    "ronde": "",
-    "kop": "B01B02B03B04B05B06B07B08",
-    "regel": "B01B02B03B04B05B06B07B08",
-    "x_as": 2,
-    "y_as": 1,
-    "kol1": "B01",
-    "kol2": "B02",
-    "kol3": "B03",
-    "kol4": "B04",
-    "kol5": "B05",
-    "kol6": "B06",
-    "kol7": "B07",
-    "kol8": "B08",
-    "kol9": "",
-    "kol10": "",
-    "kol11": "",
-    "kol12": "",
-    "kol13": ""
-  }
-},
-{
-  "model": "base.matriks",
-  "pk": 560,
-  "fields": {
-    "naam": "BDames",
-    "ronde": "",
-    "kop": "B09B10B11B12B13B14B15B16",
-    "regel": "B09B10B11B12B13B14B15B16",
-    "x_as": 2,
-    "y_as": 2,
-    "kol1": "B09",
-    "kol2": "B10",
-    "kol3": "B11",
-    "kol4": "B12",
-    "kol5": "B13",
-    "kol6": "B14",
-    "kol7": "B15",
-    "kol8": "B16",
-    "kol9": "",
-    "kol10": "",
-    "kol11": "",
-    "kol12": "",
-    "kol13": ""
-  }
-},
-{
-  "model": "base.matriks",
-  "pk": 561,
-  "fields": {
-    "naam": "BDames",
-    "ronde": "",
-    "kop": "B17B18B19B20B21B22B23B24",
-    "regel": "B17B18B19B20B21B22B23B24",
-    "x_as": 2,
-    "y_as": 3,
-    "kol1": "B17",
-    "kol2": "B18",
-    "kol3": "B19",
-    "kol4": "B20",
-    "kol5": "B21",
-    "kol6": "B22",
-    "kol7": "B23",
-    "kol8": "B24",
-    "kol9": "",
-    "kol10": "",
-    "kol11": "",
-    "kol12": "",
-    "kol13": ""
-  }
-},
-{
-  "model": "base.matriks",
-  "pk": 562,
-  "fields": {
-    "naam": "BDames",
-    "ronde": "",
-    "kop": "B25B26B27B28B29B30B31B32",
-    "regel": "B25B26B27B28B29B30B31B32",
-    "x_as": 2,
-    "y_as": 4,
-    "kol1": "B25",
-    "kol2": "B26",
-    "kol3": "B27",
-    "kol4": "B28",
-    "kol5": "B29",
-    "kol6": "B30",
-    "kol7": "B31",
-    "kol8": "B32",
-    "kol9": "",
-    "kol10": "",
-    "kol11": "",
-    "kol12": "",
-    "kol13": ""
-  }
-},
-{
-  "model": "base.matriks",
-  "pk": 563,
-  "fields": {
-    "naam": "BDames",
-    "ronde": "",
-    "kop": "B33B34B35B36B37B38B39B40",
-    "regel": "B33B34B35B36B37B38B39B40",
-    "x_as": 2,
-    "y_as": 5,
-    "kol1": "B33",
-    "kol2": "B34",
-    "kol3": "B35",
-    "kol4": "B36",
-    "kol5": "B37",
-    "kol6": "B38",
-    "kol7": "B39",
-    "kol8": "B40",
-    "kol9": "",
-    "kol10": "",
-    "kol11": "",
-    "kol12": "",
-    "kol13": ""
-  }
-},
-{
-  "model": "base.matriks",
-  "pk": 564,
-  "fields": {
-    "naam": "BDames",
-    "ronde": "",
-    "kop": "B41B42B43B44B45B46B47B48",
-    "regel": "B41B42B43B44B45B46B47B48",
-    "x_as": 2,
-    "y_as": 6,
-    "kol1": "B41",
-    "kol2": "B42",
-    "kol3": "B43",
-    "kol4": "B44",
-    "kol5": "B45",
-    "kol6": "B46",
-    "kol7": "B47",
-    "kol8": "B48",
-    "kol9": "",
-    "kol10": "",
-    "kol11": "",
-    "kol12": "",
-    "kol13": ""
-  }
-},
-{
-  "model": "base.matriks",
-  "pk": 565,
-  "fields": {
-    "naam": "BDames",
-    "ronde": "",
-    "kop": "B49B50B51B52B53B54B55B56",
-    "regel": "B49B50B51B52B53B54B55B56",
-    "x_as": 2,
-    "y_as": 7,
-    "kol1": "B49",
-    "kol2": "B50",
-    "kol3": "B51",
-    "kol4": "B52",
-    "kol5": "B53",
-    "kol6": "B54",
-    "kol7": "B55",
-    "kol8": "B56",
-    "kol9": "",
-    "kol10": "",
-    "kol11": "",
-    "kol12": "",
-    "kol13": ""
-  }
-},
-{
-  "model": "base.matriks",
-  "pk": 566,
-  "fields": {
-    "naam": "BDames",
-    "ronde": "",
-    "kop": "B57B58B59B60B61B62B63B64",
-    "regel": "B57B58B59B60B61B62B63B64",
-    "x_as": 2,
-    "y_as": 8,
-    "kol1": "B57",
-    "kol2": "B58",
-    "kol3": "B59",
-    "kol4": "B60",
-    "kol5": "B61",
-    "kol6": "B62",
-    "kol7": "B63",
-    "kol8": "B64",
-    "kol9": "",
-    "kol10": "",
-    "kol11": "",
-    "kol12": "",
-    "kol13": ""
-  }
-},
-{
-  "model": "base.matriks",
-  "pk": 567,
-  "fields": {
-    "naam": "BDames",
-    "ronde": "",
-    "kop": "B65B66B67B68B69B70B71B72",
-    "regel": "B65B66B67B68B69B70B71B72",
-    "x_as": 2,
-    "y_as": 9,
-    "kol1": "B65",
-    "kol2": "B66",
-    "kol3": "B67",
-    "kol4": "B68",
-    "kol5": "B69",
-    "kol6": "B70",
-    "kol7": "B71",
-    "kol8": "B72",
-    "kol9": "",
-    "kol10": "",
-    "kol11": "",
-    "kol12": "",
-    "kol13": ""
-  }
-},
-{
-  "model": "base.matriks",
-  "pk": 568,
-  "fields": {
-    "naam": "ADames",
-    "ronde": "",
-    "kop": "A01A02A03A04A05A06A07A08",
-    "regel": "A01A02A03A04A05A06A07A08",
-    "x_as": 2,
-    "y_as": 1,
-    "kol1": "A01",
-    "kol2": "A02",
-    "kol3": "A03",
-    "kol4": "A04",
-    "kol5": "A05",
-    "kol6": "A06",
-    "kol7": "A07",
-    "kol8": "A08",
-    "kol9": "",
-    "kol10": "",
-    "kol11": "",
-    "kol12": "",
-    "kol13": ""
-  }
-},
-{
-  "model": "base.matriks",
-  "pk": 569,
-  "fields": {
-    "naam": "ADames",
-    "ronde": "",
-    "kop": "A09A10A11A12A13A14A15A16",
-    "regel": "A09A10A11A12A13A14A15A16",
-    "x_as": 2,
-    "y_as": 2,
-    "kol1": "A09",
-    "kol2": "A10",
-    "kol3": "A11",
-    "kol4": "A12",
-    "kol5": "A13",
-    "kol6": "A14",
-    "kol7": "A15",
-    "kol8": "A16",
-    "kol9": "",
-    "kol10": "",
-    "kol11": "",
-    "kol12": "",
-    "kol13": ""
-  }
-},
-{
-  "model": "base.matriks",
-  "pk": 570,
-  "fields": {
-    "naam": "ADames",
-    "ronde": "",
-    "kop": "A17A18A19A20A21A22A23A24",
-    "regel": "A17A18A19A20A21A22A23A24",
-    "x_as": 2,
-    "y_as": 3,
-    "kol1": "A17",
-    "kol2": "A18",
-    "kol3": "A19",
-    "kol4": "A20",
-    "kol5": "A21",
-    "kol6": "A22",
-    "kol7": "A23",
-    "kol8": "A24",
-    "kol9": "",
-    "kol10": "",
-    "kol11": "",
-    "kol12": "",
-    "kol13": ""
-  }
-},
-{
-  "model": "base.matriks",
-  "pk": 571,
-  "fields": {
-    "naam": "ADames",
-    "ronde": "",
-    "kop": "A25A26A27A28A29A30A31A32",
-    "regel": "A25A26A27A28A29A30A31A32",
-    "x_as": 2,
-    "y_as": 4,
-    "kol1": "A25",
-    "kol2": "A26",
-    "kol3": "A27",
-    "kol4": "A28",
-    "kol5": "A29",
-    "kol6": "A30",
-    "kol7": "A31",
-    "kol8": "A32",
-    "kol9": "",
-    "kol10": "",
-    "kol11": "",
-    "kol12": "",
-    "kol13": ""
-  }
-},
-{
-  "model": "base.matriks",
-  "pk": 572,
-  "fields": {
-    "naam": "ADames",
-    "ronde": "",
-    "kop": "A33A34A35A36A37A38A39A40",
-    "regel": "A33A34A35A36A37A38A39A40",
-    "x_as": 2,
-    "y_as": 5,
-    "kol1": "A33",
-    "kol2": "A34",
-    "kol3": "A35",
-    "kol4": "A36",
-    "kol5": "A37",
-    "kol6": "A38",
-    "kol7": "A39",
-    "kol8": "A40",
-    "kol9": "",
-    "kol10": "",
-    "kol11": "",
-    "kol12": "",
-    "kol13": ""
-  }
-},
-{
-  "model": "base.matriks",
-  "pk": 573,
-  "fields": {
-    "naam": "ADames",
-    "ronde": "",
-    "kop": "A41A42A43A44A45A46A47A48",
-    "regel": "A41A42A43A44A45A46A47A48",
-    "x_as": 2,
-    "y_as": 6,
-    "kol1": "A41",
-    "kol2": "A42",
-    "kol3": "A43",
-    "kol4": "A44",
-    "kol5": "A45",
-    "kol6": "A46",
-    "kol7": "A47",
-    "kol8": "A48",
-    "kol9": "",
-    "kol10": "",
-    "kol11": "",
-    "kol12": "",
-    "kol13": ""
-  }
-},
-{
-  "model": "base.matriks",
-  "pk": 574,
-  "fields": {
-    "naam": "ADames",
-    "ronde": "",
-    "kop": "A49A50A51A52A53A54A55A56",
-    "regel": "A49A50A51A52A53A54A55A56",
-    "x_as": 2,
-    "y_as": 7,
-    "kol1": "A49",
-    "kol2": "A50",
-    "kol3": "A51",
-    "kol4": "A52",
-    "kol5": "A53",
-    "kol6": "A54",
-    "kol7": "A55",
-    "kol8": "A56",
-    "kol9": "",
-    "kol10": "",
-    "kol11": "",
-    "kol12": "",
-    "kol13": ""
-  }
-},
-{
-  "model": "base.matriks",
-  "pk": 575,
-  "fields": {
-    "naam": "ADames",
-    "ronde": "",
-    "kop": "A57A58A59A60A61A62A63A64",
-    "regel": "A57A58A59A60A61A62A63A64",
-    "x_as": 2,
-    "y_as": 8,
-    "kol1": "A57",
-    "kol2": "A58",
-    "kol3": "A59",
-    "kol4": "A60",
-    "kol5": "A61",
-    "kol6": "A62",
-    "kol7": "A63",
-    "kol8": "A64",
-    "kol9": "",
-    "kol10": "",
-    "kol11": "",
-    "kol12": "",
-    "kol13": ""
-  }
-},
-{
-  "model": "base.matriks",
-  "pk": 576,
-  "fields": {
-    "naam": "ADames",
-    "ronde": "",
-    "kop": "A65A66A67A68A69A70A71A72",
-    "regel": "A65A66A67A68A69A70A71A72",
-    "x_as": 2,
-    "y_as": 9,
-    "kol1": "A65",
-    "kol2": "A66",
-    "kol3": "A67",
-    "kol4": "A68",
-    "kol5": "A69",
-    "kol6": "A70",
-    "kol7": "A71",
-    "kol8": "A72",
-    "kol9": "",
-    "kol10": "",
-    "kol11": "",
-    "kol12": "",
-    "kol13": ""
-  }
-},
-{
-  "model": "base.matriks",
-  "pk": 577,
-  "fields": {
-    "naam": "Heren",
-    "ronde": "",
-    "kop": "H01H02H03H04H05H06H07H08",
-    "regel": "H01H02H03H04H05H06H07H08",
-    "x_as": 2,
-    "y_as": 1,
-    "kol1": "H01",
-    "kol2": "H02",
-    "kol3": "H03",
-    "kol4": "H04",
-    "kol5": "H05",
-    "kol6": "H06",
-    "kol7": "H07",
-    "kol8": "H08",
-    "kol9": "",
-    "kol10": "",
-    "kol11": "",
-    "kol12": "",
-    "kol13": ""
-  }
-},
-{
-  "model": "base.matriks",
-  "pk": 578,
-  "fields": {
-    "naam": "Heren",
-    "ronde": "",
-    "kop": "H09H10H11H12H13H14H15H16",
-    "regel": "H09H10H11H12H13H14H15H16",
-    "x_as": 2,
-    "y_as": 2,
-    "kol1": "H09",
-    "kol2": "H10",
-    "kol3": "H11",
-    "kol4": "H12",
-    "kol5": "H13",
-    "kol6": "H14",
-    "kol7": "H15",
-    "kol8": "H16",
-    "kol9": "",
-    "kol10": "",
-    "kol11": "",
-    "kol12": "",
-    "kol13": ""
-  }
-},
-{
-  "model": "base.matriks",
-  "pk": 579,
-  "fields": {
-    "naam": "Heren",
-    "ronde": "",
-    "kop": "H17H18H19H20H21H22H23H24",
-    "regel": "H17H18H19H20H21H22H23H24",
-    "x_as": 2,
-    "y_as": 3,
-    "kol1": "H17",
-    "kol2": "H18",
-    "kol3": "H19",
-    "kol4": "H20",
-    "kol5": "H21",
-    "kol6": "H22",
-    "kol7": "H23",
-    "kol8": "H24",
-    "kol9": "",
-    "kol10": "",
-    "kol11": "",
-    "kol12": "",
-    "kol13": ""
-  }
-},
-{
-  "model": "base.matriks",
-  "pk": 580,
-  "fields": {
-    "naam": "Heren",
-    "ronde": "",
-    "kop": "H25H26H27H28H29H30H31H32",
-    "regel": "H25H26H27H28H29H30H31H32",
-    "x_as": 2,
-    "y_as": 4,
-    "kol1": "H25",
-    "kol2": "H26",
-    "kol3": "H27",
-    "kol4": "H28",
-    "kol5": "H29",
-    "kol6": "H30",
-    "kol7": "H31",
-    "kol8": "H32",
-    "kol9": "",
-    "kol10": "",
-    "kol11": "",
-    "kol12": "",
-    "kol13": ""
-  }
-},
-{
-  "model": "base.matriks",
-  "pk": 581,
-  "fields": {
-    "naam": "Heren",
-    "ronde": "",
-    "kop": "H33H34H35H36H37H38H39H40",
-    "regel": "H33H34H35H36H37H38H39H40",
-    "x_as": 2,
-    "y_as": 5,
-    "kol1": "H33",
-    "kol2": "H34",
-    "kol3": "H35",
-    "kol4": "H36",
-    "kol5": "H37",
-    "kol6": "H38",
-    "kol7": "H39",
-    "kol8": "H40",
-    "kol9": "",
-    "kol10": "",
-    "kol11": "",
-    "kol12": "",
-    "kol13": ""
-  }
-},
-{
-  "model": "base.matriks",
-  "pk": 582,
-  "fields": {
-    "naam": "Heren",
-    "ronde": "",
-    "kop": "H41H42H43H44H45H46H47H48",
-    "regel": "H41H42H43H44H45H46H47H48",
-    "x_as": 2,
-    "y_as": 6,
-    "kol1": "H41",
-    "kol2": "H42",
-    "kol3": "H43",
-    "kol4": "H44",
-    "kol5": "H45",
-    "kol6": "H46",
-    "kol7": "H47",
-    "kol8": "H48",
-    "kol9": "",
-    "kol10": "",
-    "kol11": "",
-    "kol12": "",
-    "kol13": ""
-  }
-},
-{
-  "model": "base.matriks",
-  "pk": 583,
-  "fields": {
-    "naam": "Heren",
-    "ronde": "",
-    "kop": "H49H50H51H52H53H54H55H56",
-    "regel": "H49H50H51H52H53H54H55H56",
-    "x_as": 2,
-    "y_as": 7,
-    "kol1": "H49",
-    "kol2": "H50",
-    "kol3": "H51",
-    "kol4": "H52",
-    "kol5": "H53",
-    "kol6": "H54",
-    "kol7": "H55",
-    "kol8": "H56",
-    "kol9": "",
-    "kol10": "",
-    "kol11": "",
-    "kol12": "",
-    "kol13": ""
-  }
-},
-{
-  "model": "base.matriks",
-  "pk": 584,
-  "fields": {
-    "naam": "Heren",
-    "ronde": "",
-    "kop": "H57H58H59H60H61H62H63H64",
-    "regel": "H57H58H59H60H61H62H63H64",
-    "x_as": 2,
-    "y_as": 8,
-    "kol1": "H57",
-    "kol2": "H58",
-    "kol3": "H59",
-    "kol4": "H60",
-    "kol5": "H61",
-    "kol6": "H62",
-    "kol7": "H63",
-    "kol8": "H64",
-    "kol9": "",
-    "kol10": "",
-    "kol11": "",
-    "kol12": "",
-    "kol13": ""
-  }
-},
-{
-  "model": "base.matriks",
-  "pk": 585,
-  "fields": {
-    "naam": "Heren",
-    "ronde": "",
-    "kop": "H65H66H67H68H69H70H71H72",
-    "regel": "H65H66H67H68H69H70H71H72",
-    "x_as": 2,
-    "y_as": 9,
-    "kol1": "H65",
-    "kol2": "H66",
-    "kol3": "H67",
-    "kol4": "H68",
-    "kol5": "H69",
-    "kol6": "H70",
-    "kol7": "H71",
-    "kol8": "H72",
-    "kol9": "",
-    "kol10": "",
-    "kol11": "",
-    "kol12": "",
-    "kol13": ""
-  }
-},
-{
-  "model": "base.locker",
-  "pk": 23,
-  "fields": {
-    "kluisnummer": "H40",
-    "email": "wej.bakker@mantisbv.nllll",
-    "kluisje": "H40",
-    "type": "H",
-    "topic": "----",
-    "row": "----",
-    "col": "----",
-    "verhuurd": false,
-    "sleutels": "2",
-    "code": "----",
-    "created": "2023-07-09T15:48:28.451Z",
-    "owners": []
   }
 },
 {
@@ -8690,8 +8299,8 @@
   "model": "base.locker",
   "pk": 46,
   "fields": {
-    "kluisnummer": "D46",
-    "email": "derijkdiana@gmail.com",
+    "kluisnummer": "Dames A46",
+    "email": "f.w.vandendolder@gmail.com",
     "kluisje": "D46",
     "type": "--",
     "topic": "----",
@@ -8701,7 +8310,22 @@
     "sleutels": "----",
     "code": "----",
     "created": "2023-08-30T19:14:19.447Z",
-    "owners": []
+    "owners": [
+      263,
+      267,
+      271,
+      259,
+      264,
+      260,
+      268,
+      261,
+      265,
+      269,
+      262,
+      266,
+      270,
+      258
+    ]
   }
 },
 {
@@ -8773,7 +8397,10 @@
     "sleutels": "----",
     "code": "----",
     "created": "2023-08-31T20:49:10.606Z",
-    "owners": []
+    "owners": [
+      256,
+      257
+    ]
   }
 },
 {
@@ -8848,6 +8475,1458 @@
     "code": "----",
     "created": "2023-09-03T19:03:38.272Z",
     "owners": []
+  }
+},
+{
+  "model": "base.locker",
+  "pk": 58,
+  "fields": {
+    "kluisnummer": "H53",
+    "email": "cwierenga73@gmail.com",
+    "kluisje": "",
+    "type": "--",
+    "topic": "----",
+    "row": "----",
+    "col": "----",
+    "verhuurd": true,
+    "sleutels": "----",
+    "code": "----",
+    "created": "2023-09-07T17:58:19.540Z",
+    "owners": []
+  }
+},
+{
+  "model": "base.locker",
+  "pk": 59,
+  "fields": {
+    "kluisnummer": "Heren 48",
+    "email": "tomasklos@proton.me",
+    "kluisje": "",
+    "type": "--",
+    "topic": "----",
+    "row": "----",
+    "col": "----",
+    "verhuurd": true,
+    "sleutels": "----",
+    "code": "----",
+    "created": "2023-09-08T15:38:48.808Z",
+    "owners": []
+  }
+},
+{
+  "model": "base.locker",
+  "pk": 60,
+  "fields": {
+    "kluisnummer": "Dames C65",
+    "email": "mhrijks@planet.nl",
+    "kluisje": "Danes C65",
+    "type": "--",
+    "topic": "----",
+    "row": "----",
+    "col": "----",
+    "verhuurd": true,
+    "sleutels": "----",
+    "code": "----",
+    "created": "2023-09-10T14:37:42.128Z",
+    "owners": []
+  }
+},
+{
+  "model": "base.locker",
+  "pk": 61,
+  "fields": {
+    "kluisnummer": "Dames D30",
+    "email": "veravandedonk@hotmail.com",
+    "kluisje": "",
+    "type": "--",
+    "topic": "----",
+    "row": "----",
+    "col": "----",
+    "verhuurd": true,
+    "sleutels": "----",
+    "code": "----",
+    "created": "2023-09-12T09:41:13.416Z",
+    "owners": []
+  }
+},
+{
+  "model": "base.locker",
+  "pk": 62,
+  "fields": {
+    "kluisnummer": "Dames D30",
+    "email": "veravandedonk@hotmail.com",
+    "kluisje": "Dames D30",
+    "type": "--",
+    "topic": "----",
+    "row": "----",
+    "col": "----",
+    "verhuurd": false,
+    "sleutels": "----",
+    "code": "----",
+    "created": "2023-09-12T10:53:17.529Z",
+    "owners": []
+  }
+},
+{
+  "model": "base.locker",
+  "pk": 64,
+  "fields": {
+    "kluisnummer": "Dames 30",
+    "email": "veravandedonk@hotmail.com",
+    "kluisje": "Dames 30",
+    "type": "--",
+    "topic": "----",
+    "row": "----",
+    "col": "----",
+    "verhuurd": false,
+    "sleutels": "----",
+    "code": "----",
+    "created": "2023-09-12T11:07:23.780Z",
+    "owners": []
+  }
+},
+{
+  "model": "base.facturatielijst",
+  "pk": 3,
+  "fields": {
+    "kluisnummer": "Heren 02",
+    "email": "willie@ambeleij.demon.nl",
+    "in_excel": "in_excel",
+    "is_registered": "registered",
+    "type": "1",
+    "sleutels": "1",
+    "code": "1",
+    "created": "2023-11-03T00:00:00Z"
+  }
+},
+{
+  "model": "base.facturatielijst",
+  "pk": 6,
+  "fields": {
+    "kluisnummer": "Dames B-28",
+    "email": "carappeldoorn@ziggo.nl",
+    "in_excel": "in_excel",
+    "is_registered": "hang",
+    "type": "1",
+    "sleutels": "1",
+    "code": "1",
+    "created": "2023-01-03T00:00:00Z"
+  }
+},
+{
+  "model": "base.facturatielijst",
+  "pk": 7,
+  "fields": {
+    "kluisnummer": "Heren 43",
+    "email": "bertappeldoorn@ziggo.nl",
+    "in_excel": "in_excel",
+    "is_registered": "hang",
+    "type": "1",
+    "sleutels": "1",
+    "code": "1",
+    "created": "2023-01-03T00:00:00Z"
+  }
+},
+{
+  "model": "base.facturatielijst",
+  "pk": 8,
+  "fields": {
+    "kluisnummer": "Dames B-33",
+    "email": "baaijen@ziggo.nl",
+    "in_excel": "in_excel",
+    "is_registered": "registered",
+    "type": "1",
+    "sleutels": "1",
+    "code": "1",
+    "created": "2023-01-03T00:00:00Z"
+  }
+},
+{
+  "model": "base.facturatielijst",
+  "pk": 9,
+  "fields": {
+    "kluisnummer": "Heren 33",
+    "email": "dickbaars@kpnplanet.nl",
+    "in_excel": "in_excel",
+    "is_registered": "hang",
+    "type": "1",
+    "sleutels": "1",
+    "code": "1",
+    "created": "2023-01-03T00:00:00Z"
+  }
+},
+{
+  "model": "base.facturatielijst",
+  "pk": 10,
+  "fields": {
+    "kluisnummer": "Heren 19",
+    "email": "ecr.bak@online.nl",
+    "in_excel": "in_excel",
+    "is_registered": "hang",
+    "type": "1",
+    "sleutels": "1",
+    "code": "1",
+    "created": "2023-01-03T00:00:00Z"
+  }
+},
+{
+  "model": "base.facturatielijst",
+  "pk": 11,
+  "fields": {
+    "kluisnummer": "----",
+    "email": "hb-ext@ziggo.nl",
+    "in_excel": "hang",
+    "is_registered": "hang",
+    "type": "vrij",
+    "sleutels": "1",
+    "code": "1",
+    "created": "2023-01-03T00:00:00Z"
+  }
+},
+{
+  "model": "base.facturatielijst",
+  "pk": 12,
+  "fields": {
+    "kluisnummer": "Dames 20",
+    "email": "ebeverdam@xs4all.nl",
+    "in_excel": "in_excel",
+    "is_registered": "hang",
+    "type": "1",
+    "sleutels": "1",
+    "code": "1",
+    "created": "2023-01-03T00:00:00Z"
+  }
+},
+{
+  "model": "base.facturatielijst",
+  "pk": 13,
+  "fields": {
+    "kluisnummer": "Heren 61",
+    "email": "essen-van@ziggo.nl",
+    "in_excel": "in_excel",
+    "is_registered": "hang",
+    "type": "1",
+    "sleutels": "1",
+    "code": "1",
+    "created": "2023-01-03T00:00:00Z"
+  }
+},
+{
+  "model": "base.facturatielijst",
+  "pk": 14,
+  "fields": {
+    "kluisnummer": "Heren 14",
+    "email": "roeien@jeroenbollen.nl",
+    "in_excel": "in_excel",
+    "is_registered": "hang",
+    "type": "1",
+    "sleutels": "1",
+    "code": "1",
+    "created": "2023-01-03T00:00:00Z"
+  }
+},
+{
+  "model": "base.facturatielijst",
+  "pk": 15,
+  "fields": {
+    "kluisnummer": "Dames C-62",
+    "email": "leonievb1@gmail.com",
+    "in_excel": "in_excel",
+    "is_registered": "hang",
+    "type": "1",
+    "sleutels": "1",
+    "code": "1",
+    "created": "2023-01-03T00:00:00Z"
+  }
+},
+{
+  "model": "base.facturatielijst",
+  "pk": 16,
+  "fields": {
+    "kluisnummer": "Heren 40",
+    "email": "w.vandenbosch@planet.nl",
+    "in_excel": "in_excel",
+    "is_registered": "registered",
+    "type": "1",
+    "sleutels": "1",
+    "code": "1",
+    "created": "2023-01-03T00:00:00Z"
+  }
+},
+{
+  "model": "base.facturatielijst",
+  "pk": 17,
+  "fields": {
+    "kluisnummer": "Heren 03",
+    "email": "leovandenbroek@casema.nl",
+    "in_excel": "in_excel",
+    "is_registered": "registered",
+    "type": "1",
+    "sleutels": "1",
+    "code": "1",
+    "created": "2023-01-03T00:00:00Z"
+  }
+},
+{
+  "model": "base.facturatielijst",
+  "pk": 18,
+  "fields": {
+    "kluisnummer": "Heren 20",
+    "email": "Tamerlan@xs4all.nl",
+    "in_excel": "in_excel",
+    "is_registered": "hang",
+    "type": "1",
+    "sleutels": "1",
+    "code": "1",
+    "created": "2023-01-03T00:00:00Z"
+  }
+},
+{
+  "model": "base.facturatielijst",
+  "pk": 19,
+  "fields": {
+    "kluisnummer": "Heren 65",
+    "email": "gerardvanbruggen64@hetnet.nl",
+    "in_excel": "in_excel",
+    "is_registered": "hang",
+    "type": "1",
+    "sleutels": "1",
+    "code": "1",
+    "created": "2023-01-03T00:00:00Z"
+  }
+},
+{
+  "model": "base.facturatielijst",
+  "pk": 20,
+  "fields": {
+    "kluisnummer": "Dames 05",
+    "email": "cmeermin@airpost.net",
+    "in_excel": "in_excel",
+    "is_registered": "hang",
+    "type": "1",
+    "sleutels": "1",
+    "code": "1",
+    "created": "2023-01-03T00:00:00Z"
+  }
+},
+{
+  "model": "base.facturatielijst",
+  "pk": 21,
+  "fields": {
+    "kluisnummer": "Heren 69",
+    "email": "die123@casema.nl",
+    "in_excel": "in_excel",
+    "is_registered": "hang",
+    "type": "1",
+    "sleutels": "1",
+    "code": "1",
+    "created": "2023-01-03T00:00:00Z"
+  }
+},
+{
+  "model": "base.facturatielijst",
+  "pk": 22,
+  "fields": {
+    "kluisnummer": "Dames 21",
+    "email": "n.l.m.cappaert@gmail.com",
+    "in_excel": "in_excel",
+    "is_registered": "hang",
+    "type": "1",
+    "sleutels": "1",
+    "code": "1",
+    "created": "2023-01-03T00:00:00Z"
+  }
+},
+{
+  "model": "base.facturatielijst",
+  "pk": 23,
+  "fields": {
+    "kluisnummer": "----",
+    "email": "harmke.van.dam@xs4all.nl",
+    "in_excel": "hang",
+    "is_registered": "registered",
+    "type": "1",
+    "sleutels": "1",
+    "code": "1",
+    "created": "2023-01-03T00:00:00Z"
+  }
+},
+{
+  "model": "base.facturatielijst",
+  "pk": 24,
+  "fields": {
+    "kluisnummer": "Dames 14",
+    "email": "w.brokervandongen@upcmail.nl",
+    "in_excel": "in_excel",
+    "is_registered": "hang",
+    "type": "1",
+    "sleutels": "1",
+    "code": "1",
+    "created": "2023-01-03T00:00:00Z"
+  }
+},
+{
+  "model": "base.facturatielijst",
+  "pk": 25,
+  "fields": {
+    "kluisnummer": "Heren 55",
+    "email": "avdort@gmail.com",
+    "in_excel": "in_excel",
+    "is_registered": "hang",
+    "type": "1",
+    "sleutels": "1",
+    "code": "1",
+    "created": "2023-01-03T00:00:00Z"
+  }
+},
+{
+  "model": "base.facturatielijst",
+  "pk": 26,
+  "fields": {
+    "kluisnummer": "Heren 44",
+    "email": "sjduijn@yahoo.com",
+    "in_excel": "in_excel",
+    "is_registered": "hang",
+    "type": "1",
+    "sleutels": "1",
+    "code": "1",
+    "created": "2023-01-03T00:00:00Z"
+  }
+},
+{
+  "model": "base.facturatielijst",
+  "pk": 27,
+  "fields": {
+    "kluisnummer": "Dames A-25",
+    "email": "t.elst@wxs.nl",
+    "in_excel": "in_excel",
+    "is_registered": "registered",
+    "type": "1",
+    "sleutels": "1",
+    "code": "1",
+    "created": "2023-01-03T00:00:00Z"
+  }
+},
+{
+  "model": "base.facturatielijst",
+  "pk": 28,
+  "fields": {
+    "kluisnummer": "Heren 61",
+    "email": "essen-van@ziggo.nl",
+    "in_excel": "in_excel",
+    "is_registered": "hang",
+    "type": "1",
+    "sleutels": "1",
+    "code": "1",
+    "created": "2023-01-03T00:00:00Z"
+  }
+},
+{
+  "model": "base.facturatielijst",
+  "pk": 29,
+  "fields": {
+    "kluisnummer": "Dames 12",
+    "email": "f_euwe@hotmail.com",
+    "in_excel": "in_excel",
+    "is_registered": "hang",
+    "type": "1",
+    "sleutels": "1",
+    "code": "1",
+    "created": "2023-01-03T00:00:00Z"
+  }
+},
+{
+  "model": "base.facturatielijst",
+  "pk": 30,
+  "fields": {
+    "kluisnummer": "Dames C-64",
+    "email": "petra.gerritsen@spletters.nl",
+    "in_excel": "in_excel",
+    "is_registered": "registered",
+    "type": "1",
+    "sleutels": "1",
+    "code": "1",
+    "created": "2023-01-03T00:00:00Z"
+  }
+},
+{
+  "model": "base.facturatielijst",
+  "pk": 31,
+  "fields": {
+    "kluisnummer": "----",
+    "email": "aliende.vangoor@gmail.com",
+    "in_excel": "hang",
+    "is_registered": "hang",
+    "type": "vrij",
+    "sleutels": "1",
+    "code": "1",
+    "created": "2023-01-03T00:00:00Z"
+  }
+},
+{
+  "model": "base.facturatielijst",
+  "pk": 32,
+  "fields": {
+    "kluisnummer": "Heren 59",
+    "email": "wessel.goossens@gmail.com",
+    "in_excel": "in_excel",
+    "is_registered": "hang",
+    "type": "1",
+    "sleutels": "1",
+    "code": "1",
+    "created": "2023-01-03T00:00:00Z"
+  }
+},
+{
+  "model": "base.facturatielijst",
+  "pk": 33,
+  "fields": {
+    "kluisnummer": "Heren 10",
+    "email": "whmgorissen@gmail.com",
+    "in_excel": "in_excel",
+    "is_registered": "registered",
+    "type": "1",
+    "sleutels": "1",
+    "code": "1",
+    "created": "2023-01-03T00:00:00Z"
+  }
+},
+{
+  "model": "base.facturatielijst",
+  "pk": 34,
+  "fields": {
+    "kluisnummer": "Dames A-44",
+    "email": "h.r.geusebroek@gmail.com",
+    "in_excel": "in_excel",
+    "is_registered": "hang",
+    "type": "1",
+    "sleutels": "1",
+    "code": "1",
+    "created": "2023-01-03T00:00:00Z"
+  }
+},
+{
+  "model": "base.facturatielijst",
+  "pk": 35,
+  "fields": {
+    "kluisnummer": "Dames B-41",
+    "email": "jce.groot@casema.nl",
+    "in_excel": "in_excel",
+    "is_registered": "hang",
+    "type": "1",
+    "sleutels": "1",
+    "code": "1",
+    "created": "2023-01-03T00:00:00Z"
+  }
+},
+{
+  "model": "base.facturatielijst",
+  "pk": 36,
+  "fields": {
+    "kluisnummer": "Heren 52",
+    "email": "whdgroot@gmail.com",
+    "in_excel": "in_excel",
+    "is_registered": "hang",
+    "type": "1",
+    "sleutels": "1",
+    "code": "1",
+    "created": "2023-01-03T00:00:00Z"
+  }
+},
+{
+  "model": "base.facturatielijst",
+  "pk": 37,
+  "fields": {
+    "kluisnummer": "Dames 15",
+    "email": "maaike@vangulik.org",
+    "in_excel": "in_excel",
+    "is_registered": "hang",
+    "type": "1",
+    "sleutels": "1",
+    "code": "1",
+    "created": "2023-01-03T00:00:00Z"
+  }
+},
+{
+  "model": "base.facturatielijst",
+  "pk": 38,
+  "fields": {
+    "kluisnummer": "Heren 11",
+    "email": "tijmen@vangulik.org",
+    "in_excel": "in_excel",
+    "is_registered": "hang",
+    "type": "1",
+    "sleutels": "1",
+    "code": "1",
+    "created": "2023-01-03T00:00:00Z"
+  }
+},
+{
+  "model": "base.facturatielijst",
+  "pk": 39,
+  "fields": {
+    "kluisnummer": "Dames C-54",
+    "email": "smorgens2@gmail.com",
+    "in_excel": "in_excel",
+    "is_registered": "hang",
+    "type": "1",
+    "sleutels": "1",
+    "code": "1",
+    "created": "2023-01-03T00:00:00Z"
+  }
+},
+{
+  "model": "base.facturatielijst",
+  "pk": 40,
+  "fields": {
+    "kluisnummer": "----",
+    "email": "info@haazer.nl",
+    "in_excel": "hang",
+    "is_registered": "registered",
+    "type": "1",
+    "sleutels": "1",
+    "code": "1",
+    "created": "2023-01-03T00:00:00Z"
+  }
+},
+{
+  "model": "base.facturatielijst",
+  "pk": 41,
+  "fields": {
+    "kluisnummer": "Dames C-57",
+    "email": "wilmahanskamp@hotmail.com",
+    "in_excel": "in_excel",
+    "is_registered": "hang",
+    "type": "1",
+    "sleutels": "1",
+    "code": "1",
+    "created": "2023-01-03T00:00:00Z"
+  }
+},
+{
+  "model": "base.facturatielijst",
+  "pk": 42,
+  "fields": {
+    "kluisnummer": "Dames B-25",
+    "email": "nc.heerema@gmail.com",
+    "in_excel": "in_excel",
+    "is_registered": "hang",
+    "type": "1",
+    "sleutels": "1",
+    "code": "1",
+    "created": "2023-01-03T00:00:00Z"
+  }
+},
+{
+  "model": "base.facturatielijst",
+  "pk": 43,
+  "fields": {
+    "kluisnummer": "Dames A-38",
+    "email": "Gbvanderheide@hetnet.nl",
+    "in_excel": "in_excel",
+    "is_registered": "hang",
+    "type": "1",
+    "sleutels": "1",
+    "code": "1",
+    "created": "2023-01-03T00:00:00Z"
+  }
+},
+{
+  "model": "base.facturatielijst",
+  "pk": 44,
+  "fields": {
+    "kluisnummer": "Heren 37",
+    "email": "paco@redleafs.nl",
+    "in_excel": "in_excel",
+    "is_registered": "hang",
+    "type": "1",
+    "sleutels": "1",
+    "code": "1",
+    "created": "2023-01-03T00:00:00Z"
+  }
+},
+{
+  "model": "base.facturatielijst",
+  "pk": 45,
+  "fields": {
+    "kluisnummer": "Heren 22",
+    "email": "p.hingstman@hccnet.nl",
+    "in_excel": "in_excel",
+    "is_registered": "hang",
+    "type": "1",
+    "sleutels": "1",
+    "code": "1",
+    "created": "2023-01-03T00:00:00Z"
+  }
+},
+{
+  "model": "base.facturatielijst",
+  "pk": 46,
+  "fields": {
+    "kluisnummer": "Dames B-34",
+    "email": "elluf@hotmail.com",
+    "in_excel": "in_excel",
+    "is_registered": "hang",
+    "type": "1",
+    "sleutels": "1",
+    "code": "1",
+    "created": "2023-01-03T00:00:00Z"
+  }
+},
+{
+  "model": "base.facturatielijst",
+  "pk": 47,
+  "fields": {
+    "kluisnummer": "Dames 16",
+    "email": "lkaboord@kpnmail.nl",
+    "in_excel": "in_excel",
+    "is_registered": "hang",
+    "type": "1",
+    "sleutels": "1",
+    "code": "1",
+    "created": "2023-01-03T00:00:00Z"
+  }
+},
+{
+  "model": "base.facturatielijst",
+  "pk": 48,
+  "fields": {
+    "kluisnummer": "Heren 39",
+    "email": "H.j.kiewiet@hccnet.nl",
+    "in_excel": "in_excel",
+    "is_registered": "hang",
+    "type": "1",
+    "sleutels": "1",
+    "code": "1",
+    "created": "2023-01-03T00:00:00Z"
+  }
+},
+{
+  "model": "base.facturatielijst",
+  "pk": 49,
+  "fields": {
+    "kluisnummer": "----",
+    "email": "tomasklos@proton.me",
+    "in_excel": "hang",
+    "is_registered": "registered",
+    "type": "1",
+    "sleutels": "1",
+    "code": "1",
+    "created": "2023-01-03T00:00:00Z"
+  }
+},
+{
+  "model": "base.facturatielijst",
+  "pk": 50,
+  "fields": {
+    "kluisnummer": "Heren 41",
+    "email": "peterknappstein@seilemaaker.nl",
+    "in_excel": "in_excel",
+    "is_registered": "hang",
+    "type": "1",
+    "sleutels": "1",
+    "code": "1",
+    "created": "2023-01-03T00:00:00Z"
+  }
+},
+{
+  "model": "base.facturatielijst",
+  "pk": 51,
+  "fields": {
+    "kluisnummer": "----",
+    "email": "jkolmer@urvviking.nl",
+    "in_excel": "hang",
+    "is_registered": "hang",
+    "type": "vrij",
+    "sleutels": "1",
+    "code": "1",
+    "created": "2023-01-03T00:00:00Z"
+  }
+},
+{
+  "model": "base.facturatielijst",
+  "pk": 52,
+  "fields": {
+    "kluisnummer": "Dames C-68",
+    "email": "gerdakruithof@icloud.com",
+    "in_excel": "in_excel",
+    "is_registered": "hang",
+    "type": "1",
+    "sleutels": "1",
+    "code": "1",
+    "created": "2023-01-03T00:00:00Z"
+  }
+},
+{
+  "model": "base.facturatielijst",
+  "pk": 53,
+  "fields": {
+    "kluisnummer": "Dames 07",
+    "email": "vvanderkuil@me.com",
+    "in_excel": "in_excel",
+    "is_registered": "hang",
+    "type": "1",
+    "sleutels": "1",
+    "code": "1",
+    "created": "2023-01-03T00:00:00Z"
+  }
+},
+{
+  "model": "base.facturatielijst",
+  "pk": 54,
+  "fields": {
+    "kluisnummer": "Dames B-38",
+    "email": "maryke@casema.nl",
+    "in_excel": "in_excel",
+    "is_registered": "registered",
+    "type": "1",
+    "sleutels": "1",
+    "code": "1",
+    "created": "2023-01-03T00:00:00Z"
+  }
+},
+{
+  "model": "base.facturatielijst",
+  "pk": 55,
+  "fields": {
+    "kluisnummer": "Dames B-27",
+    "email": "gerdakwantes@gmail.com",
+    "in_excel": "in_excel",
+    "is_registered": "hang",
+    "type": "1",
+    "sleutels": "1",
+    "code": "1",
+    "created": "2023-01-03T00:00:00Z"
+  }
+},
+{
+  "model": "base.facturatielijst",
+  "pk": 56,
+  "fields": {
+    "kluisnummer": "----",
+    "email": "p.kwantes@kpnmail.nl",
+    "in_excel": "hang",
+    "is_registered": "registered",
+    "type": "1",
+    "sleutels": "1",
+    "code": "1",
+    "created": "2023-01-03T00:00:00Z"
+  }
+},
+{
+  "model": "base.facturatielijst",
+  "pk": 57,
+  "fields": {
+    "kluisnummer": "Heren 70",
+    "email": "gelangeveld@gmail.com",
+    "in_excel": "in_excel",
+    "is_registered": "hang",
+    "type": "1",
+    "sleutels": "1",
+    "code": "1",
+    "created": "2023-01-03T00:00:00Z"
+  }
+},
+{
+  "model": "base.facturatielijst",
+  "pk": 58,
+  "fields": {
+    "kluisnummer": "Dames B-40",
+    "email": "paulienlasterie@gmail.com",
+    "in_excel": "in_excel",
+    "is_registered": "hang",
+    "type": "1",
+    "sleutels": "1",
+    "code": "1",
+    "created": "2023-01-03T00:00:00Z"
+  }
+},
+{
+  "model": "base.facturatielijst",
+  "pk": 59,
+  "fields": {
+    "kluisnummer": "Dames 09",
+    "email": "petradeleede@gmail.com",
+    "in_excel": "in_excel",
+    "is_registered": "registered",
+    "type": "1",
+    "sleutels": "1",
+    "code": "1",
+    "created": "2023-01-03T00:00:00Z"
+  }
+},
+{
+  "model": "base.facturatielijst",
+  "pk": 60,
+  "fields": {
+    "kluisnummer": "Dames A-45",
+    "email": "marianscheltema@gmail.com",
+    "in_excel": "in_excel",
+    "is_registered": "hang",
+    "type": "1",
+    "sleutels": "1",
+    "code": "1",
+    "created": "2023-01-03T00:00:00Z"
+  }
+},
+{
+  "model": "base.facturatielijst",
+  "pk": 61,
+  "fields": {
+    "kluisnummer": "Dames A-32",
+    "email": "jessica@ambeleij.demon.nl",
+    "in_excel": "in_excel",
+    "is_registered": "hang",
+    "type": "1",
+    "sleutels": "1",
+    "code": "1",
+    "created": "2023-01-03T00:00:00Z"
+  }
+},
+{
+  "model": "base.facturatielijst",
+  "pk": 62,
+  "fields": {
+    "kluisnummer": "Heren 13",
+    "email": "hugo@linnenbank.org",
+    "in_excel": "in_excel",
+    "is_registered": "hang",
+    "type": "1",
+    "sleutels": "1",
+    "code": "1",
+    "created": "2023-01-03T00:00:00Z"
+  }
+},
+{
+  "model": "base.facturatielijst",
+  "pk": 63,
+  "fields": {
+    "kluisnummer": "Heren 38",
+    "email": "linssentandarts@gmail.com",
+    "in_excel": "in_excel",
+    "is_registered": "registered",
+    "type": "1",
+    "sleutels": "1",
+    "code": "1",
+    "created": "2023-01-03T00:00:00Z"
+  }
+},
+{
+  "model": "base.facturatielijst",
+  "pk": 64,
+  "fields": {
+    "kluisnummer": "Heren 64",
+    "email": "info@vanmanen.biz",
+    "in_excel": "in_excel",
+    "is_registered": "hang",
+    "type": "1",
+    "sleutels": "1",
+    "code": "1",
+    "created": "2023-01-03T00:00:00Z"
+  }
+},
+{
+  "model": "base.facturatielijst",
+  "pk": 65,
+  "fields": {
+    "kluisnummer": "Dames A-31",
+    "email": "miranda_megens@yahoo.com",
+    "in_excel": "in_excel",
+    "is_registered": "registered",
+    "type": "1",
+    "sleutels": "1",
+    "code": "1",
+    "created": "2023-01-03T00:00:00Z"
+  }
+},
+{
+  "model": "base.facturatielijst",
+  "pk": 66,
+  "fields": {
+    "kluisnummer": "Heren 24",
+    "email": "gertjan@miedemageluid.nl",
+    "in_excel": "in_excel",
+    "is_registered": "registered",
+    "type": "1",
+    "sleutels": "1",
+    "code": "1",
+    "created": "2023-01-03T00:00:00Z"
+  }
+},
+{
+  "model": "base.facturatielijst",
+  "pk": 67,
+  "fields": {
+    "kluisnummer": "Dames C-51",
+    "email": "mail2mira@yahoo.com",
+    "in_excel": "in_excel",
+    "is_registered": "hang",
+    "type": "1",
+    "sleutels": "1",
+    "code": "1",
+    "created": "2023-01-03T00:00:00Z"
+  }
+},
+{
+  "model": "base.facturatielijst",
+  "pk": 68,
+  "fields": {
+    "kluisnummer": "Dames B-31",
+    "email": "catharina.moison@gmail.com",
+    "in_excel": "in_excel",
+    "is_registered": "hang",
+    "type": "1",
+    "sleutels": "1",
+    "code": "1",
+    "created": "2023-01-03T00:00:00Z"
+  }
+},
+{
+  "model": "base.facturatielijst",
+  "pk": 69,
+  "fields": {
+    "kluisnummer": "Dames B-26",
+    "email": "nap.janneke@gmail.com",
+    "in_excel": "in_excel",
+    "is_registered": "registered",
+    "type": "1",
+    "sleutels": "1",
+    "code": "1",
+    "created": "2023-01-03T00:00:00Z"
+  }
+},
+{
+  "model": "base.facturatielijst",
+  "pk": 70,
+  "fields": {
+    "kluisnummer": "Dames A-41",
+    "email": "linooij@gmail.com",
+    "in_excel": "in_excel",
+    "is_registered": "registered",
+    "type": "1",
+    "sleutels": "1",
+    "code": "1",
+    "created": "2023-01-03T00:00:00Z"
+  }
+},
+{
+  "model": "base.facturatielijst",
+  "pk": 71,
+  "fields": {
+    "kluisnummer": "Heren 63",
+    "email": "martinwileenbiertje@hotmail.com",
+    "in_excel": "in_excel",
+    "is_registered": "hang",
+    "type": "1",
+    "sleutels": "1",
+    "code": "1",
+    "created": "2023-01-03T00:00:00Z"
+  }
+},
+{
+  "model": "base.facturatielijst",
+  "pk": 72,
+  "fields": {
+    "kluisnummer": "Heren 16",
+    "email": "peter.prak@me.com",
+    "in_excel": "in_excel",
+    "is_registered": "hang",
+    "type": "1",
+    "sleutels": "1",
+    "code": "1",
+    "created": "2023-01-03T00:00:00Z"
+  }
+},
+{
+  "model": "base.facturatielijst",
+  "pk": 73,
+  "fields": {
+    "kluisnummer": "Heren 29",
+    "email": "gerard.ranke@ziggo.nl",
+    "in_excel": "in_excel",
+    "is_registered": "hang",
+    "type": "1",
+    "sleutels": "1",
+    "code": "1",
+    "created": "2023-01-03T00:00:00Z"
+  }
+},
+{
+  "model": "base.facturatielijst",
+  "pk": 74,
+  "fields": {
+    "kluisnummer": "Heren 12",
+    "email": "rayszjf@hotmail.com",
+    "in_excel": "in_excel",
+    "is_registered": "hang",
+    "type": "1",
+    "sleutels": "1",
+    "code": "1",
+    "created": "2023-01-03T00:00:00Z"
+  }
+},
+{
+  "model": "base.facturatielijst",
+  "pk": 75,
+  "fields": {
+    "kluisnummer": "Heren 26",
+    "email": "martinreniers@hotmail.com",
+    "in_excel": "in_excel",
+    "is_registered": "registered",
+    "type": "1",
+    "sleutels": "1",
+    "code": "1",
+    "created": "2023-01-03T00:00:00Z"
+  }
+},
+{
+  "model": "base.facturatielijst",
+  "pk": 76,
+  "fields": {
+    "kluisnummer": "Dames 04",
+    "email": "aamrensink@gmail.com",
+    "in_excel": "in_excel",
+    "is_registered": "hang",
+    "type": "1",
+    "sleutels": "1",
+    "code": "1",
+    "created": "2023-01-03T00:00:00Z"
+  }
+},
+{
+  "model": "base.facturatielijst",
+  "pk": 77,
+  "fields": {
+    "kluisnummer": "Heren 56",
+    "email": "cmreuser@yahoo.com",
+    "in_excel": "in_excel",
+    "is_registered": "hang",
+    "type": "1",
+    "sleutels": "1",
+    "code": "1",
+    "created": "2023-01-03T00:00:00Z"
+  }
+},
+{
+  "model": "base.facturatielijst",
+  "pk": 78,
+  "fields": {
+    "kluisnummer": "Dames C-65",
+    "email": "mhrijks@planet.nl",
+    "in_excel": "in_excel",
+    "is_registered": "hang",
+    "type": "1",
+    "sleutels": "1",
+    "code": "1",
+    "created": "2023-01-03T00:00:00Z"
+  }
+},
+{
+  "model": "base.facturatielijst",
+  "pk": 79,
+  "fields": {
+    "kluisnummer": "Dames A-27",
+    "email": "anoukrijs@hotmail.com",
+    "in_excel": "in_excel",
+    "is_registered": "registered",
+    "type": "1",
+    "sleutels": "1",
+    "code": "1",
+    "created": "2023-01-03T00:00:00Z"
+  }
+},
+{
+  "model": "base.facturatielijst",
+  "pk": 80,
+  "fields": {
+    "kluisnummer": "Dames 13",
+    "email": "miranda@miraud.nl",
+    "in_excel": "in_excel",
+    "is_registered": "hang",
+    "type": "1",
+    "sleutels": "1",
+    "code": "1",
+    "created": "2023-01-03T00:00:00Z"
+  }
+},
+{
+  "model": "base.facturatielijst",
+  "pk": 81,
+  "fields": {
+    "kluisnummer": "Dames 08",
+    "email": "wyki24@gmail.com",
+    "in_excel": "in_excel",
+    "is_registered": "registered",
+    "type": "1",
+    "sleutels": "1",
+    "code": "1",
+    "created": "2023-01-03T00:00:00Z"
+  }
+},
+{
+  "model": "base.facturatielijst",
+  "pk": 82,
+  "fields": {
+    "kluisnummer": "----",
+    "email": "carolina.scheepstra@hetnet.nl",
+    "in_excel": "hang",
+    "is_registered": "hang",
+    "type": "vrij",
+    "sleutels": "1",
+    "code": "1",
+    "created": "2023-01-03T00:00:00Z"
+  }
+},
+{
+  "model": "base.facturatielijst",
+  "pk": 83,
+  "fields": {
+    "kluisnummer": "Heren 04",
+    "email": "cor@corscheffers.nl",
+    "in_excel": "in_excel",
+    "is_registered": "hang",
+    "type": "1",
+    "sleutels": "1",
+    "code": "1",
+    "created": "2023-01-03T00:00:00Z"
+  }
+},
+{
+  "model": "base.facturatielijst",
+  "pk": 84,
+  "fields": {
+    "kluisnummer": "----",
+    "email": "schepel@ziggo.nl",
+    "in_excel": "hang",
+    "is_registered": "hang",
+    "type": "vrij",
+    "sleutels": "1",
+    "code": "1",
+    "created": "2023-01-03T00:00:00Z"
+  }
+},
+{
+  "model": "base.facturatielijst",
+  "pk": 85,
+  "fields": {
+    "kluisnummer": "Dames B-39",
+    "email": "iekeschiferli27@gmail.com",
+    "in_excel": "in_excel",
+    "is_registered": "hang",
+    "type": "1",
+    "sleutels": "1",
+    "code": "1",
+    "created": "2023-01-03T00:00:00Z"
+  }
+},
+{
+  "model": "base.facturatielijst",
+  "pk": 86,
+  "fields": {
+    "kluisnummer": "Heren 35",
+    "email": "joannemieke@kpnmail.nl",
+    "in_excel": "in_excel",
+    "is_registered": "hang",
+    "type": "1",
+    "sleutels": "1",
+    "code": "1",
+    "created": "2023-01-03T00:00:00Z"
+  }
+},
+{
+  "model": "base.facturatielijst",
+  "pk": 87,
+  "fields": {
+    "kluisnummer": "Dames C-70",
+    "email": "hl.sinlan@t-mobilethuis.nl",
+    "in_excel": "in_excel",
+    "is_registered": "hang",
+    "type": "1",
+    "sleutels": "1",
+    "code": "1",
+    "created": "2023-01-03T00:00:00Z"
+  }
+},
+{
+  "model": "base.facturatielijst",
+  "pk": 88,
+  "fields": {
+    "kluisnummer": "Dames B-35",
+    "email": "LSmit1@Xs4all.nl",
+    "in_excel": "in_excel",
+    "is_registered": "hang",
+    "type": "1",
+    "sleutels": "1",
+    "code": "1",
+    "created": "2023-01-03T00:00:00Z"
+  }
+},
+{
+  "model": "base.facturatielijst",
+  "pk": 89,
+  "fields": {
+    "kluisnummer": "Heren 42",
+    "email": "erikvanderstruijs@xs4all.nl",
+    "in_excel": "in_excel",
+    "is_registered": "hang",
+    "type": "1",
+    "sleutels": "1",
+    "code": "1",
+    "created": "2023-01-03T00:00:00Z"
+  }
+},
+{
+  "model": "base.facturatielijst",
+  "pk": 90,
+  "fields": {
+    "kluisnummer": "Dames A-35",
+    "email": "fhtap@xs4all.nl",
+    "in_excel": "in_excel",
+    "is_registered": "hang",
+    "type": "1",
+    "sleutels": "1",
+    "code": "1",
+    "created": "2023-01-03T00:00:00Z"
+  }
+},
+{
+  "model": "base.facturatielijst",
+  "pk": 92,
+  "fields": {
+    "kluisnummer": "Heren 45",
+    "email": "Haroldthijssen@hetnet.nl",
+    "in_excel": "in_excel",
+    "is_registered": "hang",
+    "type": "1",
+    "sleutels": "1",
+    "code": "1",
+    "created": "2023-01-03T00:00:00Z"
+  }
+},
+{
+  "model": "base.facturatielijst",
+  "pk": 93,
+  "fields": {
+    "kluisnummer": "Heren 32",
+    "email": "JTombrock@ziggo.nl",
+    "in_excel": "in_excel",
+    "is_registered": "hang",
+    "type": "1",
+    "sleutels": "1",
+    "code": "1",
+    "created": "2023-01-03T00:00:00Z"
+  }
+},
+{
+  "model": "base.facturatielijst",
+  "pk": 94,
+  "fields": {
+    "kluisnummer": "Heren 30",
+    "email": "goldtuk@telfort.nl",
+    "in_excel": "in_excel",
+    "is_registered": "hang",
+    "type": "1",
+    "sleutels": "1",
+    "code": "1",
+    "created": "2023-01-03T00:00:00Z"
+  }
+},
+{
+  "model": "base.facturatielijst",
+  "pk": 95,
+  "fields": {
+    "kluisnummer": "Heren 23",
+    "email": "thmm.visser@ziggo.nl",
+    "in_excel": "in_excel",
+    "is_registered": "hang",
+    "type": "1",
+    "sleutels": "1",
+    "code": "1",
+    "created": "2023-01-03T00:00:00Z"
+  }
+},
+{
+  "model": "base.facturatielijst",
+  "pk": 96,
+  "fields": {
+    "kluisnummer": "Heren 67",
+    "email": "rtenvoorde@datelvision.nl",
+    "in_excel": "in_excel",
+    "is_registered": "hang",
+    "type": "1",
+    "sleutels": "1",
+    "code": "1",
+    "created": "2023-01-03T00:00:00Z"
+  }
+},
+{
+  "model": "base.facturatielijst",
+  "pk": 97,
+  "fields": {
+    "kluisnummer": "Dames C-59",
+    "email": "teaudevosvansteenwijk@gmail.com",
+    "in_excel": "in_excel",
+    "is_registered": "hang",
+    "type": "1",
+    "sleutels": "1",
+    "code": "1",
+    "created": "2023-01-03T00:00:00Z"
+  }
+},
+{
+  "model": "base.facturatielijst",
+  "pk": 98,
+  "fields": {
+    "kluisnummer": "Heren 01",
+    "email": "rikderoodevos@kpnmail.nl",
+    "in_excel": "in_excel",
+    "is_registered": "hang",
+    "type": "1",
+    "sleutels": "1",
+    "code": "1",
+    "created": "2023-01-03T00:00:00Z"
+  }
+},
+{
+  "model": "base.facturatielijst",
+  "pk": 99,
+  "fields": {
+    "kluisnummer": "Dames B-45",
+    "email": "corien@dapnijkerk.nl",
+    "in_excel": "in_excel",
+    "is_registered": "hang",
+    "type": "1",
+    "sleutels": "1",
+    "code": "1",
+    "created": "2023-01-03T00:00:00Z"
+  }
+},
+{
+  "model": "base.facturatielijst",
+  "pk": 100,
+  "fields": {
+    "kluisnummer": "----",
+    "email": "cwierenga73@gmail.com",
+    "in_excel": "hang",
+    "is_registered": "registered",
+    "type": "1",
+    "sleutels": "1",
+    "code": "1",
+    "created": "2023-01-03T00:00:00Z"
+  }
+},
+{
+  "model": "base.facturatielijst",
+  "pk": 101,
+  "fields": {
+    "kluisnummer": "Dames 19",
+    "email": "nadinevanwijk@gmail.com",
+    "in_excel": "in_excel",
+    "is_registered": "hang",
+    "type": "1",
+    "sleutels": "1",
+    "code": "1",
+    "created": "2023-01-03T00:00:00Z"
   }
 },
 {
@@ -10677,6 +11756,17 @@
     "body": "Ik heb kluisje H53. Gr. Kees Wierenga",
     "updated": "2023-09-06T13:29:37.443Z",
     "created": "2023-09-06T13:29:37.443Z"
+  }
+},
+{
+  "model": "base.bericht",
+  "pk": 71,
+  "fields": {
+    "user": 272,
+    "locker": 45,
+    "body": "Mijn ploeg (Valkyries) heeft locker D30",
+    "updated": "2023-09-11T20:45:54.537Z",
+    "created": "2023-09-11T20:45:54.537Z"
   }
 },
 {

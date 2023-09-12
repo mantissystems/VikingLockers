@@ -20,7 +20,7 @@ class DataForm(forms.Form):
 class MyUserCreationForm(UserCreationForm):
     class Meta:
         model = User
-        fields = ['name', 'username', 'email', 'password1', 'password2']
+        fields = [ 'username', 'email', 'password1', 'password2']
         exclude = ['username']
         labels = {
         "email": "Your email. eg.: info@mail.nl",
@@ -72,7 +72,7 @@ class LockerForm(ModelForm):
         model = Locker
         fields = '__all__'
         labels = {
-        "verhuurd": "Verhuurd",
+        "verhuurd": "Hoofdhuurder",
         "owners": "onder huurders",
         "sleutels": "Aantal Sleutels in omloop",
         "code": "Code van codeslot",
@@ -80,7 +80,7 @@ class LockerForm(ModelForm):
         "type": "Type slot",
 
         }
-        exclude = ['topic','row', 'col','owners','kluisnummer','verhuurd']
+        exclude = ['topic','row', 'col','owners','kluisnummer',]
         # exclude = ['topic','row', 'col','owners']
 class ExcelForm(ModelForm):
     class Meta:
@@ -102,5 +102,5 @@ class UserForm(ModelForm):
     class Meta:
         model = User
         # fields= '__all__'
-        fields = ['avatar', 'name', 'username','locker', 'email']
+        fields = ['avatar', 'username','locker', 'email']
         exclude = [ 'avatar','ploeg','bio']

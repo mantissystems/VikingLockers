@@ -55,7 +55,7 @@
       <div class="layout__body">
         <form method="post" novalidate class="card">
           {%csrf_token %}
-          <h2>{% if person %} Update {% else %} Or create {% endif %} Waiting List Entry</h2>
+          <h2>{% if person %} Update {% else %} Or create {% endif %} Waiting List Entry22</h2>
          {% for field in form %}
            {% if field.name == 'completed' %}
            <label for="profile_pic">{{field.label}}</label>
