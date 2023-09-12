@@ -1,4 +1,5 @@
 
+import csv
 from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import redirect, render
 from django.contrib import messages
@@ -812,10 +813,27 @@ def tel_aantal_registraties(request):
     qs_user = User.objects.all()
     qs1=qs_user.values_list('email',flat=True)
     qs_locker = Locker.objects.all()
-    qs_factuur = Facturatielijst.objects.all().filter(email__in=qs1)
+    qs_factuur = Facturatielijst.objects.all() #.filter(email__in=qs1)
+    for q in qs_factuur:
+        if User.objects.filter(email=q.email).exists():
+            f=Facturatielijst.objects.all().filter(email=q.email).update(is_registered='==regis==')
     qs3=qs_factuur.values_list('email',flat=True)
     qs_excel = Excellijst.objects.all()
     print(qs_user.count(),qs_locker.count(),qs_factuur.count(),qs_excel.count())
+    # def file_load_view(request):
+    # Create the HttpResponse object with the appropriate CSV header.
+    response = HttpResponse(content_type='text/csv')
+    response['Content-Disposition'] = 'attachment; filename="facturatielijst.csv"'
+    # excel: 20200830VolwassenLedenPloegmakelaar.xlsx (libreoffice calc)
+    writer = csv.writer(response)
+    writer.writerow(['email', 'kluisnummer', 'is_registered', ])
+    tekst=Facturatielijst.objects.all().values_list('email','kluisnummer','is_registered')
+    print(tekst)
+    for e in tekst:
+        writer.writerow([e])
+
+    return response
+
     context={}
     return render(request, 'base/home.html', context)
 

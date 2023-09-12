@@ -5,9 +5,8 @@
       <tr>
         <th>Huurder:</th>
         <th></th>
-        <th></th>
         <th>Locker</th>
-        <th></th>
+        <th>regis</th>
         <th></th>
       </tr>
     </thead>
@@ -40,6 +39,7 @@
                       {{locker.kluisnummer}}      
                     </td>
                     {% endcomment %}
+                    <td>{{locker.is_registered}}</td>
           
       {% endfor %}
       </tr>
