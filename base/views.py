@@ -165,6 +165,19 @@ def home(request):
 
             print(url)
             return HttpResponseRedirect(url)
+        if 'pers' in qq:
+            x = qq.replace("pers ", "")
+            q=x
+            url = "profiles" + "?q=" +q 
+            queryset=Person.objects.all().filter(
+                Q(locker__icontains=q) |
+            Q(name__icontains=q) |
+            Q(email__icontains=q)
+        ).order_by('email')
+
+            print(url)
+            return HttpResponseRedirect(url)
+
     else:
         berichten=Bericht.objects.all() ##.filter(user=request.user.id)
         # if berichten2:
@@ -665,14 +678,29 @@ paginate_by = 20
 
 class PersonListView (ListView):
     model=Person
-def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
+    def get_context_data(self,**kwargs):
+        q = self.request.GET.get('q') if self.request.GET.get('q') != None else ''
+        query = self.request.GET.get('q')
+        if query == None: query=""
+        queryset = Person.objects.filter(
+            Q(email__icontains=query)|
+            Q(name__icontains=query)|
+            Q(locker__icontains=query)
+            ).order_by('email')
+        context = {
+            'query': query,
+            'object_list' :queryset,
+            }
         return context
 
-def get_queryset(self): # new
-    queryset=Person.objects.all().order_by('email')
-    return queryset
-paginate_by = 20
+# def get_context_data(self, **kwargs):
+#         context = super().get_context_data(**kwargs)
+#         return context
+
+# def get_queryset(self): # new
+#     queryset=Person.objects.all().order_by('email')
+#     return queryset
+# paginate_by = 20
 
 class ExcelView (ListView):
     print('excelview')
