@@ -96,7 +96,7 @@ def home(request):
     messages.add_message(request, messages.INFO, "Welkom bij Viking Lockers.")    
     q = request.GET.get('q') if request.GET.get('q') != None else ''
     qq=q.lower()
-    lockers=Locker.objects.all().filter(verhuurd=True)     
+    lockers=Locker.objects.all() #.filter(verhuurd=True)     
     messagelocker=Locker.objects.all().first()     
     from django.db.models import Count
     if request.method == 'POST':
@@ -157,7 +157,12 @@ def home(request):
             x = qq.replace("fact ", "")
             q=x
             url = "facturatielijst" + "?q=" +q 
-            queryset=Facturatielijst.objects.all().filter(email__icontains=q)
+            queryset=Facturatielijst.objects.all().filter(
+                Q(kluisnummer__icontains=q) |
+            Q(kluisnummer__icontains=q) |
+        Q(email__icontains=q)
+        ).order_by('kluisnummer')
+
             print(url)
             return HttpResponseRedirect(url)
     else:
@@ -173,6 +178,7 @@ def home(request):
     # print(q,lijst,excellockers)
     topics = Topic.objects.all()[0:5]
     room_messages = Message.objects.all()
+    facturatielijst=Facturatielijst.objects.all()
     # expression_if_true if condition else expression_if_false
     # lockers=excellockers if lijst=='excellijst' else lockers
     context = {
@@ -180,7 +186,7 @@ def home(request):
                'lijst':lijst,
             #    'results': results,
                 'lockers': lockers,
-                # 'excellockers': excellockers,
+                'facturatielijst': facturatielijst,
             #    'cabinetsused': cabinetsused, 
                'berichten': berichten, 
                'room_messages': room_messages

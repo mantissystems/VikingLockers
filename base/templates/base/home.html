@@ -36,16 +36,16 @@
       <div class="roomList__header">
         <div>
           {% comment %}
-          {% endcomment %}
+          {% if lijst == 'excellijst' %}
+          <h2>Excel Lockers {{excellockers.count }} van 120</h2>
+          {% include 'base/feed_excel.html' %}
+          {% endif %}
+              {% endcomment %}
   
         </div>
       </div>
-      <h2>Verhuurde Lockers {{lockers.count }} van 120</h2>
+      <h2>Verhuurde Lockers {{lockers.count }} van {{facturatielijst.count}} </h2>
       {{lijst}}
-      {% if lijst == 'excellijst' %}
-      <h2>Excel Lockers {{excellockers.count }} van 120</h2>
-      {% include 'base/feed_excel.html' %}
-      {% endif %}
       
       {% include 'base/feed_component.html' %}
       {% if request.user.is_superuser %}
