@@ -1,52 +1,34 @@
 
 <table class="viking-table">
     <thead>
-      User geregistreerd:
       <hr>
       <tr>
-        <th>User geregistreerd:</th>
-        <th></th>
-        <th></th>
-        <th></th>
-        <th></th>
+        <th>User:</th>
+        <th>Locker</th>
+        <th>regis</th>
       </tr>
     </thead>
     <tbody>
-      {% for user in object_list %}
+      {% for locker in object_list %}
       <tr>
 
-      <td>{{user.id }}</td>
       <td>
-        <a href="{% url 'update-user2' user.id %}?q={{user.id}}">{{user.email}} </span></a>
+        {% comment %}
+        {{locker.email}}
+        <th>xx</th>
+        {% endcomment %}
+
+        <a href="{% url 'update-user2' locker.id %}?q={{locker.id}}">{{locker.email}} </span></a>
         <div style="height:100%;width:100%">
           </div>
         </a>
       </td>
             <td>
-                {{user.username}}
+                {{locker.username}}
                  </td>
-                 <td>
-                    <td>
-                        {% if user.locker == None %}
-                          ------
-                          {% else %}
-                          {{user.locker}}
-                        {% endif %}
-                      </td>                     </td>
+                    <td>{{locker.locker}}</td>
           
       {% endfor %}
       </tr>
     </tbody>
   </table>
-  {% comment %}
-<ul>
-{% for user in object_list %}
-<li>{{ user.name }} - {{ user.email }}</li>
-
-    <a href="{% url 'update-user2' user.id %}?q={{user.id}}">{{ user.username }} | {{user.locker}} </span></a> <br>
-
-    {% empty %}
-    <li>No users yet.</li>
-{% endfor %}
-</ul>
-{% endcomment %}

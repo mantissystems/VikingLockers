@@ -1,5 +1,41 @@
 Lockerlist {{object_list.count}}
 <table class="viking-table">
+  <thead>
+    <hr>
+    <tr>
+      <th>Huurder:</th>
+      <th>Locker</th>
+      <th>Verhuurd</th>
+      <th>Sleutels</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for locker in object_list %}
+    <tr>
+
+    <td>
+      {% comment %}
+      {{locker.email}}
+      <th>xx</th>
+      {% endcomment %}
+
+      <a href="{% url 'update-locker' locker.id %}?q={{locker.id}}">{{locker.email|slice:"0:10"}}... </span></a>
+      <div style="height:100%;width:100%">
+        </div>
+      </a>
+    </td>
+          <td>
+              {{locker.kluisnummer}}
+               </td>
+                  <td>{{locker.verhuurd}}</td>
+                  <td>{{locker.sleutels}}</td>
+        
+    {% endfor %}
+    </tr>
+  </tbody>
+</table>
+{% comment %}
+<table class="viking-table">
     <thead>
       <hr>
       <tr>
@@ -29,7 +65,8 @@ Lockerlist {{object_list.count}}
                         {% if locker.kluisnummer == '----' %}
                           ------
                           {% else %}
-                          {{locker.excel}}
+
+                          {{locker.email|slice:"0:8"}}
                         {% endif %}
                       </td> 
                     <td>
@@ -45,3 +82,4 @@ Lockerlist {{object_list.count}}
       </tr>
     </tbody>
   </table>
+  {% endcomment %}

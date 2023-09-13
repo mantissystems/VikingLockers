@@ -3,12 +3,11 @@
     <thead>
       <hr>
       <tr>
-        <th>User geregistreerd:</th>
-        <th></th>
-        <th></th>
-        <th></th>
-        <th></th>
-        <th></th>
+        <th>Excel User:</th>
+        <th>Type</th>
+        <th>Sleutels</th>
+        <th>Kluisnummer</th>
+        <th>Excel</th>
       </tr>
     </thead>
     <tbody>
@@ -16,15 +15,22 @@
       <tr>
 
       <td>
-        <a href="{% url 'update-user2' user.id %}?q={{user.id}}">{{user.email}} </span></a>
+        <a href="{% url 'update-user2' user.id %}?q={{user.id}}">{{user.email|slice:"0:10"}} </span></a>
         <div style="height:100%;width:100%">
           </div>
         </a>
       </td>
             <td>
-                {{user.username}}
+                {{user.type}}
                  </td>
                  <td>
+                  {{user.sleutels}}
+                   </td>
+                   <td> 
+                    {{user.kluisnummer}}      
+                  </td>
+
+                   
                     <td>
                         {% if user.excel == '----' %}
                           ------
@@ -32,9 +38,6 @@
                           {{user.excel}}
                         {% endif %}
                       </td> 
-                    <td> 
-                      {{user.kluisnummer}}      
-                    </td>
           
       {% endfor %}
       </tr>

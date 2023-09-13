@@ -208,7 +208,8 @@ def home(request):
     return render(request, 'base/home.html', context)
 
 
-class LockerView (ListView):
+class LockerView (LoginRequiredMixin,ListView):
+    login_url='login'
     model=Locker
 def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -412,7 +413,10 @@ class CreateUser(CreateView):
             # print(locker)
         return super(CreateUser,self).form_valid(form)
 
-class updateUser3(UpdateView):
+# class MemberListView (LoginRequiredMixin, ListView):
+#     login_url='login'
+class updateUser3(LoginRequiredMixin,UpdateView):
+    login_url='login'
     model = User
     # fields='__all__'
     fields = ['username','email','locker']
@@ -666,8 +670,11 @@ def updateRoom(request, pk):
 
 # @login_required(login_url='login')   
 
-class MemberListView (ListView):
+class MemberListView (LoginRequiredMixin, ListView):
+    login_url='login'
     model=User
+# class MemberListView (ListView):
+#     model=User
 def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         return context
@@ -694,16 +701,9 @@ class PersonListView (ListView):
             }
         return context
 
-# def get_context_data(self, **kwargs):
-#         context = super().get_context_data(**kwargs)
-#         return context
-
-# def get_queryset(self): # new
-#     queryset=Person.objects.all().order_by('email')
-#     return queryset
-# paginate_by = 20
-
-class ExcelView (ListView):
+# class ExcelView (ListView):
+class ExcelView (LoginRequiredMixin, ListView):
+    login_url='login'
     print('excelview')
     model=Excellijst
     template_name='base/excellijst_list.html'
