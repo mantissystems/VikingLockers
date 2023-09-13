@@ -35,10 +35,10 @@
           <li>
             {% comment %}
             <span>{{topic.title}}</span>
-            <a href="{% url 'home' %}?q=helptekst {{topic.title}}"> <span>{{topic.title}}</span>{{ topic.content }} </a>
+            <a href="{% url 'home' %}?q=helptekst {{topic.title}}"> <span>{{topic.title}}</span>{{ topic.content|wordwrap:8 }} </a>
             {{question.answer_set.count}}
             {% endcomment %}
-            <a href="{% url 'helptekst' %}" class="active"><span> aantal registraties: {{persons.count}} van 120</span></a>
+            <a href="{% url 'helptekst' %}" class="active"><span> aantal registraties: {{aantalusers.count}} van 120</span></a>
           </li>
           <table class="viking-table">
             <tr>
@@ -54,7 +54,7 @@
                           {{topic.title}}
                         </td>
                         <td>
-                          {{topic.content}}
+                          {{ topic.content|wordwrap:5 }}
                         </td>
                     </tr>
                     {% endfor %}

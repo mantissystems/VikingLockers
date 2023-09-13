@@ -4,40 +4,25 @@
       <hr>
       <tr>
         <th>Excel User:</th>
-        <th>Type</th>
-        <th>Sleutels</th>
         <th>Kluisnummer</th>
-        <th>Excel</th>
+        <th>User_id</th>
+        <th></th>
       </tr>
     </thead>
     <tbody>
       {% for user in object_list %}
       <tr>
-
-      <td>
-        <a href="{% url 'update-user2' user.id %}?q={{user.id}}">{{user.email|slice:"0:10"}} </span></a>
-        <div style="height:100%;width:100%">
-          </div>
-        </a>
-      </td>
             <td>
-                {{user.type}}
-                 </td>
-                 <td>
-                  {{user.sleutels}}
-                   </td>
-                   <td> 
-                    {{user.kluisnummer}}      
-                  </td>
-
-                   
+              {{user.email|truncatechars:10}}
+            </td>
                     <td>
-                        {% if user.excel == '----' %}
+                        {% if user.excel == '--' %}
                           ------
                           {% else %}
-                          {{user.excel}}
-                        {% endif %}
-                      </td> 
+                          <a href="{% url 'update-usermail'  user.excel  %}?q={{user.excel}}">{{user.kluisnummer}} </span></a>
+                          {% endif %}
+                        </td> 
+                        <td>{{user.excel}} </td>                
           
       {% endfor %}
       </tr>

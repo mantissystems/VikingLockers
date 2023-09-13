@@ -13,13 +13,13 @@
               </path>
             </svg>
           </a>
-          <h3>Create/ Update Locker</h3>
+          <h3>CreateFactuurlijst Regel</h3>
         </div>
       </div>
       <div class="layout__body">
         <form method="post" novalidate class="card">
           {%csrf_token %}
-          <h2>{% if locker %} Update {% else %} Create {% endif %} Locker</h2>
+          <h2>{% if locker %} Update {% else %} Create {% endif %} Factuurregel</h2>
          {% for field in form %}
            {% if field.name == 'verhuurd' %}
            <label for="profile_pic">{{field.label}}</label>
@@ -45,10 +45,7 @@
            <input type="submit" value="Save" class="btn btn-primary"/>
            <a href="{%url 'home'%}" class="btn btn-outline">Cancel</a>
            {% if request.user.is_superuser %}
-           <a href="{% url 'create-factuur'%}" class="btn btn--link">Factuur</a>
-           {% comment %}
-           <a href="{% url 'delete-locker' locker.id %}" class="btn btn--link">Delete</a>
-           {% endcomment %}
+           <a href="{% url 'delete-locker' 1 %}" class="btn btn--link">Delete</a>
            {% endif %}
            {% if locker %}
 {% endif %}

@@ -1,7 +1,7 @@
 
 import csv
 from django.http import HttpResponse, HttpResponseRedirect
-from django.shortcuts import redirect, render
+from django.shortcuts import get_object_or_404, redirect, render
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 # from django.utils.decorators import method_decorator
@@ -97,7 +97,7 @@ def home(request):
     messages.add_message(request, messages.INFO, "Welkom bij Viking Lockers.")    
     q = request.GET.get('q') if request.GET.get('q') != None else ''
     qq=q.lower()
-    lockers=Locker.objects.all() #.filter(verhuurd=True)     
+    lockers=Locker.objects.all().filter(verhuurd=True)     
     messagelocker=Locker.objects.all().first()     
     from django.db.models import Count
     if request.method == 'POST':
@@ -106,7 +106,6 @@ def home(request):
             locker=messagelocker,
             body=request.POST.get('body')
         )
-            # print(message.body)
     if request.user.is_authenticated:
         try:
             user=User.objects.get(id=request.user.id)
@@ -121,7 +120,7 @@ def home(request):
     elif request.user is not None:
         messages.info(request, f'Ubent niet ingelogd. Svp Inloggen / Registreren')
         print('2.not-none-user:', request.user)
-        return HttpResponseRedirect('/info/')
+        return HttpResponseRedirect('/registreer/')
     elif request.user == AnonymousUser:
           print('3.anonymoususer:', request.user)
     elif request.user != AnonymousUser:
@@ -130,7 +129,6 @@ def home(request):
                     user=User.objects.get(id=request.user.id)
                     yourlocker=Locker.objects.filter(email__icontains=user.email)
                     yourlocker=Locker.objects.filter(kluisnummer__icontains=user.locker)
-                    # yourlocker=0
                     cnt=yourlocker.count()
                     print('6.logged-in-user:', request.user)
             except:
@@ -142,66 +140,40 @@ def home(request):
     url = reverse('berichten',)
     if q!='' or q !=None:
         lijst='home'
-        # rooms_found = Matriks.objects.filter(regel__icontains=q).values_list('naam',flat=True)
+        lockers=Locker.objects.all().filter(verhuurd=True)     
+
         if 'xls' in qq:
             x = qq.replace("xls ", "")
             q=x
-            lockers =Locker.objects.filter(
-        Q(kluisnummer__icontains=q) |
-        Q(email__icontains=q)
-        ).order_by('kluisnummer').exclude(verhuurd=False)
+            queryset = Excellijst.objects.filter(
+            Q(email__icontains=q)|
+            Q(type__icontains=q)|
+            Q(excel__icontains=q)|
+            Q(kluisnummer__icontains=q)
+            ).order_by('kluisnummer')
             url = "excellijst" + "?q=" +q 
-            queryset=Excellijst.objects.all().filter(email__icontains=q)
-            print(url)
             return HttpResponseRedirect(url)
         if 'fact' in qq:
             x = qq.replace("fact ", "")
             q=x
             url = "facturatielijst" + "?q=" +q 
-            queryset=Facturatielijst.objects.all().filter(
-                Q(kluisnummer__icontains=q) |
-            Q(kluisnummer__icontains=q) |
-        Q(email__icontains=q)
-        ).order_by('kluisnummer')
-
-            print(url)
             return HttpResponseRedirect(url)
         if 'pers' in qq:
             x = qq.replace("pers ", "")
             q=x
             url = "profiles" + "?q=" +q 
-            queryset=Person.objects.all().filter(
-                Q(locker__icontains=q) |
-            Q(name__icontains=q) |
-            Q(email__icontains=q)
-        ).order_by('email')
-
-            print(url)
             return HttpResponseRedirect(url)
 
     else:
-        berichten=Bericht.objects.all() ##.filter(user=request.user.id)
-        # if berichten2:
-        #     return HttpResponseRedirect(url)
-
-    # excellockers =Excellijst.objects.filter(
-    # Q(kluisnummer__icontains=q) |
-    # Q(type__icontains=q) |
-    # Q(email__icontains=q)
-    # ).order_by('kluisnummer')
-    # print(q,lijst,excellockers)
-    topics = Topic.objects.all()[0:5]
+        berichten=Bericht.objects.all()
+    # topics = Topic.objects.all()[0:5]
+    lockers=Locker.objects.all().filter(verhuurd=True)     
     room_messages = Message.objects.all()
     facturatielijst=Facturatielijst.objects.all()
-    # expression_if_true if condition else expression_if_false
-    # lockers=excellockers if lijst=='excellijst' else lockers
     context = {
-               'topics': topics,
                'lijst':lijst,
-            #    'results': results,
                 'lockers': lockers,
                 'facturatielijst': facturatielijst,
-            #    'cabinetsused': cabinetsused, 
                'berichten': berichten, 
                'room_messages': room_messages
                }
@@ -413,8 +385,6 @@ class CreateUser(CreateView):
             # print(locker)
         return super(CreateUser,self).form_valid(form)
 
-# class MemberListView (LoginRequiredMixin, ListView):
-#     login_url='login'
 class updateUser3(LoginRequiredMixin,UpdateView):
     login_url='login'
     model = User
@@ -436,6 +406,42 @@ class updateUser3(LoginRequiredMixin,UpdateView):
 
         messages.success(self.request, "The user was updated successfully.")
         return super(updateUser3,self).form_valid(form)
+        
+class updateUser_email(LoginRequiredMixin,UpdateView):
+    login_url='login'
+    model = User
+    # fields='__all__'
+    fields = ['username','email','locker']
+    success_url = reverse_lazy('users')
+    def get_object(self):
+        # obj = get_object_or_404(User, email__slug=self.kwargs['email'], slug=self.kwargs['email'] )
+        obj = get_object_or_404(User, id=self.kwargs['pk'])
+        return obj
+    # def get_context_data(self,**kwargs):
+    #     q = self.request.GET.get('q') if self.request.GET.get('q') != None else ''
+    #     query = self.request.GET.get('q')
+    #     if query == None: query=""
+    #     queryset=User.objects.get(email=query)
+    #     context = {
+    #         'query': query,
+    #         'object_list' :queryset,
+    #         }
+    #     return context
+
+    def form_valid(self, form):
+        kluis = form.cleaned_data['locker']  
+        email = form.cleaned_data['email'] 
+        if kluis:
+            print(kluis)
+            locker, created = Locker.objects.update_or_create(
+            kluisnummer=kluis,
+            email=email,
+            verhuurd=False,
+            kluisje=kluis,
+            )
+
+        messages.success(self.request, "The user was updated successfully.")
+        return super(updateUser_email,self).form_valid(form)
 
 def userProfile(request, pk):
     user = User.objects.get(id=pk)
@@ -713,9 +719,10 @@ class ExcelView (LoginRequiredMixin, ListView):
     def get_context_data(self,**kwargs):
         q = self.request.GET.get('q') if self.request.GET.get('q') != None else ''
         query = self.request.GET.get('q')
+        print(query)
         if query == None: query=""
-        queryset=Excellijst.objects.all().filter(email__icontains=query)
-        queryset = Excellijst.objects.filter(
+        # queryset=Excellijst.objects.all().filter(email__icontains=query)
+        queryset = Excellijst.objects.all().filter(
             Q(email__icontains=query)|
             Q(type__icontains=query)|
             Q(excel__icontains=query)|
@@ -732,10 +739,12 @@ class FacturatieView (LoginRequiredMixin, ListView):
     def get_context_data(self,**kwargs):
         q = self.request.GET.get('q') if self.request.GET.get('q') != None else ''
         query = self.request.GET.get('q')
+        print(query)
         if query == None: query=""
-        queryset = Facturatielijst.objects.filter(
+        queryset = Facturatielijst.objects.all().filter(
             Q(email__icontains=query)|
-            Q(kluisnummer__icontains=query)
+            Q(kluisnummer__icontains=query)|
+            Q(in_excel__icontains='==')&Q(is_registered__icontains='==')
             ).order_by('kluisnummer')
         context = {
             'query': query,
@@ -808,25 +817,71 @@ class LockerDeleteView(DeleteView):
     success_url ="/"    
     template_name = "base/delete.html"
 
+@login_required(login_url='login')   
 def tel_aantal_registraties(request):
-    print('in tel_aantal_registraties===============')
+    print('in tel_aantal_registraties in facturatielijst===============')
     qs_user = User.objects.all()
     qs1=qs_user.values_list('email',flat=True)
     qs_locker = Locker.objects.all()
-    qs_factuur = Facturatielijst.objects.all() #.filter(email__in=qs1)
-    # for q in qs_factuur:
-    #     if User.objects.filter(email=q.email).exists():
-    #         f=Facturatielijst.objects.all().filter(email=q.email).update(is_registered='==regis==')
-    #         try:
-    #             User.objects.get(email=q.email)
-    #         except: User.DoesNotExist
-    #         print(q.email)
-
-    qs3=qs_factuur.values_list('email',flat=True)
     qs_excel = Excellijst.objects.all()
+    qs_factuur = Facturatielijst.objects.all() #.filter(email__in=qs1)
+    qs3=qs_factuur.values_list('email',flat=True)
+    for q in qs_factuur:
+        if User.objects.filter(email=q.email).exists():
+            f=Facturatielijst.objects.all().filter(email=q.email).update(is_registered='==regis==')
+        else:
+            e=Excellijst.objects.all().filter(email=q.email).update(excel='--')
+            try:
+                User.objects.get(email=q.email)
+            except: User.DoesNotExist
+            print(q.email)
+    print('in tel_aantal_registraties in excel===============')
+    for q in qs_excel:
+        if User.objects.filter(email=q.email).exists():
+            e=Excellijst.objects.all().filter(email=q.email).update(excel=q.id)
+            f=Facturatielijst.objects.all().filter(email=q.email).update(type='L')
+            f=Facturatielijst.objects.all().filter(email=q.email).update(in_excel='==xls==')
+        else:
+            e=Excellijst.objects.all().filter(email=q.email).update(excel='--')
+            try:
+                User.objects.get(email=q.email)
+            except: User.DoesNotExist
+            # print(q.email,'X')
+            # f=Facturatielijst.objects.all().filter(email=q.email).update(type='X')
+            # print(q.email)
+    print('in tel_aantal_users in excel===============')
+    for u in qs_user:
+        if User.objects.filter(email=u.email).exists():
+            e=Excellijst.objects.all().filter(email=u.email).update(excel=u.id)
+            f=Facturatielijst.objects.all().filter(email=u.email).update(type='L')
+            f=Facturatielijst.objects.all().filter(email=u.email).update(in_excel='==xls===')
+        else:
+            e=Excellijst.objects.all().filter(email=u.email).update(excel='--')
+
+            try:
+                User.objects.get(email=u.email)
+            except: User.DoesNotExist
+            print(u.email,'X')
+            # f=Facturatielijst.objects.all().filter(email=u.email).update(type='X')
+            # print(u.email,'X')
+    print('in tel_aantal_lockers in facturatielijst===============')
+    for l in qs_locker:
+        if User.objects.filter(email=l.email).exists():
+            e=Excellijst.objects.all().filter(email=u.email).update(excel=l.id)
+            f=Facturatielijst.objects.all().filter(email=l.email).update(type='L')
+        else:
+            e=Excellijst.objects.all().filter(email=l.email).update(excel='--')
+
+            try:
+                User.objects.get(email=l.email)
+            except: User.DoesNotExist
+            # print(u.email,'X')
+            # f=Facturatielijst.objects.all().filter(email=l.email).update(type='X')
     print(qs_user.count(),qs_locker.count(),qs_factuur.count(),qs_excel.count())
+    print('einde tel_aantal_lockers in facturatielijst')
+
     # def file_load_view(request):
-    #     # ============================================================
+    #     # ============================================================ example write file with appropriate separators
     # header = ['name', 'area', 'country_code2', 'country_code3']
     # data = [
     # ['Albania', 28748, 'AL', 'ALB'],
@@ -840,20 +895,20 @@ def tel_aantal_registraties(request):
     #     writer.writerow(header)
     # # write multiple rows
     #     writer.writerows(data)
-    # # ============================================================
+    # # ============================================================ temporarely  commented out 13-9-23 
+    # Create the HttpResponse object with the appropriate CSV header. 
+    # response = HttpResponse(content_type='text/csv')
+    # response['Content-Disposition'] = 'attachment; filename="facturatielijst.csv"'
+    # # excel: 20200830VolwassenLedenPloegmakelaar.xlsx (libreoffice calc)
+    # writer = csv.writer(response)
+    # writer.writerow(['huurder', 'locker', 'regis', ])
+    # tekst=Facturatielijst.objects.all().values_list('email','kluisnummer','is_registered')
+    # # print(tekst)
+    # for e in tekst:
+    #     writer.writerow([e])
 
-    # Create the HttpResponse object with the appropriate CSV header.
-    response = HttpResponse(content_type='text/csv')
-    response['Content-Disposition'] = 'attachment; filename="facturatielijst.csv"'
-    # excel: 20200830VolwassenLedenPloegmakelaar.xlsx (libreoffice calc)
-    writer = csv.writer(response)
-    writer.writerow(['huurder', 'locker', 'regis', ])
-    tekst=Facturatielijst.objects.all().values_list('email','kluisnummer','is_registered')
-    # print(tekst)
-    for e in tekst:
-        writer.writerow([e])
-
-    return response
+    # return response
+    # # ============================================================ temporarely  commented out 13-9-23
 
     context={}
     return render(request, 'base/home.html', context)
@@ -952,6 +1007,16 @@ def createRoom(request):
     context = {'form': form, 'topics': topics}
     return render(request, 'base/room_form.html', context)
 
+class CreateFactuur(CreateView):
+    model = Facturatielijst
+    fields = ['kluisnummer','email',]
+    # fields='__all__'
+    success_url = reverse_lazy('facturatielijst')
+    
+    def form_valid(self, form):
+        messages.success(self.request, "U bent op de wachtlijst geplaatst.")
+        return super(CreateFactuur,self).form_valid(form)
+
 class CreatePerson(CreateView):
     model = Person
     fields = ['name','email',]
@@ -1007,15 +1072,34 @@ class LockerUpdate( LoginRequiredMixin,UpdateView):
     login_url = '/login/'
     # redirect_field_name = 'redirect_to'
     model = Locker
-    fields = ['kluisnummer','email','verhuurd','sleutels','code','kluisje']
+    fields='__all__'
+    # fields = ['kluisnummer','email','verhuurd','sleutels','code','kluisje']
         # if request.user.email != locker.email and not request.user.is_superuser:
         # messages.error(request, f'{locker.kluisnummer} : Is niet uw locker')
         # return render(request, 'base/berichten.html', {'lockers': lockers,'topics':topics})
 
     # fields = ['name','email','wachtlijst']
     # fields = '__all__'
-    success_url = reverse_lazy('lockers')
     
+    success_url = reverse_lazy('lockers')
+    # def get_object(self):
+    def get_object(self):
+        # obj = get_object_or_404(Locker, id=self.kwargs['pk'])
+
+        # _id = self.request.GET.get('pk') if self.request.GET.get('pk') != None else ''
+        # print(_id)
+        # print(obj)
+        try:
+            int(self.kwargs['pk'])
+            # obj = get_object_or_404(Locker, id=self.kwargs['pk'])
+            return True
+        except ValueError:
+            obj = get_object_or_404(Locker, kluisnummer=self.kwargs['pk'])
+            return obj
+        # obj = get_object_or_404(User, email__slug=self.kwargs['email'], slug=self.kwargs['email'] )
+        # obj = get_object_or_404(User, id=self.kwargs['pk'])
+        # return obj
+
     def form_valid(self, form):
         kluis = form.cleaned_data['kluisnummer']  
         email = form.cleaned_data['email'] 
@@ -1251,17 +1335,17 @@ def hernummermatriks(request):
     context={}
     return render(request, 'base/home.html', context)
 
-def create_locker(request,row,kol):
-    hdr=['', 'kol1','kol2','kol3','kol4','kol5','kol6','kol7','kol8','kol9','kol10','kol11','kol12','kol13']  #LET OP: KOLOM NUL NIET VERGETEN
-    column=int(kol)
-    print('params',row,kol)
-    # matrix=Matriks.objects.get(id=row)
-    rms = Locker.objects.all()
-    # rgl=matrix.y_as
-    dematrikskolom=hdr[column];print(dematrikskolom)
-    # kluisje=getattr(matrix,dematrikskolom)
-    # matriksnaam=getattr(matrix,'naam')
-    column=int(kol)
+# def create_locker(request,row,kol):
+#     hdr=['', 'kol1','kol2','kol3','kol4','kol5','kol6','kol7','kol8','kol9','kol10','kol11','kol12','kol13']  #LET OP: KOLOM NUL NIET VERGETEN
+#     column=int(kol)
+#     print('params',row,kol)
+#     # matrix=Matriks.objects.get(id=row)
+#     rms = Locker.objects.all()
+#     # rgl=matrix.y_as
+#     dematrikskolom=hdr[column];print(dematrikskolom)
+#     # kluisje=getattr(matrix,dematrikskolom)
+#     # matriksnaam=getattr(matrix,'naam')
+#     column=int(kol)
     # regel=matrix.regel
     # oorspronkelijkmatriksnummer=decodeer(regel,dematrikskolom,column,cellengte=3)
     # print('locker:',oorspronkelijkmatriksnummer)
