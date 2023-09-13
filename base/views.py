@@ -1080,22 +1080,21 @@ class LockerUpdate( LoginRequiredMixin,UpdateView):
 
     # fields = ['name','email','wachtlijst']
     # fields = '__all__'
-    
     success_url = reverse_lazy('lockers')
     # def get_object(self):
     def get_object(self):
-        # obj = get_object_or_404(Locker, id=self.kwargs['pk'])
+        obj = get_object_or_404(Locker, id=self.kwargs['pk'])
 
-        # _id = self.request.GET.get('pk') if self.request.GET.get('pk') != None else ''
-        # print(_id)
-        # print(obj)
+        _id = self.request.GET.get('pk') if self.request.GET.get('pk') != None else ''
+        print(_id)
+        print(obj)
         try:
             int(self.kwargs['pk'])
-            # obj = get_object_or_404(Locker, id=self.kwargs['pk'])
-            return True
-        except ValueError:
-            obj = get_object_or_404(Locker, kluisnummer=self.kwargs['pk'])
+            obj = get_object_or_404(Locker, id=self.kwargs['pk'])
             return obj
+        except ValueError:
+                obj = get_object_or_404(Locker, kluisnummer=self.kwargs['pk'])
+                return obj
         # obj = get_object_or_404(User, email__slug=self.kwargs['email'], slug=self.kwargs['email'] )
         # obj = get_object_or_404(User, id=self.kwargs['pk'])
         # return obj
