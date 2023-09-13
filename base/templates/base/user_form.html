@@ -83,7 +83,11 @@
            {% if person %}
                      <a href="{% url 'delete-person' person.id %}" class="btn btn--link">Delete</a>
                      {% else %}
+                     {% comment %}
+
                      {{request.user}}
+                     {% endcomment %}
+
                      Login
                     </button>
                   </form>
@@ -92,7 +96,7 @@
                     <p>Haven't signed up yet?</p>
                     <hr>
                     <a href="{% url 'registreer' %}" class="btn btn--link">Sign Up (Registreer)</a><hr>
-                    <a href="{% url 'create-person' %}" class="btn btn--link">Zet je op de Wachtlijst</a>
+                    <a href="{% url 'create-person' %}" class="btn btn--link">Op de Wachtlijst</a>
                   </div>
                 </div>
               </div>
