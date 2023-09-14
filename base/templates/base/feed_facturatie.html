@@ -20,7 +20,7 @@
       <td>
         {{locker.email|truncatechars:12}}
         <td>
-          <a href="{% url 'update-locker' locker.id %}?q={{locker.id}}">{{locker.kluisnummer}} </span></a>
+          <a href="{% url 'update-usermail'  locker.kluisnummer %}?q={{locker.id}}">{{locker.kluisnummer}} </span></a>
         </td>
         {% comment %}
         <th>xx</th>
@@ -41,9 +41,10 @@
                         {% endif %}
                         x=x
                       </td> 
+                      {{locker.type}}
                       {% endcomment %}
                       <td>
-                        {{locker.type}}
+                        <a href="{% url 'update-usermail'  locker.type %}?q={{locker.id}}">{{locker.type}} </span></a>
                       </td>
                       <td></td>
                                 <td>{{locker.in_excel}}</td>

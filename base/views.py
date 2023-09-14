@@ -391,7 +391,11 @@ class updateUser3(LoginRequiredMixin,UpdateView):
     # fields='__all__'
     fields = ['username','email','locker']
     success_url = reverse_lazy('users')
-    
+    def get_object(self):
+        obj = get_object_or_404(Locker, kluisnummer__slug=self.kwargs['kluis'], slug=self.kwargs['email'] )
+        # obj = get_object_or_404(User, id=self.kwargs['pk'])
+        return obj
+
     def form_valid(self, form):
         kluis = form.cleaned_data['locker']  
         email = form.cleaned_data['email'] 
@@ -409,24 +413,21 @@ class updateUser3(LoginRequiredMixin,UpdateView):
         
 class updateUser_email(LoginRequiredMixin,UpdateView):
     login_url='login'
-    model = User
+    model = Locker
     # fields='__all__'
     fields = ['username','email','locker']
     success_url = reverse_lazy('users')
     def get_object(self):
-        # obj = get_object_or_404(User, email__slug=self.kwargs['email'], slug=self.kwargs['email'] )
-        obj = get_object_or_404(User, id=self.kwargs['pk'])
+        obj = get_object_or_404(Locker, kluisnummer=self.kwargs['kluis'],)# slug=self.kwargs['kluis'] )
         return obj
-    # def get_context_data(self,**kwargs):
-    #     q = self.request.GET.get('q') if self.request.GET.get('q') != None else ''
-    #     query = self.request.GET.get('q')
-    #     if query == None: query=""
-    #     queryset=User.objects.get(email=query)
-    #     context = {
-    #         'query': query,
-    #         'object_list' :queryset,
-    #         }
-    #     return context
+    def get_context_data(self,**kwargs):
+        locker=self.get_object()
+        print(locker)
+        form = LockerForm(instance=locker)
+        context = {
+            'form': form,
+            }
+        return context
 
     def form_valid(self, form):
         kluis = form.cleaned_data['locker']  
@@ -834,43 +835,47 @@ def tel_aantal_registraties(request):
             try:
                 User.objects.get(email=q.email)
             except: User.DoesNotExist
-            print(q.email)
+            # print(q.email)
     print('in tel_aantal_registraties in excel===============')
-    for q in qs_excel:
-        if User.objects.filter(email=q.email).exists():
-            e=Excellijst.objects.all().filter(email=q.email).update(excel=q.id)
-            f=Facturatielijst.objects.all().filter(email=q.email).update(type='L')
-            f=Facturatielijst.objects.all().filter(email=q.email).update(in_excel='==xls==')
-        else:
-            e=Excellijst.objects.all().filter(email=q.email).update(excel='--')
-            try:
-                User.objects.get(email=q.email)
-            except: User.DoesNotExist
+    # for q in qs_excel:
+    #     if User.objects.filter(email=q.email).exists():
+    #         e=Excellijst.objects.all().filter(email=q.email).update(excel=q.id)
+    #         f=Facturatielijst.objects.all().filter(email=q.email).update(type='L')
+    #         f=Facturatielijst.objects.all().filter(email=q.email).update(in_excel='==xls==')
+    #     else:
+    #         e=Excellijst.objects.all().filter(email=q.email).update(excel='--')
+    #         try:
+    #             User.objects.get(email=q.email)
+    #         except: User.DoesNotExist
             # print(q.email,'X')
             # f=Facturatielijst.objects.all().filter(email=q.email).update(type='X')
             # print(q.email)
-    print('in tel_aantal_users in excel===============')
-    for u in qs_user:
-        if User.objects.filter(email=u.email).exists():
-            e=Excellijst.objects.all().filter(email=u.email).update(excel=u.id)
-            f=Facturatielijst.objects.all().filter(email=u.email).update(type='L')
-            f=Facturatielijst.objects.all().filter(email=u.email).update(in_excel='==xls===')
-        else:
-            e=Excellijst.objects.all().filter(email=u.email).update(excel='--')
+    # print('in tel_aantal_users in excel===============')
+    # for u in qs_user:
+    #     if User.objects.filter(email=u.email).exists():
+    #         e=Excellijst.objects.all().filter(email=u.email).update(excel=u.id)
+    #         f=Facturatielijst.objects.all().filter(email=u.email).update(type='L')
+    #         f=Facturatielijst.objects.all().filter(email=u.email).update(in_excel='==xls===')
+    #     else:
+    #         e=Excellijst.objects.all().filter(email=u.email).update(excel='--')
 
-            try:
-                User.objects.get(email=u.email)
-            except: User.DoesNotExist
-            print(u.email,'X')
+    #         try:
+    #             User.objects.get(email=u.email)
+    #         except: User.DoesNotExist
+    #         print(u.email,'X')
             # f=Facturatielijst.objects.all().filter(email=u.email).update(type='X')
             # print(u.email,'X')
     print('in tel_aantal_lockers in facturatielijst===============')
     for l in qs_locker:
-        if User.objects.filter(email=l.email).exists():
-            e=Excellijst.objects.all().filter(email=u.email).update(excel=l.id)
-            f=Facturatielijst.objects.all().filter(email=l.email).update(type='L')
+        if Facturatielijst.objects.filter(kluisnummer=l.kluisnummer).exists():
+            # e=Excellijst.objects.all().filter(email=l.email).update(excel=l.id)
+            # f=Facturatielijst.objects.all().filter(email=l.email).update(type='L')
+            f=Facturatielijst.objects.all().filter(kluisnummer=l.kluisnummer).update(type='L')
+            # print(l.kluisnummer)
         else:
-            e=Excellijst.objects.all().filter(email=l.email).update(excel='--')
+            print('not ',l.kluisnummer)
+            f=Facturatielijst.objects.all().filter(email=l.email).update(type=l.kluisnummer)
+            # e=Excellijst.objects.all().filter(email=l.email).update(excel='--')
 
             try:
                 User.objects.get(email=l.email)
