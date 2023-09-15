@@ -50,7 +50,7 @@
               </path>
             </svg>
           </a>
-          <h3>Create/ Update Waiting List</h3>
+          <h3>Create/ Update Waiting List {{email}} </h3>
         </div>
       </div>
       <div class="layout__body">
@@ -83,7 +83,6 @@
            <a href="{%url 'home'%}" class="btn btn-outline">Cancel</a>
            {% if person %}
            {% if request.user.is_superuser %}
-
                      <a href="{% url 'delete-person' person.id %}" class="btn btn--link">Delete</a>
                      {% endif %}
 {% endif %}

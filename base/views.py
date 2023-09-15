@@ -1082,6 +1082,28 @@ class CreatePerson(CreateView):
     model = Person
     fields = ['name','email',]
     success_url = reverse_lazy('home')
+
+    # def get_context_data(self, **kwargs):
+    #     context = super().get_context_data(**kwargs)
+        # user = self.request.user
+        # context["email"] = user.ticket_set.all()
+        # return context
+    def get_context_data(self,**kwargs):
+        context = super().get_context_data(**kwargs)
+        q = self.request.GET.get('personmail') if self.request.GET.get('personmail') != None else ''
+        query = self.request.GET.get('personmail')
+        if query == None: query=""
+        print(query)
+    #     queryset = Person.objects.
+    #     context = {
+    #         'query': query,
+    #         'object_list' :queryset,
+    #         }
+        # user = self.request.user
+        context["email"] = query #user.ticket_set.all()
+        return context
+
+    #     return context
     
     def form_valid(self, form):
         messages.success(self.request, "U bent op de wachtlijst geplaatst.")
