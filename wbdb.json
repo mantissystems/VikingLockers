@@ -6180,14 +6180,6 @@ excelview
 },
 {
   "model": "sessions.session",
-  "pk": "hvfwc0x96sc782oa2w13py0cubdxresr",
-  "fields": {
-    "session_data": ".eJxVjEEOwiAQRe_C2hDG0gIu3fcMZGBmpGpoUtqV8e7apAvd_vfef6mI21ri1niJE6mLAnX63RLmB9cd0B3rbdZ5rusyJb0r-qBNjzPx83q4fwcFW_nWgsAQOnLSd_5sB-8NAwAN4vrMaNELm4Sdk-AhmEQChDZ5kyXYRKDeH-cQOGQ:1qg2aH:HMKF1kFmtTQivR_3zUu3DoYb1cS4JPePXnxcfsZhvq8",
-    "expire_date": "2023-09-26T12:33:37.753Z"
-  }
-},
-{
-  "model": "sessions.session",
   "pk": "hzpinvns8stkd4zto2nz033wtjul5kvi",
   "fields": {
     "session_data": "e30:1qbT9w:R7nbLhXItKiryjxGRaD-zNa496ot1u9fFjIRGipUYZc",
@@ -6216,6 +6208,14 @@ excelview
   "fields": {
     "session_data": ".eJxVjDsOwjAQRO_iGlm7_sVQ0nMGa-21cQA5UpxUiLuTSCmgG817M28RaF1qWHuew8jiIhQqcfptI6VnbjviB7X7JNPUlnmMclfkQbu8TZxf18P9O6jU67YGzp4gW0U2gkMwxQ7AUSet2auILoLXoJmcswa3ZNCUM6LhQoMHKz5fE4o3Gw:1qbPr1:asSpYp2aWOP4zAHFNwlP953Cw-_V-Q4UKwvL4tYVpaA",
     "expire_date": "2023-09-13T18:23:47.867Z"
+  }
+},
+{
+  "model": "sessions.session",
+  "pk": "m8s6as2d4rm3tlup45d21ezocylfo046",
+  "fields": {
+    "session_data": ".eJxVjEEOwiAQRe_C2hDG0gIu3fcMZGBmpGpoUtqV8e7apAvd_vfef6mI21ri1niJE6mLAnX63RLmB9cd0B3rbdZ5rusyJb0r-qBNjzPx83q4fwcFW_nWgsAQOnLSd_5sB-8NAwAN4vrMaNELm4Sdk-AhmEQChDZ5kyXYRKDeH-cQOGQ:1qgF9K:I9utXH5xBh_WsVJYKTKeWmlk4w16ba0j-qt9xwEs_cQ",
+    "expire_date": "2023-09-27T01:58:38.005Z"
   }
 },
 {
@@ -6455,7 +6455,7 @@ excelview
   "pk": 1,
   "fields": {
     "password": "pbkdf2_sha256$390000$rpQgHiuSfhcF8lZlN7HQML$RDiOEXSeIAREafU0Tnvc9vgV82yf2zx4TW1/f/CTw1o=",
-    "last_login": "2023-09-12T12:33:37.591Z",
+    "last_login": "2023-09-13T01:58:37.841Z",
     "is_superuser": true,
     "first_name": "wim",
     "last_name": "bakker",
@@ -6611,7 +6611,7 @@ excelview
     "date_joined": "2023-08-28T05:25:43.725Z",
     "username": "marjolein schepel",
     "ploeg": null,
-    "locker": null,
+    "locker": "Dames 44",
     "email": "info@schepeladvies.nl",
     "avatar": "avatar.svg",
     "groups": [],
@@ -7136,7 +7136,7 @@ excelview
     "date_joined": "2023-09-01T10:59:01Z",
     "username": "willem",
     "ploeg": "Viking",
-    "locker": "H40",
+    "locker": "Heren 40",
     "email": "w.vandenbosch@planet.nl",
     "avatar": "avatar.svg",
     "groups": [
@@ -7243,7 +7243,7 @@ excelview
     "date_joined": "2023-09-05T15:39:17.122Z",
     "username": "kees wierenga",
     "ploeg": null,
-    "locker": "H53",
+    "locker": "Heren 53",
     "email": "cwierenga73@gmail.com",
     "avatar": "avatar.svg",
     "groups": [],
@@ -7734,6 +7734,27 @@ excelview
   }
 },
 {
+  "model": "base.user",
+  "pk": 284,
+  "fields": {
+    "password": "",
+    "last_login": null,
+    "is_superuser": false,
+    "first_name": "",
+    "last_name": "",
+    "is_staff": false,
+    "is_active": true,
+    "date_joined": "2023-09-13T19:35:52.101Z",
+    "username": "Martin Noorbergen",
+    "ploeg": null,
+    "locker": null,
+    "email": "martinwileenbiertje@hotmail.com",
+    "avatar": "avatar.svg",
+    "groups": [],
+    "user_permissions": []
+  }
+},
+{
   "model": "base.topic",
   "pk": 1,
   "fields": {
@@ -8045,7 +8066,7 @@ excelview
   "model": "base.locker",
   "pk": 25,
   "fields": {
-    "kluisnummer": "H40",
+    "kluisnummer": "Heren 40",
     "email": "w.vandenbosch@planet.nl",
     "kluisje": "H40",
     "type": "H",
@@ -8137,9 +8158,9 @@ excelview
   "model": "base.locker",
   "pk": 36,
   "fields": {
-    "kluisnummer": "D44",
+    "kluisnummer": "Dames 44",
     "email": "info@schepeladvies.nl",
-    "kluisje": "D44",
+    "kluisje": "Dames 44",
     "type": "--",
     "topic": "----",
     "row": "----",
@@ -8463,9 +8484,9 @@ excelview
   "model": "base.locker",
   "pk": 58,
   "fields": {
-    "kluisnummer": "H53",
+    "kluisnummer": "Heren 53",
     "email": "cwierenga73@gmail.com",
-    "kluisje": "",
+    "kluisje": "Heren 53",
     "type": "--",
     "topic": "----",
     "row": "----",
@@ -8507,7 +8528,7 @@ excelview
     "row": "----",
     "col": "----",
     "verhuurd": true,
-    "sleutels": "----",
+    "sleutels": "2",
     "code": "----",
     "created": "2023-09-10T14:37:42.128Z",
     "owners": []
@@ -8573,9 +8594,9 @@ excelview
   "fields": {
     "kluisnummer": "Heren 02",
     "email": "willie@ambeleij.demon.nl",
-    "in_excel": "in_excel",
+    "in_excel": "186",
     "is_registered": "==regis==",
-    "type": "1",
+    "type": "X",
     "sleutels": "1",
     "code": "1",
     "created": "2023-11-03T00:00:00Z"
@@ -8587,9 +8608,9 @@ excelview
   "fields": {
     "kluisnummer": "Dames B-28",
     "email": "carappeldoorn@ziggo.nl",
-    "in_excel": "in_excel",
-    "is_registered": "hang",
-    "type": "1",
+    "in_excel": "-----",
+    "is_registered": "-----",
+    "type": "U",
     "sleutels": "1",
     "code": "1",
     "created": "2023-01-03T00:00:00Z"
@@ -8601,9 +8622,9 @@ excelview
   "fields": {
     "kluisnummer": "Heren 43",
     "email": "bertappeldoorn@ziggo.nl",
-    "in_excel": "in_excel",
-    "is_registered": "hang",
-    "type": "1",
+    "in_excel": "-----",
+    "is_registered": "-----",
+    "type": "U",
     "sleutels": "1",
     "code": "1",
     "created": "2023-01-03T00:00:00Z"
@@ -8615,9 +8636,9 @@ excelview
   "fields": {
     "kluisnummer": "Dames B-33",
     "email": "baaijen@ziggo.nl",
-    "in_excel": "in_excel",
-    "is_registered": "==regis==",
-    "type": "1",
+    "in_excel": "205",
+    "is_registered": "D33",
+    "type": "D33",
     "sleutels": "1",
     "code": "1",
     "created": "2023-01-03T00:00:00Z"
@@ -8629,9 +8650,9 @@ excelview
   "fields": {
     "kluisnummer": "Heren 33",
     "email": "dickbaars@kpnplanet.nl",
-    "in_excel": "in_excel",
-    "is_registered": "hang",
-    "type": "1",
+    "in_excel": "-----",
+    "is_registered": "-----",
+    "type": "U",
     "sleutels": "1",
     "code": "1",
     "created": "2023-01-03T00:00:00Z"
@@ -8643,9 +8664,9 @@ excelview
   "fields": {
     "kluisnummer": "Heren 19",
     "email": "ecr.bak@online.nl",
-    "in_excel": "in_excel",
-    "is_registered": "hang",
-    "type": "1",
+    "in_excel": "-----",
+    "is_registered": "-----",
+    "type": "U",
     "sleutels": "1",
     "code": "1",
     "created": "2023-01-03T00:00:00Z"
@@ -8657,9 +8678,9 @@ excelview
   "fields": {
     "kluisnummer": "----",
     "email": "hb-ext@ziggo.nl",
-    "in_excel": "hang",
-    "is_registered": "hang",
-    "type": "vrij",
+    "in_excel": "-----",
+    "is_registered": "-----",
+    "type": "U",
     "sleutels": "1",
     "code": "1",
     "created": "2023-01-03T00:00:00Z"
@@ -8671,9 +8692,9 @@ excelview
   "fields": {
     "kluisnummer": "Dames 20",
     "email": "ebeverdam@xs4all.nl",
-    "in_excel": "in_excel",
-    "is_registered": "hang",
-    "type": "1",
+    "in_excel": "-----",
+    "is_registered": "-----",
+    "type": "U",
     "sleutels": "1",
     "code": "1",
     "created": "2023-01-03T00:00:00Z"
@@ -8685,9 +8706,9 @@ excelview
   "fields": {
     "kluisnummer": "Heren 61",
     "email": "essen-van@ziggo.nl",
-    "in_excel": "in_excel",
-    "is_registered": "hang",
-    "type": "1",
+    "in_excel": "-----",
+    "is_registered": "-----",
+    "type": "U",
     "sleutels": "1",
     "code": "1",
     "created": "2023-01-03T00:00:00Z"
@@ -8699,9 +8720,9 @@ excelview
   "fields": {
     "kluisnummer": "Heren 14",
     "email": "roeien@jeroenbollen.nl",
-    "in_excel": "in_excel",
-    "is_registered": "hang",
-    "type": "1",
+    "in_excel": "-----",
+    "is_registered": "-----",
+    "type": "U",
     "sleutels": "1",
     "code": "1",
     "created": "2023-01-03T00:00:00Z"
@@ -8713,9 +8734,9 @@ excelview
   "fields": {
     "kluisnummer": "Dames C-62",
     "email": "leonievb1@gmail.com",
-    "in_excel": "in_excel",
-    "is_registered": "hang",
-    "type": "1",
+    "in_excel": "-----",
+    "is_registered": "-----",
+    "type": "U",
     "sleutels": "1",
     "code": "1",
     "created": "2023-01-03T00:00:00Z"
@@ -8727,9 +8748,9 @@ excelview
   "fields": {
     "kluisnummer": "Heren 40",
     "email": "w.vandenbosch@planet.nl",
-    "in_excel": "in_excel",
-    "is_registered": "==regis==",
-    "type": "1",
+    "in_excel": "244",
+    "is_registered": "Heren 40",
+    "type": "Heren 40",
     "sleutels": "1",
     "code": "1",
     "created": "2023-01-03T00:00:00Z"
@@ -8741,9 +8762,9 @@ excelview
   "fields": {
     "kluisnummer": "Heren 03",
     "email": "leovandenbroek@casema.nl",
-    "in_excel": "in_excel",
-    "is_registered": "==regis==",
-    "type": "1",
+    "in_excel": "195",
+    "is_registered": "H03",
+    "type": "H03",
     "sleutels": "1",
     "code": "1",
     "created": "2023-01-03T00:00:00Z"
@@ -8755,9 +8776,9 @@ excelview
   "fields": {
     "kluisnummer": "Heren 20",
     "email": "Tamerlan@xs4all.nl",
-    "in_excel": "in_excel",
-    "is_registered": "hang",
-    "type": "1",
+    "in_excel": "-----",
+    "is_registered": "-----",
+    "type": "U",
     "sleutels": "1",
     "code": "1",
     "created": "2023-01-03T00:00:00Z"
@@ -8769,9 +8790,9 @@ excelview
   "fields": {
     "kluisnummer": "Heren 65",
     "email": "gerardvanbruggen64@hetnet.nl",
-    "in_excel": "in_excel",
-    "is_registered": "hang",
-    "type": "1",
+    "in_excel": "-----",
+    "is_registered": "-----",
+    "type": "U",
     "sleutels": "1",
     "code": "1",
     "created": "2023-01-03T00:00:00Z"
@@ -8783,9 +8804,9 @@ excelview
   "fields": {
     "kluisnummer": "Dames 05",
     "email": "cmeermin@airpost.net",
-    "in_excel": "in_excel",
-    "is_registered": "hang",
-    "type": "1",
+    "in_excel": "-----",
+    "is_registered": "-----",
+    "type": "U",
     "sleutels": "1",
     "code": "1",
     "created": "2023-01-03T00:00:00Z"
@@ -8797,9 +8818,9 @@ excelview
   "fields": {
     "kluisnummer": "Heren 69",
     "email": "die123@casema.nl",
-    "in_excel": "in_excel",
-    "is_registered": "hang",
-    "type": "1",
+    "in_excel": "-----",
+    "is_registered": "-----",
+    "type": "U",
     "sleutels": "1",
     "code": "1",
     "created": "2023-01-03T00:00:00Z"
@@ -8811,9 +8832,9 @@ excelview
   "fields": {
     "kluisnummer": "Dames 21",
     "email": "n.l.m.cappaert@gmail.com",
-    "in_excel": "in_excel",
-    "is_registered": "hang",
-    "type": "1",
+    "in_excel": "-----",
+    "is_registered": "-----",
+    "type": "U",
     "sleutels": "1",
     "code": "1",
     "created": "2023-01-03T00:00:00Z"
@@ -8825,9 +8846,9 @@ excelview
   "fields": {
     "kluisnummer": "----",
     "email": "harmke.van.dam@xs4all.nl",
-    "in_excel": "hang",
-    "is_registered": "==regis==",
-    "type": "1",
+    "in_excel": "203",
+    "is_registered": "D26",
+    "type": "D26",
     "sleutels": "1",
     "code": "1",
     "created": "2023-01-03T00:00:00Z"
@@ -8839,9 +8860,9 @@ excelview
   "fields": {
     "kluisnummer": "Dames 14",
     "email": "w.brokervandongen@upcmail.nl",
-    "in_excel": "in_excel",
-    "is_registered": "hang",
-    "type": "1",
+    "in_excel": "-----",
+    "is_registered": "-----",
+    "type": "U",
     "sleutels": "1",
     "code": "1",
     "created": "2023-01-03T00:00:00Z"
@@ -8853,9 +8874,9 @@ excelview
   "fields": {
     "kluisnummer": "Heren 55",
     "email": "avdort@gmail.com",
-    "in_excel": "in_excel",
-    "is_registered": "hang",
-    "type": "1",
+    "in_excel": "-----",
+    "is_registered": "-----",
+    "type": "U",
     "sleutels": "1",
     "code": "1",
     "created": "2023-01-03T00:00:00Z"
@@ -8867,9 +8888,9 @@ excelview
   "fields": {
     "kluisnummer": "Heren 44",
     "email": "sjduijn@yahoo.com",
-    "in_excel": "in_excel",
-    "is_registered": "hang",
-    "type": "1",
+    "in_excel": "-----",
+    "is_registered": "-----",
+    "type": "U",
     "sleutels": "1",
     "code": "1",
     "created": "2023-01-03T00:00:00Z"
@@ -8881,9 +8902,9 @@ excelview
   "fields": {
     "kluisnummer": "Dames A-25",
     "email": "t.elst@wxs.nl",
-    "in_excel": "in_excel",
-    "is_registered": "==regis==",
-    "type": "1",
+    "in_excel": "187",
+    "is_registered": "D25",
+    "type": "D25",
     "sleutels": "1",
     "code": "1",
     "created": "2023-01-03T00:00:00Z"
@@ -8895,9 +8916,9 @@ excelview
   "fields": {
     "kluisnummer": "Heren 61",
     "email": "essen-van@ziggo.nl",
-    "in_excel": "in_excel",
-    "is_registered": "hang",
-    "type": "1",
+    "in_excel": "-----",
+    "is_registered": "-----",
+    "type": "U",
     "sleutels": "1",
     "code": "1",
     "created": "2023-01-03T00:00:00Z"
@@ -8909,9 +8930,9 @@ excelview
   "fields": {
     "kluisnummer": "Dames 12",
     "email": "f_euwe@hotmail.com",
-    "in_excel": "in_excel",
-    "is_registered": "hang",
-    "type": "1",
+    "in_excel": "-----",
+    "is_registered": "-----",
+    "type": "U",
     "sleutels": "1",
     "code": "1",
     "created": "2023-01-03T00:00:00Z"
@@ -8923,9 +8944,9 @@ excelview
   "fields": {
     "kluisnummer": "Dames C-64",
     "email": "petra.gerritsen@spletters.nl",
-    "in_excel": "in_excel",
-    "is_registered": "==regis==",
-    "type": "1",
+    "in_excel": "198",
+    "is_registered": "D64",
+    "type": "D64",
     "sleutels": "1",
     "code": "1",
     "created": "2023-01-03T00:00:00Z"
@@ -8937,9 +8958,9 @@ excelview
   "fields": {
     "kluisnummer": "----",
     "email": "aliende.vangoor@gmail.com",
-    "in_excel": "hang",
-    "is_registered": "hang",
-    "type": "vrij",
+    "in_excel": "-----",
+    "is_registered": "-----",
+    "type": "U",
     "sleutels": "1",
     "code": "1",
     "created": "2023-01-03T00:00:00Z"
@@ -8951,9 +8972,9 @@ excelview
   "fields": {
     "kluisnummer": "Heren 59",
     "email": "wessel.goossens@gmail.com",
-    "in_excel": "in_excel",
-    "is_registered": "hang",
-    "type": "1",
+    "in_excel": "-----",
+    "is_registered": "-----",
+    "type": "U",
     "sleutels": "1",
     "code": "1",
     "created": "2023-01-03T00:00:00Z"
@@ -8965,9 +8986,9 @@ excelview
   "fields": {
     "kluisnummer": "Heren 10",
     "email": "whmgorissen@gmail.com",
-    "in_excel": "in_excel",
+    "in_excel": "191",
     "is_registered": "==regis==",
-    "type": "1",
+    "type": "X",
     "sleutels": "1",
     "code": "1",
     "created": "2023-01-03T00:00:00Z"
@@ -8979,9 +9000,9 @@ excelview
   "fields": {
     "kluisnummer": "Dames A-44",
     "email": "h.r.geusebroek@gmail.com",
-    "in_excel": "in_excel",
-    "is_registered": "hang",
-    "type": "1",
+    "in_excel": "-----",
+    "is_registered": "-----",
+    "type": "U",
     "sleutels": "1",
     "code": "1",
     "created": "2023-01-03T00:00:00Z"
@@ -8993,9 +9014,9 @@ excelview
   "fields": {
     "kluisnummer": "Dames B-41",
     "email": "jce.groot@casema.nl",
-    "in_excel": "in_excel",
-    "is_registered": "hang",
-    "type": "1",
+    "in_excel": "-----",
+    "is_registered": "-----",
+    "type": "U",
     "sleutels": "1",
     "code": "1",
     "created": "2023-01-03T00:00:00Z"
@@ -9007,9 +9028,9 @@ excelview
   "fields": {
     "kluisnummer": "Heren 52",
     "email": "whdgroot@gmail.com",
-    "in_excel": "in_excel",
-    "is_registered": "hang",
-    "type": "1",
+    "in_excel": "-----",
+    "is_registered": "-----",
+    "type": "U",
     "sleutels": "1",
     "code": "1",
     "created": "2023-01-03T00:00:00Z"
@@ -9021,9 +9042,9 @@ excelview
   "fields": {
     "kluisnummer": "Dames 15",
     "email": "maaike@vangulik.org",
-    "in_excel": "in_excel",
-    "is_registered": "hang",
-    "type": "1",
+    "in_excel": "-----",
+    "is_registered": "-----",
+    "type": "U",
     "sleutels": "1",
     "code": "1",
     "created": "2023-01-03T00:00:00Z"
@@ -9035,9 +9056,9 @@ excelview
   "fields": {
     "kluisnummer": "Heren 11",
     "email": "tijmen@vangulik.org",
-    "in_excel": "in_excel",
-    "is_registered": "hang",
-    "type": "1",
+    "in_excel": "-----",
+    "is_registered": "-----",
+    "type": "U",
     "sleutels": "1",
     "code": "1",
     "created": "2023-01-03T00:00:00Z"
@@ -9049,9 +9070,9 @@ excelview
   "fields": {
     "kluisnummer": "Dames C-54",
     "email": "smorgens2@gmail.com",
-    "in_excel": "in_excel",
-    "is_registered": "hang",
-    "type": "1",
+    "in_excel": "-----",
+    "is_registered": "-----",
+    "type": "U",
     "sleutels": "1",
     "code": "1",
     "created": "2023-01-03T00:00:00Z"
@@ -9063,9 +9084,9 @@ excelview
   "fields": {
     "kluisnummer": "----",
     "email": "info@haazer.nl",
-    "in_excel": "hang",
-    "is_registered": "==regis==",
-    "type": "1",
+    "in_excel": "213",
+    "is_registered": "D66",
+    "type": "D66",
     "sleutels": "1",
     "code": "1",
     "created": "2023-01-03T00:00:00Z"
@@ -9077,9 +9098,9 @@ excelview
   "fields": {
     "kluisnummer": "Dames C-57",
     "email": "wilmahanskamp@hotmail.com",
-    "in_excel": "in_excel",
-    "is_registered": "hang",
-    "type": "1",
+    "in_excel": "-----",
+    "is_registered": "-----",
+    "type": "U",
     "sleutels": "1",
     "code": "1",
     "created": "2023-01-03T00:00:00Z"
@@ -9091,9 +9112,9 @@ excelview
   "fields": {
     "kluisnummer": "Dames B-25",
     "email": "nc.heerema@gmail.com",
-    "in_excel": "in_excel",
-    "is_registered": "hang",
-    "type": "1",
+    "in_excel": "-----",
+    "is_registered": "-----",
+    "type": "U",
     "sleutels": "1",
     "code": "1",
     "created": "2023-01-03T00:00:00Z"
@@ -9105,9 +9126,9 @@ excelview
   "fields": {
     "kluisnummer": "Dames A-38",
     "email": "Gbvanderheide@hetnet.nl",
-    "in_excel": "in_excel",
-    "is_registered": "hang",
-    "type": "1",
+    "in_excel": "-----",
+    "is_registered": "-----",
+    "type": "U",
     "sleutels": "1",
     "code": "1",
     "created": "2023-01-03T00:00:00Z"
@@ -9119,9 +9140,9 @@ excelview
   "fields": {
     "kluisnummer": "Heren 37",
     "email": "paco@redleafs.nl",
-    "in_excel": "in_excel",
-    "is_registered": "hang",
-    "type": "1",
+    "in_excel": "-----",
+    "is_registered": "-----",
+    "type": "U",
     "sleutels": "1",
     "code": "1",
     "created": "2023-01-03T00:00:00Z"
@@ -9133,9 +9154,9 @@ excelview
   "fields": {
     "kluisnummer": "Heren 22",
     "email": "p.hingstman@hccnet.nl",
-    "in_excel": "in_excel",
-    "is_registered": "hang",
-    "type": "1",
+    "in_excel": "-----",
+    "is_registered": "H22",
+    "type": "H22",
     "sleutels": "1",
     "code": "1",
     "created": "2023-01-03T00:00:00Z"
@@ -9147,9 +9168,9 @@ excelview
   "fields": {
     "kluisnummer": "Dames B-34",
     "email": "elluf@hotmail.com",
-    "in_excel": "in_excel",
-    "is_registered": "hang",
-    "type": "1",
+    "in_excel": "-----",
+    "is_registered": "-----",
+    "type": "U",
     "sleutels": "1",
     "code": "1",
     "created": "2023-01-03T00:00:00Z"
@@ -9161,9 +9182,9 @@ excelview
   "fields": {
     "kluisnummer": "Dames 16",
     "email": "lkaboord@kpnmail.nl",
-    "in_excel": "in_excel",
-    "is_registered": "hang",
-    "type": "1",
+    "in_excel": "-----",
+    "is_registered": "-----",
+    "type": "U",
     "sleutels": "1",
     "code": "1",
     "created": "2023-01-03T00:00:00Z"
@@ -9175,9 +9196,9 @@ excelview
   "fields": {
     "kluisnummer": "Heren 39",
     "email": "H.j.kiewiet@hccnet.nl",
-    "in_excel": "in_excel",
-    "is_registered": "hang",
-    "type": "1",
+    "in_excel": "-----",
+    "is_registered": "-----",
+    "type": "U",
     "sleutels": "1",
     "code": "1",
     "created": "2023-01-03T00:00:00Z"
@@ -9189,9 +9210,9 @@ excelview
   "fields": {
     "kluisnummer": "----",
     "email": "tomasklos@proton.me",
-    "in_excel": "hang",
-    "is_registered": "==regis==",
-    "type": "1",
+    "in_excel": "228",
+    "is_registered": "Heren 48",
+    "type": "Heren 48",
     "sleutels": "1",
     "code": "1",
     "created": "2023-01-03T00:00:00Z"
@@ -9203,9 +9224,9 @@ excelview
   "fields": {
     "kluisnummer": "Heren 41",
     "email": "peterknappstein@seilemaaker.nl",
-    "in_excel": "in_excel",
-    "is_registered": "hang",
-    "type": "1",
+    "in_excel": "-----",
+    "is_registered": "-----",
+    "type": "U",
     "sleutels": "1",
     "code": "1",
     "created": "2023-01-03T00:00:00Z"
@@ -9217,9 +9238,9 @@ excelview
   "fields": {
     "kluisnummer": "----",
     "email": "jkolmer@urvviking.nl",
-    "in_excel": "hang",
-    "is_registered": "hang",
-    "type": "vrij",
+    "in_excel": "-----",
+    "is_registered": "-----",
+    "type": "U",
     "sleutels": "1",
     "code": "1",
     "created": "2023-01-03T00:00:00Z"
@@ -9231,9 +9252,9 @@ excelview
   "fields": {
     "kluisnummer": "Dames C-68",
     "email": "gerdakruithof@icloud.com",
-    "in_excel": "in_excel",
-    "is_registered": "hang",
-    "type": "1",
+    "in_excel": "-----",
+    "is_registered": "-----",
+    "type": "U",
     "sleutels": "1",
     "code": "1",
     "created": "2023-01-03T00:00:00Z"
@@ -9245,9 +9266,9 @@ excelview
   "fields": {
     "kluisnummer": "Dames 07",
     "email": "vvanderkuil@me.com",
-    "in_excel": "in_excel",
-    "is_registered": "hang",
-    "type": "1",
+    "in_excel": "-----",
+    "is_registered": "-----",
+    "type": "U",
     "sleutels": "1",
     "code": "1",
     "created": "2023-01-03T00:00:00Z"
@@ -9259,9 +9280,9 @@ excelview
   "fields": {
     "kluisnummer": "Dames B-38",
     "email": "maryke@casema.nl",
-    "in_excel": "in_excel",
+    "in_excel": "200",
     "is_registered": "==regis==",
-    "type": "1",
+    "type": "X",
     "sleutels": "1",
     "code": "1",
     "created": "2023-01-03T00:00:00Z"
@@ -9273,9 +9294,9 @@ excelview
   "fields": {
     "kluisnummer": "Dames B-27",
     "email": "gerdakwantes@gmail.com",
-    "in_excel": "in_excel",
-    "is_registered": "hang",
-    "type": "1",
+    "in_excel": "-----",
+    "is_registered": "-----",
+    "type": "U",
     "sleutels": "1",
     "code": "1",
     "created": "2023-01-03T00:00:00Z"
@@ -9287,9 +9308,9 @@ excelview
   "fields": {
     "kluisnummer": "----",
     "email": "p.kwantes@kpnmail.nl",
-    "in_excel": "hang",
+    "in_excel": "197",
     "is_registered": "==regis==",
-    "type": "1",
+    "type": "X",
     "sleutels": "1",
     "code": "1",
     "created": "2023-01-03T00:00:00Z"
@@ -9301,9 +9322,9 @@ excelview
   "fields": {
     "kluisnummer": "Heren 70",
     "email": "gelangeveld@gmail.com",
-    "in_excel": "in_excel",
-    "is_registered": "hang",
-    "type": "1",
+    "in_excel": "-----",
+    "is_registered": "-----",
+    "type": "U",
     "sleutels": "1",
     "code": "1",
     "created": "2023-01-03T00:00:00Z"
@@ -9315,9 +9336,9 @@ excelview
   "fields": {
     "kluisnummer": "Dames B-40",
     "email": "paulienlasterie@gmail.com",
-    "in_excel": "in_excel",
-    "is_registered": "hang",
-    "type": "1",
+    "in_excel": "-----",
+    "is_registered": "-----",
+    "type": "U",
     "sleutels": "1",
     "code": "1",
     "created": "2023-01-03T00:00:00Z"
@@ -9329,9 +9350,9 @@ excelview
   "fields": {
     "kluisnummer": "Dames 09",
     "email": "petradeleede@gmail.com",
-    "in_excel": "in_excel",
+    "in_excel": "209",
     "is_registered": "==regis==",
-    "type": "1",
+    "type": "X",
     "sleutels": "1",
     "code": "1",
     "created": "2023-01-03T00:00:00Z"
@@ -9343,9 +9364,9 @@ excelview
   "fields": {
     "kluisnummer": "Dames A-45",
     "email": "marianscheltema@gmail.com",
-    "in_excel": "in_excel",
-    "is_registered": "hang",
-    "type": "1",
+    "in_excel": "-----",
+    "is_registered": "-----",
+    "type": "U",
     "sleutels": "1",
     "code": "1",
     "created": "2023-01-03T00:00:00Z"
@@ -9357,9 +9378,9 @@ excelview
   "fields": {
     "kluisnummer": "Dames A-32",
     "email": "jessica@ambeleij.demon.nl",
-    "in_excel": "in_excel",
-    "is_registered": "hang",
-    "type": "1",
+    "in_excel": "-----",
+    "is_registered": "-----",
+    "type": "U",
     "sleutels": "1",
     "code": "1",
     "created": "2023-01-03T00:00:00Z"
@@ -9371,9 +9392,9 @@ excelview
   "fields": {
     "kluisnummer": "Heren 13",
     "email": "hugo@linnenbank.org",
-    "in_excel": "in_excel",
-    "is_registered": "hang",
-    "type": "1",
+    "in_excel": "-----",
+    "is_registered": "-----",
+    "type": "U",
     "sleutels": "1",
     "code": "1",
     "created": "2023-01-03T00:00:00Z"
@@ -9385,9 +9406,9 @@ excelview
   "fields": {
     "kluisnummer": "Heren 38",
     "email": "linssentandarts@gmail.com",
-    "in_excel": "in_excel",
+    "in_excel": "247",
     "is_registered": "==regis==",
-    "type": "1",
+    "type": "X",
     "sleutels": "1",
     "code": "1",
     "created": "2023-01-03T00:00:00Z"
@@ -9399,9 +9420,9 @@ excelview
   "fields": {
     "kluisnummer": "Heren 64",
     "email": "info@vanmanen.biz",
-    "in_excel": "in_excel",
-    "is_registered": "hang",
-    "type": "1",
+    "in_excel": "-----",
+    "is_registered": "-----",
+    "type": "U",
     "sleutels": "1",
     "code": "1",
     "created": "2023-01-03T00:00:00Z"
@@ -9413,9 +9434,9 @@ excelview
   "fields": {
     "kluisnummer": "Dames A-31",
     "email": "miranda_megens@yahoo.com",
-    "in_excel": "in_excel",
-    "is_registered": "==regis==",
-    "type": "1",
+    "in_excel": "199",
+    "is_registered": "Dames 31",
+    "type": "Dames 31",
     "sleutels": "1",
     "code": "1",
     "created": "2023-01-03T00:00:00Z"
@@ -9427,9 +9448,9 @@ excelview
   "fields": {
     "kluisnummer": "Heren 24",
     "email": "gertjan@miedemageluid.nl",
-    "in_excel": "in_excel",
-    "is_registered": "==regis==",
-    "type": "1",
+    "in_excel": "208",
+    "is_registered": "H24",
+    "type": "H24",
     "sleutels": "1",
     "code": "1",
     "created": "2023-01-03T00:00:00Z"
@@ -9441,9 +9462,9 @@ excelview
   "fields": {
     "kluisnummer": "Dames C-51",
     "email": "mail2mira@yahoo.com",
-    "in_excel": "in_excel",
-    "is_registered": "hang",
-    "type": "1",
+    "in_excel": "-----",
+    "is_registered": "-----",
+    "type": "U",
     "sleutels": "1",
     "code": "1",
     "created": "2023-01-03T00:00:00Z"
@@ -9455,9 +9476,9 @@ excelview
   "fields": {
     "kluisnummer": "Dames B-31",
     "email": "catharina.moison@gmail.com",
-    "in_excel": "in_excel",
-    "is_registered": "hang",
-    "type": "1",
+    "in_excel": "-----",
+    "is_registered": "-----",
+    "type": "U",
     "sleutels": "1",
     "code": "1",
     "created": "2023-01-03T00:00:00Z"
@@ -9469,9 +9490,9 @@ excelview
   "fields": {
     "kluisnummer": "Dames B-26",
     "email": "nap.janneke@gmail.com",
-    "in_excel": "in_excel",
+    "in_excel": "185",
     "is_registered": "==regis==",
-    "type": "1",
+    "type": "X",
     "sleutels": "1",
     "code": "1",
     "created": "2023-01-03T00:00:00Z"
@@ -9483,9 +9504,9 @@ excelview
   "fields": {
     "kluisnummer": "Dames A-41",
     "email": "linooij@gmail.com",
-    "in_excel": "in_excel",
-    "is_registered": "==regis==",
-    "type": "1",
+    "in_excel": "196",
+    "is_registered": "D41",
+    "type": "D41",
     "sleutels": "1",
     "code": "1",
     "created": "2023-01-03T00:00:00Z"
@@ -9497,9 +9518,9 @@ excelview
   "fields": {
     "kluisnummer": "Heren 63",
     "email": "martinwileenbiertje@hotmail.com",
-    "in_excel": "in_excel",
-    "is_registered": "hang",
-    "type": "1",
+    "in_excel": "284",
+    "is_registered": "==regis==",
+    "type": "X",
     "sleutels": "1",
     "code": "1",
     "created": "2023-01-03T00:00:00Z"
@@ -9511,9 +9532,9 @@ excelview
   "fields": {
     "kluisnummer": "Heren 16",
     "email": "peter.prak@me.com",
-    "in_excel": "in_excel",
-    "is_registered": "hang",
-    "type": "1",
+    "in_excel": "-----",
+    "is_registered": "-----",
+    "type": "U",
     "sleutels": "1",
     "code": "1",
     "created": "2023-01-03T00:00:00Z"
@@ -9525,9 +9546,9 @@ excelview
   "fields": {
     "kluisnummer": "Heren 29",
     "email": "gerard.ranke@ziggo.nl",
-    "in_excel": "in_excel",
-    "is_registered": "hang",
-    "type": "1",
+    "in_excel": "-----",
+    "is_registered": "-----",
+    "type": "U",
     "sleutels": "1",
     "code": "1",
     "created": "2023-01-03T00:00:00Z"
@@ -9539,9 +9560,9 @@ excelview
   "fields": {
     "kluisnummer": "Heren 12",
     "email": "rayszjf@hotmail.com",
-    "in_excel": "in_excel",
-    "is_registered": "hang",
-    "type": "1",
+    "in_excel": "-----",
+    "is_registered": "-----",
+    "type": "U",
     "sleutels": "1",
     "code": "1",
     "created": "2023-01-03T00:00:00Z"
@@ -9553,9 +9574,9 @@ excelview
   "fields": {
     "kluisnummer": "Heren 26",
     "email": "martinreniers@hotmail.com",
-    "in_excel": "in_excel",
+    "in_excel": "207",
     "is_registered": "==regis==",
-    "type": "1",
+    "type": "X",
     "sleutels": "1",
     "code": "1",
     "created": "2023-01-03T00:00:00Z"
@@ -9567,9 +9588,9 @@ excelview
   "fields": {
     "kluisnummer": "Dames 04",
     "email": "aamrensink@gmail.com",
-    "in_excel": "in_excel",
-    "is_registered": "hang",
-    "type": "1",
+    "in_excel": "-----",
+    "is_registered": "-----",
+    "type": "U",
     "sleutels": "1",
     "code": "1",
     "created": "2023-01-03T00:00:00Z"
@@ -9581,9 +9602,9 @@ excelview
   "fields": {
     "kluisnummer": "Heren 56",
     "email": "cmreuser@yahoo.com",
-    "in_excel": "in_excel",
-    "is_registered": "hang",
-    "type": "1",
+    "in_excel": "-----",
+    "is_registered": "-----",
+    "type": "U",
     "sleutels": "1",
     "code": "1",
     "created": "2023-01-03T00:00:00Z"
@@ -9595,9 +9616,9 @@ excelview
   "fields": {
     "kluisnummer": "Dames C-65",
     "email": "mhrijks@planet.nl",
-    "in_excel": "in_excel",
-    "is_registered": "==regis==",
-    "type": "1",
+    "in_excel": "252",
+    "is_registered": "Dames C65",
+    "type": "Dames C65",
     "sleutels": "1",
     "code": "1",
     "created": "2023-01-03T00:00:00Z"
@@ -9609,9 +9630,9 @@ excelview
   "fields": {
     "kluisnummer": "Dames A-27",
     "email": "anoukrijs@hotmail.com",
-    "in_excel": "in_excel",
+    "in_excel": "212",
     "is_registered": "==regis==",
-    "type": "1",
+    "type": "X",
     "sleutels": "1",
     "code": "1",
     "created": "2023-01-03T00:00:00Z"
@@ -9623,9 +9644,9 @@ excelview
   "fields": {
     "kluisnummer": "Dames 13",
     "email": "miranda@miraud.nl",
-    "in_excel": "in_excel",
-    "is_registered": "hang",
-    "type": "1",
+    "in_excel": "-----",
+    "is_registered": "-----",
+    "type": "U",
     "sleutels": "1",
     "code": "1",
     "created": "2023-01-03T00:00:00Z"
@@ -9637,9 +9658,9 @@ excelview
   "fields": {
     "kluisnummer": "Dames 08",
     "email": "wyki24@gmail.com",
-    "in_excel": "in_excel",
+    "in_excel": "201",
     "is_registered": "==regis==",
-    "type": "1",
+    "type": "X",
     "sleutels": "1",
     "code": "1",
     "created": "2023-01-03T00:00:00Z"
@@ -9651,9 +9672,9 @@ excelview
   "fields": {
     "kluisnummer": "----",
     "email": "carolina.scheepstra@hetnet.nl",
-    "in_excel": "hang",
-    "is_registered": "hang",
-    "type": "vrij",
+    "in_excel": "-----",
+    "is_registered": "-----",
+    "type": "U",
     "sleutels": "1",
     "code": "1",
     "created": "2023-01-03T00:00:00Z"
@@ -9665,9 +9686,9 @@ excelview
   "fields": {
     "kluisnummer": "Heren 04",
     "email": "cor@corscheffers.nl",
-    "in_excel": "in_excel",
-    "is_registered": "hang",
-    "type": "1",
+    "in_excel": "-----",
+    "is_registered": "-----",
+    "type": "U",
     "sleutels": "1",
     "code": "1",
     "created": "2023-01-03T00:00:00Z"
@@ -9679,9 +9700,9 @@ excelview
   "fields": {
     "kluisnummer": "----",
     "email": "schepel@ziggo.nl",
-    "in_excel": "hang",
-    "is_registered": "hang",
-    "type": "vrij",
+    "in_excel": "-----",
+    "is_registered": "-----",
+    "type": "U",
     "sleutels": "1",
     "code": "1",
     "created": "2023-01-03T00:00:00Z"
@@ -9693,9 +9714,9 @@ excelview
   "fields": {
     "kluisnummer": "Dames B-39",
     "email": "iekeschiferli27@gmail.com",
-    "in_excel": "in_excel",
-    "is_registered": "hang",
-    "type": "1",
+    "in_excel": "-----",
+    "is_registered": "-----",
+    "type": "U",
     "sleutels": "1",
     "code": "1",
     "created": "2023-01-03T00:00:00Z"
@@ -9707,9 +9728,9 @@ excelview
   "fields": {
     "kluisnummer": "Heren 35",
     "email": "joannemieke@kpnmail.nl",
-    "in_excel": "in_excel",
-    "is_registered": "hang",
-    "type": "1",
+    "in_excel": "-----",
+    "is_registered": "-----",
+    "type": "U",
     "sleutels": "1",
     "code": "1",
     "created": "2023-01-03T00:00:00Z"
@@ -9721,9 +9742,9 @@ excelview
   "fields": {
     "kluisnummer": "Dames C-70",
     "email": "hl.sinlan@t-mobilethuis.nl",
-    "in_excel": "in_excel",
-    "is_registered": "hang",
-    "type": "1",
+    "in_excel": "-----",
+    "is_registered": "-----",
+    "type": "U",
     "sleutels": "1",
     "code": "1",
     "created": "2023-01-03T00:00:00Z"
@@ -9735,9 +9756,9 @@ excelview
   "fields": {
     "kluisnummer": "Dames B-35",
     "email": "LSmit1@Xs4all.nl",
-    "in_excel": "in_excel",
-    "is_registered": "hang",
-    "type": "1",
+    "in_excel": "-----",
+    "is_registered": "-----",
+    "type": "U",
     "sleutels": "1",
     "code": "1",
     "created": "2023-01-03T00:00:00Z"
@@ -9749,9 +9770,9 @@ excelview
   "fields": {
     "kluisnummer": "Heren 42",
     "email": "erikvanderstruijs@xs4all.nl",
-    "in_excel": "in_excel",
-    "is_registered": "hang",
-    "type": "1",
+    "in_excel": "-----",
+    "is_registered": "-----",
+    "type": "U",
     "sleutels": "1",
     "code": "1",
     "created": "2023-01-03T00:00:00Z"
@@ -9763,9 +9784,9 @@ excelview
   "fields": {
     "kluisnummer": "Dames A-35",
     "email": "fhtap@xs4all.nl",
-    "in_excel": "in_excel",
-    "is_registered": "hang",
-    "type": "1",
+    "in_excel": "-----",
+    "is_registered": "-----",
+    "type": "U",
     "sleutels": "1",
     "code": "1",
     "created": "2023-01-03T00:00:00Z"
@@ -9777,9 +9798,9 @@ excelview
   "fields": {
     "kluisnummer": "Heren 45",
     "email": "Haroldthijssen@hetnet.nl",
-    "in_excel": "in_excel",
-    "is_registered": "hang",
-    "type": "1",
+    "in_excel": "-----",
+    "is_registered": "-----",
+    "type": "U",
     "sleutels": "1",
     "code": "1",
     "created": "2023-01-03T00:00:00Z"
@@ -9791,9 +9812,9 @@ excelview
   "fields": {
     "kluisnummer": "Heren 32",
     "email": "JTombrock@ziggo.nl",
-    "in_excel": "in_excel",
-    "is_registered": "hang",
-    "type": "1",
+    "in_excel": "-----",
+    "is_registered": "-----",
+    "type": "U",
     "sleutels": "1",
     "code": "1",
     "created": "2023-01-03T00:00:00Z"
@@ -9805,9 +9826,9 @@ excelview
   "fields": {
     "kluisnummer": "Heren 30",
     "email": "goldtuk@telfort.nl",
-    "in_excel": "in_excel",
-    "is_registered": "hang",
-    "type": "1",
+    "in_excel": "-----",
+    "is_registered": "-----",
+    "type": "U",
     "sleutels": "1",
     "code": "1",
     "created": "2023-01-03T00:00:00Z"
@@ -9819,9 +9840,9 @@ excelview
   "fields": {
     "kluisnummer": "Heren 23",
     "email": "thmm.visser@ziggo.nl",
-    "in_excel": "in_excel",
-    "is_registered": "hang",
-    "type": "1",
+    "in_excel": "-----",
+    "is_registered": "-----",
+    "type": "U",
     "sleutels": "1",
     "code": "1",
     "created": "2023-01-03T00:00:00Z"
@@ -9833,9 +9854,9 @@ excelview
   "fields": {
     "kluisnummer": "Heren 67",
     "email": "rtenvoorde@datelvision.nl",
-    "in_excel": "in_excel",
-    "is_registered": "hang",
-    "type": "1",
+    "in_excel": "-----",
+    "is_registered": "-----",
+    "type": "U",
     "sleutels": "1",
     "code": "1",
     "created": "2023-01-03T00:00:00Z"
@@ -9847,9 +9868,9 @@ excelview
   "fields": {
     "kluisnummer": "Dames C-59",
     "email": "teaudevosvansteenwijk@gmail.com",
-    "in_excel": "in_excel",
-    "is_registered": "hang",
-    "type": "1",
+    "in_excel": "-----",
+    "is_registered": "-----",
+    "type": "U",
     "sleutels": "1",
     "code": "1",
     "created": "2023-01-03T00:00:00Z"
@@ -9861,9 +9882,9 @@ excelview
   "fields": {
     "kluisnummer": "Heren 01",
     "email": "rikderoodevos@kpnmail.nl",
-    "in_excel": "in_excel",
-    "is_registered": "hang",
-    "type": "1",
+    "in_excel": "-----",
+    "is_registered": "-----",
+    "type": "U",
     "sleutels": "1",
     "code": "1",
     "created": "2023-01-03T00:00:00Z"
@@ -9875,9 +9896,9 @@ excelview
   "fields": {
     "kluisnummer": "Dames B-45",
     "email": "corien@dapnijkerk.nl",
-    "in_excel": "in_excel",
-    "is_registered": "hang",
-    "type": "1",
+    "in_excel": "-----",
+    "is_registered": "-----",
+    "type": "U",
     "sleutels": "1",
     "code": "1",
     "created": "2023-01-03T00:00:00Z"
@@ -9889,9 +9910,9 @@ excelview
   "fields": {
     "kluisnummer": "----",
     "email": "cwierenga73@gmail.com",
-    "in_excel": "hang",
-    "is_registered": "==regis==",
-    "type": "1",
+    "in_excel": "249",
+    "is_registered": "Heren 53",
+    "type": "Heren 53",
     "sleutels": "1",
     "code": "1",
     "created": "2023-01-03T00:00:00Z"
@@ -9903,12 +9924,26 @@ excelview
   "fields": {
     "kluisnummer": "Dames 19",
     "email": "nadinevanwijk@gmail.com",
-    "in_excel": "in_excel",
-    "is_registered": "hang",
-    "type": "1",
+    "in_excel": "-----",
+    "is_registered": "-----",
+    "type": "U",
     "sleutels": "1",
     "code": "1",
     "created": "2023-01-03T00:00:00Z"
+  }
+},
+{
+  "model": "base.facturatielijst",
+  "pk": 102,
+  "fields": {
+    "kluisnummer": "Dames 44",
+    "email": "info@schepeladvies.nl",
+    "in_excel": "189",
+    "is_registered": "Dames 44",
+    "type": "Dames 44",
+    "sleutels": "----",
+    "code": "----",
+    "created": "2023-09-13T16:35:15.710Z"
   }
 },
 {
@@ -9917,7 +9952,7 @@ excelview
   "fields": {
     "kluisnummer": "Dames 01",
     "email": "r.krabbe@hetnet.nl",
-    "excel": "----",
+    "excel": "--",
     "type": "hang",
     "sleutels": "1",
     "code": "1",
@@ -9930,7 +9965,7 @@ excelview
   "fields": {
     "kluisnummer": "Dames 04",
     "email": "aamrensink@gmail.com",
-    "excel": "Dames 04",
+    "excel": "--",
     "type": "Dames 04",
     "sleutels": "1",
     "code": "1",
@@ -9943,7 +9978,7 @@ excelview
   "fields": {
     "kluisnummer": "Dames 05",
     "email": "cmeermin@airpost.net",
-    "excel": "Dames 05",
+    "excel": "--",
     "type": "Dames 05",
     "sleutels": "1",
     "code": "1",
@@ -9956,7 +9991,7 @@ excelview
   "fields": {
     "kluisnummer": "Dames 07",
     "email": "vvanderkuil@me.com",
-    "excel": "Dames 07",
+    "excel": "--",
     "type": "Dames 07",
     "sleutels": "1",
     "code": "1",
@@ -9969,7 +10004,7 @@ excelview
   "fields": {
     "kluisnummer": "Dames 08",
     "email": "wyki24@gmail.com",
-    "excel": "Dames 08",
+    "excel": "132",
     "type": "Dames 08",
     "sleutels": "1",
     "code": "1",
@@ -9982,7 +10017,7 @@ excelview
   "fields": {
     "kluisnummer": "Dames 09",
     "email": "petradeleede@gmail.com",
-    "excel": "Dames 09",
+    "excel": "133",
     "type": "Dames 09",
     "sleutels": "1",
     "code": "1",
@@ -9995,7 +10030,7 @@ excelview
   "fields": {
     "kluisnummer": "Dames 12",
     "email": "f_euwe@hotmail.com",
-    "excel": "Dames 12",
+    "excel": "--",
     "type": "Dames 12",
     "sleutels": "1",
     "code": "1",
@@ -10008,7 +10043,7 @@ excelview
   "fields": {
     "kluisnummer": "Dames 13",
     "email": "miranda@miraud.nl",
-    "excel": "Dames 13",
+    "excel": "--",
     "type": "Dames 13",
     "sleutels": "1",
     "code": "1",
@@ -10021,7 +10056,7 @@ excelview
   "fields": {
     "kluisnummer": "Dames 14",
     "email": "w.brokervandongen@upcmail.nl",
-    "excel": "Dames 14",
+    "excel": "--",
     "type": "Dames 14",
     "sleutels": "1",
     "code": "1",
@@ -10034,7 +10069,7 @@ excelview
   "fields": {
     "kluisnummer": "Dames 15",
     "email": "maaike@vangulik.org",
-    "excel": "Dames 15",
+    "excel": "--",
     "type": "Dames 15",
     "sleutels": "1",
     "code": "1",
@@ -10047,7 +10082,7 @@ excelview
   "fields": {
     "kluisnummer": "Dames 16",
     "email": "lkaboord@kpnmail.nl",
-    "excel": "Dames 16",
+    "excel": "--",
     "type": "Dames 16",
     "sleutels": "1",
     "code": "1",
@@ -10060,7 +10095,7 @@ excelview
   "fields": {
     "kluisnummer": "Dames 19",
     "email": "nadinevanwijk@gmail.com",
-    "excel": "Dames 19",
+    "excel": "--",
     "type": "Dames 19",
     "sleutels": "1",
     "code": "1",
@@ -10073,7 +10108,7 @@ excelview
   "fields": {
     "kluisnummer": "Dames 20",
     "email": "ebeverdam@xs4all.nl",
-    "excel": "Dames 20",
+    "excel": "--",
     "type": "Dames 20",
     "sleutels": "1",
     "code": "1",
@@ -10086,7 +10121,7 @@ excelview
   "fields": {
     "kluisnummer": "Dames 21",
     "email": "n.l.m.cappaert@gmail.com",
-    "excel": "Dames 21",
+    "excel": "--",
     "type": "Dames 21",
     "sleutels": "1",
     "code": "1",
@@ -10099,7 +10134,7 @@ excelview
   "fields": {
     "kluisnummer": "Dames 23",
     "email": "birgitte.aertssen@gmail.com",
-    "excel": "----",
+    "excel": "--",
     "type": "hang",
     "sleutels": "1",
     "code": "1",
@@ -10112,7 +10147,7 @@ excelview
   "fields": {
     "kluisnummer": "Dames 24",
     "email": "willemijnsprangers@gmail.com",
-    "excel": "----",
+    "excel": "--",
     "type": "hang",
     "sleutels": "1",
     "code": "1",
@@ -10125,7 +10160,7 @@ excelview
   "fields": {
     "kluisnummer": "Dames A-25",
     "email": "t.elst@wxs.nl",
-    "excel": "Dames A-25",
+    "excel": "45",
     "type": "Dames A-25",
     "sleutels": "1",
     "code": "1",
@@ -10138,7 +10173,7 @@ excelview
   "fields": {
     "kluisnummer": "Dames A-26",
     "email": "stapvdam@xs4all.nl",
-    "excel": "----",
+    "excel": "--",
     "type": "hang",
     "sleutels": "1",
     "code": "1",
@@ -10151,7 +10186,7 @@ excelview
   "fields": {
     "kluisnummer": "Dames A-27",
     "email": "anoukrijs@hotmail.com",
-    "excel": "Dames A-27",
+    "excel": "146",
     "type": "Dames A-27",
     "sleutels": "1",
     "code": "1",
@@ -10164,7 +10199,7 @@ excelview
   "fields": {
     "kluisnummer": "Dames A-31",
     "email": "miranda_megens@yahoo.com",
-    "excel": "Dames A-31",
+    "excel": "65",
     "type": "Dames A-31",
     "sleutels": "1",
     "code": "1",
@@ -10177,7 +10212,7 @@ excelview
   "fields": {
     "kluisnummer": "Dames A-32",
     "email": "jessica@ambeleij.demon.nl",
-    "excel": "Dames A-32",
+    "excel": "--",
     "type": "Dames A-32",
     "sleutels": "1",
     "code": "1",
@@ -10190,7 +10225,7 @@ excelview
   "fields": {
     "kluisnummer": "Dames A-35",
     "email": "fhtap@xs4all.nl",
-    "excel": "Dames A-35",
+    "excel": "--",
     "type": "Dames A-35",
     "sleutels": "1",
     "code": "1",
@@ -10203,7 +10238,7 @@ excelview
   "fields": {
     "kluisnummer": "Dames A-36",
     "email": "haazer@zonnet.nl",
-    "excel": "Dames A-36",
+    "excel": "--",
     "type": "Dames A-36",
     "sleutels": "1",
     "code": "1",
@@ -10216,7 +10251,7 @@ excelview
   "fields": {
     "kluisnummer": "Dames A-38",
     "email": "Gbvanderheide@hetnet.nl",
-    "excel": "Dames A-38",
+    "excel": "--",
     "type": "Dames A-38",
     "sleutels": "1",
     "code": "1",
@@ -10229,7 +10264,7 @@ excelview
   "fields": {
     "kluisnummer": "Dames A-41",
     "email": "linooij@gmail.com",
-    "excel": "Dames A-41",
+    "excel": "40",
     "type": "Dames A-41",
     "sleutels": "1",
     "code": "1",
@@ -10242,7 +10277,7 @@ excelview
   "fields": {
     "kluisnummer": "Dames A-42",
     "email": "onbekend",
-    "excel": "----",
+    "excel": "--",
     "type": "hang",
     "sleutels": "1",
     "code": "1",
@@ -10255,7 +10290,7 @@ excelview
   "fields": {
     "kluisnummer": "Dames A-43",
     "email": "derijkdiana@gmail.com",
-    "excel": "----",
+    "excel": "154",
     "type": "hang",
     "sleutels": "1",
     "code": "1",
@@ -10268,7 +10303,7 @@ excelview
   "fields": {
     "kluisnummer": "Dames A-44",
     "email": "h.r.geusebroek@gmail.com",
-    "excel": "Dames A-44",
+    "excel": "--",
     "type": "Dames A-44",
     "sleutels": "1",
     "code": "1",
@@ -10281,7 +10316,7 @@ excelview
   "fields": {
     "kluisnummer": "Dames A-45",
     "email": "marianscheltema@gmail.com",
-    "excel": "Dames A-45",
+    "excel": "--",
     "type": "Dames A-45",
     "sleutels": "1",
     "code": "1",
@@ -10294,7 +10329,7 @@ excelview
   "fields": {
     "kluisnummer": "Dames A-46",
     "email": "onbekend",
-    "excel": "----",
+    "excel": "--",
     "type": "hang",
     "sleutels": "1",
     "code": "1",
@@ -10307,7 +10342,7 @@ excelview
   "fields": {
     "kluisnummer": "Dames A-48",
     "email": "anjotona@hotmail.com",
-    "excel": "----",
+    "excel": "--",
     "type": "hang",
     "sleutels": "1",
     "code": "1",
@@ -10320,7 +10355,7 @@ excelview
   "fields": {
     "kluisnummer": "Dames B-25",
     "email": "nc.heerema@gmail.com",
-    "excel": "Dames B-25",
+    "excel": "--",
     "type": "Dames B-25",
     "sleutels": "1",
     "code": "1",
@@ -10333,7 +10368,7 @@ excelview
   "fields": {
     "kluisnummer": "Dames B-26",
     "email": "nap.janneke@gmail.com",
-    "excel": "Dames B-26",
+    "excel": "160",
     "type": "Dames B-26",
     "sleutels": "1",
     "code": "1",
@@ -10346,7 +10381,7 @@ excelview
   "fields": {
     "kluisnummer": "Dames B-27",
     "email": "gerdakwantes@gmail.com",
-    "excel": "Dames B-27",
+    "excel": "--",
     "type": "Dames B-27",
     "sleutels": "1",
     "code": "1",
@@ -10359,7 +10394,7 @@ excelview
   "fields": {
     "kluisnummer": "Dames B-28",
     "email": "carappeldoorn@ziggo.nl",
-    "excel": "Dames B-28",
+    "excel": "--",
     "type": "Dames B-28",
     "sleutels": "1",
     "code": "1",
@@ -10372,7 +10407,7 @@ excelview
   "fields": {
     "kluisnummer": "Dames B-29",
     "email": "carolina.scheepstra@inholland.nl",
-    "excel": "----",
+    "excel": "--",
     "type": "hang",
     "sleutels": "1",
     "code": "1",
@@ -10385,7 +10420,7 @@ excelview
   "fields": {
     "kluisnummer": "Dames B-30",
     "email": "bente.scheffer@xs4all.nl",
-    "excel": "----",
+    "excel": "--",
     "type": "hang",
     "sleutels": "1",
     "code": "1",
@@ -10398,7 +10433,7 @@ excelview
   "fields": {
     "kluisnummer": "Dames B-31",
     "email": "catharina.moison@gmail.com",
-    "excel": "Dames B-31",
+    "excel": "--",
     "type": "Dames B-31",
     "sleutels": "1",
     "code": "1",
@@ -10411,7 +10446,7 @@ excelview
   "fields": {
     "kluisnummer": "Dames B-32",
     "email": "onbekend",
-    "excel": "----",
+    "excel": "--",
     "type": "hang",
     "sleutels": "1",
     "code": "1",
@@ -10424,7 +10459,7 @@ excelview
   "fields": {
     "kluisnummer": "Dames B-33",
     "email": "baaijen@ziggo.nl",
-    "excel": "Dames B-33",
+    "excel": "34",
     "type": "Dames B-33",
     "sleutels": "1",
     "code": "1",
@@ -10437,7 +10472,7 @@ excelview
   "fields": {
     "kluisnummer": "Dames B-34",
     "email": "elluf@hotmail.com",
-    "excel": "Dames B-34",
+    "excel": "--",
     "type": "Dames B-34",
     "sleutels": "1",
     "code": "1",
@@ -10450,7 +10485,7 @@ excelview
   "fields": {
     "kluisnummer": "Dames B-35",
     "email": "LSmit1@Xs4all.nl",
-    "excel": "Dames B-35",
+    "excel": "--",
     "type": "Dames B-35",
     "sleutels": "1",
     "code": "1",
@@ -10463,7 +10498,7 @@ excelview
   "fields": {
     "kluisnummer": "Dames B-38",
     "email": "maryke@casema.nl",
-    "excel": "Dames B-38",
+    "excel": "170",
     "type": "Dames B-38",
     "sleutels": "1",
     "code": "1",
@@ -10476,7 +10511,7 @@ excelview
   "fields": {
     "kluisnummer": "Dames B-39",
     "email": "iekeschiferli27@gmail.com",
-    "excel": "Dames B-39",
+    "excel": "--",
     "type": "Dames B-39",
     "sleutels": "1",
     "code": "1",
@@ -10489,7 +10524,7 @@ excelview
   "fields": {
     "kluisnummer": "Dames B-40",
     "email": "paulienlasterie@gmail.com",
-    "excel": "Dames B-40",
+    "excel": "--",
     "type": "Dames B-40",
     "sleutels": "1",
     "code": "1",
@@ -10502,7 +10537,7 @@ excelview
   "fields": {
     "kluisnummer": "Dames B-41",
     "email": "jce.groot@casema.nl",
-    "excel": "Dames B-41",
+    "excel": "--",
     "type": "Dames B-41",
     "sleutels": "1",
     "code": "1",
@@ -10515,7 +10550,7 @@ excelview
   "fields": {
     "kluisnummer": "Dames B-44",
     "email": "marjolein@schepeladvies.nl",
-    "excel": "----",
+    "excel": "--",
     "type": "hang",
     "sleutels": "1",
     "code": "1",
@@ -10528,7 +10563,7 @@ excelview
   "fields": {
     "kluisnummer": "Dames B-45",
     "email": "corien@dapnijkerk.nl",
-    "excel": "Dames B-45",
+    "excel": "--",
     "type": "Dames B-45",
     "sleutels": "1",
     "code": "1",
@@ -10541,7 +10576,7 @@ excelview
   "fields": {
     "kluisnummer": "Dames C-51",
     "email": "mail2mira@yahoo.com",
-    "excel": "Dames C-51",
+    "excel": "--",
     "type": "Dames C-51",
     "sleutels": "1",
     "code": "1",
@@ -10554,7 +10589,7 @@ excelview
   "fields": {
     "kluisnummer": "Dames C-54",
     "email": "smorgens2@gmail.com",
-    "excel": "Dames C-54",
+    "excel": "--",
     "type": "Dames C-54",
     "sleutels": "1",
     "code": "1",
@@ -10567,7 +10602,7 @@ excelview
   "fields": {
     "kluisnummer": "Dames c-56",
     "email": "ingeloes@gmail.com",
-    "excel": "----",
+    "excel": "--",
     "type": "hang",
     "sleutels": "1",
     "code": "1",
@@ -10580,7 +10615,7 @@ excelview
   "fields": {
     "kluisnummer": "Dames C-57",
     "email": "wilmahanskamp@hotmail.com",
-    "excel": "Dames C-57",
+    "excel": "--",
     "type": "Dames C-57",
     "sleutels": "1",
     "code": "1",
@@ -10593,7 +10628,7 @@ excelview
   "fields": {
     "kluisnummer": "Dames C-59",
     "email": "teaudevosvansteenwijk@gmail.com",
-    "excel": "Dames C-59",
+    "excel": "--",
     "type": "Dames C-59",
     "sleutels": "1",
     "code": "1",
@@ -10606,7 +10641,7 @@ excelview
   "fields": {
     "kluisnummer": "Dames C-61",
     "email": "manonburger1@gmail.com",
-    "excel": "----",
+    "excel": "--",
     "type": "hang",
     "sleutels": "1",
     "code": "1",
@@ -10619,7 +10654,7 @@ excelview
   "fields": {
     "kluisnummer": "Dames C-62",
     "email": "leonievb1@gmail.com",
-    "excel": "Dames C-62",
+    "excel": "--",
     "type": "Dames C-62",
     "sleutels": "1",
     "code": "1",
@@ -10632,7 +10667,7 @@ excelview
   "fields": {
     "kluisnummer": "Dames C-64",
     "email": "petra.gerritsen@spletters.nl",
-    "excel": "Dames C-64",
+    "excel": "39",
     "type": "Dames C-64",
     "sleutels": "1",
     "code": "1",
@@ -10645,7 +10680,7 @@ excelview
   "fields": {
     "kluisnummer": "Dames C-65",
     "email": "mhrijks@planet.nl",
-    "excel": "Dames C-65",
+    "excel": "60",
     "type": "Dames C-65",
     "sleutels": "1",
     "code": "1",
@@ -10658,7 +10693,7 @@ excelview
   "fields": {
     "kluisnummer": "Dames C-68",
     "email": "gerdakruithof@icloud.com",
-    "excel": "Dames C-68",
+    "excel": "--",
     "type": "Dames C-68",
     "sleutels": "1",
     "code": "1",
@@ -10671,7 +10706,7 @@ excelview
   "fields": {
     "kluisnummer": "Dames C-69",
     "email": "ellenvandun@casema.nl",
-    "excel": "----",
+    "excel": "--",
     "type": "hang",
     "sleutels": "1",
     "code": "1",
@@ -10684,7 +10719,7 @@ excelview
   "fields": {
     "kluisnummer": "Dames C-70",
     "email": "hl.sinlan@t-mobilethuis.nl",
-    "excel": "Dames C-70",
+    "excel": "--",
     "type": "Dames C-70",
     "sleutels": "1",
     "code": "1",
@@ -10697,7 +10732,7 @@ excelview
   "fields": {
     "kluisnummer": "Dames C-71",
     "email": "ankmeyer@xs4all.nl",
-    "excel": "----",
+    "excel": "--",
     "type": "hang",
     "sleutels": "1",
     "code": "1",
@@ -10710,7 +10745,7 @@ excelview
   "fields": {
     "kluisnummer": "Heren 01",
     "email": "rikderoodevos@kpnmail.nl",
-    "excel": "Heren 01",
+    "excel": "--",
     "type": "Heren 01",
     "sleutels": "1",
     "code": "1",
@@ -10723,7 +10758,7 @@ excelview
   "fields": {
     "kluisnummer": "Heren 02",
     "email": "willie@ambeleij.demon.nl",
-    "excel": "Heren 02",
+    "excel": "190",
     "type": "Heren 02",
     "sleutels": "1",
     "code": "1",
@@ -10736,7 +10771,7 @@ excelview
   "fields": {
     "kluisnummer": "Heren 03",
     "email": "leovandenbroek@casema.nl",
-    "excel": "Heren 03",
+    "excel": "41",
     "type": "Heren 03",
     "sleutels": "1",
     "code": "1",
@@ -10749,7 +10784,7 @@ excelview
   "fields": {
     "kluisnummer": "Heren 04",
     "email": "cor@corscheffers.nl",
-    "excel": "Heren 04",
+    "excel": "--",
     "type": "Heren 04",
     "sleutels": "1",
     "code": "1",
@@ -10762,7 +10797,7 @@ excelview
   "fields": {
     "kluisnummer": "Heren 05",
     "email": "onbekend",
-    "excel": "----",
+    "excel": "--",
     "type": "hang",
     "sleutels": "1",
     "code": "1",
@@ -10775,7 +10810,7 @@ excelview
   "fields": {
     "kluisnummer": "Heren 06",
     "email": "edwin.foppen@gmail.com",
-    "excel": "----",
+    "excel": "--",
     "type": "hang",
     "sleutels": "1",
     "code": "1",
@@ -10788,7 +10823,7 @@ excelview
   "fields": {
     "kluisnummer": "Heren 07",
     "email": "joh.vanwijk@ziggo.nl",
-    "excel": "----",
+    "excel": "--",
     "type": "hang",
     "sleutels": "1",
     "code": "1",
@@ -10801,7 +10836,7 @@ excelview
   "fields": {
     "kluisnummer": "Heren 08",
     "email": "sjoerdhagedoorn@gmail.com",
-    "excel": "----",
+    "excel": "--",
     "type": "hang",
     "sleutels": "1",
     "code": "1",
@@ -10814,7 +10849,7 @@ excelview
   "fields": {
     "kluisnummer": "Heren 09",
     "email": "pepijn.reyn@clz.nl",
-    "excel": "----",
+    "excel": "--",
     "type": "hang",
     "sleutels": "1",
     "code": "1",
@@ -10827,7 +10862,7 @@ excelview
   "fields": {
     "kluisnummer": "Heren 10",
     "email": "whmgorissen@gmail.com",
-    "excel": "Heren 10",
+    "excel": "198",
     "type": "Heren 10",
     "sleutels": "1",
     "code": "1",
@@ -10840,7 +10875,7 @@ excelview
   "fields": {
     "kluisnummer": "Heren 11",
     "email": "tijmen@vangulik.org",
-    "excel": "Heren 11",
+    "excel": "--",
     "type": "Heren 11",
     "sleutels": "1",
     "code": "1",
@@ -10853,7 +10888,7 @@ excelview
   "fields": {
     "kluisnummer": "Heren 12",
     "email": "rayszjf@hotmail.com",
-    "excel": "Heren 12",
+    "excel": "--",
     "type": "Heren 12",
     "sleutels": "1",
     "code": "1",
@@ -10866,7 +10901,7 @@ excelview
   "fields": {
     "kluisnummer": "Heren 13",
     "email": "hugo@linnenbank.org",
-    "excel": "Heren 13",
+    "excel": "--",
     "type": "Heren 13",
     "sleutels": "1",
     "code": "1",
@@ -10879,7 +10914,7 @@ excelview
   "fields": {
     "kluisnummer": "Heren 14",
     "email": "roeien@jeroenbollen.nl",
-    "excel": "Heren 14",
+    "excel": "--",
     "type": "Heren 14",
     "sleutels": "1",
     "code": "1",
@@ -10892,7 +10927,7 @@ excelview
   "fields": {
     "kluisnummer": "Heren 16",
     "email": "peter.prak@me.com",
-    "excel": "Heren 16",
+    "excel": "--",
     "type": "Heren 16",
     "sleutels": "1",
     "code": "1",
@@ -10905,7 +10940,7 @@ excelview
   "fields": {
     "kluisnummer": "Heren 19",
     "email": "ecr.bak@online.nl",
-    "excel": "Heren 19",
+    "excel": "--",
     "type": "Heren 19",
     "sleutels": "1",
     "code": "1",
@@ -10918,7 +10953,7 @@ excelview
   "fields": {
     "kluisnummer": "Heren 20",
     "email": "Tamerlan@xs4all.nl",
-    "excel": "Heren 20",
+    "excel": "--",
     "type": "Heren 20",
     "sleutels": "1",
     "code": "1",
@@ -10931,7 +10966,7 @@ excelview
   "fields": {
     "kluisnummer": "Heren 21",
     "email": "jurjen@kolmerweb.nl",
-    "excel": "----",
+    "excel": "--",
     "type": "hang",
     "sleutels": "1",
     "code": "1",
@@ -10944,7 +10979,7 @@ excelview
   "fields": {
     "kluisnummer": "Heren22",
     "email": "p.hingstman@hccnet.nl",
-    "excel": "Heren 22",
+    "excel": "--",
     "type": "Heren 22",
     "sleutels": "1",
     "code": "1",
@@ -10957,7 +10992,7 @@ excelview
   "fields": {
     "kluisnummer": "Heren 23",
     "email": "thmm.visser@ziggo.nl",
-    "excel": "Heren 23",
+    "excel": "--",
     "type": "Heren 23",
     "sleutels": "1",
     "code": "1",
@@ -10970,7 +11005,7 @@ excelview
   "fields": {
     "kluisnummer": "Heren 24",
     "email": "gertjan@miedemageluid.nl",
-    "excel": "Heren 24",
+    "excel": "33",
     "type": "Heren 24",
     "sleutels": "1",
     "code": "1",
@@ -10983,7 +11018,7 @@ excelview
   "fields": {
     "kluisnummer": "Heren 25",
     "email": "laurensd007@gmail.com",
-    "excel": "----",
+    "excel": "--",
     "type": "hang",
     "sleutels": "1",
     "code": "1",
@@ -10996,7 +11031,7 @@ excelview
   "fields": {
     "kluisnummer": "Heren 26",
     "email": "martinreniers@hotmail.com",
-    "excel": "Heren 26",
+    "excel": "211",
     "type": "Heren 26",
     "sleutels": "1",
     "code": "1",
@@ -11009,7 +11044,7 @@ excelview
   "fields": {
     "kluisnummer": "Heren 27",
     "email": "p.kwantes@ziggo.nl",
-    "excel": "----",
+    "excel": "--",
     "type": "hang",
     "sleutels": "1",
     "code": "1",
@@ -11022,7 +11057,7 @@ excelview
   "fields": {
     "kluisnummer": "Heren 29",
     "email": "gerard.ranke@ziggo.nl",
-    "excel": "Heren 29",
+    "excel": "--",
     "type": "Heren 29",
     "sleutels": "1",
     "code": "1",
@@ -11035,7 +11070,7 @@ excelview
   "fields": {
     "kluisnummer": "Heren 30",
     "email": "goldtuk@telfort.nl",
-    "excel": "Heren 30",
+    "excel": "--",
     "type": "Heren 30",
     "sleutels": "1",
     "code": "1",
@@ -11048,7 +11083,7 @@ excelview
   "fields": {
     "kluisnummer": "Heren 32",
     "email": "JTombrock@ziggo.nl",
-    "excel": "Heren 32",
+    "excel": "--",
     "type": "Heren 32",
     "sleutels": "1",
     "code": "1",
@@ -11061,7 +11096,7 @@ excelview
   "fields": {
     "kluisnummer": "Heren 33",
     "email": "dickbaars@kpnplanet.nl",
-    "excel": "Heren 33",
+    "excel": "--",
     "type": "Heren 33",
     "sleutels": "1",
     "code": "1",
@@ -11074,7 +11109,7 @@ excelview
   "fields": {
     "kluisnummer": "Heren 35",
     "email": "joannemieke@kpnmail.nl",
-    "excel": "Heren 35",
+    "excel": "--",
     "type": "Heren 35",
     "sleutels": "1",
     "code": "1",
@@ -11087,7 +11122,7 @@ excelview
   "fields": {
     "kluisnummer": "Heren 37",
     "email": "paco@redleafs.nl",
-    "excel": "Heren 37",
+    "excel": "--",
     "type": "Heren 37",
     "sleutels": "1",
     "code": "1",
@@ -11100,7 +11135,7 @@ excelview
   "fields": {
     "kluisnummer": "Heren 38",
     "email": "linssentandarts@gmail.com",
-    "excel": "Heren 38",
+    "excel": "219",
     "type": "Heren 38",
     "sleutels": "1",
     "code": "1",
@@ -11113,7 +11148,7 @@ excelview
   "fields": {
     "kluisnummer": "Heren 39",
     "email": "H.j.kiewiet@hccnet.nl",
-    "excel": "Heren 39",
+    "excel": "--",
     "type": "Heren 39",
     "sleutels": "1",
     "code": "1",
@@ -11126,7 +11161,7 @@ excelview
   "fields": {
     "kluisnummer": "Heren 40",
     "email": "w.vandenbosch@planet.nl",
-    "excel": "Heren 40",
+    "excel": "25",
     "type": "Heren 40",
     "sleutels": "1",
     "code": "1",
@@ -11139,7 +11174,7 @@ excelview
   "fields": {
     "kluisnummer": "Heren 41",
     "email": "peterknappstein@seilemaaker.nl",
-    "excel": "Heren 41",
+    "excel": "--",
     "type": "Heren 41",
     "sleutels": "1",
     "code": "1",
@@ -11152,7 +11187,7 @@ excelview
   "fields": {
     "kluisnummer": "Heren 42",
     "email": "erikvanderstruijs@xs4all.nl",
-    "excel": "Heren 42",
+    "excel": "--",
     "type": "Heren 42",
     "sleutels": "1",
     "code": "1",
@@ -11165,7 +11200,7 @@ excelview
   "fields": {
     "kluisnummer": "Heren 43",
     "email": "bertappeldoorn@ziggo.nl",
-    "excel": "Heren 43",
+    "excel": "--",
     "type": "Heren 43",
     "sleutels": "1",
     "code": "1",
@@ -11178,7 +11213,7 @@ excelview
   "fields": {
     "kluisnummer": "Heren 44",
     "email": "sjduijn@yahoo.com",
-    "excel": "Heren 44",
+    "excel": "--",
     "type": "Heren 44",
     "sleutels": "1",
     "code": "1",
@@ -11191,7 +11226,7 @@ excelview
   "fields": {
     "kluisnummer": "Heren 45",
     "email": "Haroldthijssen@hetnet.nl",
-    "excel": "Heren 45",
+    "excel": "--",
     "type": "Heren 45",
     "sleutels": "1",
     "code": "1",
@@ -11204,7 +11239,7 @@ excelview
   "fields": {
     "kluisnummer": "Heren 47",
     "email": "simon.glazenborg@gmail.com",
-    "excel": "----",
+    "excel": "--",
     "type": "hang",
     "sleutels": "1",
     "code": "1",
@@ -11217,7 +11252,7 @@ excelview
   "fields": {
     "kluisnummer": "Heren 48",
     "email": "tomasklos@gmail.com",
-    "excel": "Heren 48",
+    "excel": "--",
     "type": "Heren 48",
     "sleutels": "1",
     "code": "1",
@@ -11230,7 +11265,7 @@ excelview
   "fields": {
     "kluisnummer": "Heren 51",
     "email": "hbekenkamp-viking@casema.nl",
-    "excel": "----",
+    "excel": "--",
     "type": "hang",
     "sleutels": "1",
     "code": "1",
@@ -11243,7 +11278,7 @@ excelview
   "fields": {
     "kluisnummer": "Heren 52",
     "email": "whdgroot@gmail.com",
-    "excel": "Heren 52",
+    "excel": "--",
     "type": "Heren 52",
     "sleutels": "1",
     "code": "1",
@@ -11256,7 +11291,7 @@ excelview
   "fields": {
     "kluisnummer": "Heren 53",
     "email": "c.wierenga@ziggo.nl",
-    "excel": "----",
+    "excel": "--",
     "type": "hang",
     "sleutels": "1",
     "code": "1",
@@ -11269,7 +11304,7 @@ excelview
   "fields": {
     "kluisnummer": "Heren 55",
     "email": "avdort@gmail.com",
-    "excel": "Heren 55",
+    "excel": "--",
     "type": "Heren 55",
     "sleutels": "1",
     "code": "1",
@@ -11282,7 +11317,7 @@ excelview
   "fields": {
     "kluisnummer": "Heren 56",
     "email": "cmreuser@yahoo.com",
-    "excel": "Heren 56",
+    "excel": "--",
     "type": "Heren 56",
     "sleutels": "1",
     "code": "1",
@@ -11295,7 +11330,7 @@ excelview
   "fields": {
     "kluisnummer": "Heren 57",
     "email": "eongko@yahoo.com",
-    "excel": "----",
+    "excel": "--",
     "type": "hang",
     "sleutels": "1",
     "code": "1",
@@ -11308,7 +11343,7 @@ excelview
   "fields": {
     "kluisnummer": "Heren 58",
     "email": "peter.m.kerkhoven@gmail.com",
-    "excel": "----",
+    "excel": "--",
     "type": "hang",
     "sleutels": "1",
     "code": "1",
@@ -11321,7 +11356,7 @@ excelview
   "fields": {
     "kluisnummer": "Heren 59",
     "email": "wessel.goossens@gmail.com",
-    "excel": "Heren 59",
+    "excel": "--",
     "type": "Heren 59",
     "sleutels": "1",
     "code": "1",
@@ -11334,7 +11369,7 @@ excelview
   "fields": {
     "kluisnummer": "Heren 61",
     "email": "essen-van@ziggo.nl",
-    "excel": "Heren 61",
+    "excel": "--",
     "type": "Heren 61",
     "sleutels": "1",
     "code": "1",
@@ -11347,7 +11382,7 @@ excelview
   "fields": {
     "kluisnummer": "Heren 63",
     "email": "martinwileenbiertje@hotmail.com",
-    "excel": "Heren 63",
+    "excel": "238",
     "type": "Heren 63",
     "sleutels": "1",
     "code": "1",
@@ -11360,7 +11395,7 @@ excelview
   "fields": {
     "kluisnummer": "Heren 64",
     "email": "info@vanmanen.biz",
-    "excel": "Heren 64",
+    "excel": "--",
     "type": "Heren 64",
     "sleutels": "1",
     "code": "1",
@@ -11373,7 +11408,7 @@ excelview
   "fields": {
     "kluisnummer": "Heren 65",
     "email": "gerardvanbruggen64@hetnet.nl",
-    "excel": "Heren 65",
+    "excel": "--",
     "type": "Heren 65",
     "sleutels": "1",
     "code": "1",
@@ -11386,7 +11421,7 @@ excelview
   "fields": {
     "kluisnummer": "Heren 67",
     "email": "rtenvoorde@datelvision.nl",
-    "excel": "Heren 67",
+    "excel": "--",
     "type": "Heren 67",
     "sleutels": "1",
     "code": "1",
@@ -11399,7 +11434,7 @@ excelview
   "fields": {
     "kluisnummer": "Heren 69",
     "email": "die123@casema.nl",
-    "excel": "Heren 69",
+    "excel": "--",
     "type": "Heren 69",
     "sleutels": "1",
     "code": "1",
@@ -11412,7 +11447,7 @@ excelview
   "fields": {
     "kluisnummer": "Heren 70",
     "email": "gelangeveld@gmail.com",
-    "excel": "Heren 70",
+    "excel": "--",
     "type": "Heren 70",
     "sleutels": "1",
     "code": "1",
@@ -11425,7 +11460,7 @@ excelview
   "fields": {
     "kluisnummer": "Heren 22",
     "email": "p.hingstman@hccnet.nl",
-    "excel": "Heren 22",
+    "excel": "--",
     "type": "Heren 22",
     "sleutels": "1",
     "code": "1",

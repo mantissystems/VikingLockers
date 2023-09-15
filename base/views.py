@@ -97,7 +97,7 @@ def home(request):
     messages.add_message(request, messages.INFO, "Welkom bij Viking Lockers.")    
     q = request.GET.get('q') if request.GET.get('q') != None else ''
     qq=q.lower()
-    lockers=Locker.objects.all().filter(verhuurd=True)     
+    # lockers=Locker.objects.all().filter(verhuurd=True)     
     messagelocker=Locker.objects.all().first()     
     from django.db.models import Count
     if request.method == 'POST':
@@ -169,11 +169,11 @@ def home(request):
     # topics = Topic.objects.all()[0:5]
     lockers=Locker.objects.all().filter(verhuurd=True)     
     room_messages = Message.objects.all()
-    facturatielijst=Facturatielijst.objects.all()
+    # facturatielijst=Facturatielijst.objects.all()
     context = {
                'lijst':lijst,
                 'lockers': lockers,
-                'facturatielijst': facturatielijst,
+                # 'facturatielijst': facturatielijst,
                'berichten': berichten, 
                'room_messages': room_messages
                }
@@ -392,8 +392,8 @@ class updateUser3(LoginRequiredMixin,UpdateView):
     fields = ['username','email','locker']
     success_url = reverse_lazy('users')
     def get_object(self):
-        obj = get_object_or_404(Locker, kluisnummer__slug=self.kwargs['kluis'], slug=self.kwargs['email'] )
-        # obj = get_object_or_404(User, id=self.kwargs['pk'])
+        # obj = get_object_or_404(Locker, kluisnummer__slug=self.kwargs['pk'], slug=self.kwargs['pk'] )
+        obj = get_object_or_404(User, id=self.kwargs['pk'])
         return obj
 
     def form_valid(self, form):
@@ -404,7 +404,8 @@ class updateUser3(LoginRequiredMixin,UpdateView):
             locker, created = Locker.objects.update_or_create(
             kluisnummer=kluis,
             email=email,
-            verhuurd=False,
+            verhuurd=True,
+            type='H',
             kluisje=kluis,
             )
 
@@ -414,10 +415,11 @@ class updateUser3(LoginRequiredMixin,UpdateView):
 class updateUser_email(LoginRequiredMixin,UpdateView):
     login_url='login'
     model = Locker
-    # fields='__all__'
-    fields = ['username','email','locker']
+    fields='__all__'
+    # fields = ['username','email','locker']
     success_url = reverse_lazy('users')
     def get_object(self):
+        print(self.kwargs['kluis'])
         obj = get_object_or_404(Locker, kluisnummer=self.kwargs['kluis'],)# slug=self.kwargs['kluis'] )
         return obj
     def get_context_data(self,**kwargs):
@@ -430,7 +432,7 @@ class updateUser_email(LoginRequiredMixin,UpdateView):
         return context
 
     def form_valid(self, form):
-        kluis = form.cleaned_data['locker']  
+        kluis = form.cleaned_data['kluisnummer']  
         email = form.cleaned_data['email'] 
         if kluis:
             print(kluis)
@@ -440,7 +442,8 @@ class updateUser_email(LoginRequiredMixin,UpdateView):
             verhuurd=False,
             kluisje=kluis,
             )
-
+        else:
+                    messages.success(self.request, "Something went wrong.")
         messages.success(self.request, "The user was updated successfully.")
         return super(updateUser_email,self).form_valid(form)
 
@@ -682,13 +685,20 @@ class MemberListView (LoginRequiredMixin, ListView):
     model=User
 # class MemberListView (ListView):
 #     model=User
-def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
+    def get_context_data(self,**kwargs):
+        q = self.request.GET.get('q') if self.request.GET.get('q') != None else ''
+        query = self.request.GET.get('q')
+        if query == None: query=""
+        queryset = User.objects.filter(
+            Q(email__icontains=query)|
+            Q(username__icontains=query)|
+            Q(locker__icontains=query)
+            ).order_by('email')
+        context = {
+            'query': query,
+            'object_list' :queryset,
+            }
         return context
-    # template_name='base/user_list.html'
-def get_queryset(self): # new
-    queryset=User.objects.all().order_by('username')
-    return queryset
 paginate_by = 20
 
 class PersonListView (ListView):
@@ -822,21 +832,40 @@ class LockerDeleteView(DeleteView):
 def tel_aantal_registraties(request):
     print('in tel_aantal_registraties in facturatielijst===============')
     qs_user = User.objects.all()
+    locker= Locker.objects.none()
     qs1=qs_user.values_list('email',flat=True)
     qs_locker = Locker.objects.all()
     qs_excel = Excellijst.objects.all()
-    qs_factuur = Facturatielijst.objects.all() #.filter(email__in=qs1)
-    qs3=qs_factuur.values_list('email',flat=True)
-    for q in qs_factuur:
-        if User.objects.filter(email=q.email).exists():
-            f=Facturatielijst.objects.all().filter(email=q.email).update(is_registered='==regis==')
-        else:
-            e=Excellijst.objects.all().filter(email=q.email).update(excel='--')
-            try:
-                User.objects.get(email=q.email)
-            except: User.DoesNotExist
+    qs_factuur = Facturatielijst.objects.all().update(in_excel='-----')
+    qs_factuur = Facturatielijst.objects.all().update(is_registered='-----')
+    # for f in  Facturatielijst.objects.all():
+    #     try:
+    #        locker= Locker.objects.get(kluisnummer=f.kluisnummer)
+    #     except Locker.DoesNotExist:
+    #         g=Facturatielijst.objects.all().filter(email=f.email).update(type='L',is_registered=f.kluisnummer)
+    #     # finally:
+    #         # Locker.objects.filter(kluisnummer=f.kluisnummer)
+    #     g=Facturatielijst.objects.all().filter(email=f.email).first()
+    #     if locker:print(locker.kluisnummer)
+    #     # f.is_registered=locker.kluisnummer
+    #     f.save()
+        
+    #     try: User.objects.get(email=f.email)
+    #     except User.DoesNotExist:
+    #         g=Facturatielijst.objects.all().filter(email=f.email).update(type='U')
+            
+
+    # qs3=qs_factuur.values_list('email',flat=True)
+    # for q in qs_factuur:
+    #     if User.objects.filter(email=q.email).exists():
+    #         f=Facturatielijst.objects.all().filter(email=q.email).update(is_registered='==regis==')
+    #     else:
+    #         e=Excellijst.objects.all().filter(email=q.email).update(excel='--')
+    #         try:
+    #             User.objects.get(email=q.email)
+    #         except: User.DoesNotExist
             # print(q.email)
-    print('in tel_aantal_registraties in excel===============')
+    # print('in tel_aantal_registraties in excel===============')
     # for q in qs_excel:
     #     if User.objects.filter(email=q.email).exists():
     #         e=Excellijst.objects.all().filter(email=q.email).update(excel=q.id)
@@ -850,39 +879,40 @@ def tel_aantal_registraties(request):
             # print(q.email,'X')
             # f=Facturatielijst.objects.all().filter(email=q.email).update(type='X')
             # print(q.email)
-    # print('in tel_aantal_users in excel===============')
-    # for u in qs_user:
-    #     if User.objects.filter(email=u.email).exists():
-    #         e=Excellijst.objects.all().filter(email=u.email).update(excel=u.id)
-    #         f=Facturatielijst.objects.all().filter(email=u.email).update(type='L')
-    #         f=Facturatielijst.objects.all().filter(email=u.email).update(in_excel='==xls===')
-    #     else:
-    #         e=Excellijst.objects.all().filter(email=u.email).update(excel='--')
+    print('in tel_aantal_users in factuurlijst===============')
+    for u in qs_user:
+        if Facturatielijst.objects.all().filter(email=u.email).exists():
+            f=Facturatielijst.objects.all().filter(email=u.email).update(is_registered='==regis==',in_excel=u.id)
+        # else:
+        #     e=Excellijst.objects.all().filter(email=u.email).update(excel='--')
 
-    #         try:
-    #             User.objects.get(email=u.email)
-    #         except: User.DoesNotExist
-    #         print(u.email,'X')
-            # f=Facturatielijst.objects.all().filter(email=u.email).update(type='X')
+            try:
+                User.objects.get(email=u.email)
+            except: User.DoesNotExist
+            print(u.email,'X')
+            f=Facturatielijst.objects.all().filter(email=u.email).update(type='X')
             # print(u.email,'X')
     print('in tel_aantal_lockers in facturatielijst===============')
     for l in qs_locker:
-        if Facturatielijst.objects.filter(kluisnummer=l.kluisnummer).exists():
-            # e=Excellijst.objects.all().filter(email=l.email).update(excel=l.id)
-            # f=Facturatielijst.objects.all().filter(email=l.email).update(type='L')
+        try:
+            Facturatielijst.objects.get(kluisnummer=l.kluisnummer)
+        except Facturatielijst.DoesNotExist:
             f=Facturatielijst.objects.all().filter(kluisnummer=l.kluisnummer).update(type='L')
-            # print(l.kluisnummer)
-        else:
-            print('not ',l.kluisnummer)
-            f=Facturatielijst.objects.all().filter(email=l.email).update(type=l.kluisnummer)
-            # e=Excellijst.objects.all().filter(email=l.email).update(excel='--')
+        # if Facturatielijst.objects.filter(kluisnummer=l.kluisnummer).exists():
+        #     f=Facturatielijst.objects.all().filter(kluisnummer=l.kluisnummer).update(type='L')
+            print(l.kluisnummer)
+        # else:
+        #     print('not ',l.kluisnummer)
+            # f=Facturatielijst.objects.all().filter(email=l.email).update(type=l.kluisnummer)
+        if Facturatielijst.objects.filter(email=l.email).exists():
+            f=Facturatielijst.objects.all().filter(email=l.email).update(type=l.kluisnummer,is_registered=l.kluisnummer)
 
             try:
                 User.objects.get(email=l.email)
-            except: User.DoesNotExist
-            # print(u.email,'X')
+            except User.DoesNotExist:
+                print(u.email,'X')
             # f=Facturatielijst.objects.all().filter(email=l.email).update(type='X')
-    print(qs_user.count(),qs_locker.count(),qs_factuur.count(),qs_excel.count())
+    print(qs_user.count(),qs_locker.count(),qs_excel.count())
     print('einde tel_aantal_lockers in facturatielijst')
 
     # def file_load_view(request):
@@ -915,8 +945,11 @@ def tel_aantal_registraties(request):
     # return response
     # # ============================================================ temporarely  commented out 13-9-23
 
-    context={}
-    return render(request, 'base/home.html', context)
+    # context={}
+    # return render(request, 'base/home.html', context)
+    # url = reverse('create_locker', kwargs={'row': pk,'kol': kol})
+    url = reverse('facturatielijst',)
+    return HttpResponseRedirect(url)
 
 
 def lockerPage(request,pk):

@@ -16,11 +16,7 @@
               {{user.email|truncatechars:10}}
             </td>
                     <td>
-                        {% if user.excel == '--' %}
-                          ------
-                          {% else %}
-                          <a href="{% url 'update-usermail'  user.excel  %}?q={{user.excel}}">{{user.kluisnummer}} </span></a>
-                          {% endif %}
+                      {{user.kluisnummer}}
                         </td> 
                         <td>{{user.excel}} </td>                
           
