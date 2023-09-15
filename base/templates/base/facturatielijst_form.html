@@ -13,7 +13,7 @@
               </path>
             </svg>
           </a>
-          <h3>CreateFactuurlijst Regel</h3>
+          <h3>Edit Factuurlijst Regel {{factuurlijst.id}} </h3>
         </div>
       </div>
       <div class="layout__body">
@@ -21,7 +21,7 @@
           {%csrf_token %}
           <h2>{% if locker %} Update {% else %} Create {% endif %} Factuurregel</h2>
          {% for field in form %}
-           {% if field.name == 'verhuurd' %}
+           {% if field.is_registered == '==regis' %}
            <label for="profile_pic">{{field.label}}</label>
            <div class="form__group">
              {{field}}
@@ -45,10 +45,10 @@
            <input type="submit" value="Save" class="btn btn-primary"/>
            <a href="{%url 'home'%}" class="btn btn-outline">Cancel</a>
            {% if request.user.is_superuser %}
-           <a href="{% url 'delete-locker' 1 %}" class="btn btn--link">Delete</a>
+           <a href="{% url 'delete-factuur' facturatielijst.id %}" class="btn btn--link">Delete</a>
+           {% comment %}
+           {% endcomment %}
            {% endif %}
-           {% if locker %}
-{% endif %}
          </div>
          
        

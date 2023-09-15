@@ -780,6 +780,20 @@ class PersonUpdate_id( LoginRequiredMixin,UpdateView):
         return super(PersonUpdate_id,self).form_valid(form)
         messages.success(self.request, "The person was updated successfully.")
 
+class EditFactuur( LoginRequiredMixin,UpdateView):
+    login_url = '/login/'
+    # redirect_field_name = 'redirect_to'
+    model = Facturatielijst
+    fields = ['kluisnummer','email','in_excel','is_registered','type']
+    # fields = '__all__'
+    success_url = reverse_lazy('facturatielijst')
+    
+    def form_valid(self, form):
+        # kluis = form.cleaned_data['locker']  
+        # email = form.cleaned_data['email'] 
+        return super(EditFactuur,self).form_valid(form)
+        messages.success(self.request, "The person was updated successfully.")
+
 class PersonUpdate(UpdateView):
     model = Person
     fields = ['name','hoofdhuurder', 'email','wachtlijst','onderhuur']
@@ -827,6 +841,15 @@ class LockerDeleteView(DeleteView):
     model = Locker
     success_url ="/"    
     template_name = "base/delete.html"
+
+class FactuurDeleteView(DeleteView):
+    model = Facturatielijst
+    success_url ="/"    
+    template_name = "base/delete.html"
+    def get_object(self):
+        obj = get_object_or_404(Facturatielijst, id=self.kwargs['pk'])
+        _id = self.request.GET.get('pk') if self.request.GET.get('pk') != None else ''
+        return obj
 
 @login_required(login_url='login')   
 def tel_aantal_registraties(request):
