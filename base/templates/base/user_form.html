@@ -55,10 +55,12 @@
       <div class="layout__body">
         <form method="post" novalidate class="card">
           {%csrf_token %}
-          <h2>{% if person %} Update {% else %} Or create {% endif %} Waiting List Entry</h2>
+          <h2>{% if person %} Update {% else %} {% endif %} Register</h2>
          {% for field in form %}
-           {% if field.name == 'completed' %}
-           <label for="profile_pic">{{field.label}}</label>
+           {% if field.name == 'first_name' %}
+           {% comment %}<label for="profile_pic"> Naam{{field.label}}</label>{% endcomment %}
+
+           <label for="profile_pic"> Naam</label>
            <div class="form__group">
              {{field}}
            </div>
@@ -80,29 +82,19 @@
          <div class="form-buttons">
            <input type="submit" value="Save" class="btn btn-primary"/>
            <a href="{%url 'home'%}" class="btn btn-outline">Cancel</a>
-           {% if person %}
-                     <a href="{% url 'delete-person' person.id %}" class="btn btn--link">Delete</a>
-                     {% else %}
-                     {% comment %}
-
-                     {{request.user}}
-                     {% endcomment %}
-
-                     Login
                     </button>
                   </form>
           
                   <div class="auth__action">
                     <p>Haven't signed up yet?</p>
                     <hr>
-                    <a href="{% url 'registreer' %}" class="btn btn--link">Sign Up (Registreer)</a><hr>
+                    <a href="{% url 'register' %}" class="btn btn--link">Sign Up (Registreer)</a><hr>
                     <a href="{% url 'create-person' %}" class="btn btn--link">Op de Wachtlijst</a>
                   </div>
                 </div>
               </div>
             </div>
                              
-{% endif %}
          </div>
          
        
@@ -113,5 +105,4 @@
 </main>
 {% endblock content %}
 {% comment %}
-
 {% endcomment %}

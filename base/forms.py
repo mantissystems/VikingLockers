@@ -20,7 +20,7 @@ class DataForm(forms.Form):
 class MyUserCreationForm(UserCreationForm):
     class Meta:
         model = User
-        fields = [ 'username', 'email', 'password1', 'password2']
+        fields = [ 'first_name', 'email', 'password1', 'password2']
         exclude = ['username']
         labels = {
         "email": "Your email. eg.: info@mail.nl",

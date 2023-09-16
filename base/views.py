@@ -31,7 +31,7 @@ def loginPage(request):
         return redirect('home')
 
     if request.method == 'POST':
-        email = request.POST.get('email').lower()
+        email = request.POST.get('email')
         password = request.POST.get('password')
 
         try:
@@ -56,7 +56,7 @@ def logoutUser(request):
     return redirect('home')
 
 def registerPage(request):
-    email_used=bool
+    # email_used=bool
     form = MyUserCreationForm()
     pemail=request.POST.get('email')
     if request.method == 'POST':
@@ -70,8 +70,8 @@ def registerPage(request):
         if form.is_valid():
             print('valid')
             user = form.save(commit=False)
-            user.username = user.name.lower()
-            user.last_name = user.name.lower()
+            # user.username = user.name.lower()
+            # user.last_name = user.name.lower()
             users =User.objects.filter(
             Q(username=request.POST.get('name')) |
             Q(email=request.POST.get('email'))
@@ -120,7 +120,8 @@ def home(request):
     elif request.user is not None:
         messages.info(request, f'Ubent niet ingelogd. Svp Inloggen / Registreren')
         print('2.not-none-user:', request.user)
-        return HttpResponseRedirect('/registreer/')
+        # return HttpResponseRedirect('/registreer/')
+        return HttpResponseRedirect('/register/')
     elif request.user == AnonymousUser:
           print('3.anonymoususer:', request.user)
     elif request.user != AnonymousUser:
@@ -370,7 +371,8 @@ def updateUser(request):
 
 class CreateUser(CreateView):
     model = User
-    fields = ['username','email',]
+    fields = ['first_name','email',]
+    # fields='__all__'
     success_url = reverse_lazy('home')
     # print('usercreateview')
     def form_valid(self, form):
@@ -399,6 +401,8 @@ class updateUser3(LoginRequiredMixin,UpdateView):
     def form_valid(self, form):
         kluis = form.cleaned_data['locker']  
         email = form.cleaned_data['email'] 
+        name=email.split('@')
+        print(name)
         if kluis:
             print(kluis)
             locker, created = Locker.objects.update_or_create(
@@ -773,10 +777,31 @@ class PersonUpdate_id( LoginRequiredMixin,UpdateView):
     # fields = ['name','email','wachtlijst']
     fields = '__all__'
     success_url = reverse_lazy('profiles')
-    
     def form_valid(self, form):
         kluis = form.cleaned_data['locker']  
+        onderhuur = form.cleaned_data['onderhuur']  
+        print(onderhuur)
+        email = form.cleaned_data['email']
+        hoofdhuurder = form.cleaned_data['hoofdhuurder']  
+        name = form.cleaned_data['name']  
+        onderhuurder = form.cleaned_data['onderhuur']  
+        wachtlijst = form.cleaned_data['wachtlijst']  
         email = form.cleaned_data['email'] 
+        # url = reverse('delete-person', kwargs={'pk': super().person.id})
+        viking= email.replace("@", "")
+        print(viking)
+        string='pbkdf2_sha256$390000$MbAy3r2ahV6QE6xFilyWG5$Hkuz0s9MNtjJ066lD0v9N2tnUv2ZuZLALt2rIL1QSAQ='
+ 
+        if onderhuur:
+            user=User.objects.update_or_create(username=email,
+                                                           email=email,
+                                                           is_active=True,
+                                                           first_name=name,
+                                                           last_name=name,
+                                                           password=string,
+                                                           )
+
+
         return super(PersonUpdate_id,self).form_valid(form)
         messages.success(self.request, "The person was updated successfully.")
 
