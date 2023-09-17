@@ -1167,15 +1167,15 @@ class LockerUpdate( LoginRequiredMixin,UpdateView):
     # fields = '__all__'
     success_url = reverse_lazy('lockers')
     # def get_object(self):
-    def get_context_data(self, **kwargs: Any) -> dict[str, Any]:
-            obj=self.get_object()
+    # def get_context_data(self, **kwargs: Any) -> dict[str, Any]:
+            # obj=self.get_object()
 
-            if self.request.user.email != obj.email and not self.request.user.is_superuser:
-              notyours='notyours'
-              messages.error(self.request, f'{obj.kluisnummer} : Is niet uw locker')
-            # url = reverse('home',)
-            context={'notyours':'notyours'}
-            return context
+            # if self.request.user.email != obj.email and not self.request.user.is_superuser:
+            #   notyours='notyours'
+            #   messages.error(self.request, f'{obj.kluisnummer} : Is niet uw locker')
+            # # url = reverse('home',)
+            # context={'notyours':'notyours'}
+            # return context
         # return super().get_context_data(**kwargs)
     
     def get_object(self):
