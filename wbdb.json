@@ -4551,6 +4551,97 @@ excelview
   }
 },
 {
+  "model": "admin.logentry",
+  "pk": 351,
+  "fields": {
+    "action_time": "2023-09-16T12:27:47.545Z",
+    "user": 1,
+    "content_type": 6,
+    "object_id": "286",
+    "object_repr": "jacoba@mantis.nl",
+    "action_flag": 3,
+    "change_message": ""
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 352,
+  "fields": {
+    "action_time": "2023-09-16T17:50:23.172Z",
+    "user": 1,
+    "content_type": 6,
+    "object_id": "288",
+    "object_repr": "jacoba@mantisbv.nl",
+    "action_flag": 3,
+    "change_message": ""
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 353,
+  "fields": {
+    "action_time": "2023-09-16T17:50:23.188Z",
+    "user": 1,
+    "content_type": 6,
+    "object_id": "287",
+    "object_repr": "w.vandenbosch@planet.nll",
+    "action_flag": 3,
+    "change_message": ""
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 354,
+  "fields": {
+    "action_time": "2023-09-16T17:50:23.202Z",
+    "user": 1,
+    "content_type": 6,
+    "object_id": "273",
+    "object_repr": "wej.bakker@mantisbv.nll",
+    "action_flag": 3,
+    "change_message": ""
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 355,
+  "fields": {
+    "action_time": "2023-09-16T21:39:38.032Z",
+    "user": 1,
+    "content_type": 6,
+    "object_id": "1",
+    "object_repr": "wej.bakker@mantisbv.nl",
+    "action_flag": 2,
+    "change_message": "[{\"changed\": {\"fields\": [\"Password\", \"Username\"]}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 356,
+  "fields": {
+    "action_time": "2023-09-17T09:32:17.303Z",
+    "user": 1,
+    "content_type": 6,
+    "object_id": "290",
+    "object_repr": "jacoba@mantisbv.nl",
+    "action_flag": 3,
+    "change_message": ""
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 357,
+  "fields": {
+    "action_time": "2023-09-17T10:56:03.774Z",
+    "user": 1,
+    "content_type": 6,
+    "object_id": "291",
+    "object_repr": "germaine@mantis.nl",
+    "action_flag": 3,
+    "change_message": ""
+  }
+},
+{
   "model": "auth.permission",
   "pk": 1,
   "fields": {
@@ -5948,6 +6039,14 @@ excelview
 },
 {
   "model": "sessions.session",
+  "pk": "251qkv9r2z47ioj3f9clhupns2pzhxbx",
+  "fields": {
+    "session_data": ".eJxVjDsOwjAQBe_iGlnBf1PScwZrvbvGAeRIcVIh7k4ipYB2Zt57iwTrUtPaeU4jiYs4i9Mvy4BPbrugB7T7JHFqyzxmuSfysF3eJuLX9Wj_Dir0uq2VUZaIgi2WBsrZGPBBE0ZQrIND74vyLiP7gEP0bDZu2JVI2mgiJT5f9og4dw:1qhpPu:Xx3Yr_LkyFMnc71lBzxM0UsxMf8QZ5JC6IDT87xQ5YE",
+    "expire_date": "2023-10-01T10:54:18.981Z"
+  }
+},
+{
+  "model": "sessions.session",
   "pk": "2sx3k07ugi0g8ta8m9vlghdzwwvi4gbi",
   "fields": {
     "session_data": ".eJxVjMsOwiAQRf-FtSGFoTxcuvcbyDAMUjU0Ke3K-O_apAvd3nPOfYmI21rj1nmJUxZnoYIXp981IT247Sjfsd1mSXNblynJXZEH7fI6Z35eDvfvoGKv39pm4wCJgJIe2KNhH0IoyYwleHKjR1KUSubCTjMYD8lqzAxqKNqCFe8PV445Ew:1qaXpx:Y4FRZ7KmZzpI43fId1RKxUlikT-RBgwVZaZztIRPU28",
@@ -6212,14 +6311,6 @@ excelview
 },
 {
   "model": "sessions.session",
-  "pk": "m8s6as2d4rm3tlup45d21ezocylfo046",
-  "fields": {
-    "session_data": ".eJxVjEEOwiAQRe_C2hDG0gIu3fcMZGBmpGpoUtqV8e7apAvd_vfef6mI21ri1niJE6mLAnX63RLmB9cd0B3rbdZ5rusyJb0r-qBNjzPx83q4fwcFW_nWgsAQOnLSd_5sB-8NAwAN4vrMaNELm4Sdk-AhmEQChDZ5kyXYRKDeH-cQOGQ:1qgF9K:I9utXH5xBh_WsVJYKTKeWmlk4w16ba0j-qt9xwEs_cQ",
-    "expire_date": "2023-09-27T01:58:38.005Z"
-  }
-},
-{
-  "model": "sessions.session",
   "pk": "mk7u15nrd1uny8yt6cnq6s0txc9eq6vd",
   "fields": {
     "session_data": ".eJxVjEEOwiAQRe_C2hDG0gIu3fcMZGBmpGpoUtqV8e7apAvd_vfef6mI21ri1niJE6mLAnX63RLmB9cd0B3rbdZ5rusyJb0r-qBNjzPx83q4fwcFW_nWgsAQOnLSd_5sB-8NAwAN4vrMaNELm4Sdk-AhmEQChDZ5kyXYRKDeH-cQOGQ:1qUTXM:M5dj9HffQ_G32ZQskztB__L6Q7rGU_jImcec9wqUDZo",
@@ -6240,14 +6331,6 @@ excelview
   "fields": {
     "session_data": ".eJxVjEEOwiAQRe_C2hDG0gIu3fcMZGBmpGpoUtqV8e7apAvd_vfef6mI21ri1niJE6mLAnX63RLmB9cd0B3rbdZ5rusyJb0r-qBNjzPx83q4fwcFW_nWgsAQOnLSd_5sB-8NAwAN4vrMaNELm4Sdk-AhmEQChDZ5kyXYRKDeH-cQOGQ:1qfuxS:atDvNoGU_MAjPjueG2JarIda7AqpFKRErlAAYpO6gRY",
     "expire_date": "2023-09-26T04:25:02.909Z"
-  }
-},
-{
-  "model": "sessions.session",
-  "pk": "ntjjehpwccb5llhefar5weo3dykqwbft",
-  "fields": {
-    "session_data": ".eJxVjEEOwiAQRe_C2hDG0gIu3fcMZGBmpGpoUtqV8e7apAvd_vfef6mI21ri1niJE6mLAnX63RLmB9cd0B3rbdZ5rusyJb0r-qBNjzPx83q4fwcFW_nWgsAQOnLSd_5sB-8NAwAN4vrMaNELm4Sdk-AhmEQChDZ5kyXYRKDeH-cQOGQ:1qfLQ1:7fK1Aa-ZZbhd3XysD679M9J7sELticbOkZSdC-mOQ-s",
-    "expire_date": "2023-09-24T14:28:09.315Z"
   }
 },
 {
@@ -6454,15 +6537,15 @@ excelview
   "model": "base.user",
   "pk": 1,
   "fields": {
-    "password": "pbkdf2_sha256$390000$rpQgHiuSfhcF8lZlN7HQML$RDiOEXSeIAREafU0Tnvc9vgV82yf2zx4TW1/f/CTw1o=",
-    "last_login": "2023-09-13T01:58:37.841Z",
+    "password": "pbkdf2_sha256$390000$MbAy3r2ahV6QE6xFilyWG5$Hkuz0s9MNtjJ066lD0v9N2tnUv2ZuZLALt2rIL1QSAQ=",
+    "last_login": "2023-09-17T10:54:18.797Z",
     "is_superuser": true,
     "first_name": "wim",
     "last_name": "bakker",
     "is_staff": true,
     "is_active": true,
     "date_joined": "2023-05-13T08:48:16Z",
-    "username": "wim",
+    "username": "wej.bakker@mantisbv.nl",
     "ploeg": "nieuw",
     "locker": "H40",
     "email": "wej.bakker@mantisbv.nl",
@@ -7672,27 +7755,6 @@ excelview
 },
 {
   "model": "base.user",
-  "pk": 273,
-  "fields": {
-    "password": "",
-    "last_login": null,
-    "is_superuser": false,
-    "first_name": "",
-    "last_name": "",
-    "is_staff": false,
-    "is_active": true,
-    "date_joined": "2023-09-11T13:32:25.888Z",
-    "username": "",
-    "ploeg": null,
-    "locker": null,
-    "email": "wej.bakker@mantisbv.nll",
-    "avatar": "avatar.svg",
-    "groups": [],
-    "user_permissions": []
-  }
-},
-{
-  "model": "base.user",
   "pk": 276,
   "fields": {
     "password": "",
@@ -7749,6 +7811,48 @@ excelview
     "ploeg": null,
     "locker": null,
     "email": "martinwileenbiertje@hotmail.com",
+    "avatar": "avatar.svg",
+    "groups": [],
+    "user_permissions": []
+  }
+},
+{
+  "model": "base.user",
+  "pk": 285,
+  "fields": {
+    "password": "",
+    "last_login": null,
+    "is_superuser": false,
+    "first_name": "",
+    "last_name": "",
+    "is_staff": false,
+    "is_active": true,
+    "date_joined": "2023-09-16T09:41:54.378Z",
+    "username": "Natalie",
+    "ploeg": null,
+    "locker": null,
+    "email": "n.l.m.cappaert@gmail.com",
+    "avatar": "avatar.svg",
+    "groups": [],
+    "user_permissions": []
+  }
+},
+{
+  "model": "base.user",
+  "pk": 289,
+  "fields": {
+    "password": "pbkdf2_sha256$390000$MbAy3r2ahV6QE6xFilyWG5$Hkuz0s9MNtjJ066lD0v9N2tnUv2ZuZLALt2rIL1QSAQ=",
+    "last_login": null,
+    "is_superuser": false,
+    "first_name": "Marijke",
+    "last_name": "Marijke",
+    "is_staff": false,
+    "is_active": true,
+    "date_joined": "2023-09-16T21:29:17.877Z",
+    "username": "marijkemantis.nl",
+    "ploeg": null,
+    "locker": null,
+    "email": "marijke@mantis.nl",
     "avatar": "avatar.svg",
     "groups": [],
     "user_permissions": []
@@ -7978,6 +8082,42 @@ excelview
   }
 },
 {
+  "model": "base.person",
+  "pk": 26,
+  "fields": {
+    "name": "Marijke",
+    "onderhuur": true,
+    "wachtlijst": false,
+    "hoofdhuurder": false,
+    "locker": "D69",
+    "email": "marijke@mantis.nl"
+  }
+},
+{
+  "model": "base.person",
+  "pk": 27,
+  "fields": {
+    "name": "Germaine",
+    "onderhuur": false,
+    "wachtlijst": false,
+    "hoofdhuurder": false,
+    "locker": null,
+    "email": "germaine@mantis.nl"
+  }
+},
+{
+  "model": "base.person",
+  "pk": 28,
+  "fields": {
+    "name": "Ingrid",
+    "onderhuur": false,
+    "wachtlijst": false,
+    "hoofdhuurder": false,
+    "locker": null,
+    "email": "ingrid@mantis.nl"
+  }
+},
+{
   "model": "base.ploeg",
   "pk": 14,
   "fields": {
@@ -8071,8 +8211,6 @@ excelview
     "kluisje": "H40",
     "type": "H",
     "topic": "----",
-    "row": "----",
-    "col": "----",
     "verhuurd": true,
     "sleutels": "----",
     "code": "----",
@@ -8091,8 +8229,6 @@ excelview
     "kluisje": "D32",
     "type": "--",
     "topic": "----",
-    "row": "----",
-    "col": "----",
     "verhuurd": true,
     "sleutels": "----",
     "code": "----",
@@ -8109,8 +8245,6 @@ excelview
     "kluisje": "H24",
     "type": "--",
     "topic": "----",
-    "row": "----",
-    "col": "----",
     "verhuurd": true,
     "sleutels": "----",
     "code": "----",
@@ -8127,8 +8261,6 @@ excelview
     "kluisje": "D33",
     "type": "--",
     "topic": "----",
-    "row": "----",
-    "col": "----",
     "verhuurd": true,
     "sleutels": "----",
     "code": "----",
@@ -8145,8 +8277,6 @@ excelview
     "kluisje": "D26",
     "type": "--",
     "topic": "----",
-    "row": "----",
-    "col": "----",
     "verhuurd": true,
     "sleutels": "----",
     "code": "----",
@@ -8163,8 +8293,6 @@ excelview
     "kluisje": "Dames 44",
     "type": "--",
     "topic": "----",
-    "row": "----",
-    "col": "----",
     "verhuurd": true,
     "sleutels": "----",
     "code": "----",
@@ -8181,8 +8309,6 @@ excelview
     "kluisje": "H42",
     "type": "--",
     "topic": "----",
-    "row": "----",
-    "col": "----",
     "verhuurd": true,
     "sleutels": "----",
     "code": "----",
@@ -8199,8 +8325,6 @@ excelview
     "kluisje": "D31",
     "type": "--",
     "topic": "----",
-    "row": "----",
-    "col": "----",
     "verhuurd": true,
     "sleutels": "----",
     "code": "----",
@@ -8217,8 +8341,6 @@ excelview
     "kluisje": "D64",
     "type": "--",
     "topic": "----",
-    "row": "----",
-    "col": "----",
     "verhuurd": true,
     "sleutels": "----",
     "code": "----",
@@ -8235,8 +8357,6 @@ excelview
     "kluisje": "D41",
     "type": "--",
     "topic": "----",
-    "row": "----",
-    "col": "----",
     "verhuurd": true,
     "sleutels": "----",
     "code": "----",
@@ -8253,8 +8373,6 @@ excelview
     "kluisje": "H03",
     "type": "--",
     "topic": "----",
-    "row": "----",
-    "col": "----",
     "verhuurd": true,
     "sleutels": "----",
     "code": "----",
@@ -8271,13 +8389,13 @@ excelview
     "kluisje": "D69",
     "type": "--",
     "topic": "----",
-    "row": "----",
-    "col": "----",
     "verhuurd": true,
     "sleutels": "----",
     "code": "----",
     "created": "2023-08-30T19:10:32.392Z",
-    "owners": []
+    "owners": [
+      289
+    ]
   }
 },
 {
@@ -8289,8 +8407,6 @@ excelview
     "kluisje": "D25",
     "type": "--",
     "topic": "----",
-    "row": "----",
-    "col": "----",
     "verhuurd": true,
     "sleutels": "----",
     "code": "----",
@@ -8307,8 +8423,6 @@ excelview
     "kluisje": "D46",
     "type": "--",
     "topic": "----",
-    "row": "----",
-    "col": "----",
     "verhuurd": true,
     "sleutels": "----",
     "code": "----",
@@ -8335,13 +8449,11 @@ excelview
   "model": "base.locker",
   "pk": 47,
   "fields": {
-    "kluisnummer": "D66",
+    "kluisnummer": "Dames A-36",
     "email": "info@haazer.nl",
-    "kluisje": "D66",
+    "kluisje": "Dames A-36",
     "type": "--",
     "topic": "----",
-    "row": "----",
-    "col": "----",
     "verhuurd": true,
     "sleutels": "----",
     "code": "----",
@@ -8358,8 +8470,6 @@ excelview
     "kluisje": "D36",
     "type": "--",
     "topic": "----",
-    "row": "----",
-    "col": "----",
     "verhuurd": true,
     "sleutels": "----",
     "code": "----",
@@ -8376,8 +8486,6 @@ excelview
     "kluisje": "H48",
     "type": "--",
     "topic": "----",
-    "row": "----",
-    "col": "----",
     "verhuurd": true,
     "sleutels": "----",
     "code": "----",
@@ -8394,8 +8502,6 @@ excelview
     "kluisje": "H47",
     "type": "--",
     "topic": "----",
-    "row": "----",
-    "col": "----",
     "verhuurd": true,
     "sleutels": "----",
     "code": "----",
@@ -8415,8 +8521,6 @@ excelview
     "kluisje": "H56",
     "type": "--",
     "topic": "----",
-    "row": "----",
-    "col": "----",
     "verhuurd": true,
     "sleutels": "----",
     "code": "----",
@@ -8435,8 +8539,6 @@ excelview
     "kluisje": "H22",
     "type": "--",
     "topic": "----",
-    "row": "----",
-    "col": "----",
     "verhuurd": true,
     "sleutels": "----",
     "code": "----",
@@ -8453,8 +8555,6 @@ excelview
     "kluisje": "H22",
     "type": "--",
     "topic": "----",
-    "row": "----",
-    "col": "----",
     "verhuurd": true,
     "sleutels": "----",
     "code": "----",
@@ -8471,8 +8571,6 @@ excelview
     "kluisje": "wachtlijst",
     "type": "--",
     "topic": "----",
-    "row": "----",
-    "col": "----",
     "verhuurd": false,
     "sleutels": "----",
     "code": "----",
@@ -8489,8 +8587,6 @@ excelview
     "kluisje": "Heren 53",
     "type": "--",
     "topic": "----",
-    "row": "----",
-    "col": "----",
     "verhuurd": true,
     "sleutels": "----",
     "code": "----",
@@ -8507,8 +8603,6 @@ excelview
     "kluisje": "",
     "type": "--",
     "topic": "----",
-    "row": "----",
-    "col": "----",
     "verhuurd": true,
     "sleutels": "----",
     "code": "----",
@@ -8525,8 +8619,6 @@ excelview
     "kluisje": "Danes C65",
     "type": "--",
     "topic": "----",
-    "row": "----",
-    "col": "----",
     "verhuurd": true,
     "sleutels": "2",
     "code": "----",
@@ -8543,8 +8635,6 @@ excelview
     "kluisje": "Dames D30",
     "type": "--",
     "topic": "----",
-    "row": "----",
-    "col": "----",
     "verhuurd": false,
     "sleutels": "----",
     "code": "----",
@@ -8561,8 +8651,6 @@ excelview
     "kluisje": "Dames 30",
     "type": "--",
     "topic": "----",
-    "row": "----",
-    "col": "----",
     "verhuurd": false,
     "sleutels": "----",
     "code": "----",
@@ -8579,12 +8667,26 @@ excelview
     "kluisje": "Dames 31",
     "type": "--",
     "topic": "----",
-    "row": "----",
-    "col": "----",
     "verhuurd": false,
     "sleutels": "----",
     "code": "----",
     "created": "2023-09-12T13:31:26.940Z",
+    "owners": []
+  }
+},
+{
+  "model": "base.locker",
+  "pk": 71,
+  "fields": {
+    "kluisnummer": "Dames 30",
+    "email": "veravandedonk@hotmail.com",
+    "kluisje": "Dames 30",
+    "type": "H",
+    "topic": "----",
+    "verhuurd": true,
+    "sleutels": "----",
+    "code": "----",
+    "created": "2023-09-15T16:38:51.559Z",
     "owners": []
   }
 },
@@ -9082,11 +9184,11 @@ excelview
   "model": "base.facturatielijst",
   "pk": 40,
   "fields": {
-    "kluisnummer": "----",
+    "kluisnummer": "Dames A-36",
     "email": "info@haazer.nl",
     "in_excel": "213",
-    "is_registered": "D66",
-    "type": "D66",
+    "is_registered": "Dames A-36",
+    "type": "Dames A-36",
     "sleutels": "1",
     "code": "1",
     "created": "2023-01-03T00:00:00Z"
@@ -9884,7 +9986,7 @@ excelview
     "email": "rikderoodevos@kpnmail.nl",
     "in_excel": "-----",
     "is_registered": "-----",
-    "type": "U",
+    "type": "--",
     "sleutels": "1",
     "code": "1",
     "created": "2023-01-03T00:00:00Z"
@@ -11773,6 +11875,28 @@ excelview
     "body": "Mijn ploeg (Valkyries) heeft locker D30",
     "updated": "2023-09-11T20:45:54.537Z",
     "created": "2023-09-11T20:45:54.537Z"
+  }
+},
+{
+  "model": "base.bericht",
+  "pk": 72,
+  "fields": {
+    "user": 1,
+    "locker": 45,
+    "body": "Wie er gebruik van maken : germaine, ingrid , Marijke",
+    "updated": "2023-09-16T17:15:45.603Z",
+    "created": "2023-09-16T17:15:45.603Z"
+  }
+},
+{
+  "model": "base.bericht",
+  "pk": 73,
+  "fields": {
+    "user": 1,
+    "locker": 45,
+    "body": "marijke, germaine,ingrid. d69",
+    "updated": "2023-09-16T21:46:53.902Z",
+    "created": "2023-09-16T21:46:53.902Z"
   }
 },
 {
