@@ -1,5 +1,6 @@
 
 import csv
+from typing import Any
 from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import get_object_or_404, redirect, render
 from django.contrib import messages
@@ -25,13 +26,14 @@ from rest_framework import status
 from django.views.generic.edit import CreateView, UpdateView,DeleteView
 # from base.serializers import UserSerializer, UserSerializerWithToken
 
+
 def loginPage(request):
     page = 'login'
     if request.user.is_authenticated:
         return redirect('home')
 
     if request.method == 'POST':
-        email = request.POST.get('email')
+        email = request.POST.get('email').lower()
         password = request.POST.get('password')
 
         try:
@@ -45,11 +47,10 @@ def loginPage(request):
             login(request, user)
             return redirect('home')
         else:
-            messages.error(request, 'Username OR password does not exist')
+            messages.error(request, 'Username OR password does not exit')
 
     context = {'page': page}
     return render(request, 'base/login_register.html', context)
-
 
 def logoutUser(request):
     logout(request)
@@ -121,7 +122,7 @@ def home(request):
         messages.info(request, f'Ubent niet ingelogd. Svp Inloggen / Registreren')
         print('2.not-none-user:', request.user)
         # return HttpResponseRedirect('/registreer/')
-        return HttpResponseRedirect('/register/')
+        return HttpResponseRedirect('/login/')
     elif request.user == AnonymousUser:
           print('3.anonymoususer:', request.user)
     elif request.user != AnonymousUser:
@@ -201,31 +202,7 @@ def get_context_data(self, **kwargs):
         return context
 
 
-# 
-# def nietverhuurdePage(request):
-#     messages.add_message(request, messages.INFO, "NIET VERHUURDE LOCKERS aan geregistreerde users.")    
-#     # q = request.GET.get('q') if request.GET.get('q') != None else ''
-#     lockers=Locker.objects.all().filter(verhuurd=True)     
-#     users_found=User.objects.all().values_list('email',flat=True)
-#     # lockers=Locker.objects.filter(kluisnummer__icontains=q).exclude(verhuurd=True) 
-#     open_lockers = Locker.objects.filter(
-#         Q(verhuurd=False)&
-#         Q(email__in=users_found) 
-#     ).order_by('kluisnummer')
-
-#     topics = Topic.objects.all()[0:5]
-#     # room_messages = Message.objects.filter(
-#     #     Q(room__topic__name__icontains=q))[0:3]   
-#     # rooms=lockers
-#     context = {
-#         # 'rooms': rooms, 
-#                'topics': topics,
-#                 'lockers': open_lockers,
-#             #    'room_messages': room_messages
-#                }
-#     return render(request, 'base/home.html', context)
-
-# 
+ 
 def activityPage(request):
     room_messages = Message.objects.all()
     return render(request, 'base/activity.html', {'room_messages': room_messages})
@@ -1190,6 +1167,17 @@ class LockerUpdate( LoginRequiredMixin,UpdateView):
     # fields = '__all__'
     success_url = reverse_lazy('lockers')
     # def get_object(self):
+    def get_context_data(self, **kwargs: Any) -> dict[str, Any]:
+            obj=self.get_object()
+
+            if self.request.user.email != obj.email and not self.request.user.is_superuser:
+              notyours='notyours'
+              messages.error(self.request, f'{obj.kluisnummer} : Is niet uw locker')
+            # url = reverse('home',)
+            context={'notyours':'notyours'}
+            return context
+        # return super().get_context_data(**kwargs)
+    
     def get_object(self):
         obj = get_object_or_404(Locker, id=self.kwargs['pk'])
 
