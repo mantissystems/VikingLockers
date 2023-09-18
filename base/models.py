@@ -39,7 +39,7 @@ class Person(models.Model):
     hoofdhuurder=models.BooleanField(default=False)
     locker = models.CharField(max_length=200, null=True)
     email = models.EmailField(unique=True, null=True)
-
+    tekst = models.TextField(blank=True)
     class Meta:
         ordering = ['name']
 

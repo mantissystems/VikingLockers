@@ -6,6 +6,8 @@
         <th>User:</th>
         <th>Locker</th>
         <th>regis</th>
+        <th></th>
+        <th>joined</th>
       </tr>
     </thead>
     <tbody>
@@ -24,9 +26,9 @@
         </a>
       </td>
             <td>
-                {{locker.username}}
+                {{locker.username|truncatechars:12}}
                  </td>
-                    <td>{{locker.locker}}</td>
+                    <td>{{locker.locker}}</td><td></td> <td> {{locker.date_joined|date:"m/d/j"}} </td>
           
       {% endfor %}
       </tr>

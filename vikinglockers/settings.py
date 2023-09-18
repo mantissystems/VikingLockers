@@ -139,6 +139,7 @@ DEFAULT_AUTO_FIELD = 'django.db.models.AutoField'
 # DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 CORS_ALLOW_ALL_ORIGINS=True
 SECURE_CONTENT_TYPE_NOSNIFF=False
+# EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
 
 
 # FIXTURE_DIRS = [BASE_DIR / 'static']

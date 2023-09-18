@@ -49,6 +49,6 @@ urlpatterns = [
     # path('profiles/', views.profilePage, name="profiles"),
     # path('hernummermatriks/', views.hernummermatriks, name='hernummermatriks'),
     # path('locker-blokken/', views.Blokken.as_view(), name='locker-blokken'),
-    # path('nietverhuurd/',views.nietverhuurdePage, name='nietverhuurd'),  
+    path('email/',views.send_email, name='email'),  
     ]
 # https://docs.djangoproject.com/en/3.1/topics/http/urls/

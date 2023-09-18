@@ -24,6 +24,11 @@ from django.db import connection
 from collections import namedtuple
 from rest_framework import status
 from django.views.generic.edit import CreateView, UpdateView,DeleteView
+from django.http import JsonResponse
+# from django.core.mail import send_mail
+from django.core import mail
+from django.core.mail import BadHeaderError, send_mail
+from django.http import HttpResponse, HttpResponseRedirect
 # from base.serializers import UserSerializer, UserSerializerWithToken
 
 
@@ -764,12 +769,26 @@ class PersonUpdate_id( LoginRequiredMixin,UpdateView):
         onderhuurder = form.cleaned_data['onderhuur']  
         wachtlijst = form.cleaned_data['wachtlijst']  
         email = form.cleaned_data['email'] 
+        tekst = form.cleaned_data['tekst']  
+        # print(tekst)
+        if wachtlijst:            
+            if tekst:
+                if ';' in tekst and '@' in email:
+                    txt=tekst.splitlines()
+                    for t in txt:
+                        print(t)
+                        u=t.replace(';','')
+                        user=Person.objects.update_or_create(name=t,
+                                                           email= t + '@mantis.nl',
+                                                           locker=kluis,
+                                                           wachtlijst=True,
+                                                           )
         # url = reverse('delete-person', kwargs={'pk': super().person.id})
         viking= email.replace("@", "")
         print(viking)
         string='pbkdf2_sha256$390000$MbAy3r2ahV6QE6xFilyWG5$Hkuz0s9MNtjJ066lD0v9N2tnUv2ZuZLALt2rIL1QSAQ='
  
-        if onderhuur:
+        if onderhuur==True:
             user=User.objects.update_or_create(username=email,
                                                            email=email,
                                                            is_active=True,
@@ -940,8 +959,47 @@ def tel_aantal_registraties(request):
     print(qs_user.count(),qs_locker.count(),qs_excel.count())
     print('einde tel_aantal_lockers in facturatielijst')
 
-    # def file_load_view(request):
-    #     # ============================================================ example write file with appropriate separators
+
+def send_email(request):
+    subject = request.POST.get("subject", "")
+    message = request.POST.get("message", "")
+    from_email = request.POST.get("from_email", "")
+
+    with mail.get_connection() as connection:
+        mail.EmailMessage(
+        subject1,
+        body1,
+        from1,
+        [to1],
+        connection=connection,
+    ).send()
+    mail.EmailMessage(
+        subject2,
+        body2,
+        from2,
+        [to2],
+        connection=connection,
+    ).send()
+    if subject and message and from_email:
+        try:
+            send_mail(subject, message, from_email, ["admin@example.com"])
+        except BadHeaderError:
+            return HttpResponse("Invalid header found.")
+        return HttpResponseRedirect("/contact/thanks/")
+    else:
+        # In reality we'd use a form class
+        # to get proper validation errors.
+        return HttpResponse("Make sure all fields are entered and valid.")
+    
+def file_load_view(request):
+#         send_mail(
+#     "Subject here",
+#     "Here is the message.",
+#     "from@example.com",
+#     ["to@example.com"],
+#     fail_silently=False,
+# )
+        # ============================================================ example write file with appropriate separators
     # header = ['name', 'area', 'country_code2', 'country_code3']
     # data = [
     # ['Albania', 28748, 'AL', 'ALB'],
@@ -955,7 +1013,7 @@ def tel_aantal_registraties(request):
     #     writer.writerow(header)
     # # write multiple rows
     #     writer.writerows(data)
-    # # ============================================================ temporarely  commented out 13-9-23 
+    # ============================================================ temporarely  commented out 13-9-23 
     # Create the HttpResponse object with the appropriate CSV header. 
     # response = HttpResponse(content_type='text/csv')
     # response['Content-Disposition'] = 'attachment; filename="facturatielijst.csv"'
@@ -968,13 +1026,13 @@ def tel_aantal_registraties(request):
     #     writer.writerow([e])
 
     # return response
-    # # ============================================================ temporarely  commented out 13-9-23
+    # ============================================================ temporarely  commented out 13-9-23
 
     # context={}
     # return render(request, 'base/home.html', context)
     # url = reverse('create_locker', kwargs={'row': pk,'kol': kol})
-    url = reverse('facturatielijst',)
-    return HttpResponseRedirect(url)
+        url = reverse('facturatielijst',)
+        return HttpResponseRedirect(url)
 
 
 def lockerPage(request,pk):
@@ -1082,14 +1140,14 @@ class CreateFactuur(CreateView):
 
 class CreatePerson(CreateView):
     model = Person
-    fields = ['name','email',]
+    fields = ['name','email','tekst']
     success_url = reverse_lazy('home')
 
-    # def get_context_data(self, **kwargs):
-    #     context = super().get_context_data(**kwargs)
-        # user = self.request.user
-        # context["email"] = user.ticket_set.all()
-        # return context
+    def get_readonly_fields(self, request, obj=None):
+        fields = list(super().get_readonly_fields(request))
+        if request.user.is_superuser:
+            fields.append('tekst')
+        return fields
     def get_context_data(self,**kwargs):
         context = super().get_context_data(**kwargs)
         q = self.request.GET.get('personmail') if self.request.GET.get('personmail') != None else ''
@@ -1153,12 +1211,39 @@ def deleteBericht(request, pk):
         return redirect('berichten')
     return render(request, 'base/delete.html', {'obj': message})
 
-class LockerUpdate( LoginRequiredMixin,UpdateView):
+class JsonableResponseMixin:
+    """
+    Mixin to add JSON support to a form.
+    Must be used with an object-based FormView (e.g. CreateView)
+    """
+
+    def form_invalid(self, form):
+        response = super().form_invalid(form)
+        if self.request.accepts("text/html"):
+            return response
+        else:
+            return JsonResponse(form.errors, status=400)
+
+    def form_valid(self, form):
+        # We make sure to call the parent's form_valid() method because
+        # it might do some processing (in the case of CreateView, it will
+        # call form.save() for example).
+        response = super().form_valid(form)
+        if self.request.accepts("text/html"):
+            return response
+        else:
+            data = {
+                "pk": self.object.pk,
+            }
+            return JsonResponse(data)
+
+class LockerUpdate( LoginRequiredMixin,JsonableResponseMixin,UpdateView):
     login_url = '/login/'
     # redirect_field_name = 'redirect_to'
+
     model = Locker
-    fields='__all__'
-    # fields = ['kluisnummer','email','verhuurd','sleutels','code','kluisje']
+    # fields='__all__'
+    fields = ['kluisnummer','email','verhuurd','sleutels','code','kluisje']
         # if request.user.email != locker.email and not request.user.is_superuser:
         # messages.error(request, f'{locker.kluisnummer} : Is niet uw locker')
         # return render(request, 'base/berichten.html', {'lockers': lockers,'topics':topics})
@@ -1169,7 +1254,12 @@ class LockerUpdate( LoginRequiredMixin,UpdateView):
     # def get_object(self):
     # def get_context_data(self, **kwargs: Any) -> dict[str, Any]:
             # obj=self.get_object()
-
+    def get_context_data(self, **kwargs):
+        # Call the base implementation first to get a context
+        context = super().get_context_data(**kwargs)
+        # Add in a QuerySet of all the books
+        context["book_list"] = Locker.objects.all()
+        return context
             # if self.request.user.email != obj.email and not self.request.user.is_superuser:
             #   notyours='notyours'
             #   messages.error(self.request, f'{obj.kluisnummer} : Is niet uw locker')
@@ -1183,10 +1273,19 @@ class LockerUpdate( LoginRequiredMixin,UpdateView):
 
         _id = self.request.GET.get('pk') if self.request.GET.get('pk') != None else ''
         print(_id)
-        print(obj)
         try:
-            int(self.kwargs['pk'])
+            # int(self.kwargs['pk'])
             obj = get_object_or_404(Locker, id=self.kwargs['pk'])
+            print(obj.email,self.request.user.email)
+            if self.request.user.email != obj.email and not self.request.user.is_superuser:
+            #   notyours='notyours'
+              messages.error(self.request, f'{obj.kluisnummer} : Is niet uw locker')
+              obj=None
+            # url = reverse('home',)
+            # context={'notyours':'notyours'}
+            # return context
+        # return super().get_context_data(**kwargs)
+
             return obj
         except ValueError:
                 obj = get_object_or_404(Locker, kluisnummer=self.kwargs['pk'])
