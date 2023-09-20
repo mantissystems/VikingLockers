@@ -14,6 +14,12 @@
       </tr>
     </thead>
     <tbody>
+      {% if request.user.is_superuser %}
+      <a href="{% url 'export_search_csv' %}" class="btn btn--link">=>Export List</a>
+      {% comment %}
+      {% endcomment %}
+    {% endif %}
+
       {% for locker in object_list %}
       <tr>
 

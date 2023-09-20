@@ -1,4 +1,3 @@
-
 import csv
 from typing import Any
 from django.http import HttpResponse, HttpResponseRedirect
@@ -27,7 +26,7 @@ from django.views.generic.edit import CreateView, UpdateView,DeleteView
 from django.http import JsonResponse
 # from django.core.mail import send_mail
 from django.core import mail
-from django.core.mail import BadHeaderError, send_mail
+# from django.core.mail import BadHeaderError, send_mail
 from django.http import HttpResponse, HttpResponseRedirect
 # from base.serializers import UserSerializer, UserSerializerWithToken
 
@@ -790,7 +789,7 @@ class PersonUpdate_id( LoginRequiredMixin,UpdateView):
                         print(t)
                         u=t.replace(';','')
                         user=Person.objects.update_or_create(name=t,
-                                                           email= t + '@mantis.nl',
+                                                           email= t + '@viking.nl',
                                                            locker=kluis,
                                                            wachtlijst=True,
                                                            )
@@ -800,14 +799,17 @@ class PersonUpdate_id( LoginRequiredMixin,UpdateView):
         string='pbkdf2_sha256$390000$MbAy3r2ahV6QE6xFilyWG5$Hkuz0s9MNtjJ066lD0v9N2tnUv2ZuZLALt2rIL1QSAQ='
  
         if onderhuur==True:
-            user=User.objects.update_or_create(username=email,
+            try:
+                u=User.objects.get(email=email)
+            except:
+                user,User.objects.update_or_create(username=email,
                                                            email=email,
                                                            is_active=True,
                                                            first_name=name,
                                                            last_name=name,
                                                            password=string,
                                                            )
-
+                print('onderhuurder')
 
         return super(PersonUpdate_id,self).form_valid(form)
         messages.success(self.request, "The person was updated successfully.")
@@ -893,130 +895,86 @@ def tel_aantal_registraties(request):
     qs_excel = Excellijst.objects.all()
     qs_factuur = Facturatielijst.objects.all().update(in_excel='-----')
     qs_factuur = Facturatielijst.objects.all().update(is_registered='-----')
-
-    # qs_person = Person.objects.filter(
+# begin eenmalig dd20-09-23
+    # onderhuurders = User.objects.filter(
     #         Q(email__icontains='mantis')
-    #         )
-    # for p in qs_person:
+    #         ).exclude(email__icontains='wej')
+    # for p in onderhuurders:
     #     x = p.email.replace("mantis", "viking")
     #     print(x)
     #     p.email=x
     #     p.save()
-            # x = p.email.replace("bananas", "apples")
-            # print(p.email.replace("mantis", "viking"))
-
-            # a=Person.objects.all().filter(email=q).update(email=x)
-    # for f in  Facturatielijst.objects.all():
-    #     try:
-    #        locker= Locker.objects.get(kluisnummer=f.kluisnummer)
-    #     except Locker.DoesNotExist:
-    #         g=Facturatielijst.objects.all().filter(email=f.email).update(type='L',is_registered=f.kluisnummer)
-    #     # finally:
-    #         # Locker.objects.filter(kluisnummer=f.kluisnummer)
-    #     g=Facturatielijst.objects.all().filter(email=f.email).first()
-    #     if locker:print(locker.kluisnummer)
-    #     # f.is_registered=locker.kluisnummer
-    #     f.save()
-        
-    #     try: User.objects.get(email=f.email)
-    #     except User.DoesNotExist:
-    #         g=Facturatielijst.objects.all().filter(email=f.email).update(type='U')
-            
-
-    # qs3=qs_factuur.values_list('email',flat=True)
-    # for q in qs_factuur:
-    #     if User.objects.filter(email=q.email).exists():
-    #         f=Facturatielijst.objects.all().filter(email=q.email).update(is_registered='==regis==')
-    #     else:
-    #         e=Excellijst.objects.all().filter(email=q.email).update(excel='--')
-    #         try:
-    #             User.objects.get(email=q.email)
-    #         except: User.DoesNotExist
-            # print(q.email)
-    # print('in tel_aantal_registraties in excel===============')
-    # for q in qs_excel:
-    #     if User.objects.filter(email=q.email).exists():
-    #         e=Excellijst.objects.all().filter(email=q.email).update(excel=q.id)
-    #         f=Facturatielijst.objects.all().filter(email=q.email).update(type='L')
-    #         f=Facturatielijst.objects.all().filter(email=q.email).update(in_excel='==xls==')
-    #     else:
-    #         e=Excellijst.objects.all().filter(email=q.email).update(excel='--')
-    #         try:
-    #             User.objects.get(email=q.email)
-    #         except: User.DoesNotExist
-            # print(q.email,'X')
-            # f=Facturatielijst.objects.all().filter(email=q.email).update(type='X')
-            # print(q.email)
-    print('in tel_aantal_users in factuurlijst===============')
+# einde eenmalig dd20-09-23
+    print('in tel_aantal_users in facturatielijst===============')
     for u in qs_user:
         if Facturatielijst.objects.all().filter(email=u.email).exists():
             f=Facturatielijst.objects.all().filter(email=u.email).update(is_registered='==regis==',in_excel=u.id)
-        # else:
-        #     e=Excellijst.objects.all().filter(email=u.email).update(excel='--')
-
             try:
                 User.objects.get(email=u.email)
             except: User.DoesNotExist
-            print(u.email,'X')
-            f=Facturatielijst.objects.all().filter(email=u.email).update(type='X')
             # print(u.email,'X')
+            # f=Facturatielijst.objects.all().filter(email=u.email).update(type='X')
     print('in tel_aantal_lockers in facturatielijst===============')
     for l in qs_locker:
-        try:
-            Facturatielijst.objects.get(kluisnummer=l.kluisnummer)
-        except Facturatielijst.DoesNotExist:
-            f=Facturatielijst.objects.all().filter(kluisnummer=l.kluisnummer).update(type='L')
-        # if Facturatielijst.objects.filter(kluisnummer=l.kluisnummer).exists():
-        #     f=Facturatielijst.objects.all().filter(kluisnummer=l.kluisnummer).update(type='L')
-            print(l.kluisnummer)
-        # else:
-        #     print('not ',l.kluisnummer)
-            # f=Facturatielijst.objects.all().filter(email=l.email).update(type=l.kluisnummer)
+        # try:
+        if Facturatielijst.objects.all().count()<1:
+            try:
+
+                Facturatielijst.objects.get(kluisnummer=l.kluisnummer)
+            except Facturatielijst.DoesNotExist:
+                # f=Facturatielijst.objects.all().filter(kluisnummer=l.kluisnummer).update(type='L')
+            # print(l.kluisnummer,'locker niet in facturatielijst')
+                Facturatielijst.objects.update_or_create(
+                    email=l.email,
+            kluisnummer=l.kluisnummer
+                )
+                print(l.kluisnummer,'=>in facturatielijst')
+
+
         if Facturatielijst.objects.filter(email=l.email).exists():
             f=Facturatielijst.objects.all().filter(email=l.email).update(type=l.kluisnummer,is_registered=l.kluisnummer)
 
             try:
                 User.objects.get(email=l.email)
             except User.DoesNotExist:
-                print(u.email,'X')
-            # f=Facturatielijst.objects.all().filter(email=l.email).update(type='X')
+                print(u.email,'huurder niet in user')
+    # ===begin eenmalige create vanuit excellijst
+    # for loc in Excellijst.objects.all():
+    #     if Facturatielijst.objects.all().filter(email=loc.email).exists():
+    #         if Facturatielijst.objects.all().count()<1:
+    #             try:
+    #                 Facturatielijst.objects.get(email=loc.email)
+    #             except Facturatielijst.DoesNotExist:
+    #                 Facturatielijst.objects.update_or_create(
+    #                 email=loc.email,
+    #                 kluisnummer=loc.kluisnummer
+    #             )
+    #             print(loc.kluisnummer,'=>in facturatielijst')
+    # ===einde eenmalige create vanuit excellijst
+
     print(qs_user.count(),qs_locker.count(),qs_excel.count())
     print('einde tel_aantal_lockers in facturatielijst')
     url = reverse('facturatielijst',)
     return HttpResponseRedirect(url)
 
+# def export_search_csv(request, start_date, end_date):
+def export_search_csv(request,):
+    import csv
+    # filename="facturatie_lijst.csv"'
+    # spamreader = csv.reader(filename, delimiter=' ', quotechar='|')
+    # for row in spamreader:
+        # print(', '.join(row))
+        # Spam, Spam, Spam, Spam, Spam, Baked Beans
+        # Spam, Lovely Spam, Wonderful Spam
+    data = Facturatielijst.objects.all()
+    response = HttpResponse(content_type='text/csv')
+    response['Content-Disposition'] = 'attachment; filename="facturatie_lijst.csv"'
+    writer = csv.writer(response)
+    writer.writerow(['id', 'locker', 'email', 'type'])
+    for item in data:
+        writer.writerow([item.id ,item.kluisnummer, item.email, item.type,";"])
+    return response
 
-def send_email(request):
-    subject = request.POST.get("subject", "")
-    message = request.POST.get("message", "")
-    from_email = request.POST.get("from_email", "")
-
-    with mail.get_connection() as connection:
-        mail.EmailMessage(
-        subject1,
-        body1,
-        from1,
-        [to1],
-        connection=connection,
-    ).send()
-    mail.EmailMessage(
-        subject2,
-        body2,
-        from2,
-        [to2],
-        connection=connection,
-    ).send()
-    if subject and message and from_email:
-        try:
-            send_mail(subject, message, from_email, ["admin@example.com"])
-        except BadHeaderError:
-            return HttpResponse("Invalid header found.")
-        return HttpResponseRedirect("/contact/thanks/")
-    else:
-        # In reality we'd use a form class
-        # to get proper validation errors.
-        return HttpResponse("Make sure all fields are entered and valid.")
-    
 def file_load_view(request):
 #         send_mail(
 #     "Subject here",
@@ -1364,6 +1322,7 @@ def update_locker(request,pk):
         onderhuurder= request.POST.get('onderhuurder')
         slotcode= request.POST.get('code')
         type= request.POST.get('type')
+        email=request.POST.get('email')
         sleutels= request.POST.get('sleutels')
         huuropheffen= request.POST.get('huuropheffen')
         print('onderhuurder', onderhuurder,sleutels,slotcode)
@@ -1392,7 +1351,7 @@ def update_locker(request,pk):
                 except IndexError:
                     print( 'except verhuurd of niet',locker.kluisnummer,locker.verhuurd)
             if locker.verhuurd == True:
-                locker.email=request.user.email                
+                locker.email=email           
                 overigelockers = Locker.objects.filter(
                     Q(verhuurd=False)&
                     Q(email=locker.email)

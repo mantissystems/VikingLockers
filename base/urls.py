@@ -39,8 +39,7 @@ urlpatterns = [
     path('berichten/', views.berichtenPage, name="berichten"),
      path('aantalregistraties/', views.tel_aantal_registraties, name='aantalregistraties'),
     # path('<str:row>/create_locker/<str:kol>/',views.create_locker, name='create_locker'),  
-    # path('room/<str:pk>/', views.lockerPage, name="room"),
-    # path('vrijelockers/', views.ExcelView.as_view(), name="vrijelockers"),
+    path('export_search_csv/', views.export_search_csv, name="export_search_csv"),
     # path('ploeg/<str:pk>', views.ploegPage, name="ploeg"),
     # path('update-room/<str:pk>/', views.updateRoom, name="update-room"),
     # path('delete-room/<str:pk>/', views.deleteRoom, name="delete-room"),
@@ -49,8 +48,5 @@ urlpatterns = [
     # path('lockers/', login_required(views.LockerView.as_view()), name="lockers"),
    # path('users/', views.user_listPage, name="users"),
     # path('profiles/', views.profilePage, name="profiles"),
-    # path('hernummermatriks/', views.hernummermatriks, name='hernummermatriks'),
-    # path('locker-blokken/', views.Blokken.as_view(), name='locker-blokken'),
-    path('email/',views.send_email, name='email'),  
     ]
 # https://docs.djangoproject.com/en/3.1/topics/http/urls/
