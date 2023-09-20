@@ -147,7 +147,7 @@ def home(request):
     url = reverse('berichten',)
     if q!='' or q !=None:
         lijst='home'
-        lockers=Locker.objects.all().filter(verhuurd=True)     
+        # lockers=Locker.objects.all().filter(verhuurd=True)     
 
         if 'xls' in qq:
             x = qq.replace("xls ", "")
@@ -173,8 +173,11 @@ def home(request):
 
     else:
         berichten=Bericht.objects.all()
-    # topics = Topic.objects.all()[0:5]
-    lockers=Locker.objects.all().filter(verhuurd=True)     
+    lockers =Locker.objects.filter(
+        Q(kluisnummer__icontains=q) |
+        Q(email__icontains=q)
+        ).order_by('kluisnummer') #.exclude(verhuurd=False)
+
     room_messages = Message.objects.all()
     # facturatielijst=Facturatielijst.objects.all()
     context = {
@@ -1483,6 +1486,7 @@ def update_locker(request,pk):
 def lockersPage2(request):
     q = request.GET.get('q') if request.GET.get('q') != None else ''
     # lockers = Locker.objects.filter(kluisnummer__icontains=q,verhuurd=True) #[0:15]
+    
     lockers =Locker.objects.filter(
         Q(kluisnummer__icontains=q) |
         Q(email__icontains=q)
