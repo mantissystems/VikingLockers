@@ -5,8 +5,9 @@ Lockerlist {{object_list.count}}
     <tr>
       <th>Huurder:</th>
       <th>Locker</th>
-      <th>Verhuurd</th>
       <th>Sleutels</th>
+      <th>Verhuurd</th>
+      <th>Onderh</th>
     </tr>
   </thead>
   <tbody>
@@ -14,11 +15,6 @@ Lockerlist {{object_list.count}}
     <tr>
 
     <td>
-      {% comment %}
-      {{locker.email}}
-      <th>xx</th>
-      {% endcomment %}
-
       <a href="{% url 'update-locker' locker.id %}?q={{locker.id}}">{{locker.email|truncatechars:10}}... </span></a>
       <div style="height:100%;width:100%">
         </div>
@@ -27,9 +23,13 @@ Lockerlist {{object_list.count}}
           <td>
               {{locker.kluisnummer}}
                </td>
+               <td>{{locker.sleutels}}</td>
                   <td>{{locker.verhuurd}}</td>
-                  <td>{{locker.sleutels}}</td>
-        
+                  {% if locker.owners.count > 0 %}
+                  <td>{{locker.owners.count}}</td>
+                     {% else %}
+                 <td>----</td>
+        {% endif%}
     {% endfor %}
     </tr>
   </tbody>

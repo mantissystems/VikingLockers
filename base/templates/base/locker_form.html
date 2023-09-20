@@ -33,8 +33,32 @@
            {% else %}
            <label for="profile_pic">{{field.label}}</label>
            <div class="form__group">
+              {% if field.name == 'owners' %}
+              <div class="form__group">
+                <select id="onderhuurder" name="onderhuurder" onChange="redirectUrl()">
+                  <option  value="" selected="selected">--- HUURDER TOEVOEGEN:---</option>
+                  {% for org in vikingers %}
+                  <option value="{{org.id}}">{{org.email|capfirst}}</option>
+                  {% endfor %}
+                </select>
+              </div>
+              {% if locker.owners.count > 0 %}
+          <div class="form__group">
+              <select id="huuropheffen" name="huuropheffen" onChange="redirectUrl()">
+                <option  value="" selected="selected">--- HUURDER VERWIJDEREN---</option>
+                {% for org in locker.owners.all %}
+                 <option value="{{org.id}}">{{org.email|capfirst}}</option>
+                {% endfor %}
+              </select>
+  
+          </div>
+          {% endif %}
+
+        {% else %}
              {{field}}
+             {% endif %}
            </div>
+           
                   {% if field.errors %}
                    <small class="error">{{ field.errors|striptags  }}</small> 
                  {% endif %}
@@ -46,12 +70,38 @@
            <input type="submit" value="Save" class="btn btn-primary"/>
            <a href="{%url 'home'%}" class="btn btn-outline">Cancel</a>
            {% endif %}
+           {% comment %}
            {% if request.user.is_superuser %}
            <a href="{% url 'create-factuur'%}" class="btn btn--link">Factuur</a>
-           {% comment %}
            <a href="{% url 'delete-locker' locker.id %}" class="btn btn--link">Delete</a>
-           {% endcomment %}
            {% endif %}
+           <!--  -->
+           {% if field.name == 'owners' %}
+           <div class="form__group">
+           </div>
+
+           <div class="form__group">
+            <select id="onderhuurder" name="onderhuurder" onChange="redirectUrl()">
+              <option  value="" selected="selected">--- GEBRUIKER TOEVOEGEN:---</option>
+              {% for org in vikingers %}
+              <option value="{{org.id}}">{{org.email|capfirst}}</option>
+              {% endfor %}
+            </select>
+          </div>
+          {% if locker.owners.count > 0 %}
+          <div class="form__group">
+              <select id="huuropheffen" name="huuropheffen" onChange="redirectUrl()">
+                <option  value="" selected="selected">--- GEBRUIKER VERWIJDEREN---</option>
+                {% for org in locker.owners.all %}
+                 <option value="{{org.id}}">{{org.email|capfirst}}</option>
+                {% endfor %}
+              </select>
+  
+          </div>
+          {% endif %}
+
+           <!--  -->
+           {% endcomment %}
            {% if locker %}
 {% endif %}
          </div>

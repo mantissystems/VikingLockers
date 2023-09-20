@@ -40,7 +40,7 @@
       <h2>Verhuurde Lockers {{lockers.count }} van {{facturatielijst.count}} </h2>
       {{lijst}}
       
-      {% include 'base/feed_component.html' %}
+      {% include 'base/feed_member_lockers.html' %}
       {% if request.user.is_superuser %}
       {% endif %}
     </div>

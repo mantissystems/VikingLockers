@@ -5,7 +5,7 @@
         </div>
     </div>
     <div class="activities__boxHeader roomListRoom__header">
-        <a href="{% url 'locker' room.id %}">{{room.kluisnummer}}| {{room.email|slice:"0:12"}}...  </a>
+        <a href="{% url 'update-locker' room.id %}">{{room.kluisnummer}}| {{room.email|slice:"0:12"}}...  </a>
     </div>
     <div class="activities__boxContent">
         {% for message in room.owners.all %}

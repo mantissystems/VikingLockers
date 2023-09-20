@@ -74,16 +74,16 @@ class LockerForm(ModelForm):
     class Meta:
         model = Locker
         fields = '__all__'
+        exclude = ['type','code','owners','sleutels','topic','kluisje']
         labels = {
-        "verhuurd": "Hoofdhuurder",
+        "verhuurd": "Bent u hoofdhuurder?",
         "owners": "onder huurders",
         "sleutels": "Aantal Sleutels in omloop",
         "code": "Code van codeslot",
-        "kluisje": "Locker nummer",
-        "type": "Type slot",
+        # "type": "Type slot",
 
         }
-        exclude = ['topic','row', 'col','owners','kluisnummer',]
+        # exclude = ['topic','row', 'col','owners','kluisnummer',]
         # exclude = ['topic','row', 'col','owners']
 class ExcelForm(ModelForm):
     class Meta:

@@ -117,7 +117,7 @@ def home(request):
             user=User.objects.get(id=request.user.id)
             locker2 = Locker.objects.get(kluisnummer=user.locker,email=user.email,verhuurd=True)
             if locker2:
-                messages.info(request, mark_safe(f"Beheer uw locker: <a href='{locker2.id}/locker'>{locker2.kluisnummer}</a>"))
+                messages.info(request, mark_safe(f"Beheer uw locker: <a href='{locker2.id}/update-locker'>{locker2.kluisnummer}</a>"))
             else:
                 messages.info(request, f'U heeft nog geen  locker.')
         except:
@@ -197,13 +197,21 @@ def get_context_data(self, **kwargs):
 def get_queryset(self): # new
     users_found=User.objects.all().values_list('email',flat=True)
     queryset = Locker.objects.filter(
-        Q(verhuurd=False)&
+        Q(verhuurd=True)&
         Q(email__in=users_found) 
     ).order_by('kluisnummer')
     return queryset
 paginate_by = 10
 def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
+        # return context
+        context = super(LockerView, self).get_context_data(**kwargs)
+        # context['pk'] = self.object.id
+        # context['object_list'] = Locker.objects.all().filter(verhuurd=True)
+        # print(onderhuurder)
+        # vikingers=Person.objects.all().order_by('email').filter(onderhuur=True)
+        # context['form'].fields['subcategory'].choices = SubcategoryFilter[self.object.type]
+
+        # Return context to be used in form view
         return context
 
 
@@ -707,7 +715,7 @@ class PersonListView (ListView):
 # class ExcelView (ListView):
 class ExcelView (LoginRequiredMixin, ListView):
     login_url='login'
-    print('excelview')
+    print('in excelview')
     model=Excellijst
     template_name='base/excellijst_list.html'
     paginate_by=14
@@ -882,6 +890,19 @@ def tel_aantal_registraties(request):
     qs_excel = Excellijst.objects.all()
     qs_factuur = Facturatielijst.objects.all().update(in_excel='-----')
     qs_factuur = Facturatielijst.objects.all().update(is_registered='-----')
+
+    # qs_person = Person.objects.filter(
+    #         Q(email__icontains='mantis')
+    #         )
+    # for p in qs_person:
+    #     x = p.email.replace("mantis", "viking")
+    #     print(x)
+    #     p.email=x
+    #     p.save()
+            # x = p.email.replace("bananas", "apples")
+            # print(p.email.replace("mantis", "viking"))
+
+            # a=Person.objects.all().filter(email=q).update(email=x)
     # for f in  Facturatielijst.objects.all():
     #     try:
     #        locker= Locker.objects.get(kluisnummer=f.kluisnummer)
@@ -958,6 +979,8 @@ def tel_aantal_registraties(request):
             # f=Facturatielijst.objects.all().filter(email=l.email).update(type='X')
     print(qs_user.count(),qs_locker.count(),qs_excel.count())
     print('einde tel_aantal_lockers in facturatielijst')
+    url = reverse('facturatielijst',)
+    return HttpResponseRedirect(url)
 
 
 def send_email(request):
@@ -1065,7 +1088,7 @@ def lockerPage(request,pk):
                 print('onderhuurder', onderhuurder)
                 h=User.objects.get(id=onderhuurder)
                 locker.owners.add(h)
-                return redirect('locker', locker.id)
+                return redirect('lockers')
             if huuropheffen:
 
                 h=User.objects.get(id=huuropheffen)
@@ -1243,7 +1266,7 @@ class LockerUpdate( LoginRequiredMixin,JsonableResponseMixin,UpdateView):
 
     model = Locker
     # fields='__all__'
-    fields = ['kluisnummer','email','verhuurd','sleutels','code','kluisje']
+    fields = ['kluisnummer','email','verhuurd','sleutels','code','kluisje','owners','type']
         # if request.user.email != locker.email and not request.user.is_superuser:
         # messages.error(request, f'{locker.kluisnummer} : Is niet uw locker')
         # return render(request, 'base/berichten.html', {'lockers': lockers,'topics':topics})
@@ -1255,11 +1278,35 @@ class LockerUpdate( LoginRequiredMixin,JsonableResponseMixin,UpdateView):
     # def get_context_data(self, **kwargs: Any) -> dict[str, Any]:
             # obj=self.get_object()
     def get_context_data(self, **kwargs):
-        # Call the base implementation first to get a context
-        context = super().get_context_data(**kwargs)
-        # Add in a QuerySet of all the books
-        context["book_list"] = Locker.objects.all()
+        # Load context from GET request
+        SubcategoryFilter = [
+            ('--', '--'),
+            ('H', 'hang'),      #gebruiker heeft hangslot
+            ('C', 'cijfer'),    #gebruiker heeft cijferslot; code onbekend
+            ]
+        context = super(LockerUpdate, self).get_context_data(**kwargs)
+        # Get id from PhysicalPart instance 
+        context['pk'] = self.object.id
+        # Get category from PhysicalPart instance
+        context['type'] = self.object.type
+        # Add choices to form 'subcategory' field
+        context['form'].fields['type'].choices = SubcategoryFilter[0:]
+        context['vikingers'] = Person.objects.all()
+        # print(onderhuurder)
+        vikingers=Person.objects.all().order_by('email').filter(onderhuur=True)
+        # context['form'].fields['subcategory'].choices = SubcategoryFilter[self.object.type]
+
+        # Return context to be used in form view
         return context
+
+    # def get_context_data(self, **kwargs):
+    #     # Call the base implementation first to get a context
+    #     context = super().get_context_data(**kwargs)
+    #     # Add in a QuerySet 
+    #     context["vikingers"] = Locker.objects.all()
+    #     # obj = super().get_object(**kwargs)
+    #     # print(obj,'context')
+    #     return context
             # if self.request.user.email != obj.email and not self.request.user.is_superuser:
             #   notyours='notyours'
             #   messages.error(self.request, f'{obj.kluisnummer} : Is niet uw locker')
@@ -1274,7 +1321,6 @@ class LockerUpdate( LoginRequiredMixin,JsonableResponseMixin,UpdateView):
         _id = self.request.GET.get('pk') if self.request.GET.get('pk') != None else ''
         print(_id)
         try:
-            # int(self.kwargs['pk'])
             obj = get_object_or_404(Locker, id=self.kwargs['pk'])
             print(obj.email,self.request.user.email)
             if self.request.user.email != obj.email and not self.request.user.is_superuser:
@@ -1301,13 +1347,37 @@ class LockerUpdate( LoginRequiredMixin,JsonableResponseMixin,UpdateView):
         messages.success(self.request, "The person was updated successfully.")
 
 @login_required(login_url='login')
-def updateLocker(request,pk):
+def update_locker(request,pk):
     locker = Locker.objects.get(id=pk)
     form = LockerForm(instance=locker)
+    vikingers=User.objects.all().order_by('username')
+    if request.user.email != locker.email and not request.user.is_superuser:
+        messages.error(request, f'{locker.kluisnummer} : Is niet uw locker')
+        url = reverse('home',)
+        return HttpResponseRedirect(url)
 
     if request.method == 'POST':
         form = LockerForm(request.POST, request.FILES, instance=locker)
+        onderhuurder= request.POST.get('onderhuurder')
+        slotcode= request.POST.get('code')
+        type= request.POST.get('type')
+        sleutels= request.POST.get('sleutels')
+        huuropheffen= request.POST.get('huuropheffen')
+        print('onderhuurder', onderhuurder,sleutels,slotcode)
         if form.is_valid():
+            print('form is valid')
+            if onderhuurder:
+                print('onderhuurder', onderhuurder)
+                h=User.objects.get(id=onderhuurder)
+                locker.owners.add(h)
+                return redirect('lockers')
+            if huuropheffen:
+
+                h=User.objects.get(id=huuropheffen)
+                print('opheffen',h)
+                locker.owners.remove(h)
+                form.save()
+
             if locker.verhuurd == False:
                 users_found=User.objects.all().values_list('email',flat=True)
                 overigelockers = Locker.objects.filter(
@@ -1319,98 +1389,95 @@ def updateLocker(request,pk):
                 except IndexError:
                     print( 'except verhuurd of niet',locker.kluisnummer,locker.verhuurd)
             if locker.verhuurd == True:
-                locker.email=request.user.email
-                
-                print('hoofdhuurder')
+                locker.email=request.user.email                
                 overigelockers = Locker.objects.filter(
                     Q(verhuurd=False)&
                     Q(email=locker.email)
-                ).order_by('kluisnummer').update(code=0)
-                print(overigelockers)
-
+                ).order_by('kluisnummer')
             form.save()
-            return redirect('locker', pk=locker.id)
+            # return redirect('home')
 
-    return render(request, 'base/update-locker.html', {'form': form})
+    return render(request, 'base/update-locker.html', {'form': form,'vikingers':vikingers,'kluis':locker})
 
-@login_required(login_url='login')
-def update_kluis(request, pk,kol):
-    column=int(kol)
+# @login_required(login_url='login')
+# def update_kluis(request, pk):
+    # column=int(kol)
     # matrix=Matriks.objects.get(id=pk)
-    rms = Locker.objects.all().filter(verhuurd=True)
-    owner_count=0
+    # rms = Locker.objects.all().filter(verhuurd=True)
+    # owner_count=0
     # rgl=matrix.y_as
     # owners=[]    
-    hdr=['', 'kol1','kol2','kol3','kol4','kol5','kol6','kol7','kol8','kol9','kol10','kol11','kol12','kol13']  #LET OP: KOLOM NUL NIET VERGETEN
-    dematrikskolom=hdr[column];print(dematrikskolom)
+    # hdr=['', 'kol1','kol2','kol3','kol4','kol5','kol6','kol7','kol8','kol9','kol10','kol11','kol12','kol13']  #LET OP: KOLOM NUL NIET VERGETEN
+    # dematrikskolom=hdr[column];print(dematrikskolom)
     # kluisje=getattr(matrix,dematrikskolom)
     # matriksnaam=getattr(matrix,'naam')
-    opheffen= request.POST.get('opheffen')
-    column=int(kol)
+    # opheffen= request.POST.get('opheffen')
+    # column=int(kol)
     # regel=matrix.regel
     # oorspronkelijkmatriksnummer=decodeer(regel,dematrikskolom,column,cellengte=3)
     # print('oorspronkelijkmatriksnummer',oorspronkelijkmatriksnummer)
 
-    try:
-        kls=Locker.objects.get(email=opheffen)
-        try:
-            print(kls)
-            # messages.error(request, f'{matriksnaam}: Geen huurders verder.')
-            # return redirect('home')
-        except:
-            pass
-    except: 
-        Locker.DoesNotExist
-        messages.error(request, f'{pk} {kol}: Niet gevonden')
-        url = reverse('create_locker', kwargs={'row': pk,'kol': kol})
-        return HttpResponseRedirect(url)
-        # return HttpResponseRedirect('/info/')
-    if request.method == 'POST':
-        huurder= request.POST.get('heeftkluis')
-        label= request.POST.get('kluislabel')
-        slot= request.POST.get('slot')
-        sleutels= request.POST.get('sleutels')
-        code= request.POST.get('code')
-        print(sleutels,code)
-        your_name= request.POST.get('your_name')
-        huuropheffen= request.POST.get('huuropheffen')
-        kls.userid=huurder
-        kls.verhuurd=True
-        # return HttpResponseRedirect('/')
-        if slot:
-            kls.type=slot
-            kls.save()
-        if huurder or your_name:
-            h=User.objects.get(id=huurder)
-            kls.owners.add(h)
-            setattr(kls, 'verhuurd',True)
-            kls.save()
-        if huuropheffen:
-            h=User.objects.get(id=huuropheffen)
-            print('opheffen..',h)
-            kls.owners.remove(h)
-            print(kls)
-            setattr(kls, 'email','info@viking.nl')
-            setattr(kls, 'verhuurd',False)
-            kls.save()
-        if sleutels:
-            kls.sleutels=sleutels
-            kls.save()
-        if code:
-            kls.code=code
-            kls.save()
+    # try:
+    #     kls=Locker.objects.get(email=opheffen)
+    #     try:
+    #         print(kls)
+    #         # messages.error(request, f'{matriksnaam}: Geen huurders verder.')
+    #         # return redirect('home')
+    #     except:
+    #         pass
+    # except: 
+    #     Locker.DoesNotExist
+    #     # messages.error(request, f'{pk} {kol}: Niet gevonden')
+    #     # url = reverse('create_locker', kwargs={'row': pk,'kol': kol})
+    #     url = reverse('update-locker', kwargs={'pk': pk})
+    #     return HttpResponseRedirect(url)
+    #     # return HttpResponseRedirect('/info/')
+    # if request.method == 'POST':
+    #     huurder= request.POST.get('heeftkluis')
+    #     label= request.POST.get('kluislabel')
+    #     slot= request.POST.get('slot')
+    #     sleutels= request.POST.get('sleutels')
+    #     code= request.POST.get('code')
+    #     print(sleutels,code)
+    #     your_name= request.POST.get('your_name')
+    #     huuropheffen= request.POST.get('huuropheffen')
+    #     kls.userid=huurder
+    #     kls.verhuurd=True
+    #     # return HttpResponseRedirect('/')
+    #     if slot:
+    #         kls.type=slot
+    #         kls.save()
+    #     if huurder or your_name:
+    #         h=User.objects.get(id=huurder)
+    #         kls.owners.add(h)
+    #         setattr(kls, 'verhuurd',True)
+    #         kls.save()
+    #     if huuropheffen:
+    #         h=User.objects.get(id=huuropheffen)
+    #         print('opheffen..',h)
+    #         kls.owners.remove(h)
+    #         print(kls)
+    #         setattr(kls, 'email','info@viking.nl')
+    #         setattr(kls, 'verhuurd',False)
+    #         kls.save()
+    #     if sleutels:
+    #         kls.sleutels=sleutels
+    #         kls.save()
+    #     if code:
+    #         kls.code=code
+    #         kls.save()
 
-        return redirect('home')
+    #     return redirect('home')
 
-    vikingers=User.objects.all().order_by('username')
-    context = {
-                'vikingers':vikingers,
-                'kluis': kls,
-                'verhuurd': rms,
-                # 'huurders': huurders,
-                # 'oorspronkelijkmatriksnummer':oorspronkelijkmatriksnummer,
-            }
-    return render(request, 'base/update_kluis_form.html', context)
+    # vikingers=User.objects.all().order_by('username')
+    # context = {
+    #             'vikingers':vikingers,
+    #             'kluis': kls,
+    #             'verhuurd': rms,
+    #             # 'huurders': huurders,
+    #             # 'oorspronkelijkmatriksnummer':oorspronkelijkmatriksnummer,
+    #         }
+    # return render(request, 'base/update_kluis_form.html', context)
 
 
 def lockersPage2(request):
