@@ -38,8 +38,11 @@
         </div>
       </div>
       <h2>Verhuurde Lockers {{lockers.count }} van {{facturatielijst.count}} </h2>
-      {{lijst}}
-      
+      <form action="" method="POST">
+        {% csrf_token %}
+        <input name="body" placeholder="Write your request here..." />
+      </form>
+          
       {% include 'base/feed_member_lockers.html' %}
       {% if request.user.is_superuser %}
       {% endif %}

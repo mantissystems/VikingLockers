@@ -897,9 +897,7 @@ def tel_aantal_registraties(request):
     locker= Locker.objects.none()
     qs1=qs_user.values_list('email',flat=True)
     qs_locker = Locker.objects.all()
-    qs_excel = Excellijst.objects.all()[0:1]
-    # qs_factuur = Facturatielijst.objects.all().update(in_excel='-----')
-    # qs_factuur = Facturatielijst.objects.all().update(is_registered='-----')
+    qs_excel = Excellijst.objects.all()
 # begin eenmalig dd20-09-23
     # onderhuurders = User.objects.filter(
     #         Q(email__icontains='mantis')
@@ -932,44 +930,26 @@ def tel_aantal_registraties(request):
             # print(u.email,'X')
             # f=Facturatielijst.objects.all().filter(email=u.email).update(type='X')
     print('in tel_aantal_lockers in facturatielijst===============')
-    dames = Locker.objects.filter(
-        Q(kluisnummer__icontains='dames')&
+    heren = Locker.objects.filter(
+        Q(kluisnummer__icontains='heren')&
         Q(verhuurd=True)
     )
 
-    for d in dames:
+    for d in heren:
         if Facturatielijst.objects.all().filter(kluisnummer=d.kluisnummer).exists():
             locs= Facturatielijst.objects.all().filter(kluisnummer=d.kluisnummer)
             if locs.count() <=1:
                 try:
                     Facturatielijst.objects.get(kluisnummer=d.kluisnummer)
                 except Facturatielijst.DoesNotExist:
-                # f=Facturatielijst.objects.all().filter(kluisnummer=l.kluisnummer).update(type='L')
                     print(d.kluisnummer,'locker niet in facturatielijst')
             else:
-                print(d.kluisnummer,'locker dubbel')
-# Dames 44 locker dubbel
-# Dames A-25 locker dubbel
-# Dames A-31 locker dubbel
-# Dames A-36 locker dubbel
-# Dames A-46 locker dubbel
-# Dames B-30 locker dubbel
-# Dames C-64 locker dubbel
-# Dames C-65 locker dubbel
+                print(d.kluisnummer,'locker dubbel in facturatielijst')
             #     Facturatielijst.objects.update_or_create(
             #         email=l.email,
             # kluisnummer=l.kluisnummer
             #     )
 
-    #     if Facturatielijst.objects.filter(email=l.email).exists():
-    #         f=Facturatielijst.objects.all().filter(email=l.email).update(type=l.kluisnummer,is_registered=l.kluisnummer)
-    #         print(l.kluisnummer,'=>in facturatielijst')
-
-
-    #         try:
-    #             User.objects.get(email=l.email)
-    #         except User.DoesNotExist:
-    #             print(u.email,'huurder niet in user')
     # # ===begin eenmalige create vanuit excellijst
     # print(l.kluisnummer,'=>bestaat excel locker in locker?')
 
@@ -985,6 +965,29 @@ def tel_aantal_registraties(request):
     #             )
     #             print(loc.kluisnummer,'=>in facturatielijst')
     # ===einde eenmalige create vanuit excellijst
+    verhuurd = Locker.objects.filter(
+        # Q(kluisnummer__icontains='heren')&
+        Q(verhuurd=True)
+    )
+    print('komt verhuurde locker voor in excellijst ======')
+    for v in verhuurd:
+        if Excellijst.objects.all().filter(kluisnummer=v.kluisnummer).exists():
+            print(v.kluisnummer,' zit in excellijst')
+        else:
+            print(v.kluisnummer,v.email,' zit niet in excellijst')
+    print('is excellijst een verhuurde locker ======')
+    x=0
+    qs_excel = Excellijst.objects.filter(
+        Q(kluisnummer__icontains='dames')
+        # Q(kluisnummer__icontains='heren')
+    )
+
+    for qs in qs_excel:
+        if Locker.objects.all().filter(kluisnummer=qs.kluisnummer).exists():
+            print(qs.kluisnummer,' is verhuurd')
+        else:
+            x+=1
+            print(x,qs.kluisnummer,qs.email,' heeft nog geen locker')
         # if not Locker.objects.all().filter(kluisnummer=loc.kluisnummer).exists():
             # if Locker.objects.all().count()<1:
                 # try:
@@ -1007,7 +1010,7 @@ def tel_aantal_registraties(request):
 
     print(qs_user.count(),qs_locker.count(),qs_excel.count())
     print('einde tel_aantal_lockers in facturatielijst')
-    url = reverse('facturatielijst',)
+    url = reverse('excellijst',)
     return HttpResponseRedirect(url)
 
 # def export_search_csv(request, start_date, end_date):
