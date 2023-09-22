@@ -13,7 +13,10 @@
       {% for user in object_list %}
       <tr>
             <td>
-              {{user.email|truncatechars:10}}
+              {% if request.user.is_superuser %}
+              <a href="{% url 'create-locker' %}?q={{user.kluisnummer}}">{{user.email|truncatechars:12}} </span></a>        
+            {% endif %}
+        
             </td>
                     <td>
                       {{user.kluisnummer}}
@@ -21,6 +24,9 @@
                         <td>{{user.excel}} </td>                
           
       {% endfor %}
-      </tr>
+      {% comment %}
+      <a href="{% url 'export_search_csv' %}" class="btn btn--link">=>Excel-regel</a>
+      {% endcomment %}
+</tr>
     </tbody>
   </table>

@@ -26,6 +26,7 @@ urlpatterns = [
     path('facturatielijst/', views.FacturatieView.as_view(), name="facturatielijst"),
     path('create-person/', views.CreatePerson.as_view(), name="create-person"),
     path('create-factuur/', views.CreateFactuur.as_view(), name="create-factuur"),
+    path('create-locker/', views.CreateLocker.as_view(), name="create-locker"),
     path('delete-person/<str:pk>',views.PersonDeleteView.as_view(),name='delete-person'),
     path('delete-locker/<str:pk>',views.LockerDeleteView.as_view(),name='delete-locker'),
     path('delete-factuur/<str:pk>',views.FactuurDeleteView.as_view(),name='delete-factuur'),

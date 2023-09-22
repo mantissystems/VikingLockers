@@ -174,6 +174,11 @@ def home(request):
             q=x
             url = "berichten" + "?q=" +q 
             return HttpResponseRedirect(url)
+        if 'usr' in qq:
+            x = qq.replace("usr ", "")
+            q=x
+            url = "users" + "?q=" +q 
+            return HttpResponseRedirect(url)
 
     else:
         berichten=Bericht.objects.all()
@@ -1177,6 +1182,16 @@ class CreateFactuur(CreateView):
     def form_valid(self, form):
         messages.success(self.request, "U bent op de wachtlijst geplaatst.")
         return super(CreateFactuur,self).form_valid(form)
+    
+class CreateLocker(CreateView):
+    model = Locker
+    fields = ['kluisnummer','email',]
+    # fields='__all__'
+    success_url = reverse_lazy('excellijst')
+    
+    def form_valid(self, form):
+        messages.success(self.request, "U bent op de wachtlijst geplaatst.")
+        return super(CreateLocker,self).form_valid(form)
 
 class CreatePerson(CreateView):
     model = Person

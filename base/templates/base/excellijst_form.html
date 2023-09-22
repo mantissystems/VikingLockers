@@ -1,0 +1,73 @@
+{%extends 'main.html'%}
+{% block content %}
+<main class="create-room layout">
+  <div class="container">
+    <div class="layout__box">
+      <div class="layout__boxHeader">
+        <div class="layout__boxTitle">
+          <a href="{{request.META.HTTP_REFERER}}">
+            <svg version="1.1" xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32">
+              <title>arrow-left</title>
+              <path
+                d="M13.723 2.286l-13.723 13.714 13.719 13.714 1.616-1.611-10.96-10.96h27.625v-2.286h-27.625l10.965-10.965-1.616-1.607z">
+              </path>
+            </svg>
+          </a>
+          <h3>Edit Factuurlijst Regel {{factuurlijst.id}} </h3>
+        </div>
+      </div>
+      <div class="layout__body">
+        <form method="post" novalidate class="card">
+          {%csrf_token %}
+          <h2>{% if locker %} Update {% else %} Create {% endif %} Factuurregel</h2>
+         {% for field in form %}
+           {% if field.is_registered == '==regis' %}
+           <label for="profile_pic">{{field.label}}</label>
+           <div class="form__group">
+             {{field}}
+           </div>
+     
+             {% if field.errors %}
+                   <small class="error">{{ field.errors|striptags  }}</small> 
+                 {% endif %}
+           {% else %}
+           <label for="profile_pic">{{field.label}}</label>
+           <div class="form__group">
+             {{field}}
+           </div>
+                  {% if field.errors %}
+                   <small class="error">{{ field.errors|striptags  }}</small> 
+                 {% endif %}
+               {% endif %}
+         {% endfor %}
+         
+         <div class="form-buttons">
+           <input type="submit" value="Save" class="btn btn-primary"/>
+           <a href="{%url 'home'%}" class="btn btn-outline">Cancel</a>
+           {% if request.user.is_superuser %}
+           {% comment %}
+           <a href="{% url 'delete-factuur' facturatielijst.id %}" class="btn btn--link">Delete</a>
+           {% endcomment %}
+           <div class="profile__info">
+          </div>
+          {% comment %}
+          <div class="profile__about">
+            <h3>Create Person</h3>
+          </div>
+        </div>
+  
+           <a href="{% url 'create-person'   %}?personmail={{facturatielijst.email}}" class="btn btn--link">Create Person </span></a>
+           {% endcomment %}
+           {% endif %}
+         </div>
+         
+       
+       </form>
+             </div>
+    </div>
+  </div>
+</main>
+{% endblock content %}
+{% comment %}
+
+{% endcomment %}
