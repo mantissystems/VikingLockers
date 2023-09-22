@@ -203,7 +203,8 @@ class LockerView (LoginRequiredMixin,ListView):
     login_url='login'
     model=Locker
 def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
+        # context = super().get_context_data(**kwargs)
+        context = super(LockerView, self).get_context_data(**kwargs)
         return context
 
 def get_queryset(self): # new
@@ -621,7 +622,7 @@ def excel_regelPage(request,pk):
     excel = Excellijst.objects.get(id=pk)
     form = ExcelForm(instance=excel)
     lockers=Excellijst.objects.all()
-    topics=Topic.objects.all()
+    # topics=Topic.objects.all()
     vikingers=User.objects.all().order_by('username')
     context = {
                 'vikingers':vikingers,
@@ -644,11 +645,11 @@ def excel_regelPage(request,pk):
         print('onderhuurder',kluis, onderhuurder,sleutels,slotcode)
         if form.is_valid():
             print('form is valid')
-            if kluis:
-                created = Locker.objects.update_or_create(kluisnummer=kluis.id,
-                    email=excel.email,
-                    verhuurd=True,
-                    kluisje=kluis.id)
+            # if kluis:
+            #     created = Locker.objects.update_or_create(kluisnummer=kluis.id,
+            #         email=excel.email,
+            #         verhuurd=True,
+            #         kluisje=kluis.id)
 
             if onderhuurder:
                 print('onderhuurder', onderhuurder)
@@ -662,7 +663,8 @@ def excel_regelPage(request,pk):
                 # locker.owners.remove(h)
                 form.save()
             return redirect('excel-regel', kluis.id)
-    return render(request, 'base/update-locker.html', context)
+    return render(request, 'base/excellijst_form.html', context)
+    # return render(request, 'base/update-locker.html', context)
 
 @login_required(login_url='login')
 def updateRoom(request, pk):
@@ -1185,12 +1187,12 @@ class CreateFactuur(CreateView):
     
 class CreateLocker(CreateView):
     model = Locker
-    fields = ['kluisnummer','email',]
+    fields = ['kluisnummer','email','verhuurd']
     # fields='__all__'
     success_url = reverse_lazy('excellijst')
     
     def form_valid(self, form):
-        messages.success(self.request, "U bent op de wachtlijst geplaatst.")
+        # messages.success(self.request, "U bent op de wachtlijst geplaatst.")
         return super(CreateLocker,self).form_valid(form)
 
 class CreatePerson(CreateView):

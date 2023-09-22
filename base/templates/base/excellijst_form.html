@@ -13,13 +13,13 @@
               </path>
             </svg>
           </a>
-          <h3>Edit Factuurlijst Regel {{factuurlijst.id}} </h3>
+          <h3>Edit Excellijst Regel {{kluis.id}} </h3>
         </div>
       </div>
       <div class="layout__body">
         <form method="post" novalidate class="card">
           {%csrf_token %}
-          <h2>{% if locker %} Update {% else %} Create {% endif %} Factuurregel</h2>
+          <h2>{% if kluis %} Update {% else %} Create {% endif %} Excelregel</h2>
          {% for field in form %}
            {% if field.is_registered == '==regis' %}
            <label for="profile_pic">{{field.label}}</label>

@@ -89,6 +89,7 @@ class ExcelForm(ModelForm):
     class Meta:
         model = Excellijst
         fields = '__all__'
+        exclude = ['sleutels','code','excel','type']
         # labels = {
         # "verhuurd": "Verhuurd",
         # "owners": "onder huurders",
@@ -98,7 +99,6 @@ class ExcelForm(ModelForm):
         # "type": "Type slot",
 
         # }
-        # exclude = ['topic','row', 'col','owners','kluisnummer','verhuurd']
 
 
 class UserForm(ModelForm):
