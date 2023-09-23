@@ -900,11 +900,11 @@ class FactuurDeleteView(DeleteView):
 @login_required(login_url='login')   
 def tel_aantal_registraties(request):
     print('in tel_aantal_registraties in facturatielijst===============')
-    qs_user = User.objects.all()[0:1]
-    locker= Locker.objects.none()
-    qs1=qs_user.values_list('email',flat=True)
-    qs_locker = Locker.objects.all()
-    qs_excel = Excellijst.objects.all()
+    # qs_user = User.objects.all()[0:1]
+    # locker= Locker.objects.none()
+    # qs1=qs_user.values_list('email',flat=True)
+    # qs_locker = Locker.objects.all()
+    # qs_excel = Excellijst.objects.all()
 # begin eenmalig dd20-09-23
     # onderhuurders = User.objects.filter(
     #         Q(email__icontains='mantis')
@@ -937,26 +937,33 @@ def tel_aantal_registraties(request):
             # print(u.email,'X')
             # f=Facturatielijst.objects.all().filter(email=u.email).update(type='X')
     print('in tel_aantal_lockers in facturatielijst===============')
-    heren = Locker.objects.filter(
-        Q(kluisnummer__icontains='heren')&
-        Q(verhuurd=True)
-    )
+    kluisjes = Locker.objects.all()
+    # kluisjes = Locker.objects.filter(
+        # Q(kluisnummer__icontains='heren')&
+        # Q(verhuurd=True)
+        # )
 
-    for d in heren:
-        if Facturatielijst.objects.all().filter(kluisnummer=d.kluisnummer).exists():
-            locs= Facturatielijst.objects.all().filter(kluisnummer=d.kluisnummer)
-            if locs.count() <=1:
-                try:
-                    Facturatielijst.objects.get(kluisnummer=d.kluisnummer)
-                except Facturatielijst.DoesNotExist:
-                    print(d.kluisnummer,'locker niet in facturatielijst')
-            else:
-                print(d.kluisnummer,'locker dubbel in facturatielijst')
-            #     Facturatielijst.objects.update_or_create(
-            #         email=l.email,
-            # kluisnummer=l.kluisnummer
-            #     )
+    for k in kluisjes:
+        if Facturatielijst.objects.all().filter(kluisnummer=k.kluisnummer).exists():
+            locs= Facturatielijst.objects.all().filter(kluisnummer=k.kluisnummer)
+            # if locs.count() <=1:
+            try:
+                Facturatielijst.objects.get(kluisnummer=k.kluisnummer)
+            except Facturatielijst.DoesNotExist:
+                print(k.kluisnummer,'locker niet in facturatielijst','toegevoegd')
+                Facturatielijst.objects.update_or_create(
+                email='vrij',
+                in_excel='nakijken', 
+                kluisnummer=k.kluisnummer
+                )
 
+        else:
+                print(k.kluisnummer,'locker niet in facturatielijst','toegevoegd')
+                Facturatielijst.objects.update_or_create(
+                email='vrij',
+                in_excel='nakijken', 
+                kluisnummer=k.kluisnummer
+                )
     # # ===begin eenmalige create vanuit excellijst
     # print(l.kluisnummer,'=>bestaat excel locker in locker?')
 
@@ -977,45 +984,45 @@ def tel_aantal_registraties(request):
         Q(verhuurd=True)
     )
     print('komt verhuurde locker voor in excellijst ======')
-    for v in verhuurd:
-        if Excellijst.objects.all().filter(kluisnummer=v.kluisnummer).exists():
-            print(v.kluisnummer,' zit in excellijst')
-        else:
-            print(v.kluisnummer,v.email,' zit niet in excellijst')
-    print('is excellijst een verhuurde locker ======')
-    x=0
-    qs_excel = Excellijst.objects.filter(
-        Q(kluisnummer__icontains='dames')
-        # Q(kluisnummer__icontains='heren')
-    )
+    # for v in verhuurd:
+    #     if Excellijst.objects.all().filter(kluisnummer=v.kluisnummer).exists():
+    #         print(v.kluisnummer,' zit in excellijst')
+    #     else:
+    #         print(v.kluisnummer,v.email,' zit niet in excellijst')
+    # print('is excellijst een verhuurde locker ======')
+    # x=0
+    # qs_excel = Excellijst.objects.filter(
+    #     Q(kluisnummer__icontains='dames')
+    #     # Q(kluisnummer__icontains='heren')
+    # )
 
-    for qs in qs_excel:
-        if Locker.objects.all().filter(kluisnummer=qs.kluisnummer).exists():
-            print(qs.kluisnummer,' is verhuurd')
-        else:
-            x+=1
-            print(x,qs.kluisnummer,qs.email,' heeft nog geen locker')
-        # if not Locker.objects.all().filter(kluisnummer=loc.kluisnummer).exists():
-            # if Locker.objects.all().count()<1:
-                # try:
-                #     Locker.objects.get(email=loc.email)
-                # except Locker.DoesNotExist:
-            # if 'Heren' in loc.kluisnummer:
-            #     print(loc.kluisnummer)
-            #     create,cre=Locker.objects.update_or_create(
-            #                 kluisnummer=loc.kluisnummer,
-            #                 kluisje=loc.kluisnummer,
-            #                 topic='----',
-            #                 email='onbekend@viking.nl',
-            #                 verhuurd=False,
-            #                 code=0,
-            #                 sleutels=0
-            #                 ) 
-        #     create.owners.add(request.user) 
-            # ### one at a time by the position of break
-                # break
+    # for qs in qs_excel:
+    #     if Locker.objects.all().filter(kluisnummer=qs.kluisnummer).exists():
+    #         print(qs.kluisnummer,' is verhuurd')
+    #     else:
+    #         x+=1
+    #         print(x,qs.kluisnummer,qs.email,' heeft nog geen locker')
+    #     # if not Locker.objects.all().filter(kluisnummer=loc.kluisnummer).exists():
+    #         # if Locker.objects.all().count()<1:
+    #             # try:
+    #             #     Locker.objects.get(email=loc.email)
+    #             # except Locker.DoesNotExist:
+    #         # if 'Heren' in loc.kluisnummer:
+    #         #     print(loc.kluisnummer)
+    #         #     create,cre=Locker.objects.update_or_create(
+    #         #                 kluisnummer=loc.kluisnummer,
+    #         #                 kluisje=loc.kluisnummer,
+    #         #                 topic='----',
+    #         #                 email='onbekend@viking.nl',
+    #         #                 verhuurd=False,
+    #         #                 code=0,
+    #         #                 sleutels=0
+    #         #                 ) 
+    #     #     create.owners.add(request.user) 
+    #         # ### one at a time by the position of break
+    #             # break
 
-    print(qs_user.count(),qs_locker.count(),qs_excel.count())
+    # print(qs_user.count(),qs_locker.count(),qs_excel.count())
     print('einde tel_aantal_lockers in facturatielijst')
     url = reverse('excellijst',)
     return HttpResponseRedirect(url)
@@ -1190,10 +1197,17 @@ class CreateLocker(CreateView):
     fields = ['kluisnummer','email','verhuurd']
     # fields='__all__'
     success_url = reverse_lazy('excellijst')
-    
+    def __init__(self, **kwargs):
+    # Go through keyword arguments, and either save their values to our
+    # instance, or raise an error.
+        for key, value in kwargs.items():
+            print(key)
+            setattr(self, key, value)
+
     def form_valid(self, form):
         # messages.success(self.request, "U bent op de wachtlijst geplaatst.")
         return super(CreateLocker,self).form_valid(form)
+
 
 class CreatePerson(CreateView):
     model = Person
