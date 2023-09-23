@@ -9,7 +9,6 @@
         <th></th>
         <th>user_id</th>
         <th></th>
-        <th>regis</th>
         <th></th>
       </tr>
     </thead>
@@ -17,6 +16,8 @@
       {% if request.user.is_superuser %}
       <a href="{% url 'export_search_csv' %}" class="btn btn--link">=>Export List</a>
       {% comment %}
+      <th>regis</th>
+      <td>{{locker.is_registered}}</td>
       {% endcomment %}
     {% endif %}
 
@@ -43,7 +44,6 @@
                             {% endif %}
                         </td> 
                         <td></td>
-                      <td>{{locker.is_registered}}</td>
           
       {% endfor %}
       </tr>

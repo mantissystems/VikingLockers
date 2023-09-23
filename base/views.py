@@ -1435,7 +1435,7 @@ def update_locker(request,pk):
                 ).order_by('kluisnummer').update(verhuurd=False)
                 try:
                     locker2 = Locker.objects.get(kluisnummer=locker.kluisnummer,email=locker.email)
-                except IndexError:
+                except Locker.DoesNotExist:
                     print( 'except verhuurd of niet',locker.kluisnummer,locker.verhuurd)
             if locker.verhuurd == True:
                 locker.email=email           
