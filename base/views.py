@@ -946,16 +946,16 @@ def tel_aantal_registraties(request):
     for k in kluisjes:
         if Facturatielijst.objects.all().filter(kluisnummer=k.kluisnummer).exists():
             locs= Facturatielijst.objects.all().filter(kluisnummer=k.kluisnummer)
-            # if locs.count() <=1:
-            try:
-                Facturatielijst.objects.get(kluisnummer=k.kluisnummer)
-            except Facturatielijst.DoesNotExist:
-                print(k.kluisnummer,'locker niet in facturatielijst','toegevoegd')
-                Facturatielijst.objects.update_or_create(
-                email='vrij',
-                in_excel='nakijken', 
-                kluisnummer=k.kluisnummer
-                )
+            if locs.count() <=1:
+                try:
+                    Facturatielijst.objects.get(kluisnummer=k.kluisnummer)
+                except Facturatielijst.DoesNotExist:
+                    print(k.kluisnummer,'locker niet in facturatielijst','toegevoegd')
+                    Facturatielijst.objects.update_or_create(
+                    email='vrij',
+                    in_excel='nakijken', 
+                    kluisnummer=k.kluisnummer
+                    )
 
         else:
                 print(k.kluisnummer,'locker niet in facturatielijst','toegevoegd')
@@ -1024,7 +1024,7 @@ def tel_aantal_registraties(request):
 
     # print(qs_user.count(),qs_locker.count(),qs_excel.count())
     print('einde tel_aantal_lockers in facturatielijst')
-    url = reverse('excellijst',)
+    url = reverse('facturatielijst',)
     return HttpResponseRedirect(url)
 
 # def export_search_csv(request, start_date, end_date):
