@@ -102,7 +102,8 @@ def home(request):
     messages.add_message(request, messages.INFO, "Welkom bij Viking Lockers.")    
     q = request.GET.get('q') if request.GET.get('q') != None else ''
     qq=q.lower()
-    # lockers=Locker.objects.all().filter(verhuurd=True)     
+    kluisjes=Locker.objects.all().filter(verhuurd=True)     
+    allekluisjes=Locker.objects.all()     
     messagelocker=Locker.objects.all().first()     
     from django.db.models import Count
     if request.method == 'POST':
@@ -184,7 +185,8 @@ def home(request):
         berichten=Bericht.objects.all()
     lockers =Locker.objects.filter(
         Q(kluisnummer__icontains=q) |
-        Q(email__icontains=q)
+        Q(email__icontains=q)|
+        Q(owners__email__icontains=q)
         ).order_by('kluisnummer') #.exclude(verhuurd=False)
 
     room_messages = Message.objects.all()
@@ -192,7 +194,8 @@ def home(request):
     context = {
                'lijst':lijst,
                 'lockers': lockers,
-                # 'facturatielijst': facturatielijst,
+                'kluisjes': kluisjes,
+                'allekluisjes': allekluisjes,
                'berichten': berichten, 
                'room_messages': room_messages
                }
@@ -710,16 +713,25 @@ class MemberListView (LoginRequiredMixin, ListView):
 paginate_by = 20
 
 class PersonListView (ListView):
+    # from django.db.models.functions import Lower
     model=Person
     def get_context_data(self,**kwargs):
+        
         q = self.request.GET.get('q') if self.request.GET.get('q') != None else ''
         query = self.request.GET.get('q')
+    #     Person.objects.annotate(
+    #     uname=self.Lower('email')
+    # ).order_by('uname').values_list('email', flat=True)
+    #     print(uname)
+
         if query == None: query=""
+        print('query',q)
         queryset = Person.objects.filter(
             Q(email__icontains=query)|
             Q(name__icontains=query)|
             Q(locker__icontains=query)
-            ).order_by('email')
+            ).order_by('hoofdhuurder','wachtlijst','onderhuur','email')
+        # queryset=Person.objects.all().order_by('hoofdhuurder','wachtlijst','onderhuur','email')
         context = {
             'query': query,
             'object_list' :queryset,
@@ -774,11 +786,15 @@ class FacturatieView (LoginRequiredMixin, ListView):
 
 class PersonUpdate_id( LoginRequiredMixin,UpdateView):
     login_url = '/login/'
-    # redirect_field_name = 'redirect_to'
     model = Person
-    # fields = ['name','email','verhuurd','sleutels','code','kluisje']
+    def get_form(self, form_class=None):
+        form = super().get_form(form_class)
+        form.fields['onderhuur'].label = 'Checked: creates User from Person'
+        form.fields['tekst'].label = 'Use ; to split and @  add @viking.nl'
+        form.fields['wachtlijst'].label = 'Checked: creates Person from Tekst-lines'
+        form.fields['hoofdhuurder'].label = 'Checked: sets locker tenant'
+        return form
 
-    # fields = ['name','email','wachtlijst']
     fields = '__all__'
     success_url = reverse_lazy('profiles')
     def form_valid(self, form):
@@ -792,7 +808,6 @@ class PersonUpdate_id( LoginRequiredMixin,UpdateView):
         wachtlijst = form.cleaned_data['wachtlijst']  
         email = form.cleaned_data['email'] 
         tekst = form.cleaned_data['tekst']  
-        # print(tekst)
         if wachtlijst:            
             if tekst:
                 if ';' in tekst and '@' in email:
