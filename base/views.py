@@ -104,6 +104,7 @@ def home(request):
     qq=q.lower()
     kluisjes=Locker.objects.all().filter(verhuurd=True)     
     allekluisjes=Locker.objects.all()     
+    mogelijkheden=allekluisjes.count() * 2     
     messagelocker=Locker.objects.all().first()     
     from django.db.models import Count
     if request.method == 'POST':
@@ -196,6 +197,7 @@ def home(request):
                 'lockers': lockers,
                 'kluisjes': kluisjes,
                 'allekluisjes': allekluisjes,
+                'mogelijkheden': mogelijkheden,
                'berichten': berichten, 
                'room_messages': room_messages
                }
