@@ -1,20 +1,11 @@
-{% for room in lockers %}
+{% for locker in lockers %}
 <div class="roomListRoom">
     <div class="roomListRoom__header">
         <div class="roomListRoom__actions">
         </div>
     </div>
     <div class="activities__boxHeader roomListRoom__header">
-        <a href="{% url 'update-locker' room.id %}">{{room.kluisnummer}}=> {{room.email|slice:"0:12"}}...
-            {% if room.owners.count > 0 %}
-            <div class="activities__boxContent">
-                {% for owner in room.owners.alllll %}
-                <div class="activities__boxRoomContent">{{owner.email|slice:"0:13"}}....</div>
-                {% endfor %}
-            </div>
-        
-            ({{room.owners.count}})
-            {% endif %}
+        <a href="{% url 'update-locker' locker.id %}">{{locker.kluisnummer}}=> {{locker.email|slice:"0:12"}}... {% if locker.owners.count > 0 %} ({{locker.owners.count}} gebruikers) {% endif %}
              </a>
     </div>
 

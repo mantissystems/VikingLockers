@@ -103,6 +103,13 @@ def home(request):
     q = request.GET.get('q') if request.GET.get('q') != None else ''
     qq=q.lower()
     kluisjes=Locker.objects.all().filter(verhuurd=True)     
+    lockers =Locker.objects.filter(
+    Q(kluisnummer__icontains=q) |
+    # Q(kluisnummer__icontains='46') |
+    Q(email__icontains=q)
+    # Q(owners__email__icontains=q)
+    ).order_by('kluisnummer') #.exclude(verhuurd=False)
+
     allekluisjes=Locker.objects.all()     
     mogelijkheden=allekluisjes.count() * 2     
     messagelocker=Locker.objects.all().first()     
@@ -149,47 +156,45 @@ def home(request):
     if q!='' or q !=None:
         lijst='home'
         # lockers=Locker.objects.all().filter(verhuurd=True)     
-
-        if 'xls' in qq:
-            x = qq.replace("xls ", "")
-            q=x
-            queryset = Excellijst.objects.filter(
-            Q(email__icontains=q)|
-            Q(type__icontains=q)|
-            Q(excel__icontains=q)|
-            Q(kluisnummer__icontains=q)
-            ).order_by('kluisnummer')
-            url = "excellijst" + "?q=" +q 
-            return HttpResponseRedirect(url)
-        elif 'fact' in qq:
-            x = qq.replace("fact ", "")
-            q=x
-            url = "facturatielijst" + "?q=" +q 
-            return HttpResponseRedirect(url)
-        elif 'pers' in qq:
-            x = qq.replace("pers ", "")
-            q=x
-            url = "profiles" + "?q=" +q 
-            return HttpResponseRedirect(url)
-        elif 'req' in qq:
-            x = qq.replace("req ", "")
-            q=x
-            url = "berichten" + "?q=" +q 
-            return HttpResponseRedirect(url)
-        elif 'usr' in qq:
-            x = qq.replace("usr ", "")
-            q=x
-            url = "users" + "?q=" +q 
-            return HttpResponseRedirect(url)
-
-        else:
-            berichten=Bericht.objects.all()
-            lockers =Locker.objects.filter(
-        Q(kluisnummer__icontains=q) |
-        Q(kluisnummer__icontains='46') |
+    elif 'xls' in qq:
+        x = qq.replace("xls ", "")
+        q=x
+        queryset = Excellijst.objects.filter(
         Q(email__icontains=q)|
-        Q(owners__email__icontains=q)
-        ).order_by('kluisnummer') #.exclude(verhuurd=False)
+        Q(type__icontains=q)|
+        Q(excel__icontains=q)|
+        Q(kluisnummer__icontains=q)
+        ).order_by('kluisnummer')
+        url = "excellijst" + "?q=" +q 
+        return HttpResponseRedirect(url)
+    elif 'fact' in qq:
+        x = qq.replace("fact ", "")
+        q=x
+        url = "facturatielijst" + "?q=" +q 
+        return HttpResponseRedirect(url)
+    elif 'pers' in qq:
+        x = qq.replace("pers ", "")
+        q=x
+        url = "profiles" + "?q=" +q 
+        return HttpResponseRedirect(url)
+    elif 'req' in qq:
+        x = qq.replace("req ", "")
+        q=x
+        url = "berichten" + "?q=" +q 
+        return HttpResponseRedirect(url)
+    elif 'usr' in qq:
+        x = qq.replace("usr ", "")
+        q=x
+        url = "users" + "?q=" +q 
+        return HttpResponseRedirect(url)
+
+    else:
+        berichten=Bericht.objects.all()
+        lockers =Locker.objects.filter(
+    Q(kluisnummer__icontains=q) |
+    Q(email__icontains=q)
+    # Q(owners__email__icontains=q) #dit levert redundancy in het template op
+    ).order_by('kluisnummer') #.exclude(verhuurd=False) #ik wil alle lockers tonen
 
     room_messages = Message.objects.all()
     # facturatielijst=Facturatielijst.objects.all()
