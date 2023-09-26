@@ -7,7 +7,9 @@
         <th>Locker</th>
         <th>Type</th>
         <th></th>
-        <th>user_id</th>
+        <th></th>
+        <th></th>
+        <th>xls_check</th>
         <th></th>
         <th></th>
       </tr>
@@ -33,7 +35,15 @@
       </td>
             <td></td>
                       <td>
-                        <a href="{% url 'update-usermail'  locker.type %}?q={{locker.id}}">{{locker.type}} </span></a>
+                        
+                        <a href="{% url 'update-usermail'  locker.code %}?q={{locker.id}}">{{locker.type}} </span></a>
+                        {% comment %}
+                        {% endcomment %}
+                      </td>
+                      <td>
+                        <a href="{% url 'update-usermail'  locker.code %}?q={{locker.id}}">{{locker.is_registered}} </span></a>
+                        {% comment %}
+                        {% endcomment %}
                       </td>
                       <td></td>
                       <td>

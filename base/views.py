@@ -965,28 +965,37 @@ def tel_aantal_registraties(request):
         # Q(kluisnummer__icontains='heren')&
         # Q(verhuurd=True)
         # )
-
+    x=0
     for k in kluisjes:
         if Facturatielijst.objects.all().filter(kluisnummer=k.kluisnummer).exists():
             locs= Facturatielijst.objects.all().filter(kluisnummer=k.kluisnummer)
             if locs.count() <=1:
                 try:
                     Facturatielijst.objects.get(kluisnummer=k.kluisnummer)
+                    print(k.kluisnummer,'update','toegevoegd')
+                    Facturatielijst.objects.update_or_create(
+                    email=k.email,
+                    in_excel='nakijk', 
+                    is_registered=k.email,
+                    kluisnummer=k.kluisnummer
+                    )
                 except Facturatielijst.DoesNotExist:
                     print(k.kluisnummer,'locker niet in facturatielijst','toegevoegd')
                     Facturatielijst.objects.update_or_create(
-                    email='vrij',
-                    in_excel='nakijken', 
+                    email=k.email,
+                    in_excel='nakijk', 
+                    is_registered=k.email,
                     kluisnummer=k.kluisnummer
                     )
 
         else:
+                x+=1
                 print(k.kluisnummer,'locker niet in facturatielijst','toegevoegd')
-                Facturatielijst.objects.update_or_create(
-                email='vrij',
-                in_excel='nakijken', 
-                kluisnummer=k.kluisnummer
-                )
+        #         Facturatielijst.objects.update_or_create(
+        #         email='vrij',
+        #         in_excel='nakijken', 
+        #         kluisnummer=k.kluisnummer
+        #         )
     # # ===begin eenmalige create vanuit excellijst
     # print(l.kluisnummer,'=>bestaat excel locker in locker?')
 
