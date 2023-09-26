@@ -161,31 +161,32 @@ def home(request):
             ).order_by('kluisnummer')
             url = "excellijst" + "?q=" +q 
             return HttpResponseRedirect(url)
-        if 'fact' in qq:
+        elif 'fact' in qq:
             x = qq.replace("fact ", "")
             q=x
             url = "facturatielijst" + "?q=" +q 
             return HttpResponseRedirect(url)
-        if 'pers' in qq:
+        elif 'pers' in qq:
             x = qq.replace("pers ", "")
             q=x
             url = "profiles" + "?q=" +q 
             return HttpResponseRedirect(url)
-        if 'req' in qq:
+        elif 'req' in qq:
             x = qq.replace("req ", "")
             q=x
             url = "berichten" + "?q=" +q 
             return HttpResponseRedirect(url)
-        if 'usr' in qq:
+        elif 'usr' in qq:
             x = qq.replace("usr ", "")
             q=x
             url = "users" + "?q=" +q 
             return HttpResponseRedirect(url)
 
-    else:
-        berichten=Bericht.objects.all()
-    lockers =Locker.objects.filter(
+        else:
+            berichten=Bericht.objects.all()
+            lockers =Locker.objects.filter(
         Q(kluisnummer__icontains=q) |
+        Q(kluisnummer__icontains='46') |
         Q(email__icontains=q)|
         Q(owners__email__icontains=q)
         ).order_by('kluisnummer') #.exclude(verhuurd=False)
@@ -1548,14 +1549,21 @@ def update_locker(request,pk):
 
 def lockersPage2(request):
     q = request.GET.get('q') if request.GET.get('q') != None else ''
-    # lockers = Locker.objects.filter(kluisnummer__icontains=q,verhuurd=True) #[0:15]
-    
+    kluisjes=Locker.objects.all().filter(verhuurd=True)     
+    allekluisjes=Locker.objects.all()     
+    mogelijkheden=allekluisjes.count() * 2     
     lockers =Locker.objects.filter(
         Q(kluisnummer__icontains=q) |
         Q(email__icontains=q)
         ).order_by('kluisnummer') #.exclude(verhuurd=False)
-
-    return render(request, 'base/kluisjes.html', {'lockers': lockers})
+    context = {
+                'lockers': lockers,
+                'kluisjes': kluisjes,
+                'allekluisjes': allekluisjes,
+                'mogelijkheden': mogelijkheden,
+            }
+    return render(request, 'base/kluisjes.html', context)
+    # return render(request, 'base/kluisjes.html', {'lockers': lockers})
 
 def decodeer(regel,de_matriks_kolom,column,cellengte):
     begincell=(0+column)*column*cellengte

@@ -7,37 +7,17 @@
     <div class="activities__boxHeader roomListRoom__header">
         <a href="{% url 'update-locker' room.id %}">{{room.kluisnummer}}=> {{room.email|slice:"0:12"}}...
             {% if room.owners.count > 0 %}
-            ({{room.owners.count}}){% endif %}
+            <div class="activities__boxContent">
+                {% for owner in room.owners.alllll %}
+                <div class="activities__boxRoomContent">{{owner.email|slice:"0:13"}}....</div>
+                {% endfor %}
+            </div>
+        
+            ({{room.owners.count}})
+            {% endif %}
              </a>
     </div>
-    <div class="activities__boxContent">
-        {% for message in room.owners.all %}
-        <div class="activities__boxRoomContent">{{message.email|slice:"0:13"}}....</div>
-        {% endfor %}
-    </div>
-
-    {% for message in room.owners.allll %}
-    <div class="activities__box">
-        <div class="activities__boxHeader roomListRoom__header">
-            <a href="{% url 'user-profile' request.user.id %}" class="roomListRoom__author">
-                {% comment %}
-
-                <p>
-                    @{{message.email}}
-                    <span>{{message.kluisje}} ago</span>
-                </p>
-                {% endcomment %}
-
-            </a>
-
-        </div>
-        <div class="activities__boxContent">
-            {% for message in room.owners.all %}
-            <div class="activities__boxRoomContent">{{message.email}}</div>
-            {% endfor %}
-        </div>
-    </div>
-    {% endfor %}
 
 </div>
 {% endfor %}
+

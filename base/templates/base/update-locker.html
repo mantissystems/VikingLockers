@@ -57,16 +57,28 @@
             <a class="btn btn--dark" href="{% url 'home' %}">Cancel</a>
             <button class="btn btn--main" type="submit">Update</button>
             {% if request.user.is_superuser %}
-            <a class="btn btn--dark" href="{% url 'admin:index' %}">Admin</a>
             <a href="{% url 'delete-locker' kluis.id %}" class="btn btn--link">Delete</a>
             {% comment %}
+            <a class="btn btn--dark" href="{% url 'admin:index' %}">Admin</a>
             {% endcomment %}
           {% endif %}
           </div>
         </form>
+        {% if kluis.owners.count > 0 %}
+        <div class="form__group">
+          Owners
+          <hr>
+              {% for org in kluis.owners.all %}
+               {{org.email|capfirst}} <br>
+              {% endfor %}
+
+        </div>
+        {% endif %}
+
       </div>
     </div>
   </div>
   </div>
+  
 </main>
 {% endblock content %}
