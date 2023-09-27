@@ -33,7 +33,7 @@
            {% else %}
            <label for="profile_pic">{{field.label}}</label>
            <div class="form__group">
-              {% if field.name == 'owners' %}
+              {% if field.name == 'participants' %}
               <div class="form__group">
                 <select id="onderhuurder" name="onderhuurder" onChange="redirectUrl()">
                   <option  value="" selected="selected">--- HUURDER TOEVOEGEN:---</option>
@@ -42,11 +42,11 @@
                   {% endfor %}
                 </select>
               </div>
-              {% if locker.owners.count > 0 %}
+              {% if locker.participants.count > 0 %}
           <div class="form__group">
               <select id="huuropheffen" name="huuropheffen" onChange="redirectUrl()">
                 <option  value="" selected="selected">--- HUURDER VERWIJDEREN---</option>
-                {% for org in locker.owners.all %}
+                {% for org in locker.participants.all %}
                  <option value="{{org.id}}">{{org.email|capfirst}}</option>
                 {% endfor %}
               </select>
@@ -76,7 +76,7 @@
            <a href="{% url 'delete-locker' locker.id %}" class="btn btn--link">Delete</a>
            {% endif %}
            <!--  -->
-           {% if field.name == 'owners' %}
+           {% if field.name == 'participants' %}
            <div class="form__group">
            </div>
 
@@ -88,11 +88,11 @@
               {% endfor %}
             </select>
           </div>
-          {% if locker.owners.count > 0 %}
+          {% if locker.participants.count > 0 %}
           <div class="form__group">
               <select id="huuropheffen" name="huuropheffen" onChange="redirectUrl()">
                 <option  value="" selected="selected">--- GEBRUIKER VERWIJDEREN---</option>
-                {% for org in locker.owners.all %}
+                {% for org in locker.participants.all %}
                  <option value="{{org.id}}">{{org.email|capfirst}}</option>
                 {% endfor %}
               </select>

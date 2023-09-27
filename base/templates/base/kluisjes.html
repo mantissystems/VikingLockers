@@ -38,6 +38,14 @@
         </div>
       </div>
       <h2>{{lockers.count}} Lockers</h2> 
+      {% if request.user.is_superuser %}
+      <a href="{% url 'export_onverhuurd' %}" class="btn btn--link">=>Export List</a>
+      {% comment %}
+      <th>regis</th>
+      <td>{{locker.is_registered}}</td>
+      {% endcomment %}
+    {% endif %}
+
       {% include 'base/feed_member_lockers.html' %}
       {% if request.user.is_superuser %}
       {% endif %}

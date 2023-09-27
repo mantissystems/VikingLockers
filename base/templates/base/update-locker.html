@@ -39,11 +39,11 @@
             </select> 
           </div> 
 
-          {% if kluis.owners.count > 0 %}
+          {% if kluis.participants.count > 0 %}
           <div class="form__group">
               <select id="huuropheffen" name="huuropheffen" onChange="redirectUrl()">
                 <option  value="" selected="selected">--- ONDERHUURDER VERWIJDEREN---</option>
-                {% for org in kluis.owners.all %}
+                {% for org in kluis.participants.all %}
                  <option value="{{org.id}}">{{org.email|capfirst}}</option>
                 {% endfor %}
               </select>
@@ -64,11 +64,11 @@
           {% endif %}
           </div>
         </form>
-        {% if kluis.owners.count > 0 %}
+        {% if kluis.participants.count > 0 %}
         <div class="form__group">
-          Owners
+          Participants
           <hr>
-              {% for org in kluis.owners.all %}
+              {% for org in kluis.participants.all %}
                {{org.email|capfirst}} <br>
               {% endfor %}
 
