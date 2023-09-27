@@ -4,12 +4,9 @@
       <hr>
       <tr>
         <th>Huurder:</th>
-        <th>Locker</th>
-        <th></th>
-        <th></th>
         <th>Verhuurd</th>
         <th></th>
-        <th>Usr</th>
+        <th></th>
         <th></th>
         <th>Onverhuurd</th>
         <th></th>
@@ -31,8 +28,8 @@
       <td>
         <a href="{% url 'edit-factuur'  locker.id %}?q={{locker.id}}">{{locker.email|truncatechars:12}} </span></a>        
         <td>
-          {% comment %}
           <a href="{% url 'update-usermail'  locker.kluisnummer %}?q={{locker.id}}">{{locker.kluisnummer}} </span></a>
+          {% comment %}
           {% endcomment %}
 
         </td>
@@ -43,21 +40,16 @@
                         
                         {% comment %}
                         <a href="{% url 'update-usermail'  locker.code %}?q={{locker.id}}">{{locker.type}} </span></a>
-                        {% endcomment %}
                       </td>
                       <td>
-                        <a href="{% url 'update-usermail'  locker.code %}?q={{locker.id}}">{{locker.is_registered}} </span></a>
                       </td>
+                      {% endcomment %}
+                      <a href="{% url 'update-usermail'  locker.code %}?q={{locker.id}}">{{locker.is_registered}} </span></a>
                       <td></td>
                       <td>
                         {% comment %}
-                        
-                        {% if locker.in_excel == '----' %}
-                        ------
-                        {% else %}
-                        <a href="{% url 'update-user2'  locker.in_excel %}?q={{locker.in_excel}}">{{locker.in_excel}} </span></a>
-                        {% endif %}
                         {% endcomment %}
+                        <a href="{% url 'update-user2'  locker.in_excel %}?q={{locker.in_excel}}">{{locker.in_excel}} </span></a>
                         </td> 
                         <td>
                           <a href="{% url 'create-locker' %}?q={{locker.kluisnummer}}">{{locker.type}} </span></a>        
