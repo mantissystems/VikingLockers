@@ -1577,12 +1577,14 @@ def lockersPage2(request):
     kluisjes=Locker.objects.all().filter(verhuurd=True)     
     allekluisjes=Locker.objects.all()     
     mogelijkheden=allekluisjes.count() * 2     
+    lijst='verhuurd'
     lockers =Locker.objects.filter(
         Q(kluisnummer__icontains=q) |
         Q(email__icontains=q)
         ).order_by('kluisnummer') #.exclude(verhuurd=False)
     context = {
                 'lockers': lockers,
+                    'lijst': lijst,
                 'kluisjes': kluisjes,
                 'allekluisjes': allekluisjes,
                 'mogelijkheden': mogelijkheden,
@@ -1595,12 +1597,14 @@ def lockersPage3(request):
     kluisjes=Locker.objects.all().filter(verhuurd=False)     
     allekluisjes=Locker.objects.all()     
     mogelijkheden=allekluisjes.count() * 2     
+    lijst='onverhuurd'
     lockers =Locker.objects.filter(
         # Q(kluisnummer__icontains=q) |
         Q(verhuurd=False)
         ).order_by('kluisnummer') #.exclude(verhuurd=False)
     context = {
                 'lockers': lockers,
+                    'lijst': lijst,
                 'kluisjes': kluisjes,
                 'allekluisjes': allekluisjes,
                 'mogelijkheden': mogelijkheden,

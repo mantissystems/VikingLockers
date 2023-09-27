@@ -39,7 +39,12 @@
       </div>
       <h2>{{lockers.count}} Lockers</h2> 
       {% if request.user.is_superuser %}
-      <a href="{% url 'export_onverhuurd' %}" class="btn btn--link">=>Export List</a>
+      {% if lijst == 'onverhuurd' %}
+      <a href="{% url 'export_onverhuurd' %}" class="btn btn--link">=>Export Onverhuurd</a>
+      {% endif %}
+      {% if lijst == 'onverhuurd' %}
+      <a href="{% url 'export_search_csv' %}" class="btn btn--link">=>Export Verhuurd</a>
+      {% endif %}
       {% comment %}
       <th>regis</th>
       <td>{{locker.is_registered}}</td>
