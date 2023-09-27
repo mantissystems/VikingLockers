@@ -110,7 +110,9 @@ def home(request):
     # Q(owners__email__icontains=q)
     ).order_by('kluisnummer') #.exclude(verhuurd=False)
 
-    allekluisjes=Locker.objects.all()     
+    # allekluisjes=Locker.objects.all()     
+    allekluisjes=Locker.objects.all().filter(verhuurd=False)     
+
     mogelijkheden=allekluisjes.count() * 2     
     messagelocker=Locker.objects.all().first()     
     from django.db.models import Count
@@ -798,8 +800,8 @@ class PersonUpdate_id( LoginRequiredMixin,UpdateView):
     model = Person
     def get_form(self, form_class=None):
         form = super().get_form(form_class)
-        form.fields['onderhuur'].label = 'Checked: creates User from Person'
-        form.fields['tekst'].label = 'Use ; to split and @  add @viking.nl'
+        form.fields['onderhuur'].label = 'Checked: creates Person'
+        form.fields['tekst'].label = 'Use ; to split @viking.nl is added'
         form.fields['wachtlijst'].label = 'Checked: creates Person from Tekst-lines'
         form.fields['hoofdhuurder'].label = 'Checked: sets locker tenant'
         return form
@@ -817,18 +819,44 @@ class PersonUpdate_id( LoginRequiredMixin,UpdateView):
         wachtlijst = form.cleaned_data['wachtlijst']  
         email = form.cleaned_data['email'] 
         tekst = form.cleaned_data['tekst']  
-        if wachtlijst:            
-            if tekst:
-                if ';' in tekst and '@' in email:
-                    txt=tekst.splitlines()
-                    for t in txt:
-                        print(t)
-                        u=t.replace(';','')
-                        user=Person.objects.update_or_create(name=t,
-                                                           email= t + '@viking.nl',
-                                                           locker=kluis,
-                                                           wachtlijst=True,
-                                                           )
+        try:
+            loc=Locker.objects.get(kluisnummer=kluis)
+            print('kluis bestaat',loc.kluisnummer)
+            if onderhuur:            
+                if tekst:
+                    if ';' in tekst:
+                        txt=tekst.splitlines()
+                        for t in txt:
+                            u=t.replace(';','')
+                            print(u)
+                            try:p=Person.objects.get(name=u)
+                            except:
+                                loc.add(p)
+                                pass
+                            finally:
+                                usr,user=Person.objects.update_or_create(name=u,
+                                                                email= u + '@viking.nl',
+                                                                locker=kluis,
+                                                                onderhuur=True,
+                                                                )
+                                # pass
+                                print(user.name)
+                                loc.add(usr)
+        except:
+            pass
+
+        # if wachtlijst:            
+        #     if tekst:
+        #         if ';' in tekst and '@' in email:
+        #             txt=tekst.splitlines()
+        #             for t in txt:
+        #                 print(t)
+        #                 u=t.replace(';','')
+        #                 user=Person.objects.update_or_create(name=t,
+        #                                                    email= t + '@viking.nl',
+        #                                                    locker=kluis,
+        #                                                    wachtlijst=True,
+        #                                                    )
         # url = reverse('delete-person', kwargs={'pk': super().person.id})
         viking= email.replace("@", "")
         print(viking)
@@ -1169,7 +1197,8 @@ class CreateLocker(CreateView):
 
 class CreatePerson(CreateView):
     model = Person
-    fields = ['name','email','tekst']
+    # fields = ['name','email','tekst']
+    fields='__all__'
     success_url = reverse_lazy('home')
 
     def get_readonly_fields(self, request, obj=None):
@@ -1183,12 +1212,6 @@ class CreatePerson(CreateView):
         query = self.request.GET.get('personmail')
         if query == None: query=""
         print(query)
-    #     queryset = Person.objects.
-    #     context = {
-    #         'query': query,
-    #         'object_list' :queryset,
-    #         }
-        # user = self.request.user
         context["email"] = query #user.ticket_set.all()
         return context
 

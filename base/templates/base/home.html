@@ -37,7 +37,7 @@
         <div>  
         </div>
       </div>
-      <h2>Verhuurde Lockers {{kluisjes.count }} van {{allekluisjes.count}} (ruimte voor {{mogelijkheden}}) </h2>
+      <h2>Verhuurde Lockers {{kluisjes.count }} van 117 ; {{allekluisjes.count}} vrij </h2>
       <form action="" method="POST">
         {% csrf_token %}
         <input name="body" placeholder="Write your request here..." />
@@ -52,6 +52,8 @@
     <!-- Activities Start -->
     
     {% comment %}
+    <h2>Verhuurde Lockers {{kluisjes.count }} van {{allekluisjes.count}} (ruimte voor {{mogelijkheden}}) </h2>
+
     {% include 'base/messages.html' %}
     {% endcomment %}
     {% include 'base/activity_component.html' %}

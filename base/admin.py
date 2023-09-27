@@ -29,7 +29,7 @@ class UserAdmin(admin.ModelAdmin):
     search_fields = ('name','email')
 @admin.register(Locker)
 class kluisAdmin(admin.ModelAdmin):
-    list_filter = ('topic','kluisnummer')
+    list_filter = ('verhuurd','kluisnummer')
     list_display = ('topic','kluisnummer','email','verhuurd')
     search_fields = ('topic','kluisnummer','email')
 @admin.register(Excellijst)
