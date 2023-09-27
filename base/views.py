@@ -946,11 +946,13 @@ def tel_aantal_registraties(request):
             if l.count() <=1:
                 try:
                     l=Locker.objects.get(kluisnummer=f.kluisnummer)
-                    print(f.kluisnummer,'heeft      factuur')
+                    print(f.kluisnummer,)
                     Facturatielijst.objects.all().filter(email=l.email).update(is_registered=l.kluisnummer)
                 except: 
                     Locker.DoesNotExist
                     print(f.kluisnummer,'heeft GEEN factuur')
+                    f.type='create locker'
+                    f.save()
             try:
                 usr=User.objects.get(email=f.email)
                 print(f.email,'factuur heeft user')

@@ -36,8 +36,8 @@
             <td></td>
                       <td>
                         
-                        <a href="{% url 'update-usermail'  locker.code %}?q={{locker.id}}">{{locker.type}} </span></a>
                         {% comment %}
+                        <a href="{% url 'update-usermail'  locker.code %}?q={{locker.id}}">{{locker.type}} </span></a>
                         {% endcomment %}
                       </td>
                       <td>
@@ -53,7 +53,9 @@
                             <a href="{% url 'update-user2'  locker.in_excel %}?q={{locker.in_excel}}">{{locker.in_excel}} </span></a>
                             {% endif %}
                         </td> 
-                        <td></td>
+                        <td>
+                          <a href="{% url 'create-locker' %}?q={{locker.kluisnummer}}">{{locker.type}} </span></a>        
+                        </td>
           
       {% endfor %}
       </tr>
