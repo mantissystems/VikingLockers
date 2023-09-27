@@ -50,11 +50,14 @@
                       </td>
                       <td></td>
                       <td>
+                        {% comment %}
+                        
                         {% if locker.in_excel == '----' %}
-                            ------
-                            {% else %}
-                            <a href="{% url 'update-user2'  locker.in_excel %}?q={{locker.in_excel}}">{{locker.in_excel}} </span></a>
-                            {% endif %}
+                        ------
+                        {% else %}
+                        <a href="{% url 'update-user2'  locker.in_excel %}?q={{locker.in_excel}}">{{locker.in_excel}} </span></a>
+                        {% endif %}
+                        {% endcomment %}
                         </td> 
                         <td>
                           <a href="{% url 'create-locker' %}?q={{locker.kluisnummer}}">{{locker.type}} </span></a>        
