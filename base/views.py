@@ -947,7 +947,7 @@ def tel_aantal_registraties(request):
                     Locker.DoesNotExist
                     print(f.kluisnummer,'heeft GEEN factuur')
                     f.in_excel=f.kluisnummer
-                    f.type='create locker '
+                    f.type=' create '
                     f.save()
 
         # if Locker.objects.all().filter(kluisnummer=f.kluisnummer).exists():
@@ -1238,7 +1238,7 @@ class CreateLocker(CreateView):
     model = Locker
     fields = ['kluisnummer','email','verhuurd']
     # fields='__all__'
-    success_url = reverse_lazy('excellijst')
+    success_url = reverse_lazy('facturatielijst')
     def __init__(self, **kwargs):
     # Go through keyword arguments, and either save their values to our
     # instance, or raise an error.
