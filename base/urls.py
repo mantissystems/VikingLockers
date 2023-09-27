@@ -41,6 +41,7 @@ urlpatterns = [
     path('berichten/', views.berichtenPage, name="berichten"),
      path('aantalregistraties/', views.tel_aantal_registraties, name='aantalregistraties'),
     path('export_onverhuurd/', views.export_onverhuurd, name="export_onverhuurd"),
+    path('export_search_csv/', views.export_search_csv, name="export_search_csv"),
     # path('<str:row>/create_locker/<str:kol>/',views.create_locker, name='create_locker'),  
     # path('ploeg/<str:pk>', views.ploegPage, name="ploeg"),
     # path('update-room/<str:pk>/', views.updateRoom, name="update-room"),
