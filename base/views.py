@@ -924,7 +924,7 @@ class FactuurDeleteView(DeleteView):
 @login_required(login_url='login')   
 def tel_aantal_registraties(request):
     print('in tel_aantal_registraties in facturatielijst===============')
-    Facturatielijst.objects.all().update(is_registered='----',in_excel='----')
+    Facturatielijst.objects.all().update(is_registered='----',in_excel='----',type='----') 
 # begin eenmalig dd20-09-23
     # onderhuurders = User.objects.filter(
     #         Q(email__icontains='mantis')
@@ -937,30 +937,45 @@ def tel_aantal_registraties(request):
 # einde eenmalig dd20-09-23
     print('bestaat factuur als locker ===============')
     for f in Facturatielijst.objects.all():
-        if Locker.objects.all().filter(kluisnummer=f.kluisnummer).exists():
-            l = Locker.objects.filter(
-            Q(kluisnummer=f.kluisnummer)&
-            Q(verhuurd=True)
-            )
-
-            if l.count() <=1:
-                try:
-                    l=Locker.objects.get(kluisnummer=f.kluisnummer)
-                    print(f.kluisnummer,)
-                    Facturatielijst.objects.all().filter(email=l.email).update(is_registered=l.kluisnummer)
-                except: 
+        try:
+            l=Locker.objects.get(kluisnummer=f.kluisnummer)
+            f.is_registered=l.kluisnummer
+            f.save()
+            # print(l.kluisnummer,)
+            # Facturatielijst.objects.all().filter(email=l.email).update(is_registered=l.kluisnummer)
+        except: 
                     Locker.DoesNotExist
                     print(f.kluisnummer,'heeft GEEN factuur')
-                    f.type='create locker'
+                    f.in_excel=f.kluisnummer
+                    f.type='create locker '
                     f.save()
-            try:
-                usr=User.objects.get(email=f.email)
-                print(f.email,'factuur heeft user')
-                f.in_excel=usr.id
-                f.save()
-            except: 
-                User.DoesNotExist
-                pass
+
+        # if Locker.objects.all().filter(kluisnummer=f.kluisnummer).exists():
+        #     l = Locker.objects.filter(
+        #     Q(kluisnummer=f.kluisnummer)&
+        #     Q(verhuurd=True)
+        #     )
+
+        #     if l.count() <=1:
+        #         try:
+        #             l=Locker.objects.get(kluisnummer=f.kluisnummer)
+        #             f.is_registered=l.kluisnummer
+        #             f.save()
+        #             print(l.kluisnummer,)
+        #             # Facturatielijst.objects.all().filter(email=l.email).update(is_registered=l.kluisnummer)
+        #         except: 
+        #             Locker.DoesNotExist
+        #             print(f.kluisnummer,'heeft GEEN factuur')
+        #             f.type='create locker'
+        #             f.save()
+            # try:
+            #     usr=User.objects.get(email=f.email)
+            #     print(f.email,'factuur heeft user')
+            #     f.in_excel=usr.id
+            #     f.save()
+            # except: 
+            #     User.DoesNotExist
+            #     pass
 
     # print('in tel_aantal_users in facturatielijst===============')
     # for f in Facturatielijst.objects.all():
