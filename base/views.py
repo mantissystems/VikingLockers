@@ -1045,7 +1045,7 @@ def export_onverhuurd(request,):
         ).order_by('kluisnummer') #.exclude(verhuurd=False)
 
     response = HttpResponse(content_type='text/csv')
-    response['Content-Disposition'] = 'attachment; filename="facturatie_lijst.csv"'
+    response['Content-Disposition'] = 'attachment; filename="onverhuurd.csv"'
     writer = csv.writer(response)
     writer.writerow(['id', 'locker', 'email', 'type'])
     for item in data:
