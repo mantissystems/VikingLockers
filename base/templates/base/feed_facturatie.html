@@ -3,56 +3,50 @@
     <thead>
       <hr>
       <tr>
-        <th>Huurder:</th>
-        <th>Verhuurd</th>
-        <th></th>
-        <th></th>
-        <th></th>
-        <th>Onverhuurd</th>
-        <th></th>
-        <th></th>
+        <th>1Huurder:</th>
+        <th>2Verhuurd</th>
+        <th>3</th>
+        <th>4Sleutels</th>
+        <th>5xls</th>
+        <th>6</th>
       </tr>
     </thead>
     <tbody>
       {% if request.user.is_superuser %}
       <a href="{% url 'export_search_csv' %}" class="btn btn--link">=>Export List</a>
-      {% comment %}
-      <th>regis</th>
-      <td>{{locker.is_registered}}</td>
-      {% endcomment %}
     {% endif %}
 
       {% for locker in object_list %}
       <tr>
 
-      <td>
+      <td>1
         <a href="{% url 'edit-factuur'  locker.id %}?q={{locker.id}}">{{locker.email|truncatechars:12}} </span></a>        
-        <td>
+      </td>
+        <td>2
           <a href="{% url 'update-usermail'  locker.kluisnummer %}?q={{locker.id}}">{{locker.kluisnummer}} </span></a>
-          {% comment %}
-          {% endcomment %}
-
         </td>
         </a>
       </td>
-            <td></td>
-                      <td>
+      <td>3
+        {% comment %}
+        <td></td>
                         
-                        {% comment %}
                         <a href="{% url 'update-usermail'  locker.code %}?q={{locker.id}}">{{locker.type}} </span></a>
                       </td>
                       <td>
                       </td>
                       {% endcomment %}
                       <a href="{% url 'update-usermail'  locker.code %}?q={{locker.id}}">{{locker.is_registered}} </span></a>
-                      <td></td>
-                      <td>
-                        {% comment %}
-                        {% endcomment %}
-                        <a href="{% url 'update-user2'  locker.in_excel %}?q={{locker.in_excel}}">{{locker.in_excel}} </span></a>
-                        </td> 
+                      <td>4</td>
+                      {% comment %}
+                      <a href="{% url 'update-user2'  locker.in_excel %}?q={{locker.in_excel}}">{{locker.in_excel}} </span></a>
+                      {% endcomment %}
+                        <td>5
+                          <a href="{% url 'create-locker' %}?q={{locker.kluisnummer}}">{{locker.sleutels}} </span></a>        
+                        </td>
                         <td>
-                          <a href="{% url 'create-locker' %}?q={{locker.kluisnummer}}">{{locker.type}} </span></a>        
+                          <a href="{% url 'update-user2'  locker.in_excel %}?q={{locker.in_excel}}">{{locker.in_excel}} </span></a>
+
                         </td>
           
       {% endfor %}

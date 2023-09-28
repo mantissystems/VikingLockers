@@ -102,7 +102,7 @@ def home(request):
     messages.add_message(request, messages.INFO, "Welkom bij Viking Lockers.")    
     q = request.GET.get('q') if request.GET.get('q') != None else ''
     qq=q.lower()
-    kluisjes=Locker.objects.all().filter(verhuurd=True)     
+    kluisjes=Locker.objects.all() #.filter(verhuurd=True)     
     lockers =Locker.objects.filter(
     Q(kluisnummer__icontains=q) |
     # Q(kluisnummer__icontains='46') |
@@ -787,7 +787,7 @@ class FacturatieView (LoginRequiredMixin, ListView):
             Q(email__icontains=query)|
             Q(kluisnummer__icontains=query)
             # Q(in_excel__icontains='==')
-            ).order_by('kluisnummer')
+            ).order_by('kluisnummer','id')
         context = {
             'query': query,
             'object_list' :queryset,
@@ -882,7 +882,7 @@ class EditFactuur( LoginRequiredMixin,UpdateView):
     login_url = '/login/'
     # redirect_field_name = 'redirect_to'
     model = Facturatielijst
-    fields = ['kluisnummer','email','in_excel','is_registered','type']
+    fields = ['kluisnummer','email','in_excel','is_registered','sleutels']
     # fields = '__all__'
     success_url = reverse_lazy('facturatielijst')
     
@@ -951,8 +951,9 @@ class FactuurDeleteView(DeleteView):
 
 @login_required(login_url='login')   
 def tel_aantal_registraties(request):
+    from django.db.models import Max, Count
     print('in tel_aantal_registraties in facturatielijst===============')
-    Facturatielijst.objects.all().update(is_registered='----',in_excel='----',type='----') 
+    Facturatielijst.objects.all().update(is_registered='----',in_excel='----',type='----',sleutels='----') 
 # begin eenmalig dd20-09-23
     # onderhuurders = User.objects.filter(
     #         Q(email__icontains='mantis')
@@ -965,34 +966,55 @@ def tel_aantal_registraties(request):
 # einde eenmalig dd20-09-23
     print('bestaat factuur als locker ===============')
     for f in Facturatielijst.objects.all():
+        break
         try:
             l=Locker.objects.get(kluisnummer=f.kluisnummer)
             f.is_registered=l.kluisnummer
             f.save()
-            # print(l.kluisnummer,)
-            # Facturatielijst.objects.all().filter(email=l.email).update(is_registered=l.kluisnummer)
         except: 
-                    Locker.DoesNotExist
-                    print(f.kluisnummer,'heeft GEEN factuur')
-                    f.in_excel=f.kluisnummer
-                    f.type=' create ' ## + f.kluisnummer
-                    f.save()
+            Locker.DoesNotExist
+            print(f.kluisnummer,'heeft GEEN factuur')
+            f.type=' create ' ## + f.kluisnummer
+            f.save()
+    print('bestaat excel als locker ===============')
+    for e in Facturatielijst.objects.all():
+        # break
+        try:
+            l=Excellijst.objects.get(kluisnummer=e.kluisnummer)
+            e.in_excel=l.kluisnummer
+            e.save()
+        except: 
+            Excellijst.DoesNotExist
+            print(e.kluisnummer,'GEEN excel')
+            e.in_excel='===='
+            # f.type=' create ' ## + f.kluisnummer
+            e.save()
+# ====
+    print('vind dubbele records  ===============')
+# Getting duplicate files based on case_no and hearing_date
+    files = Facturatielijst.objects.values('kluisnummer', 'email') \
+        .annotate(records=Count('kluisnummer')) \
+        .filter(records__gt=1)
 
-    # # ===begin eenmalige create vanuit excellijst
-    # print(l.kluisnummer,'=>bestaat excel locker in locker?')
+    # Check the generated group by query
+    print (files.query)
 
-    # for loc in Excellijst.objects.all():
-    #     if Facturatielijst.objects.all().filter(email=loc.email).exists():
-    #         if Facturatielijst.objects.all().count()<1:
-    #             try:
-    #                 Facturatielijst.objects.get(email=loc.email)
-    #             except Facturatielijst.DoesNotExist:
-    #                 Facturatielijst.objects.update_or_create(
-    #                 email=loc.email,
-    #                 kluisnummer=loc.kluisnummer
-    #             )
-    #             print(loc.kluisnummer,'=>in facturatielijst')
-    # ===einde eenmalige create vanuit excellijst
+    # Then do operations on duplicates
+    for file in files:
+        break
+        # Facturatielijst.objects.filter(
+        #     kluisnummer=file['kluisnummer'],
+        #     email=file['email']
+        # ).update(sleutels='remove 1')
+        dubbel=Facturatielijst.objects.filter(
+            kluisnummer=file['kluisnummer'],
+            email=file['email']
+        ).first()
+        dubbel.sleutels='verwijder'
+        dubbel.save()
+        # dubbel.delete()
+
+# ====
     print('einde tel_aantal_lockers in facturatielijst')
     url = reverse('facturatielijst',)
     return HttpResponseRedirect(url)
