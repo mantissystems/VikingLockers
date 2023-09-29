@@ -102,18 +102,13 @@ def home(request):
     messages.add_message(request, messages.INFO, "Welkom bij Viking Lockers.")    
     q = request.GET.get('q') if request.GET.get('q') != None else ''
     qq=q.lower()
-    kluisjes=Locker.objects.all() #.filter(verhuurd=True)     
+    kluisjes=Locker.objects.all()
     lockers =Locker.objects.filter(
     Q(kluisnummer__icontains=q) |
-    # Q(kluisnummer__icontains='46') |
     Q(email__icontains=q)
     # Q(owners__email__icontains=q)
     ).order_by('kluisnummer') #.exclude(verhuurd=False)
-
-    # allekluisjes=Locker.objects.all()     
-    allekluisjes=Locker.objects.all().filter(verhuurd=False)     
-
-    mogelijkheden=allekluisjes.count() * 2     
+    onverhuurd=Locker.objects.all().filter(verhuurd=False)     
     messagelocker=Locker.objects.all().first()     
     from django.db.models import Count
     if request.method == 'POST':
@@ -205,8 +200,7 @@ def home(request):
                'lijst':lijst,
                 'lockers': lockers,
                 'kluisjes': kluisjes,
-                'allekluisjes': allekluisjes,
-                'mogelijkheden': mogelijkheden,
+                'onverhuurd': onverhuurd,
                'berichten': berichten, 
                'room_messages': room_messages
                }
@@ -782,7 +776,8 @@ class FacturatieView (LoginRequiredMixin, ListView):
         q = self.request.GET.get('q') if self.request.GET.get('q') != None else ''
         query = self.request.GET.get('q')
         print(query)
-        if query == None: query=""
+        if query == None: 
+            query=""
         queryset = Facturatielijst.objects.all().filter(
             Q(email__icontains=query)|
             Q(kluisnummer__icontains=query)
@@ -953,7 +948,7 @@ class FactuurDeleteView(DeleteView):
 def tel_aantal_registraties(request):
     from django.db.models import Max, Count
     print('in tel_aantal_registraties in facturatielijst===============')
-    Facturatielijst.objects.all().update(is_registered='----',in_excel='----',type='----',sleutels='----') 
+    Facturatielijst.objects.all().update(is_registered='----',in_excel='----',type='----',sleutels='----',code='---') 
 # begin eenmalig dd20-09-23
     # onderhuurders = User.objects.filter(
     #         Q(email__icontains='mantis')
@@ -966,15 +961,21 @@ def tel_aantal_registraties(request):
 # einde eenmalig dd20-09-23
     print('bestaat factuur als locker ===============')
     for f in Facturatielijst.objects.all():
-        break
+        # break
         try:
             l=Locker.objects.get(kluisnummer=f.kluisnummer)
             f.is_registered=l.kluisnummer
+            if l.verhuurd==True:
+                f.code=1
+                # print(l.kluisnummer)
+            else:
+                f.code=0
             f.save()
         except: 
             Locker.DoesNotExist
             print(f.kluisnummer,'heeft GEEN factuur')
             f.type=' create ' ## + f.kluisnummer
+            f.code=0
             f.save()
     print('bestaat excel als locker ===============')
     for e in Facturatielijst.objects.all():
@@ -1001,7 +1002,7 @@ def tel_aantal_registraties(request):
 
     # Then do operations on duplicates
     for file in files:
-        break
+        # break
         # Facturatielijst.objects.filter(
         #     kluisnummer=file['kluisnummer'],
         #     email=file['email']
@@ -1021,22 +1022,21 @@ def tel_aantal_registraties(request):
 
 def export_onverhuurd(request,):
     import csv
-    # data = Locker.objects.all()
-    data =Locker.objects.filter(
+    onverhuurd =Locker.objects.filter(
         # Q(kluisnummer__icontains=q) |
-    Q(verhuurd=False)
+    # Q(verhuurd=False)
         ).order_by('kluisnummer') #.exclude(verhuurd=False)
+    onverhuurd=Locker.objects.all().order_by('kluisnummer')
 
     response = HttpResponse(content_type='text/csv')
-    response['Content-Disposition'] = 'attachment; filename="onverhuurd.csv"'
+    response['Content-Disposition'] = 'attachment; filename="all_lockers.csv"'
     writer = csv.writer(response)
-    writer.writerow(['id', 'locker', 'email', 'type'])
-    for item in data:
-        writer.writerow([item.id ,item.kluisnummer, item.email, item.type,";"])
+    writer.writerow(['id', 'tenant', 'locker', 'keys','verhuurd'])
+    for item in onverhuurd:
+        writer.writerow([item.id ,item.email, item.kluisnummer, item.sleutels ,item.verhuurd,";"])
     return response
 
-# def export_search_csv(request, start_date, end_date):
-def export_search_csv(request,):
+def export_verhuurd(request,):
     import csv
     # filename="facturatie_lijst.csv"'
     # spamreader = csv.reader(filename, delimiter=' ', quotechar='|')
@@ -1044,16 +1044,16 @@ def export_search_csv(request,):
         # print(', '.join(row))
         # Spam, Spam, Spam, Spam, Spam, Baked Beans
         # Spam, Lovely Spam, Wonderful Spam
-    data = Facturatielijst.objects.all()
+    verhuurd = Facturatielijst.objects.all()
     response = HttpResponse(content_type='text/csv')
     response['Content-Disposition'] = 'attachment; filename="facturatie_lijst.csv"'
     writer = csv.writer(response)
-    writer.writerow(['id', 'locker', 'email', 'type'])
-    for item in data:
-        writer.writerow([item.id ,item.kluisnummer, item.email, item.type,";"])
+    writer.writerow(['id', 'tenant', 'y/n','locker', 'keys','xls',])
+    for item in verhuurd:
+        writer.writerow([item.id ,item.email, item.code,item.kluisnummer, item.sleutels , item.in_excel ,";"])
     return response
 
-def file_load_view(request):
+# def file_load_view(request):
 #         send_mail(
 #     "Subject here",
 #     "Here is the message.",
@@ -1093,8 +1093,8 @@ def file_load_view(request):
     # context={}
     # return render(request, 'base/home.html', context)
     # url = reverse('create_locker', kwargs={'row': pk,'kol': kol})
-        url = reverse('facturatielijst',)
-        return HttpResponseRedirect(url)
+        # url = reverse('facturatielijst',)
+        # return HttpResponseRedirect(url)
 
 
 def lockerPage(request,pk):

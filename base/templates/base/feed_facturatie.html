@@ -3,47 +3,34 @@
     <thead>
       <hr>
       <tr>
-        <th>1Huurder:</th>
-        <th>2Verhuurd</th>
-        <th>3</th>
-        <th>4Sleutels</th>
-        <th>5xls</th>
-        <th>6</th>
+        <th>Huurder:</th>
+        <th>y/n</th>
+        <th>Verhuurd</th>
+        <th>keys</th>
+        <th>xls</th>
       </tr>
     </thead>
     <tbody>
       {% if request.user.is_superuser %}
-      <a href="{% url 'export_search_csv' %}" class="btn btn--link">=>Export List</a>
+      <a href="{% url 'export_verhuurd' %}" class="btn btn--link">=>Export List</a>
     {% endif %}
 
       {% for locker in object_list %}
       <tr>
 
-      <td>1
+      <td>
         <a href="{% url 'edit-factuur'  locker.id %}?q={{locker.id}}">{{locker.email|truncatechars:12}} </span></a>        
       </td>
-        <td>2
+      <td>{{locker.code}} </td>
+        <td>
           <a href="{% url 'update-usermail'  locker.kluisnummer %}?q={{locker.id}}">{{locker.kluisnummer}} </span></a>
         </td>
         </a>
-      </td>
-      <td>3
-        {% comment %}
-        <td></td>
-                        
-                        <a href="{% url 'update-usermail'  locker.code %}?q={{locker.id}}">{{locker.type}} </span></a>
-                      </td>
-                      <td>
-                      </td>
-                      {% endcomment %}
-                      <a href="{% url 'update-usermail'  locker.code %}?q={{locker.id}}">{{locker.is_registered}} </span></a>
-                      <td>4</td>
-                      {% comment %}
-                      <a href="{% url 'update-user2'  locker.in_excel %}?q={{locker.in_excel}}">{{locker.in_excel}} </span></a>
-                      {% endcomment %}
-                        <td>5
+      
+                        <td>
                           <a href="{% url 'create-locker' %}?q={{locker.kluisnummer}}">{{locker.sleutels}} </span></a>        
                         </td>
+
                         <td>
                           <a href="{% url 'update-user2'  locker.in_excel %}?q={{locker.in_excel}}">{{locker.in_excel}} </span></a>
 
