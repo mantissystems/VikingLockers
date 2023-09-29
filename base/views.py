@@ -1036,6 +1036,79 @@ def export_onverhuurd(request,):
         writer.writerow([item.id ,item.email, item.kluisnummer, item.sleutels ,item.verhuurd,";"])
     return response
 
+@login_required(login_url='login')   
+def nummering(request):
+    print('nummering in veld topic===============')
+# ====
+    x=0
+    for i in range (0,72):
+        l= 'Heren ' + str(i).zfill(2)
+        try:
+            k= Locker.objects.get(kluisnummer=l)
+            print(k.kluisnummer)
+            k.topic=l
+            k.save()
+        except Locker.DoesNotExist:
+            print('niet',l)
+            pass
+    # ====
+    for i in range (0,72):
+        l= 'Dames ' + str(i).zfill(2)
+        if 25 <= i <= 49:
+            l= 'Dames ' + 'A-' + str(i).zfill(2)
+        try:
+            k= Locker.objects.get(kluisnummer=l)
+            print(k.kluisnummer)
+            k.topic=l
+            k.save()
+
+        except Locker.DoesNotExist:
+            print('niet',l)
+            pass
+        if 25 <= i <= 49:
+            l= 'Dames ' + 'B-' + str(i).zfill(2)
+        try:
+            k= Locker.objects.get(kluisnummer=l)
+            print(k.kluisnummer)
+            k.topic=l
+            k.save()
+
+        except Locker.DoesNotExist:
+            print('niet',l)
+            pass
+            if 25 <= i <= 73:
+                l= 'Dames ' + 'C-' + str(i).zfill(2)
+        try:
+            k= Locker.objects.get(kluisnummer=l)
+            print(k.kluisnummer)
+            k.topic=l
+            k.save()
+
+        except Locker.DoesNotExist:
+            print('niet',l)
+            pass
+
+    # ====
+    print('einde nummering')
+    url = reverse('lockers',)
+    return HttpResponseRedirect(url)
+
+def export_onverhuurd(request,):
+    import csv
+    onverhuurd =Locker.objects.filter(
+        # Q(kluisnummer__icontains=q) |
+    # Q(verhuurd=False)
+        ).order_by('kluisnummer') #.exclude(verhuurd=False)
+    onverhuurd=Locker.objects.all().order_by('kluisnummer')
+
+    response = HttpResponse(content_type='text/csv')
+    response['Content-Disposition'] = 'attachment; filename="all_lockers.csv"'
+    writer = csv.writer(response)
+    writer.writerow(['id', 'tenant', 'locker', 'keys','verhuurd'])
+    for item in onverhuurd:
+        writer.writerow([item.id ,item.email, item.kluisnummer, item.sleutels ,item.verhuurd,";"])
+    return response
+
 def export_verhuurd(request,):
     import csv
     # filename="facturatie_lijst.csv"'

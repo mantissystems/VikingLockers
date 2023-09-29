@@ -58,6 +58,9 @@
             <button class="btn btn--main" type="submit">Update</button>
             {% if request.user.is_superuser %}
             <a href="{% url 'delete-locker' kluis.id %}" class="btn btn--link">Delete</a>
+            {% if request.user.is_superuser %}
+            <a href="{% url 'create-factuur'%}" class="btn btn--link">Op Factuur</a>
+            {% endif %} 
             {% comment %}
             <a class="btn btn--dark" href="{% url 'admin:index' %}">Admin</a>
             {% endcomment %}

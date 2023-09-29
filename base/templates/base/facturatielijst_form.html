@@ -45,8 +45,8 @@
            <input type="submit" value="Save" class="btn btn-primary"/>
            <a href="{%url 'home'%}" class="btn btn-outline">Cancel</a>
            {% if request.user.is_superuser %}
-           <a href="{% url 'delete-factuur' facturatielijst.id %}" class="btn btn--link">Delete</a>
            {% comment %}
+           <a href="{% url 'delete-factuur' facturatielijst.id %}" class="btn btn--link">Delete</a>
            {% endcomment %}
            <div class="profile__info">
           </div>

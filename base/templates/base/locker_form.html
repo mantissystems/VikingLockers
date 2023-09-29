@@ -70,11 +70,10 @@
            <input type="submit" value="Save" class="btn btn-primary"/>
            <a href="{%url 'home'%}" class="btn btn-outline">Cancel</a>
            {% endif %}
-           {% comment %}
            {% if request.user.is_superuser %}
            <a href="{% url 'create-factuur'%}" class="btn btn--link">Factuur</a>
-           <a href="{% url 'delete-locker' locker.id %}" class="btn btn--link">Delete</a>
            {% endif %}
+           {% comment %}
            <!--  -->
            {% if field.name == 'participants' %}
            <div class="form__group">
