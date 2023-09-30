@@ -949,16 +949,6 @@ def tel_aantal_registraties(request):
     from django.db.models import Max, Count
     print('in tel_aantal_registraties in facturatielijst===============')
     Facturatielijst.objects.all().update(is_registered='----',in_excel='----',type='----',sleutels='----',code='---') 
-# begin eenmalig dd20-09-23
-    # onderhuurders = User.objects.filter(
-    #         Q(email__icontains='mantis')
-    #         ).exclude(email__icontains='wej')
-    # for p in onderhuurders:
-    #     x = p.email.replace("mantis", "viking")
-    #     print(x)
-    #     p.email=x
-    #     p.save()
-# einde eenmalig dd20-09-23
     print('bestaat factuur als locker ===============')
     for f in Facturatielijst.objects.all():
         # break
@@ -1016,6 +1006,25 @@ def tel_aantal_registraties(request):
         # dubbel.delete()
 
 # ====
+    print('bestaat locker als factuur ===============')
+    for e in Locker.objects.all():
+        # break
+        try:
+            l=Facturatielijst.objects.get(kluisnummer=e.kluisnummer)
+        except: 
+            Facturatielijst.DoesNotExist
+            print(e.kluisnummer,'GEEN factuur',)
+            # # fields = ['kluisnummer','email','in_excel','is_registered','sleutels']
+            # fact,f=Facturatielijst.objects.update_or_create(
+            #     kluisnummer=e.kluisnummer,
+            #     email=e.email,
+            #     is_registered=e.kluisnummer,
+            #     in_excel='===',
+            #     type='create',
+
+            # )
+# ====
+
     print('einde tel_aantal_lockers in facturatielijst')
     url = reverse('facturatielijst',)
     return HttpResponseRedirect(url)
@@ -1049,10 +1058,15 @@ def nummering(request):
             k.topic=l
             k.save()
         except Locker.DoesNotExist:
-            print('niet',l)
-            pass
+                if not '00' in l:
+                    print(l)
+                    print('niet',l)
+                pass
+
+            # print('niet',l)
+            # pass
     # ====
-    for i in range (0,72):
+    for i in range (1,72):
         l= 'Dames ' + str(i).zfill(2)
         if 25 <= i <= 49:
             l= 'Dames ' + 'A-' + str(i).zfill(2)
@@ -1063,8 +1077,15 @@ def nummering(request):
             k.save()
 
         except Locker.DoesNotExist:
-            print('niet',l)
-            pass
+                # if (not '00' or 'A' or 'B' or 'C' in l) and i<25:
+                #     # print(l)
+                #     print('niet',l)
+                #     locker, created = Locker.objects.update_or_create(kluisnummer=l,
+                #                         email='onbekend',
+                #                         kluisje=l,
+                #                         type='create')
+
+                pass
         if 25 <= i <= 49:
             l= 'Dames ' + 'B-' + str(i).zfill(2)
         try:
@@ -1074,9 +1095,9 @@ def nummering(request):
             k.save()
 
         except Locker.DoesNotExist:
-            print('niet',l)
+            # print('niet',l)
             pass
-            if 25 <= i <= 73:
+            if 48 <= i <= 73:
                 l= 'Dames ' + 'C-' + str(i).zfill(2)
         try:
             k= Locker.objects.get(kluisnummer=l)
@@ -1085,12 +1106,19 @@ def nummering(request):
             k.save()
 
         except Locker.DoesNotExist:
-            print('niet',l)
-            pass
+                if 'C' in l:
+                    # print(l)
+                    print('niet',l)
+                    # locker, created = Locker.objects.update_or_create(kluisnummer=l,
+                    #                                        email='onbekend',
+                    #                                        kluisje=l,
+                    #                                        type='create')
+
+                pass
 
     # ====
     print('einde nummering')
-    url = reverse('lockers',)
+    url = reverse('update-user',)
     return HttpResponseRedirect(url)
 
 def export_onverhuurd(request,):
