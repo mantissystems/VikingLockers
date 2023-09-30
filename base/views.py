@@ -957,7 +957,10 @@ def tel_aantal_registraties(request):
             f.is_registered=l.kluisnummer
             if l.verhuurd==True:
                 f.code=1
-                # print(l.kluisnummer)
+                k=l.kluisnummer
+                k=k.replace('B-','00')
+                print(k)
+                l.topic=k
             else:
                 f.code=0
             f.save()
@@ -1055,8 +1058,8 @@ def nummering(request):
         try:
             k= Locker.objects.get(kluisnummer=l)
             print(k.kluisnummer)
-            k.topic=l
-            k.save()
+            # k.topic=l
+            # k.save()
         except Locker.DoesNotExist:
                 if not '00' in l:
                     print(l)
@@ -1073,8 +1076,8 @@ def nummering(request):
         try:
             k= Locker.objects.get(kluisnummer=l)
             print(k.kluisnummer)
-            k.topic=l
-            k.save()
+            # k.topic=l
+            # k.save()
 
         except Locker.DoesNotExist:
                 # if (not '00' or 'A' or 'B' or 'C' in l) and i<25:
@@ -1091,8 +1094,8 @@ def nummering(request):
         try:
             k= Locker.objects.get(kluisnummer=l)
             print(k.kluisnummer)
-            k.topic=l
-            k.save()
+            # k.topic=l
+            # k.save()
 
         except Locker.DoesNotExist:
             # print('niet',l)
@@ -1102,8 +1105,8 @@ def nummering(request):
         try:
             k= Locker.objects.get(kluisnummer=l)
             print(k.kluisnummer)
-            k.topic=l
-            k.save()
+            # k.topic=l
+            # k.save()
 
         except Locker.DoesNotExist:
                 if 'C' in l:
