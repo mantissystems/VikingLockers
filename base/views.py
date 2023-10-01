@@ -1146,6 +1146,22 @@ def export_onverhuurd(request,):
     for item in onverhuurd:
         writer.writerow([item.id ,item.email, item.kluisnummer, item.sleutels ,item.verhuurd,";"])
     return response
+def export_emaillijst(request,):
+    import csv
+    exclude_list = ['vrij', 'onbekend', 'Vrij','wachtlijst']
+    #  qs = Foo.objects.exclude(items__in=exclude_list)
+    verhuurd = Facturatielijst.objects.all().filter(
+        Q(email__icontains='@')&
+        Q(code='1')
+        ).exclude(kluisnummer__in=exclude_list).order_by('kluisnummer')
+        
+    response = HttpResponse(content_type='text/csv')
+    response['Content-Disposition'] = 'attachment; filename="email_lijst.csv"'
+    writer = csv.writer(response)
+    writer.writerow(['id', 'tenant', 'y/n','locker','registered', 'keys','xls',])
+    for item in verhuurd:
+        writer.writerow([item.id ,item.email, item.code,item.kluisnummer,item.is_registered, item.sleutels , item.in_excel ,";"])
+    return response
 
 def export_verhuurd(request,):
     import csv
@@ -1159,9 +1175,9 @@ def export_verhuurd(request,):
     response = HttpResponse(content_type='text/csv')
     response['Content-Disposition'] = 'attachment; filename="facturatie_lijst.csv"'
     writer = csv.writer(response)
-    writer.writerow(['id', 'tenant', 'y/n','locker', 'keys','xls',])
+    writer.writerow(['id', 'tenant', 'y/n','locker','registered', 'keys','xls',])
     for item in verhuurd:
-        writer.writerow([item.id ,item.email, item.code,item.kluisnummer, item.sleutels , item.in_excel ,";"])
+        writer.writerow([item.id ,item.email, item.code,item.kluisnummer,item.is_registered, item.sleutels , item.in_excel ,";"])
     return response
 
 # def file_load_view(request):

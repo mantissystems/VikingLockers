@@ -12,7 +12,9 @@
     </thead>
     <tbody>
       {% if request.user.is_superuser %}
-      <a href="{% url 'export_verhuurd' %}" class="btn btn--link">=>Export List</a>
+      <a href="{% url 'export_verhuurd' %}" class="btn btn--link">=>Export List</a><br>
+      <a href="{% url 'export_emaillijst' %}" class="btn btn--link">=>Export E-mail</a>
+      <hr>
     {% endif %}
 
       {% for locker in object_list %}

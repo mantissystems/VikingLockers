@@ -40,6 +40,7 @@ urlpatterns = [
      path('nummering/', views.nummering, name='nummering'),
     path('export_onverhuurd/', views.export_onverhuurd, name="export_onverhuurd"),
     path('export_verhuurd/', views.export_verhuurd, name="export_verhuurd"),
+    path('export_emaillijst/', views.export_emaillijst, name="export_emaillijst"),
     # path('register/', views.CreateUser.as_view(), name="register"),
     # path('lockers/', views.LockerView.as_view(), name="lockers"),
     # path('<str:pk>/update-locker/',views.LockerUpdate.as_view(), name='update-locker'),  
