@@ -957,10 +957,17 @@ def tel_aantal_registraties(request):
             f.is_registered=l.kluisnummer
             if l.verhuurd==True:
                 f.code=1
-                k=l.kluisnummer
-                k=k.replace('B-','00')
-                print(k)
-                l.topic=k
+                # oudenaam=getattr(l,'kluisnummer')
+                # if 'B-' in oudenaam:
+                    # k=oudenaam
+                    # k2=k.replace('B-','00')
+                    # print('oudenaam aangepast ',k2)
+    #         h=User.objects.get(id=huurder)
+    #         kls.owners.add(h)
+                # setattr(l, 'topic',k2)
+                l.topic=f.kluisnummer
+                l.save()
+                f.save()
             else:
                 f.code=0
             f.save()
@@ -972,7 +979,7 @@ def tel_aantal_registraties(request):
             f.save()
     print('bestaat excel als locker ===============')
     for e in Facturatielijst.objects.all():
-        # break
+        if e:break #tijdelijk uitgeschakelde controle; de oude excellijst is niet leidend en niet compleet
         try:
             l=Excellijst.objects.get(kluisnummer=e.kluisnummer)
             e.in_excel=l.kluisnummer
@@ -1011,7 +1018,7 @@ def tel_aantal_registraties(request):
 # ====
     print('bestaat locker als factuur ===============')
     for e in Locker.objects.all():
-        # break
+        if e: break #tijdelijk uitgeschakeld
         try:
             l=Facturatielijst.objects.get(kluisnummer=e.kluisnummer)
         except: 
@@ -1029,7 +1036,7 @@ def tel_aantal_registraties(request):
 # ====
 
     print('einde tel_aantal_lockers in facturatielijst')
-    url = reverse('facturatielijst',)
+    url = reverse('lockers',)
     return HttpResponseRedirect(url)
 
 def export_onverhuurd(request,):
@@ -1552,7 +1559,7 @@ def update_locker(request,pk):
                     Q(email=locker.email)
                 ).order_by('kluisnummer')
             form.save()
-            # return redirect('home')
+            return redirect('lockers')
 
     return render(request, 'base/update-locker.html', {'form': form,'vikingers':vikingers,'kluis':locker})
 
