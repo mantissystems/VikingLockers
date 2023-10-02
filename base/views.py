@@ -190,6 +190,8 @@ def home(request):
         berichten=Bericht.objects.all()
         lockers =Locker.objects.filter(
     Q(kluisnummer__icontains=q) |
+    Q(topic__icontains=q) |
+    Q(kluisje__icontains=q) |
     Q(email__icontains=q)
     # Q(owners__email__icontains=q) #dit levert redundancy in het template op
     ).order_by('kluisnummer') #.exclude(verhuurd=False) #ik wil alle lockers tonen
@@ -1024,6 +1026,7 @@ def tel_aantal_registraties(request):
         except: 
             Facturatielijst.DoesNotExist
             print(e.kluisnummer,'GEEN factuur',)
+            break
             # # fields = ['kluisnummer','email','in_excel','is_registered','sleutels']
             # fact,f=Facturatielijst.objects.update_or_create(
             #     kluisnummer=e.kluisnummer,
@@ -1060,13 +1063,13 @@ def nummering(request):
     print('nummering in veld topic===============')
 # ====
     x=0
-    for i in range (0,72):
-        l= 'Heren ' + str(i).zfill(2)
+    for i in range (1,72):
+        l= 'Heren ' + str(i).zfill(3)
         try:
             k= Locker.objects.get(kluisnummer=l)
             print(k.kluisnummer)
-            # k.topic=l
-            # k.save()
+            k.topic=l
+            k.save()
         except Locker.DoesNotExist:
                 if not '00' in l:
                     print(l)
@@ -1077,14 +1080,14 @@ def nummering(request):
             # pass
     # ====
     for i in range (1,72):
-        l= 'Dames ' + str(i).zfill(2)
+        l= 'Dames ' + str(i).zfill(3)
         if 25 <= i <= 49:
-            l= 'Dames ' + 'A-' + str(i).zfill(2)
+            l= 'Dames ' + 'A-' + str(i).zfill(3)
         try:
             k= Locker.objects.get(kluisnummer=l)
             print(k.kluisnummer)
-            # k.topic=l
-            # k.save()
+            k.topic=l
+            k.save()
 
         except Locker.DoesNotExist:
                 # if (not '00' or 'A' or 'B' or 'C' in l) and i<25:
@@ -1097,23 +1100,25 @@ def nummering(request):
 
                 pass
         if 25 <= i <= 49:
-            l= 'Dames ' + 'B-' + str(i).zfill(2)
+            l= 'Dames ' + 'B-' + str(i).zfill(3)
+            if ('B' in l) and i<49:
+                print(l)
         try:
             k= Locker.objects.get(kluisnummer=l)
             print(k.kluisnummer)
-            # k.topic=l
-            # k.save()
+            k.topic=l
+            k.save()
 
         except Locker.DoesNotExist:
-            # print('niet',l)
+            print('niet',l)
             pass
             if 48 <= i <= 73:
-                l= 'Dames ' + 'C-' + str(i).zfill(2)
+                l= 'Dames ' + 'C-' + str(i).zfill(3)
         try:
             k= Locker.objects.get(kluisnummer=l)
             print(k.kluisnummer)
-            # k.topic=l
-            # k.save()
+            k.topic=l
+            k.save()
 
         except Locker.DoesNotExist:
                 if 'C' in l:
@@ -1128,7 +1133,7 @@ def nummering(request):
 
     # ====
     print('einde nummering')
-    url = reverse('update-user',)
+    url = reverse('update-user',) #tbv snelheid respons
     return HttpResponseRedirect(url)
 
 def export_onverhuurd(request,):
