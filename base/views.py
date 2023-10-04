@@ -161,7 +161,7 @@ def home(request):
         Q(type__icontains=q)|
         Q(excel__icontains=q)|
         Q(kluisnummer__icontains=q)
-        ).order_by('topic')
+        ).order_by('kluisnummer')
         url = "excellijst" + "?q=" +q 
         return HttpResponseRedirect(url)
     elif 'fact' in qq:
@@ -559,7 +559,7 @@ def vrijelockersPage(request):
                     Q(kluisnummer__icontains='--')
                     # Q(is_registered__icontains='regis')
                     # Q(is_registered=None) #.filter(type='vrij')
-                ).order_by('topic') ##.exclude(kluisnummer__icontains='--') ##.update(verhuurd=False)
+                ).order_by('kluisnummer') ##.exclude(kluisnummer__icontains='--') ##.update(verhuurd=False)
 
     return render(request, 'base/excellijst.html', {'lockers': lockers,'vrijelockerslijst':lijst})
 
@@ -765,7 +765,7 @@ class ExcelView (LoginRequiredMixin, ListView):
             Q(type__icontains=query)|
             Q(excel__icontains=query)|
             Q(kluisnummer__icontains=query)
-            ).order_by('topic')
+            ).order_by('kluisnummer')
         context = {
             'query': query,
             'object_list' :queryset,
@@ -784,7 +784,7 @@ class FacturatieView (LoginRequiredMixin, ListView):
             Q(email__icontains=query)|
             Q(kluisnummer__icontains=query)
             # Q(in_excel__icontains='==')
-            ).order_by('topic','id')
+            ).order_by('kluisnummer','id')
         context = {
             'query': query,
             'object_list' :queryset,
@@ -1173,7 +1173,7 @@ def export_emaillijst(request,):
     verhuurd = Facturatielijst.objects.all().filter(
         Q(email__icontains='@')&
         Q(code='1')
-        ).exclude(kluisnummer__in=exclude_list).order_by('topic')
+        ).exclude(kluisnummer__in=exclude_list).order_by('kluisnummer')
         
     response = HttpResponse(content_type='text/csv')
     response['Content-Disposition'] = 'attachment; filename="email_lijst.csv"'

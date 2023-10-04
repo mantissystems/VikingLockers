@@ -52,7 +52,12 @@ Lockerlist {{object_list.count}}
       <tr>
 
       <td>
-        <a href="{% url 'update-locker' locker.id %}?q={{locker.id}}">{{locker.topic}} {{locker.kluisnummer}}{% if locker.obsolete == true %}opheffen{%endif %} </span></a>
+        <a href="{% url 'update-locker' locker.id %}?q={{locker.id}}">{{locker.topic}} {{locker.kluisnummer}}{{locker.obsolete}} {% if locker.obsolete %}
+          opheffen
+          {% else %}
+          {{locker.obsolete}}
+        {% endif %}
+</span></a>
         <div style="height:100%;width:100%">
           </div>
         </a>
