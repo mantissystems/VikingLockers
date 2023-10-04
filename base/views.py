@@ -107,7 +107,7 @@ def home(request):
     Q(kluisnummer__icontains=q) |
     Q(email__icontains=q)
     # Q(owners__email__icontains=q)
-    ).order_by('kluisnummer') #.exclude(verhuurd=False)
+    ).order_by('topic') #.exclude(verhuurd=False)
     onverhuurd=Locker.objects.all().filter(verhuurd=False)     
     messagelocker=Locker.objects.all().first()     
     from django.db.models import Count
@@ -161,7 +161,7 @@ def home(request):
         Q(type__icontains=q)|
         Q(excel__icontains=q)|
         Q(kluisnummer__icontains=q)
-        ).order_by('kluisnummer')
+        ).order_by('topic')
         url = "excellijst" + "?q=" +q 
         return HttpResponseRedirect(url)
     elif 'fact' in qq:
@@ -194,7 +194,7 @@ def home(request):
     Q(kluisje__icontains=q) |
     Q(email__icontains=q)
     # Q(owners__email__icontains=q) #dit levert redundancy in het template op
-    ).order_by('kluisnummer') #.exclude(verhuurd=False) #ik wil alle lockers tonen
+    ).order_by('topic') #.exclude(verhuurd=False) #ik wil alle lockers tonen
 
     room_messages = Message.objects.all()
     # facturatielijst=Facturatielijst.objects.all()
@@ -222,7 +222,7 @@ def get_queryset(self): # new
     queryset = Locker.objects.filter(
         Q(verhuurd=True)&
         Q(email__in=users_found) 
-    ).order_by('kluisnummer')
+    ).order_by('topic')
     return queryset
 paginate_by = 10
 def get_context_data(self, **kwargs):
@@ -559,7 +559,7 @@ def vrijelockersPage(request):
                     Q(kluisnummer__icontains='--')
                     # Q(is_registered__icontains='regis')
                     # Q(is_registered=None) #.filter(type='vrij')
-                ).order_by('kluisnummer') ##.exclude(kluisnummer__icontains='--') ##.update(verhuurd=False)
+                ).order_by('topic') ##.exclude(kluisnummer__icontains='--') ##.update(verhuurd=False)
 
     return render(request, 'base/excellijst.html', {'lockers': lockers,'vrijelockerslijst':lijst})
 
@@ -765,7 +765,7 @@ class ExcelView (LoginRequiredMixin, ListView):
             Q(type__icontains=query)|
             Q(excel__icontains=query)|
             Q(kluisnummer__icontains=query)
-            ).order_by('kluisnummer')
+            ).order_by('topic')
         context = {
             'query': query,
             'object_list' :queryset,
@@ -784,7 +784,7 @@ class FacturatieView (LoginRequiredMixin, ListView):
             Q(email__icontains=query)|
             Q(kluisnummer__icontains=query)
             # Q(in_excel__icontains='==')
-            ).order_by('kluisnummer','id')
+            ).order_by('topic','id')
         context = {
             'query': query,
             'object_list' :queryset,
@@ -953,7 +953,7 @@ def tel_aantal_registraties(request):
     Facturatielijst.objects.all().update(is_registered='----',in_excel='----',type='----',sleutels='----',code='---') 
     print('bestaat factuur als locker ===============')
     for f in Facturatielijst.objects.all():
-        # break
+        if f:break #tijdelijk uitgeschakelde controle; 
         try:
             l=Locker.objects.get(kluisnummer=f.kluisnummer)
             f.is_registered=l.kluisnummer
@@ -976,7 +976,7 @@ def tel_aantal_registraties(request):
         except: 
             Locker.DoesNotExist
             print(f.kluisnummer,'heeft GEEN factuur')
-            f.type=' create ' ## + f.kluisnummer
+            f.type=' create f ' ## + f.kluisnummer
             f.code=0
             f.save()
     print('bestaat excel als locker ===============')
@@ -1020,22 +1020,37 @@ def tel_aantal_registraties(request):
 # ====
     print('bestaat locker als factuur ===============')
     for e in Locker.objects.all():
-        if e: break #tijdelijk uitgeschakeld
+        if e: break #tijdelijk uitgeschakeld testen herbenaming
         try:
             l=Facturatielijst.objects.get(kluisnummer=e.kluisnummer)
         except: 
             Facturatielijst.DoesNotExist
             print(e.kluisnummer,'GEEN factuur',)
             break
-            # # fields = ['kluisnummer','email','in_excel','is_registered','sleutels']
-            # fact,f=Facturatielijst.objects.update_or_create(
-            #     kluisnummer=e.kluisnummer,
-            #     email=e.email,
-            #     is_registered=e.kluisnummer,
-            #     in_excel='===',
-            #     type='create',
+# ====
+    print("zet 'kluisnummer' in 'topic' herstel 'kluisje' herbenaming===============")
+    for e in Locker.objects.all():
+        # if e: break #tijdelijk uitgeschakeld
+        e.kluisje=e.kluisnummer
+        if 'B-' in e.kluisnummer:
+            kl=e.kluisnummer
+            kl2=kl.replace('B-','00')
+            print(kl2,'B')
+            e.topic=kl2
+            e.save()
+        if 'C-' in e.kluisnummer:
+            kl=e.kluisnummer
+            kl2=kl.replace('C-','')
+            print(kl2,'C')
+            e.topic=kl2
+            e.save()
+        if 'A-' in e.kluisnummer:
+            kl=e.kluisnummer
+            kl2=kl.replace('A-','')
+            print(kl2,'A')
+            e.topic=kl2
+            e.save()
 
-            # )
 # ====
 
     print('einde tel_aantal_lockers in facturatielijst')
@@ -1047,8 +1062,8 @@ def export_onverhuurd(request,):
     onverhuurd =Locker.objects.filter(
         # Q(kluisnummer__icontains=q) |
     # Q(verhuurd=False)
-        ).order_by('kluisnummer') #.exclude(verhuurd=False)
-    onverhuurd=Locker.objects.all().order_by('kluisnummer')
+        ).order_by('topic') #.exclude(verhuurd=False)
+    onverhuurd=Locker.objects.all().order_by('topic')
 
     response = HttpResponse(content_type='text/csv')
     response['Content-Disposition'] = 'attachment; filename="all_lockers.csv"'
@@ -1141,8 +1156,8 @@ def export_onverhuurd(request,):
     onverhuurd =Locker.objects.filter(
         # Q(kluisnummer__icontains=q) |
     # Q(verhuurd=False)
-        ).order_by('kluisnummer') #.exclude(verhuurd=False)
-    onverhuurd=Locker.objects.all().order_by('kluisnummer')
+        ).order_by('topic') #.exclude(verhuurd=False)
+    onverhuurd=Locker.objects.all().order_by('topic')
 
     response = HttpResponse(content_type='text/csv')
     response['Content-Disposition'] = 'attachment; filename="all_lockers.csv"'
@@ -1158,7 +1173,7 @@ def export_emaillijst(request,):
     verhuurd = Facturatielijst.objects.all().filter(
         Q(email__icontains='@')&
         Q(code='1')
-        ).exclude(kluisnummer__in=exclude_list).order_by('kluisnummer')
+        ).exclude(kluisnummer__in=exclude_list).order_by('topic')
         
     response = HttpResponse(content_type='text/csv')
     response['Content-Disposition'] = 'attachment; filename="email_lijst.csv"'
@@ -1568,7 +1583,7 @@ def update_locker(request,pk):
                 overigelockers = Locker.objects.filter(
                     Q(verhuurd=False)&
                     Q(email=request.user.email)
-                ).order_by('kluisnummer').update(verhuurd=False)
+                ).order_by('topic').update(verhuurd=False)
                 try:
                     locker2 = Locker.objects.get(kluisnummer=locker.kluisnummer,email=locker.email)
                 except Locker.DoesNotExist:
@@ -1578,7 +1593,7 @@ def update_locker(request,pk):
                 overigelockers = Locker.objects.filter(
                     Q(verhuurd=False)&
                     Q(email=locker.email)
-                ).order_by('kluisnummer')
+                ).order_by('topic')
             form.save()
             return redirect('lockers')
 
@@ -1674,7 +1689,8 @@ def lockersPage2(request):
     lockers =Locker.objects.filter(
         Q(kluisnummer__icontains=q) |
         Q(email__icontains=q)
-        ).order_by('kluisnummer') #.exclude(verhuurd=False)
+        ).order_by('topic') #.exclude(verhuurd=False)
+        # ).order_by('topic') #.exclude(verhuurd=False)
     context = {
                 'lockers': lockers,
                     'lijst': lijst,
@@ -1694,7 +1710,7 @@ def lockersPage3(request):
     lockers =Locker.objects.filter(
         # Q(kluisnummer__icontains=q) |
         Q(verhuurd=False)
-        ).order_by('kluisnummer') #.exclude(verhuurd=False)
+        ).order_by('topic') #.exclude(verhuurd=False)
     context = {
                 'lockers': lockers,
                     'lijst': lijst,

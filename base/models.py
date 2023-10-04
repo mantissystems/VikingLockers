@@ -79,6 +79,7 @@ class Locker(models.Model):
     type = models.CharField(max_length=18, choices=SLOT,default='--')     
     topic = models.CharField(max_length=18,default='----')     
     verhuurd=models.BooleanField(default=False)
+    obsolete=models.BooleanField(default=False)
     owners = models.ManyToManyField(User, related_name='owners', blank=True)
     participants = models.ManyToManyField(Person, related_name='participants', blank=True)
     sleutels = models.CharField(max_length=18,default='----')     
