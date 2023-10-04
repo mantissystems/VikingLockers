@@ -93,6 +93,7 @@ class Facturatielijst(models.Model):
     kluisnummer = models.CharField(max_length=200)
     email = models.CharField(max_length=200)
     in_excel = models.CharField(max_length=200,default='----')     
+    renum = models.CharField(max_length=200, null=True)
     is_registered = models.CharField(max_length=200,default='----')     
     type = models.CharField(max_length=18, choices=SLOT,default='--')     
     sleutels = models.CharField(max_length=18,default='----')     

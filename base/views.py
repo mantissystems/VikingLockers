@@ -949,9 +949,9 @@ class FactuurDeleteView(DeleteView):
 @login_required(login_url='login')   
 def tel_aantal_registraties(request):
     from django.db.models import Max, Count
-    print('in tel_aantal_registraties in facturatielijst===============')
+    print('0)in tel_aantal_registraties in facturatielijst===============')
     Facturatielijst.objects.all().update(is_registered='----',in_excel='----',type='----',sleutels='----',code='---') 
-    print('bestaat factuur als locker ===============')
+    print('1)bestaat factuur als locker ===============')
     for f in Facturatielijst.objects.all():
         if f:break #tijdelijk uitgeschakelde controle; 
         try:
@@ -959,18 +959,10 @@ def tel_aantal_registraties(request):
             f.is_registered=l.kluisnummer
             if l.verhuurd==True:
                 f.code=1
-                # oudenaam=getattr(l,'kluisnummer')
-                # if 'B-' in oudenaam:
-                    # k=oudenaam
-                    # k2=k.replace('B-','00')
-                    # print('oudenaam aangepast ',k2)
-    #         h=User.objects.get(id=huurder)
-    #         kls.owners.add(h)
-                # setattr(l, 'topic',k2)
-                l.topic=f.kluisnummer
                 l.save()
                 f.save()
             else:
+                if l.verhuurd==True: f.code=9
                 f.code=0
             f.save()
         except: 
@@ -979,9 +971,9 @@ def tel_aantal_registraties(request):
             f.type=' create f ' ## + f.kluisnummer
             f.code=0
             f.save()
-    print('bestaat excel als locker ===============')
+    print('2)bestaat excel als locker ===============')
     for e in Facturatielijst.objects.all():
-        if e:break #tijdelijk uitgeschakelde controle; de oude excellijst is niet leidend en niet compleet
+        if e:break #tijdelijk uitgeschakelde controle; de oude excellijst is niet leidend en ook  niet compleet
         try:
             l=Excellijst.objects.get(kluisnummer=e.kluisnummer)
             e.in_excel=l.kluisnummer
@@ -993,7 +985,7 @@ def tel_aantal_registraties(request):
             # f.type=' create ' ## + f.kluisnummer
             e.save()
 # ====
-    print('vind dubbele records  ===============')
+    print('3)vind dubbele records  ===============')
 # Getting duplicate files based on case_no and hearing_date
     files = Facturatielijst.objects.values('kluisnummer', 'email') \
         .annotate(records=Count('kluisnummer')) \
@@ -1018,7 +1010,7 @@ def tel_aantal_registraties(request):
         # dubbel.delete()
 
 # ====
-    print('bestaat locker als factuur ===============')
+    print('4)bestaat locker als factuur ===============')
     for e in Locker.objects.all():
         if e: break #tijdelijk uitgeschakeld testen herbenaming
         try:
@@ -1028,9 +1020,9 @@ def tel_aantal_registraties(request):
             print(e.kluisnummer,'GEEN factuur',)
             break
 # ====
-    print("zet 'kluisnummer' in 'topic' herstel 'kluisje' herbenaming===============")
+    print("5)zet 'kluisnummer' in 'topic' herstel 'kluisje' herbenaming===============")
     for e in Locker.objects.all():
-        # if e: break #tijdelijk uitgeschakeld
+        if e: break #tijdelijk uitgeschakeld
         e.kluisje=e.kluisnummer
         if 'B-' in e.kluisnummer:
             kl=e.kluisnummer
@@ -1052,9 +1044,19 @@ def tel_aantal_registraties(request):
             e.save()
 
 # ====
+    for f in Facturatielijst.objects.all():
+            # try:
+            #     l=Locker.objects.get(kluisje=f.kluisnummer)
+            # except:
+            #     Facturatielijst.DoesNotExist
+            #     print(f.kluisnummer,'factuur hernummeren')
+        f.renum=f.kluisnummer
+        print(f.renum)
+        f.save()
 
+# 
     print('einde tel_aantal_lockers in facturatielijst')
-    url = reverse('lockers',)
+    url = reverse('facturatielijst',)
     return HttpResponseRedirect(url)
 
 def export_onverhuurd(request,):
@@ -1552,7 +1554,7 @@ def update_locker(request,pk):
     vikingers=Person.objects.all().order_by('name')
     if request.user.email != locker.email and not request.user.is_superuser:
         messages.error(request, f'{locker.kluisnummer} : Is niet uw locker')
-        url = reverse('home',)
+        url = reverse('lockers',)
         return HttpResponseRedirect(url)
 
     if request.method == 'POST':

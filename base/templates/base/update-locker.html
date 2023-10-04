@@ -32,7 +32,7 @@
           {% endcomment %}
           <div class="form__group">
             <select id="onderhuurder" name="onderhuurder" onChange="redirectUrl()">
-              <option  value="" selected="selected">--- ONDERHUURDER TOEVOEGEN:---</option> xxx
+              <option  value="" selected="selected">--- PLOEGLID TOEVOEGEN:---</option> xxx
               {% for org in vikingers %}
               <option value="{{org.id}}">{{org.email|capfirst}}</option>
               {% endfor %}
@@ -42,7 +42,7 @@
           {% if kluis.participants.count > 0 %}
           <div class="form__group">
               <select id="huuropheffen" name="huuropheffen" onChange="redirectUrl()">
-                <option  value="" selected="selected">--- ONDERHUURDER VERWIJDEREN---</option>
+                <option  value="" selected="selected">--- PLOEGLID VERWIJDEREN---</option>
                 {% for org in kluis.participants.all %}
                  <option value="{{org.id}}">{{org.email|capfirst}}</option>
                 {% endfor %}
