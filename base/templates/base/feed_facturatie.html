@@ -7,7 +7,8 @@
         <th>y/n</th>
         <th>Verhuurd</th>
         <th>keys</th>
-        <th>status</th>
+        <th>renum</th>
+        <th>obs</th>
       </tr>
     </thead>
     <tbody>
@@ -30,11 +31,14 @@
         </a>
       
                         <td>
-                          <a href="{% url 'create-locker' %}?q={{locker.kluisnummer}}">{{locker.sleutels}} </span></a>        
+                          <a href="{% url 'create-locker' %}?q={{locker.kluisnummer}}">{{locker.type}} </span></a>        
                         </td>
 
                         <td>
                           <a href="{% url 'update-user2'  locker.in_excel %}?q={{locker.in_excel}}">{{locker.renum}} </span></a>
+                          <td>
+                            {% if locker.obsolete %} (obs) {% endif %}
+                          </td>
 
                         </td>
           

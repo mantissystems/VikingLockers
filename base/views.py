@@ -784,7 +784,8 @@ class FacturatieView (LoginRequiredMixin, ListView):
             Q(email__icontains=query)|
             Q(kluisnummer__icontains=query)
             # Q(in_excel__icontains='==')
-            ).order_by('kluisnummer','id')
+            ).order_by('renum','id')
+            # ).order_by('kluisnummer','id')
         context = {
             'query': query,
             'object_list' :queryset,
@@ -879,7 +880,7 @@ class EditFactuur( LoginRequiredMixin,UpdateView):
     login_url = '/login/'
     # redirect_field_name = 'redirect_to'
     model = Facturatielijst
-    fields = ['kluisnummer','email','in_excel','is_registered','sleutels']
+    fields = ['kluisnummer','email','in_excel','is_registered','sleutels','obsolete']
     # fields = '__all__'
     success_url = reverse_lazy('facturatielijst')
     
@@ -1023,7 +1024,7 @@ def tel_aantal_registraties(request):
     print("5)zet 'kluisnummer' in 'topic' herstel 'kluisje' herbenaming===============")
     for e in Locker.objects.all():
         if e: break #tijdelijk uitgeschakeld
-        e.kluisje=e.kluisnummer
+        # e.kluisje=e.kluisnummer
         if 'B-' in e.kluisnummer:
             kl=e.kluisnummer
             kl2=kl.replace('B-','00')
@@ -1044,16 +1045,36 @@ def tel_aantal_registraties(request):
             e.save()
 
 # ====
+    print("6)hernummer 'kluisnummer' in 'renum'===============")
+    x=0
     for f in Facturatielijst.objects.all():
-            # try:
-            #     l=Locker.objects.get(kluisje=f.kluisnummer)
-            # except:
-            #     Facturatielijst.DoesNotExist
-            #     print(f.kluisnummer,'factuur hernummeren')
-        f.renum=f.kluisnummer
-        print(f.renum)
-        f.save()
-
+        if f: break #tijdelijk uitgeschakeld
+        if 'B-' in f.kluisnummer:
+            kl=f.kluisnummer
+            kl2=kl.replace('B-','00')
+            # print(kl2,'B')
+            f.renum=kl2
+            f.save()
+        if 'C-' in f.kluisnummer:
+            kl=f.kluisnummer
+            kl2=kl.replace('C-','')
+            # print(kl2,'C')
+            f.renum=kl2
+            f.save()
+        if 'A-' in f.kluisnummer:
+            kl=f.kluisnummer
+            kl2=kl.replace('A-','')
+            # print(kl2,'A')
+            f.renum=kl2
+            f.save()
+    for f in Facturatielijst.objects.all():
+        try:
+            Locker.objects.get(topic=f.renum)
+        except:
+            x+=1
+            Locker.DoesNotExist
+            print('2-', x,f.kluisnummer,f.renum)
+                    # wellicht hier creatie van factuurregel Facturatielijst.objects.update_or_create(
 # 
     print('einde tel_aantal_lockers in facturatielijst')
     url = reverse('facturatielijst',)
@@ -1710,9 +1731,11 @@ def lockersPage3(request):
     mogelijkheden=allekluisjes.count() * 2     
     lijst='onverhuurd'
     lockers =Locker.objects.filter(
-        # Q(kluisnummer__icontains=q) |
+        Q(kluisnummer__icontains='vrij') |
+        Q(kluisnummer__icontains='onbekend')|
+        Q(obsolete=True)|
         Q(verhuurd=False)
-        ).order_by('topic') #.exclude(verhuurd=False)
+        ).order_by('topic')
     context = {
                 'lockers': lockers,
                     'lijst': lijst,

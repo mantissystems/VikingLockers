@@ -96,6 +96,7 @@ class Facturatielijst(models.Model):
     renum = models.CharField(max_length=200, null=True)
     is_registered = models.CharField(max_length=200,default='----')     
     type = models.CharField(max_length=18, choices=SLOT,default='--')     
+    obsolete=models.BooleanField(default=False)
     sleutels = models.CharField(max_length=18,default='----')     
     code = models.CharField(max_length=18,default='----')     
     created = models.DateTimeField(auto_now_add=True)
