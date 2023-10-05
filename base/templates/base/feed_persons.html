@@ -13,7 +13,7 @@
 
     <td>{{user.id }}</td>
     <td>
-      <a href="{% url 'update-person' user.id %}?q={{user.id}}">  <li>{{user.email|truncatechars:11}} </li>
+      <a href="{% url 'update-person' user.id %}?q={{user.id}}">  <li>{{user.email|truncatechars:15}} </li>
       </span></a>
       <div style="height:100%;width:100%">
         </div>
@@ -21,12 +21,12 @@
     </td>
                     <td>
                       {% if user.hoofdhuurder == True %}
-                        hoofdhuur            
+                        huur            
                         {% elif user.wachtlijst == True %}
                         wachtlst
                         
                       {% elif user.onderhuur == True %}
-                        onderhuur
+                        gebr
                       {% endif %}
                     </td> 
 

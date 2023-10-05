@@ -24,10 +24,11 @@ from collections import namedtuple
 from rest_framework import status
 from django.views.generic.edit import CreateView, UpdateView,DeleteView
 from django.http import JsonResponse
-# from django.core.mail import send_mail
+from django.core.mail import EmailMessage
 from django.core import mail
-# from django.core.mail import BadHeaderError, send_mail
 from django.http import HttpResponse, HttpResponseRedirect
+from django.conf import settings
+from django.template.loader import render_to_string  #for email use
 # from base.serializers import UserSerializer, UserSerializerWithToken
 
 
@@ -453,15 +454,15 @@ class updateUser_email(LoginRequiredMixin,UpdateView):
         email = form.cleaned_data['email'] 
         if kluis:
             print(kluis)
-            locker, created = Locker.objects.update_or_create(
-            kluisnummer=kluis,
-            email=email,
-            verhuurd=False,
-            kluisje=kluis,
-            )
+            # locker, created = Locker.objects.update_or_create(
+            # kluisnummer=kluis,
+            # email=email,
+            # verhuurd=False,
+            # kluisje=kluis,
+            # )
         else:
                     messages.success(self.request, "Something went wrong.")
-        messages.success(self.request, "The user was updated successfully.")
+        messages.success(self.request, "The locker was updated successfully.")
         return super(updateUser_email,self).form_valid(form)
 
 def userProfile(request, pk):
@@ -782,8 +783,8 @@ class FacturatieView (LoginRequiredMixin, ListView):
             query=""
         queryset = Facturatielijst.objects.all().filter(
             Q(email__icontains=query)|
-            Q(kluisnummer__icontains=query)
-            # Q(in_excel__icontains='==')
+            Q(kluisnummer__icontains=query)|
+            Q(obsolete=False)
             ).order_by('renum','id')
             # ).order_by('kluisnummer','id')
         context = {
@@ -798,48 +799,68 @@ class PersonUpdate_id( LoginRequiredMixin,UpdateView):
     model = Person
     def get_form(self, form_class=None):
         form = super().get_form(form_class)
-        form.fields['onderhuur'].label = 'Checked: creates Person'
-        form.fields['tekst'].label = 'Use ; to split @viking.nl is added'
-        form.fields['wachtlijst'].label = 'Checked: creates Person from Tekst-lines'
+        form.fields['onderhuur'].label = "Aan = 'Wachtlijst' aanvullen"
+        form.fields['tekst'].label = 'Use ; (semicolon) to split '
+        # form.fields['wachtlijst'].label = 'Checked: creates Person from Tekst-lines'
         form.fields['hoofdhuurder'].label = 'Checked: sets locker tenant'
         return form
 
-    fields = '__all__'
+    # fields = '__all__'
+    fields=['name','onderhuur','tekst','hoofdhuurder',]
     success_url = reverse_lazy('profiles')
+    
     def form_valid(self, form):
-        kluis = form.cleaned_data['locker']  
-        onderhuur = form.cleaned_data['onderhuur']  
-        print(onderhuur)
-        email = form.cleaned_data['email']
+        kluis ='wachtlijst' ## form.cleaned_data['locker']  
+        wachtlijstaanvul = form.cleaned_data['onderhuur']  
+        print('onderhuur')
         hoofdhuurder = form.cleaned_data['hoofdhuurder']  
         name = form.cleaned_data['name']  
         onderhuurder = form.cleaned_data['onderhuur']  
-        wachtlijst = form.cleaned_data['wachtlijst']  
-        email = form.cleaned_data['email'] 
+        # wachtlijst = form.cleaned_data['wachtlijst']  
+        # email = form.cleaned_data['email'] 
         tekst = form.cleaned_data['tekst']  
+        if ';' in tekst:
+            txt=tekst.splitlines()
+            for t in txt:
+                u=t.replace(';','')
+                print(u)
+
         try:
             loc=Locker.objects.get(kluisnummer=kluis)
-            print('kluis bestaat',loc.kluisnummer)
-            if onderhuur:            
+            print('kluis bestaat=====>',loc.kluisnummer)
+            if wachtlijstaanvul:            
                 if tekst:
-                    if ';' in tekst:
-                        txt=tekst.splitlines()
-                        for t in txt:
-                            u=t.replace(';','')
-                            print(u)
-                            try:p=Person.objects.get(name=u)
-                            except:
-                                loc.add(p)
-                                pass
-                            finally:
-                                usr,user=Person.objects.update_or_create(name=u,
-                                                                email= u + '@viking.nl',
-                                                                locker=kluis,
-                                                                onderhuur=True,
-                                                                )
-                                # pass
-                                print(user.name)
-                                loc.add(usr)
+                    # if ';' in tekst:
+                    txt=tekst.splitlines()
+                    for t in txt:
+                        # u=t.replace(';','')
+                        print(t)
+                        user=Person.objects.update_or_create(name=t,
+                                                            email= t + '@viking.nl',
+                                                            locker=kluis,
+                                                            onderhuur=True,
+                                                            )
+                        print(user.name,'toegevoegd aan',loc.kluisnummer)
+                        loc.participants.add(user)
+                        # try:
+                        #     p=Person.objects.get(name=t)
+                        # except Person.DoesNotExist:
+                        #     user=Person.objects.update_or_create(name=t,
+                        #                                     email= t + '@viking.nl',
+                        #                                     locker=kluis,
+                        #                                     onderhuur=True,
+                        #                                     )
+                        #     print(user.name,'toegevoegd aan',loc.kluisnummer)
+                        #     loc.participants.add(user)
+                        #     pass
+                        # finally:
+                        #     user=Person.objects.update_or_create(name=t,
+                        #                                     # email= u + '@viking.nl',
+                        #                                     # locker=kluis,
+                        #                                     onderhuur=True,
+                        #                                     )
+                        #     print(user.name,'toegevoegd aan',loc.kluisnummer)
+                        #     loc.participants.add(user)
         except:
             pass
 
@@ -856,8 +877,8 @@ class PersonUpdate_id( LoginRequiredMixin,UpdateView):
         #                                                    wachtlijst=True,
         #                                                    )
         # url = reverse('delete-person', kwargs={'pk': super().person.id})
-        viking= email.replace("@", "")
-        print(viking)
+        # viking= email.replace("@", "")
+        # print(viking)
         # string='pbkdf2_sha256$390000$MbAy3r2ahV6QE6xFilyWG5$Hkuz0s9MNtjJ066lD0v9N2tnUv2ZuZLALt2rIL1QSAQ='
  
         # if onderhuur==True:
@@ -1080,21 +1101,21 @@ def tel_aantal_registraties(request):
     url = reverse('facturatielijst',)
     return HttpResponseRedirect(url)
 
-def export_onverhuurd(request,):
-    import csv
-    onverhuurd =Locker.objects.filter(
-        # Q(kluisnummer__icontains=q) |
-    # Q(verhuurd=False)
-        ).order_by('topic') #.exclude(verhuurd=False)
-    onverhuurd=Locker.objects.all().order_by('topic')
+# def export_onverhuurd(request,):
+#     import csv
+#     onverhuurd =Locker.objects.filter(
+#         # Q(kluisnummer__icontains=q) |
+#     # Q(verhuurd=False)
+#         ).order_by('topic') #.exclude(verhuurd=False)
+#     onverhuurd=Locker.objects.all().order_by('topic')
 
-    response = HttpResponse(content_type='text/csv')
-    response['Content-Disposition'] = 'attachment; filename="all_lockers.csv"'
-    writer = csv.writer(response)
-    writer.writerow(['id', 'tenant', 'locker', 'keys','verhuurd'])
-    for item in onverhuurd:
-        writer.writerow([item.id ,item.email, item.kluisnummer, item.sleutels ,item.verhuurd,";"])
-    return response
+#     response = HttpResponse(content_type='text/csv')
+#     response['Content-Disposition'] = 'attachment; filename="all_lockers.csv"'
+#     writer = csv.writer(response)
+#     writer.writerow(['id', 'tenant', 'locker', 'keys','verhuurd'])
+#     for item in onverhuurd:
+#         writer.writerow([item.id ,item.email, item.kluisnummer, item.sleutels ,item.verhuurd,";"])
+#     return response
 
 @login_required(login_url='login')   
 def nummering(request):
@@ -1191,19 +1212,20 @@ def export_onverhuurd(request,):
     return response
 def export_emaillijst(request,):
     import csv
-    exclude_list = ['vrij', 'onbekend', 'Vrij','wachtlijst']
-    #  qs = Foo.objects.exclude(items__in=exclude_list)
-    verhuurd = Facturatielijst.objects.all().filter(
-        Q(email__icontains='@')&
-        Q(code='1')
-        ).exclude(kluisnummer__in=exclude_list).order_by('kluisnummer')
+    exclude_list = ['vrij', 'onbekend', 'Vrij','wachtlijst',]
+    verhuurd =Locker.objects.all() #filter(
+        # Q(kluisnummer__icontains='vrij') |
+        # Q(kluisnummer__icontains='onbekend')|
+        # Q(obsolete=True)|
+        # Q(verhuurd=False)
+        # ).order_by('topic')
         
     response = HttpResponse(content_type='text/csv')
     response['Content-Disposition'] = 'attachment; filename="email_lijst.csv"'
     writer = csv.writer(response)
-    writer.writerow(['id', 'tenant', 'y/n','locker','registered', 'keys','xls',])
+    writer.writerow(['id', 'tenant', 'oude naam','nwe naam','huidige', 'obs',])
     for item in verhuurd:
-        writer.writerow([item.id ,item.email, item.code,item.kluisnummer,item.is_registered, item.sleutels , item.in_excel ,";"])
+        writer.writerow([item.id ,item.email, item.kluisje,item.topic,item.kluisnummer, item.obsolete ,";"])
     return response
 
 def export_verhuurd(request,):
@@ -1218,9 +1240,9 @@ def export_verhuurd(request,):
     response = HttpResponse(content_type='text/csv')
     response['Content-Disposition'] = 'attachment; filename="facturatie_lijst.csv"'
     writer = csv.writer(response)
-    writer.writerow(['id', 'tenant', 'y/n','locker','registered', 'keys','xls',])
+    writer.writerow(['id', 'tenant', 'y/n','locker','registered', 'keys','xls','obs'])
     for item in verhuurd:
-        writer.writerow([item.id ,item.email, item.code,item.kluisnummer,item.is_registered, item.sleutels , item.in_excel ,";"])
+        writer.writerow([item.id ,item.email, item.code,item.kluisnummer,item.is_registered, item.sleutels , item.in_excel ,item.obsolete, ";"])
     return response
 
 # def file_load_view(request):
@@ -1571,7 +1593,8 @@ class LockerUpdate( LoginRequiredMixin,JsonableResponseMixin,UpdateView):
 def update_locker(request,pk):
     locker = Locker.objects.get(id=pk)
     form = LockerForm(instance=locker)
-    # vikingers=User.objects.all().order_by('username')
+    form = list(form)
+    topics=Topic.objects.all()
     vikingers=Person.objects.all().order_by('name')
     if request.user.email != locker.email and not request.user.is_superuser:
         messages.error(request, f'{locker.kluisnummer} : Is niet uw locker')
@@ -1620,109 +1643,60 @@ def update_locker(request,pk):
             form.save()
             return redirect('lockers')
 
-    return render(request, 'base/update-locker.html', {'form': form,'vikingers':vikingers,'kluis':locker})
+    return render(request, 'base/update-locker.html', {'form': form,'vikingers':vikingers,'kluis':locker,'topics':topics})
 
-# @login_required(login_url='login')
-# def update_kluis(request, pk):
-    # column=int(kol)
-    # matrix=Matriks.objects.get(id=pk)
-    # rms = Locker.objects.all().filter(verhuurd=True)
-    # owner_count=0
-    # rgl=matrix.y_as
-    # owners=[]    
-    # hdr=['', 'kol1','kol2','kol3','kol4','kol5','kol6','kol7','kol8','kol9','kol10','kol11','kol12','kol13']  #LET OP: KOLOM NUL NIET VERGETEN
-    # dematrikskolom=hdr[column];print(dematrikskolom)
-    # kluisje=getattr(matrix,dematrikskolom)
-    # matriksnaam=getattr(matrix,'naam')
-    # opheffen= request.POST.get('opheffen')
-    # column=int(kol)
-    # regel=matrix.regel
-    # oorspronkelijkmatriksnummer=decodeer(regel,dematrikskolom,column,cellengte=3)
-    # print('oorspronkelijkmatriksnummer',oorspronkelijkmatriksnummer)
-
-    # try:
-    #     kls=Locker.objects.get(email=opheffen)
-    #     try:
-    #         print(kls)
-    #         # messages.error(request, f'{matriksnaam}: Geen huurders verder.')
-    #         # return redirect('home')
-    #     except:
-    #         pass
-    # except: 
-    #     Locker.DoesNotExist
-    #     # messages.error(request, f'{pk} {kol}: Niet gevonden')
-    #     # url = reverse('create_locker', kwargs={'row': pk,'kol': kol})
-    #     url = reverse('update-locker', kwargs={'pk': pk})
-    #     return HttpResponseRedirect(url)
-    #     # return HttpResponseRedirect('/info/')
-    # if request.method == 'POST':
-    #     huurder= request.POST.get('heeftkluis')
-    #     label= request.POST.get('kluislabel')
-    #     slot= request.POST.get('slot')
-    #     sleutels= request.POST.get('sleutels')
-    #     code= request.POST.get('code')
-    #     print(sleutels,code)
-    #     your_name= request.POST.get('your_name')
-    #     huuropheffen= request.POST.get('huuropheffen')
-    #     kls.userid=huurder
-    #     kls.verhuurd=True
-    #     # return HttpResponseRedirect('/')
-    #     if slot:
-    #         kls.type=slot
-    #         kls.save()
-    #     if huurder or your_name:
-    #         h=User.objects.get(id=huurder)
-    #         kls.owners.add(h)
-    #         setattr(kls, 'verhuurd',True)
-    #         kls.save()
-    #     if huuropheffen:
-    #         h=User.objects.get(id=huuropheffen)
-    #         print('opheffen..',h)
-    #         kls.owners.remove(h)
-    #         print(kls)
-    #         setattr(kls, 'email','info@viking.nl')
-    #         setattr(kls, 'verhuurd',False)
-    #         kls.save()
-    #     if sleutels:
-    #         kls.sleutels=sleutels
-    #         kls.save()
-    #     if code:
-    #         kls.code=code
-    #         kls.save()
-
-    #     return redirect('home')
-
-    # vikingers=User.objects.all().order_by('username')
-    # context = {
-    #             'vikingers':vikingers,
-    #             'kluis': kls,
-    #             'verhuurd': rms,
-    #             # 'huurders': huurders,
-    #             # 'oorspronkelijkmatriksnummer':oorspronkelijkmatriksnummer,
-    #         }
-    # return render(request, 'base/update_kluis_form.html', context)
+def success(request,uid):
+    template=render_to_string('base/email_template.html',{'name':request.user.username})
+    email=EmailMessage(
+        'je bent ingeschreven als huurder',
+        'bericht van wim',
+        # template,
+        settings.EMAIL_HOST_USER,
+        ['wej.bakker@icloud.com'],
+    )
+    email.fail_silently=False,
+    email.send()
+    try:
+            email.send
+    except:
+            return Response("Could not send mail")    
+    project=Locker.objects.all()
+    context={'project':project}
+    return render(request,'base/email_template.html')
 
 
 def lockersPage2(request):
     q = request.GET.get('q') if request.GET.get('q') != None else ''
     kluisjes=Locker.objects.all().filter(verhuurd=True)     
     allekluisjes=Locker.objects.all()     
-    mogelijkheden=allekluisjes.count() * 2     
     lijst='verhuurd'
     lockers =Locker.objects.filter(
+        Q(obsolete=False)&
+        (
         Q(kluisnummer__icontains=q) |
         Q(email__icontains=q)
-        ).order_by('topic') #.exclude(verhuurd=False)
+        ) 
+        ).order_by('topic') .exclude(kluisnummer='wachtlijst',)
         # ).order_by('topic') #.exclude(verhuurd=False)
     context = {
                 'lockers': lockers,
                     'lijst': lijst,
                 'kluisjes': kluisjes,
                 'allekluisjes': allekluisjes,
-                'mogelijkheden': mogelijkheden,
+                # 'mogelijkheden': mogelijkheden,
             }
     return render(request, 'base/kluisjes.html', context)
     # return render(request, 'base/kluisjes.html', {'lockers': lockers})
+
+# email = EmailMessage(
+#     "Hello",
+#     "Body goes here",
+#     "from@example.com",
+#     ["to1@example.com", "to2@example.com"],
+#     ["bcc@example.com"],
+#     reply_to=["another@example.com"],
+#     headers={"Message-ID": "foo"},
+# )
 
 def lockersPage3(request):
     q = request.GET.get('q') if request.GET.get('q') != None else ''
@@ -1850,44 +1824,6 @@ def hernummermatriks(request):
         #         m.save()
     context={}
     return render(request, 'base/home.html', context)
-
-# def create_locker(request,row,kol):
-#     hdr=['', 'kol1','kol2','kol3','kol4','kol5','kol6','kol7','kol8','kol9','kol10','kol11','kol12','kol13']  #LET OP: KOLOM NUL NIET VERGETEN
-#     column=int(kol)
-#     print('params',row,kol)
-#     # matrix=Matriks.objects.get(id=row)
-#     rms = Locker.objects.all()
-#     # rgl=matrix.y_as
-#     dematrikskolom=hdr[column];print(dematrikskolom)
-#     # kluisje=getattr(matrix,dematrikskolom)
-#     # matriksnaam=getattr(matrix,'naam')
-#     column=int(kol)
-    # regel=matrix.regel
-    # oorspronkelijkmatriksnummer=decodeer(regel,dematrikskolom,column,cellengte=3)
-    # print('locker:',oorspronkelijkmatriksnummer)
-    # try:
-        # l=Locker.objects.get(kluisnummer=oorspronkelijkmatriksnummer)
-        # regel=l.regel
-    # except:
-        # print('except..not found..',regel,dematrikskolom,column,oorspronkelijkmatriksnummer)
-        # email=request.user.email
-        # print(row,kol,'create-locker?',email)
-
-        # if request.method == 'POST':
-        #     create,cre=Locker.objects.update_or_create(
-        #                     kluisnummer=oorspronkelijkmatriksnummer,
-        #                     kluisje=oorspronkelijkmatriksnummer,
-        #                     topic=matriksnaam,
-        #                     email=email,
-        #                     row=row.zfill(2),
-        #                     col=kol.zfill(2),
-        #                     verhuurd=True
-        #                     )
-        #     create.owners.add(request.user)
-        #     return render(request, 'base/locker-add.html', {'column': kol,'row':row,'oorspronkelijkmatriksnummer':oorspronkelijkmatriksnummer })
-        #     # return redirect('home')
-    # return render(request, 'base/locker-add.html', {'column': kol,'row':row,'oorspronkelijkmatriksnummer':oorspronkelijkmatriksnummer })
-
 
 def namedtuplefetchall(cursor):
     "Return all rows from a cursor as a namedtuple"

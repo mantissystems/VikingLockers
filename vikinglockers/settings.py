@@ -6,7 +6,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # env=environ.Env()
 
 SECRET_KEY = 'django-insecure-)r2waboda$o)g39!ap!l7dx$numws6k7zi9=m*3e1hbudc!2&r'
-DEBUG = False
+DEBUG = True
 ALLOWED_HOSTS = ['*', 'http://127.0.0.1',
 'https://vikinglockers.up.railway.app',]
 
@@ -130,18 +130,18 @@ if DEBUG:
 else:
     STATIC_ROOT =     os.path.join(BASE_DIR, 'static')
     MEDIA_ROOT =     os.path.join(BASE_DIR, 'media')
-
     STATICFILES_DIRS = [
     os.path.join(BASE_DIR, 'staticfiles')]
-
 DEFAULT_AUTO_FIELD = 'django.db.models.AutoField'
-# MEDIA_ROOT= BASE_DIR / 'static/images'
-# DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 CORS_ALLOW_ALL_ORIGINS=True
 SECURE_CONTENT_TYPE_NOSNIFF=False
-# EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
-
-
+EMAIL_HOST='smtp.gmail.com'
+EMAIL_PORT=587
+EMAIL_USE_TLS=True
+EMAIL_FROM='vikinglockers@mantisbv.nl'
+EMAIL_HOST_USER='wej.bakker@gmail.com'
+EMAIL_HOST_PASSWORD='jeaneau34'
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 # FIXTURE_DIRS = [BASE_DIR / 'static']
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.1/ref/settings/#default-auto-field

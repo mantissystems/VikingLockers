@@ -4,9 +4,8 @@
       <hr>
       <tr>
         <th>Huurder:</th>
-        <th>y/n</th>
         <th>Verhuurd</th>
-        <th>keys</th>
+        <th>type</th>
         <th>renum</th>
         <th>obs</th>
       </tr>
@@ -24,7 +23,6 @@
       <td>
         <a href="{% url 'edit-factuur'  locker.id %}?q={{locker.id}}">{{locker.email|truncatechars:12}} </span></a>        
       </td>
-      <td>{{locker.code}} </td>
         <td>
           <a href="{% url 'update-usermail'  locker.kluisnummer %}?q={{locker.id}}">{{locker.kluisnummer}} </span></a>
         </td>
@@ -35,7 +33,7 @@
                         </td>
 
                         <td>
-                          <a href="{% url 'update-user2'  locker.in_excel %}?q={{locker.in_excel}}">{{locker.renum}} </span></a>
+                          <a href="{% url 'update-usermail'  locker.renum %}?q={{locker.renum}}">{{locker.renum}} </span></a>
                           <td>
                             {% if locker.obsolete %} (obs) {% endif %}
                           </td>

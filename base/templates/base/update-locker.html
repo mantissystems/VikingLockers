@@ -34,7 +34,7 @@
             <select id="onderhuurder" name="onderhuurder" onChange="redirectUrl()">
               <option  value="" selected="selected">--- PLOEGLID TOEVOEGEN:---</option> xxx
               {% for org in vikingers %}
-              <option value="{{org.id}}">{{org.email|capfirst}}</option>
+              <option value="{{org.id}}">{{org.name|capfirst}}</option>
               {% endfor %}
             </select> 
           </div> 
