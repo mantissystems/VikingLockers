@@ -8,6 +8,7 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth import authenticate, login, logout
 from django.urls import reverse, reverse_lazy
+import urllib3
 # from viking.models import  Matriks,KluisjesRV
 from base.models import Room,Message,User,Topic,Locker,Ploeg,Helptekst,Bericht,Excellijst,Person,Facturatielijst
 from django.db.models import Q
@@ -52,7 +53,9 @@ def loginPage(request):
             login(request, user)
             return redirect('home')
         else:
-            messages.error(request, 'Username OR password does not exit')
+            url = "/berichten/" + "?q=" + "'controleer en noteer de naam en/of het emailadres'"
+            return HttpResponseRedirect(url)
+            # messages.error(request, 'Username OR password does not exit')
 
     context = {'page': page}
     return render(request, 'base/login_register.html', context)
@@ -70,30 +73,39 @@ def registerPage(request):
         if not form.is_valid():
             post_email = form.cleaned_data.get('email') # Extracting the email value from the form
             if User.objects.filter(email=post_email).exists():
-                print('invalid')
-            messages.error(request, f'[Email]  and/or [Username] already in use.')
+                # print('invalid')
+                # messages.error(request, f'[Email]  and/or [Username] already in use.')
+                messages.info(request, 'You are registered successfully!')
+                return HttpResponseRedirect('/berichten/'+post_email)
 
         if form.is_valid():
             print('valid')
             user = form.save(commit=False)
             # user.username = user.name.lower()
             # user.last_name = user.name.lower()
-            users =User.objects.filter(
-            Q(username=request.POST.get('name')) |
-            Q(email=request.POST.get('email'))
-            ).order_by('username') #.exclude(verhuurd=False)
-            print(users)
-            if users:
-            #     messages.error(request, 'Invalid form submission.')
-            #     messages.error(request, form.errors)
-            #     messages.error(request, f'[Email]  and/or [Username] already in use.')
-                print('double', users)
-            #     return HttpResponseRedirect('/')
-            else:
-                print('single',request.POST.get('name'),request.POST.get('email'))
-                user.save()
-                login(request, user)
-                return redirect('/')
+            from django.db.models.functions import Concat
+            from django.db.models import Value
+
+            # MyModel.objects.filter(**kwargs).update(my_field=Concat('my_other_field', Value('a string'))
+            # user=Concat('my_other_field', Value('a string'))
+            qq=Concat(user, Value(user))
+            print (qq)
+            q=qq
+            # url = "/berichten/" + "?q=" +urllib3.parse.quote(qq)
+            url = "/berichten/" + "?q=" + "'controleer en noteer de naam en/of het emailadres'"
+            return HttpResponseRedirect(url)
+        else:
+            messages.error(request, 'email of naam reeds in gebruik', 'warning')
+            email=request.POST.get('name'),request.POST.get('email')
+            q= request.POST.get('email') 
+            url = "/berichten/" + "?q=" +q
+            return HttpResponseRedirect(url)
+
+        # return super().form_invalid(form)
+                # print('single',request.POST.get('name'),request.POST.get('email'))
+                # user.save()
+                # login(request, user)
+                # return redirect('/')
 
     return render(request, 'base/login_register.html', {'form': form})
 
@@ -112,12 +124,12 @@ def home(request):
     Q(email__icontains=q)
     # Q(owners__email__icontains=q) redundancy !!
     ).order_by('topic') #.exclude(verhuurd=False)
-    A=Q(kluisnummer__icontains='vrij')
-    B=Q(kluisnummer__icontains='onbekend')
+    A=Q(email__icontains='vrij')
+    B=Q(email__icontains='onbekend')
     C=Q(obsolete=True)
     D=Q(opgezegd=True)
 
-    onverhuurd =Locker.objects.filter( ( A | B)   &  ( C | D )).order_by('topic')
+    onverhuurd =Locker.objects.filter(  A | B  | C | D ).order_by('topic')
     messagelocker=Locker.objects.all().first()     
     from django.db.models import Count
     if request.method == 'POST':
@@ -139,8 +151,11 @@ def home(request):
             url = reverse('create-person',)
             pass
     elif request.user is not None:
-        messages.info(request, f'Ubent niet ingelogd. Svp Inloggen / Registreren')
+        # messages.info(request, f'Ubent niet ingelogd. Svp Inloggen / Registreren')
         print('2.not-none-user:', request.user)
+        url = "/berichten/" + "?q=" + "Ubent niet ingelogd. Svp Inloggen / Registreren"
+        return HttpResponseRedirect(url)
+
         # return HttpResponseRedirect('/registreer/')
         return HttpResponseRedirect('/login/')
     elif request.user == AnonymousUser:
@@ -162,7 +177,7 @@ def home(request):
     url = reverse('berichten',)
     if q!='' or q !=None:
         lijst='home'
-        # lockers=Locker.objects.all().filter(verhuurd=True)     
+        verhuurd=Locker.objects.all().filter(verhuurd=True)     
     if 'xls' in qq:
         x = qq.replace("xls ", "")
         q=x
@@ -197,19 +212,22 @@ def home(request):
         return HttpResponseRedirect(url)
 
     else:
+        A=Q(email__icontains=q)
+        B=Q(kluisje__icontains=q)
+        C=Q(obsolete=False)
+        D=Q(opgezegd=False)
+        exclude_list = ['vrij', 'onbekend', 'Vrij','wachtlijst',]
         # berichten=Bericht.objects.all()
-        lockers =Locker.objects.filter(
-    Q(kluisnummer__icontains=q) |
-    Q(topic__icontains=q) |
-    Q(kluisje__icontains=q) |
-    Q(email__icontains=q)
-    # Q(owners__email__icontains=q) #dit levert redundancy in het template op
-    ).order_by('topic') #.exclude(verhuurd=False) #ik wil alle lockers tonen
+        verhuurd =Locker.objects.filter(  (A | B ) & (C & D) ).order_by('topic').exclude(email__in=exclude_list)
 
+    # Q(owners__email__icontains=q) #dit levert redundancy in het template op
+    # ).order_by('topic') #.exclude(verhuurd=False) #ik wil alle lockers tonen
+    rest=verhuurd.count() - onverhuurd.count()
     room_messages = Message.objects.all()
     # facturatielijst=Facturatielijst.objects.all()
     context = {
                'lijst':lijst,
+               'rest':rest,
                 'lockers': lockers,
                 'verhuurd': verhuurd,
                 'onverhuurd': onverhuurd,
@@ -1206,18 +1224,19 @@ def nummering(request):
 
 def export_onverhuurd(request,):
     import csv
-    onverhuurd =Locker.objects.filter(
-        # Q(kluisnummer__icontains=q) |
-    # Q(verhuurd=False)
-        ).order_by('topic') #.exclude(verhuurd=False)
-    onverhuurd=Locker.objects.all().order_by('topic')
+    A=Q(email__icontains='vrij')
+    B=Q(email__icontains='onbekend')
+    C=Q(obsolete=True)
+    D=Q(opgezegd=True)
+
+    onverhuurd =Locker.objects.filter(  A | B  | C | D ).order_by('topic')
 
     response = HttpResponse(content_type='text/csv')
-    response['Content-Disposition'] = 'attachment; filename="all_lockers.csv"'
+    response['Content-Disposition'] = 'attachment; filename="onverhuurd.csv"'
     writer = csv.writer(response)
-    writer.writerow(['id', 'tenant', 'locker', 'keys','verhuurd'])
+    writer.writerow(['id', 'tenant', 'huidig', 'oud','nieuw'])
     for item in onverhuurd:
-        writer.writerow([item.id ,item.email, item.kluisnummer, item.sleutels ,item.verhuurd,";"])
+        writer.writerow([item.id ,item.email, item.kluisnummer, item.kluisje ,item.topic,";"])
     return response
 def export_emaillijst(request,):
     import csv
@@ -1423,25 +1442,17 @@ class CreatePerson(CreateView):
     fields = ['name','email',]
     # fields='__all__'
     success_url = reverse_lazy('home')
+    model = Person
 
-    # def get_readonly_fields(self, request, obj=None):
-    #     fields = list(super().get_readonly_fields(request))
-    #     # if request.user.is_superuser:
-    #     #     fields.append('tekst')
-    #     return fields
-    def get_context_data(self,**kwargs):
-        context = super().get_context_data(**kwargs)
-        q = self.request.GET.get('personmail') if self.request.GET.get('personmail') != None else ''
-        query = self.request.GET.get('personmail')
-        if query == None: query=""
-        print(query)
-        context["email"] = query #user.ticket_set.all()
-        if self.form_valid:
-            print("The model object =", self.object)
+    def get_form(self, form_class=None):
+        form = super().get_form(form_class)
+        form.fields['name'].label = "Name or Nickname"
+        form.fields['email'].label = 'Your e-mail address'
+        return form
 
-        return context
-
-    #     return context
+    # fields = '__all__'
+    fields=['name','email',]
+    success_url = reverse_lazy('profiles')
     
     def form_valid(self, form):
         name = form.cleaned_data['name']  
@@ -1450,22 +1461,55 @@ class CreatePerson(CreateView):
         wachtlijst=Locker.objects.get(kluisnummer='wachtlijst')
         return super(CreatePerson,self).form_valid(form)
 
+    def form_invalid(self, form):
+        messages.error(self.request, 'email of naam reeds in gebruik', 'warning')
+        # url = "/berichten/" + "?q=" + form.fields['email']
+        return HttpResponseRedirect('/berichten/')
+        # return super().form_invalid(form)
+
+    # def form_valid(self, form):
+    #     form.instance.person_id = self.kwargs['person_id']
+    #     form.instance.user = self.request.user
+    #     return super().form_valid(form)
+
+    # def get_form(self, form_class=None):
+    #     form = super().get_form(form_class)
+    #     form.fields['name'].label = "Aan = 'Wachtlijst' aanvullen"
+    #     form.fields['email'].label = 'Use ; (semicolon) to split '
+    #     return form
+
+    # def get_context_data(self,**kwargs):
+    #     context = super().get_context_data(**kwargs)
+    #     q = self.request.GET.get('personmail') if self.request.GET.get('personmail') != None else ''
+    #     query = self.request.GET.get('personmail')
+    #     if query == None: query=""
+    #     print(query)
+    #     email = super().form.cleaned_data['email'] 
+    #     if Person.objects.filter(email=email).exists():
+    #             print('invalid')
+    #             messages.error(self.request, f'[Email]  and/or [Username] already in use.')
+    #             # messages.info(self.request, 'Your password has been changed successfully!')
+    #             return HttpResponseRedirect('/help/'+email)
+
+        # context["email"] = query #user.ticket_set.all()
+        # if self.form_valid:
+        #     print("The model object =", self.object)
+
+        # return context
+
+    #     return context
+    
+    # def form_valid(self, form):
+    #     name = form.cleaned_data['name']  
+    #     email = form.cleaned_data['email'] 
+    #     messages.success(self.request, "U bent op de wachtlijst geplaatst.")
+    #     wachtlijst=Locker.objects.get(kluisnummer='wachtlijst')
+    #     return super(CreatePerson,self).form_valid(form)
+
 def berichtenPage(request):
     q = request.GET.get('q') if request.GET.get('q') != None else ''
-    if q!='' or q !=None:
-        berichten = Bericht.objects.filter(body__icontains=q)
-    else:
-        berichten = Bericht.objects.all()
-    messagelocker=Locker.objects.all().first()     
-    if request.method == 'POST':
-        message = Bericht.objects.create(
-        user=request.user,
-        locker=messagelocker,
-        body=request.POST.get('body')
-        )
-    print(q)
 
-    return render(request, 'base/berichten.html', {'berichten': berichten})
+    return render(request, 'base/messages1.html', {'qq':q})
 
 
 @login_required(login_url='login')
@@ -1685,16 +1729,15 @@ def lockersPage2(request):
     kluisjes=Locker.objects.all().filter(verhuurd=True)     
     allekluisjes=Locker.objects.all()     
     lijst='verhuurd'
-    lockers =Locker.objects.filter(
-        Q(obsolete=False)&
-        (
-        Q(kluisnummer__icontains=q) |
-        Q(email__icontains=q)
-        ) 
-        ).order_by('topic') .exclude(kluisnummer='wachtlijst',)
-        # ).order_by('topic') #.exclude(verhuurd=False)
+    A=Q(email__icontains=q)
+    B=Q(kluisje__icontains=q)
+    C=Q(obsolete=False)
+    D=Q(opgezegd=False)
+    exclude_list = ['vrij', 'onbekend', 'Vrij','wachtlijst',]
+    # berichten=Bericht.objects.all()
+    verhuurd =Locker.objects.filter(  (A | B ) & (C & D) ).order_by('topic').exclude(email__in=exclude_list)
     context = {
-                'lockers': lockers,
+                'verhuurd': verhuurd,
                     'lijst': lijst,
                 'kluisjes': kluisjes,
                 'allekluisjes': allekluisjes,
