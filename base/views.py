@@ -8,7 +8,6 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth import authenticate, login, logout
 from django.urls import reverse, reverse_lazy
-import urllib3
 # from viking.models import  Matriks,KluisjesRV
 from base.models import Room,Message,User,Topic,Locker,Ploeg,Helptekst,Bericht,Excellijst,Person,Facturatielijst
 from django.db.models import Q
@@ -91,7 +90,6 @@ def registerPage(request):
             qq=Concat(user, Value(user))
             print (qq)
             q=qq
-            # url = "/berichten/" + "?q=" +urllib3.parse.quote(qq)
             url = "/berichten/" + "?q=" + "'controleer en noteer de naam en/of het emailadres'"
             return HttpResponseRedirect(url)
         else:
