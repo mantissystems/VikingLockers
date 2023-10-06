@@ -41,6 +41,8 @@ class Person(models.Model):
     locker = models.CharField(max_length=200, null=True)
     email = models.EmailField(unique=True, null=True)
     tekst = models.TextField(blank=True)
+    updated = models.DateTimeField(auto_now=True)
+    created = models.DateTimeField(auto_now_add=True)
     class Meta:
         ordering = ['email']
 
@@ -79,6 +81,7 @@ class Locker(models.Model):
     type = models.CharField(max_length=18, choices=SLOT,default='--')     
     topic = models.CharField(max_length=18,default='----')     
     verhuurd=models.BooleanField(default=False)
+    opgezegd=models.BooleanField(default=False)
     obsolete=models.BooleanField(default=False)
     owners = models.ManyToManyField(User, related_name='owners', blank=True)
     participants = models.ManyToManyField(Person, related_name='participants', blank=True)

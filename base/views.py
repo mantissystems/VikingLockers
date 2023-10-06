@@ -103,13 +103,21 @@ def home(request):
     messages.add_message(request, messages.INFO, "Welkom bij Viking Lockers.")    
     q = request.GET.get('q') if request.GET.get('q') != None else ''
     qq=q.lower()
-    kluisjes=Locker.objects.all()
+    verhuurd =Locker.objects.filter(
+        (Q(verhuurd=True)
+        ) 
+        ).order_by('topic')
     lockers =Locker.objects.filter(
     Q(kluisnummer__icontains=q) |
     Q(email__icontains=q)
-    # Q(owners__email__icontains=q)
+    # Q(owners__email__icontains=q) redundancy !!
     ).order_by('topic') #.exclude(verhuurd=False)
-    onverhuurd=Locker.objects.all().filter(verhuurd=False)     
+    A=Q(kluisnummer__icontains='vrij')
+    B=Q(kluisnummer__icontains='onbekend')
+    C=Q(obsolete=True)
+    D=Q(opgezegd=True)
+
+    onverhuurd =Locker.objects.filter( ( A | B)   &  ( C | D )).order_by('topic')
     messagelocker=Locker.objects.all().first()     
     from django.db.models import Count
     if request.method == 'POST':
@@ -128,6 +136,7 @@ def home(request):
                 messages.info(request, f'U heeft nog geen  locker.')
         except:
             print('8.not-found-user.locker:', request.user)
+            url = reverse('create-person',)
             pass
     elif request.user is not None:
         messages.info(request, f'Ubent niet ingelogd. Svp Inloggen / Registreren')
@@ -188,7 +197,7 @@ def home(request):
         return HttpResponseRedirect(url)
 
     else:
-        berichten=Bericht.objects.all()
+        # berichten=Bericht.objects.all()
         lockers =Locker.objects.filter(
     Q(kluisnummer__icontains=q) |
     Q(topic__icontains=q) |
@@ -202,7 +211,7 @@ def home(request):
     context = {
                'lijst':lijst,
                 'lockers': lockers,
-                'kluisjes': kluisjes,
+                'verhuurd': verhuurd,
                 'onverhuurd': onverhuurd,
                'berichten': berichten, 
                'room_messages': room_messages
@@ -1411,15 +1420,15 @@ class CreateLocker(CreateView):
 
 class CreatePerson(CreateView):
     model = Person
-    # fields = ['name','email','tekst']
-    fields='__all__'
+    fields = ['name','email',]
+    # fields='__all__'
     success_url = reverse_lazy('home')
 
-    def get_readonly_fields(self, request, obj=None):
-        fields = list(super().get_readonly_fields(request))
-        if request.user.is_superuser:
-            fields.append('tekst')
-        return fields
+    # def get_readonly_fields(self, request, obj=None):
+    #     fields = list(super().get_readonly_fields(request))
+    #     # if request.user.is_superuser:
+    #     #     fields.append('tekst')
+    #     return fields
     def get_context_data(self,**kwargs):
         context = super().get_context_data(**kwargs)
         q = self.request.GET.get('personmail') if self.request.GET.get('personmail') != None else ''
@@ -1427,12 +1436,18 @@ class CreatePerson(CreateView):
         if query == None: query=""
         print(query)
         context["email"] = query #user.ticket_set.all()
+        if self.form_valid:
+            print("The model object =", self.object)
+
         return context
 
     #     return context
     
     def form_valid(self, form):
+        name = form.cleaned_data['name']  
+        email = form.cleaned_data['email'] 
         messages.success(self.request, "U bent op de wachtlijst geplaatst.")
+        wachtlijst=Locker.objects.get(kluisnummer='wachtlijst')
         return super(CreatePerson,self).form_valid(form)
 
 def berichtenPage(request):
