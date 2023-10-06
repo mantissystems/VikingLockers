@@ -36,8 +36,8 @@
       </div>
       <h2>{{verhuurd.count}} Lockers</h2> 
       {% if request.user.is_superuser %}
-      <a href="{% url 'export_onverhuurd' %}" class="btn btn--link">=>Export Onverhuurd</a>
       {% if lijst == 'onverhuurd' %}
+      <a href="{% url 'export_onverhuurd' %}" class="btn btn--link">=>Export Onverhuurd</a>
       {% endif %}
       {% if lijst == 'verhuurd' %}
       <a href="{% url 'export_verhuurd' %}" class="btn btn--link">=>Export Verhuurd</a>

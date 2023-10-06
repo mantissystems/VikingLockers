@@ -127,7 +127,7 @@ def home(request):
     C=Q(obsolete=True)
     D=Q(opgezegd=True)
 
-    onverhuurd =Locker.objects.filter(  A | B  | C | D ).order_by('topic')
+    onverhuurd =Locker.objects.all() ## filter(  A | B  | C | D ).order_by('topic')
     messagelocker=Locker.objects.all().first()     
     from django.db.models import Count
     if request.method == 'POST':
@@ -210,13 +210,16 @@ def home(request):
         return HttpResponseRedirect(url)
 
     else:
+        # lage filtering als er gezocht wordt ==> vind obsolete en opgezegd. GEEN exclusions
         A=Q(email__icontains=q)
         B=Q(kluisje__icontains=q)
-        C=Q(obsolete=False)
-        D=Q(opgezegd=False)
-        exclude_list = ['vrij', 'onbekend', 'Vrij','wachtlijst',]
+        # C=Q(obsolete=False)
+        # D=Q(opgezegd=False)
+        # exclude_list = ['vrij', 'onbekend', 'Vrij','wachtlijst',]
         # berichten=Bericht.objects.all()
-        verhuurd =Locker.objects.filter(  (A | B ) & (C & D) ).order_by('topic').exclude(email__in=exclude_list)
+        # verhuurd =Locker.objects.filter(  (A | B ) & (C & D) ).order_by('topic').exclude(email__in=exclude_list)
+        lijst='home'
+        verhuurd =Locker.objects.filter(A | B ).order_by('topic') #.exclude(email__in=exclude_list)
 
     # Q(owners__email__icontains=q) #dit levert redundancy in het template op
     # ).order_by('topic') #.exclude(verhuurd=False) #ik wil alle lockers tonen
@@ -1125,22 +1128,6 @@ def tel_aantal_registraties(request):
     print('einde tel_aantal_lockers in facturatielijst')
     url = reverse('facturatielijst',)
     return HttpResponseRedirect(url)
-
-# def export_onverhuurd(request,):
-#     import csv
-#     onverhuurd =Locker.objects.filter(
-#         # Q(kluisnummer__icontains=q) |
-#     # Q(verhuurd=False)
-#         ).order_by('topic') #.exclude(verhuurd=False)
-#     onverhuurd=Locker.objects.all().order_by('topic')
-
-#     response = HttpResponse(content_type='text/csv')
-#     response['Content-Disposition'] = 'attachment; filename="all_lockers.csv"'
-#     writer = csv.writer(response)
-#     writer.writerow(['id', 'tenant', 'locker', 'keys','verhuurd'])
-#     for item in onverhuurd:
-#         writer.writerow([item.id ,item.email, item.kluisnummer, item.sleutels ,item.verhuurd,";"])
-#     return response
 
 @login_required(login_url='login')   
 def nummering(request):
