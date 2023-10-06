@@ -31,13 +31,10 @@
       </div>
 
       <div class="roomList__header">
-        <div>
-          {% comment %}
-          {% endcomment %}
-  
+        <div>  
         </div>
       </div>
-      <h2>{{lockers.count}} Lockerss</h2> 
+      <h2>{{verhuurd.count}} Lockers</h2> 
       {% if request.user.is_superuser %}
       <a href="{% url 'export_onverhuurd' %}" class="btn btn--link">=>Export Onverhuurd</a>
       {% if lijst == 'onverhuurd' %}
@@ -45,10 +42,6 @@
       {% if lijst == 'verhuurd' %}
       <a href="{% url 'export_verhuurd' %}" class="btn btn--link">=>Export Verhuurd</a>
       {% endif %}
-      {% comment %}
-      <th>regis</th>
-      <td>{{locker.is_registered}}</td>
-      {% endcomment %}
     {% endif %}
 
       {% include 'base/feed_member_lockers.html' %}
@@ -58,8 +51,6 @@
     <!-- Room List End -->
 
     <!-- Activities Start -->
-    {% comment %}
-    {% endcomment %}
     {% include 'base/activity_component.html' %}
 
 

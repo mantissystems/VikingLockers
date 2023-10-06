@@ -1733,7 +1733,7 @@ def lockersPage2(request):
     D=Q(opgezegd=False)
     exclude_list = ['vrij', 'onbekend', 'Vrij','wachtlijst',]
     # berichten=Bericht.objects.all()
-    verhuurd =Locker.objects.filter(  (A | B ) & (C & D) ).order_by('topic').exclude(email__in=exclude_list)
+    verhuurd =Locker.objects.filter(  (A | B ) & (C | D) ).order_by('topic').exclude(email__in=exclude_list)
     context = {
                 'verhuurd': verhuurd,
                     'lijst': lijst,
@@ -1760,14 +1760,14 @@ def lockersPage3(request):
     allekluisjes=Locker.objects.all()     
     mogelijkheden=allekluisjes.count() * 2     
     lijst='onverhuurd'
-    lockers =Locker.objects.filter(
-        Q(kluisnummer__icontains='vrij') |
-        Q(kluisnummer__icontains='onbekend')|
-        Q(obsolete=True)|
-        Q(verhuurd=False)
-        ).order_by('topic')
+    A=Q(email__icontains='vrij')
+    B=Q(email__icontains='onbekend')
+    C=Q(obsolete=True)
+    D=Q(opgezegd=True)
+
+    onverhuurd =Locker.objects.filter(  A | B  | C | D ).order_by('topic')
     context = {
-                'lockers': lockers,
+                'verhuurd': onverhuurd,
                     'lijst': lijst,
                 'kluisjes': kluisjes,
                 'allekluisjes': allekluisjes,
