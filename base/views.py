@@ -4,11 +4,10 @@ from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import get_object_or_404, redirect, render
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
-# from django.utils.decorators import method_decorator
+from django.db.models import Count
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth import authenticate, login, logout
 from django.urls import reverse, reverse_lazy
-# from viking.models import  Matriks,KluisjesRV
 from base.models import Room,Message,User,Topic,Locker,Ploeg,Helptekst,Bericht,Excellijst,Person,Facturatielijst
 from django.db.models import Q
 from base.forms import RoomForm, UserForm,  MyUserCreationForm,PloegForm,LockerForm,ExcelForm,PersonForm,WachtlijstForm
@@ -29,7 +28,6 @@ from django.core import mail
 from django.http import HttpResponse, HttpResponseRedirect
 from django.conf import settings
 from django.template.loader import render_to_string  #for email use
-# from base.serializers import UserSerializer, UserSerializerWithToken
 
 
 def loginPage(request):
@@ -84,9 +82,6 @@ def registerPage(request):
             # user.last_name = user.name.lower()
             from django.db.models.functions import Concat
             from django.db.models import Value
-
-            # MyModel.objects.filter(**kwargs).update(my_field=Concat('my_other_field', Value('a string'))
-            # user=Concat('my_other_field', Value('a string'))
             qq=Concat(user, Value(user))
             print (qq)
             q=qq
@@ -98,19 +93,12 @@ def registerPage(request):
             q= request.POST.get('email') 
             url = "/berichten/" + "?q=" +q
             return HttpResponseRedirect(url)
-
-        # return super().form_invalid(form)
-                # print('single',request.POST.get('name'),request.POST.get('email'))
-                # user.save()
-                # login(request, user)
-                # return redirect('/')
-
     return render(request, 'base/login_register.html', {'form': form})
 
 def home(request):
     lijst='home'
     from django.utils.safestring import mark_safe
-    messages.add_message(request, messages.INFO, "Welkom bij Viking Lockers.")    
+    # messages.add_message(request, messages.INFO, "Welkom bij Viking Lockers.")    
     q = request.GET.get('q') if request.GET.get('q') != None else ''
     qq=q.lower()
     verhuurd =Locker.objects.filter(
@@ -127,9 +115,10 @@ def home(request):
     C=Q(obsolete=True)
     D=Q(opgezegd=True)
 
-    onverhuurd =Locker.objects.all() ## filter(  A | B  | C | D ).order_by('topic')
-    messagelocker=Locker.objects.all().first()     
-    from django.db.models import Count
+    onverhuurd =Locker.objects.all().filter(  A | B  | C | D ).order_by('topic')
+    messagelocker=Locker.objects.all().first()    
+    rest=verhuurd.count() - onverhuurd.count() 
+    # from django.db.models import Count
     if request.method == 'POST':
             message = Bericht.objects.create(
             user=request.user,
@@ -275,7 +264,7 @@ def activityPage(request):
 def helpPage(request):
     q = request.GET.get('q') if request.GET.get('q') != None else ''
     aantalusers=User.objects.all()
-    from django.db.models import Count
+    # from django.db.models import Count
     results = (User.objects
     .values('owners')
     .annotate(dcount=Count('email'))
@@ -1437,7 +1426,7 @@ class CreatePerson(CreateView):
 
     # fields = '__all__'
     fields=['name','email',]
-    success_url = reverse_lazy('profiles')
+    success_url = reverse_lazy('home')
     
     def form_valid(self, form):
         name = form.cleaned_data['name']  
@@ -1492,6 +1481,7 @@ class CreatePerson(CreateView):
     #     return super(CreatePerson,self).form_valid(form)
 
 def berichtenPage(request):
+    # messages.add_message(request, messages.INFO, "Welkom bij Viking Lockers.")    
     q = request.GET.get('q') if request.GET.get('q') != None else ''
 
     return render(request, 'base/messages1.html', {'qq':q})

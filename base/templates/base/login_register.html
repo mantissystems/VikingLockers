@@ -37,18 +37,19 @@
               </path>
             </svg>
 
-            Login
+            Sign-In
           </button>
         </form>
 
         <div class="auth__action">
-          <p>Nog geen Account?</p>
+          <p>Please Register</p>
+          <hr>
           {% comment %}
           <a href="{% url 'register' %}" class="btn btn--link">Registreren</a><hr>
           <a href="{% url 'create-person' %}" class="btn btn--link">Op de Wachtlijst</a>
           {% endcomment %}
-          <a class="btn btn--main btn--pill" href="{% url 'register' %}">Registreer</a>
-          <a class="btn btn--main btn--pill" href="{% url 'create-person' %}">Wachtlijst</a>
+          <a class="btn btn--main btn--pill" href="{% url 'register' %}">Register</a>
+          <a class="btn btn--main btn--pill" href="{% url 'create-person' %}">WaitingList</a>
 
 
         </div>
