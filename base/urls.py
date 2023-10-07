@@ -19,6 +19,7 @@ urlpatterns = [
     path('topics/', views.topicsPage, name="topics"),
     path('users/', views.MemberListView.as_view(), name="users"),
     path('profiles/',login_required(views.PersonListView.as_view()),name='profiles'),
+    path('wachtlijst/',views.Wachtlijst.as_view(),name='wachtlijst'),
     path('lockers/', views.lockersPage2, name="lockers"),
     path('onverhuurd/', views.lockersPage3, name="onverhuurd"),
     path('excellijst/', views.ExcelView.as_view(), name="excellijst"),
@@ -46,12 +47,9 @@ urlpatterns = [
     # path('lockers/', views.LockerView.as_view(), name="lockers"),
     # path('<str:pk>/update-locker/',views.LockerUpdate.as_view(), name='update-locker'),  
     # path('<str:row>/create_locker/<str:kol>/',views.create_locker, name='create_locker'),  
-    # path('update-room/<str:pk>/', views.updateRoom, name="update-room"),
-    # path('delete-room/<str:pk>/', views.deleteRoom, name="delete-room"),
-    # path('create-room/', views.createRoom, name="create-room"),
     # path('profiles/', views.PersonListView.as_view(), name="profiles"),
     # path('lockers/', login_required(views.LockerView.as_view()), name="lockers"),
-   # path('users/', views.user_listPage, name="users"),
+   path('m2/', views.m2mtotext, name="m2"),
     # path('profiles/', views.profilePage, name="profiles"),
     ]
 # https://docs.djangoproject.com/en/3.1/topics/http/urls/

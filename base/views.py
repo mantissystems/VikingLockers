@@ -107,8 +107,8 @@ def home(request):
         ).order_by('topic')
     lockers =Locker.objects.filter(
     Q(kluisnummer__icontains=q) |
-    Q(email__icontains=q)
-    # Q(owners__email__icontains=q) redundancy !!
+    Q(email__icontains=q)|
+    Q(tekst__icontains=q) 
     ).order_by('topic') #.exclude(verhuurd=False)
     A=Q(email__icontains='vrij')
     B=Q(email__icontains='onbekend')
@@ -202,13 +202,14 @@ def home(request):
         # lage filtering als er gezocht wordt ==> vind obsolete en opgezegd. GEEN exclusions
         A=Q(email__icontains=q)
         B=Q(kluisje__icontains=q)
+        C=Q(tekst__icontains=q) 
         # C=Q(obsolete=False)
         # D=Q(opgezegd=False)
         # exclude_list = ['vrij', 'onbekend', 'Vrij','wachtlijst',]
         # berichten=Bericht.objects.all()
         # verhuurd =Locker.objects.filter(  (A | B ) & (C & D) ).order_by('topic').exclude(email__in=exclude_list)
         lijst='home'
-        verhuurd =Locker.objects.filter(A | B ).order_by('topic') #.exclude(email__in=exclude_list)
+        verhuurd =Locker.objects.filter(A | B | C ).order_by('topic') #.exclude(email__in=exclude_list)
 
     # Q(owners__email__icontains=q) #dit levert redundancy in het template op
     # ).order_by('topic') #.exclude(verhuurd=False) #ik wil alle lockers tonen
@@ -738,7 +739,6 @@ class MemberListView (LoginRequiredMixin, ListView):
 paginate_by = 20
 
 class PersonListView (ListView):
-    # from django.db.models.functions import Lower
     model=Person
     def get_context_data(self,**kwargs):
         
@@ -757,6 +757,25 @@ class PersonListView (ListView):
             Q(locker__icontains=query)
             ).order_by('hoofdhuurder','wachtlijst','onderhuur','email')
         # queryset=Person.objects.all().order_by('hoofdhuurder','wachtlijst','onderhuur','email')
+        context = {
+            'query': query,
+            'object_list' :queryset,
+            }
+        return context
+class Wachtlijst (ListView):
+    model=Person
+    template_name='base/wachtlijst.html'
+    def get_context_data(self,**kwargs):
+        
+        q = self.request.GET.get('q') if self.request.GET.get('q') != None else ''
+        query = self.request.GET.get('q')
+        if query == None: query=""
+        print('query',q)
+        queryset = Person.objects.filter(
+            (Q(email__icontains=query)|
+            Q(name__icontains=query)|
+            Q(locker__icontains=query))&Q(wachtlijst=True)
+            ).order_by('hoofdhuurder','wachtlijst','onderhuur','email')
         context = {
             'query': query,
             'object_list' :queryset,
@@ -1118,6 +1137,18 @@ def tel_aantal_registraties(request):
     url = reverse('facturatielijst',)
     return HttpResponseRedirect(url)
 
+def m2mtotext(request,):
+    # loc=Locker.objects.get(id=134)
+    # for pp in loc.participants.all():
+    #         print(loc.kluisnummer,pp.name)
+    #         loc.tekst+=pp.email + '\r'
+    #         loc.save()
+
+    # for l in Locker.objects.all().exclude(tekst=None):
+        # print(length(l.tekst))
+    url = reverse('facturatielijst',)
+    return HttpResponseRedirect(url)
+
 @login_required(login_url='login')   
 def nummering(request):
     print('nummering in veld topic===============')
@@ -1150,14 +1181,6 @@ def nummering(request):
             k.save()
 
         except Locker.DoesNotExist:
-                # if (not '00' or 'A' or 'B' or 'C' in l) and i<25:
-                #     # print(l)
-                #     print('niet',l)
-                #     locker, created = Locker.objects.update_or_create(kluisnummer=l,
-                #                         email='onbekend',
-                #                         kluisje=l,
-                #                         type='create')
-
                 pass
         if 25 <= i <= 49:
             l= 'Dames ' + 'B-' + str(i).zfill(3)
@@ -1184,11 +1207,6 @@ def nummering(request):
                 if 'C' in l:
                     # print(l)
                     print('niet',l)
-                    # locker, created = Locker.objects.update_or_create(kluisnummer=l,
-                    #                                        email='onbekend',
-                    #                                        kluisje=l,
-                    #                                        type='create')
-
                 pass
 
     # ====
@@ -1213,23 +1231,23 @@ def export_onverhuurd(request,):
         writer.writerow([item.id ,item.email, item.kluisnummer, item.kluisje ,item.topic,";"])
     return response
 def export_emaillijst(request,):
+
     import csv
-    exclude_list = ['vrij', 'onbekend', 'Vrij','wachtlijst',]
-    verhuurd =Locker.objects.all() #filter(
-        # Q(kluisnummer__icontains='vrij') |
-        # Q(kluisnummer__icontains='onbekend')|
-        # Q(obsolete=True)|
-        # Q(verhuurd=False)
-        # ).order_by('topic')
-        
+    exclude_list = ['vrij', 'onbekend','wachtlijst',]
+    A=Q(verhuurd=True)
+    B=Q(id__gte=1)
+    C=Q(obsolete=False)
+    D=Q(opgezegd=False)
+    verhuurd =Locker.objects.filter(  (A & D & C)).order_by('topic').exclude(email__icontains=exclude_list)
+    # verhuurd =Locker.objects.filter(A | B ).order_by('topic') .exclude(email__in=exclude_list)
     response = HttpResponse(content_type='text/csv')
     response['Content-Disposition'] = 'attachment; filename="email_lijst.csv"'
     writer = csv.writer(response)
-    writer.writerow(['id', 'tenant', 'oude naam','nwe naam','huidige', 'obs',])
+    writer.writerow(['id', 'tenant', 'oude naam','nwe naam','huidige', 'C','D'])
     for item in verhuurd:
-        writer.writerow([item.id ,item.email, item.kluisje,item.topic,item.kluisnummer, item.obsolete ,";"])
+        writer.writerow([item.id ,item.email, item.kluisje,item.topic,item.kluisnummer, item.obsolete ,item.opgezegd,";"])
     return response
-
+    
 def export_verhuurd(request,):
     import csv
     # filename="facturatie_lijst.csv"'
@@ -1331,58 +1349,58 @@ def lockerPage(request,pk):
             return redirect('locker', locker.id)
     return render(request, 'base/update-locker.html', context)
 
-@login_required(login_url='login')
-def updateRoom(request, pk):
-    room = Room.objects.get(id=pk)
-    form = RoomForm(instance=room)
-    topics = Topic.objects.all()
-    # if request.user != room.host:
-    #     return HttpResponse('Your are not allowed here!!')
+# @login_required(login_url='login')
+# def updateRoom(request, pk):
+#     room = Room.objects.get(id=pk)
+#     form = RoomForm(instance=room)
+#     topics = Topic.objects.all()
+#     # if request.user != room.host:
+#     #     return HttpResponse('Your are not allowed here!!')
 
-    if request.method == 'POST':
-        topic_name = request.POST.get('topic')
-        topic, created = Topic.objects.get_or_create(name=topic_name)
-        room.name = request.POST.get('name')
-        room.topic = topic
-        room.description = request.POST.get('description')
-        room.save()
-        return redirect('home')
+#     if request.method == 'POST':
+#         topic_name = request.POST.get('topic')
+#         topic, created = Topic.objects.get_or_create(name=topic_name)
+#         room.name = request.POST.get('name')
+#         room.topic = topic
+#         room.description = request.POST.get('description')
+#         room.save()
+#         return redirect('home')
 
-    context = {'form': form, 'topics': topics, 'room': room}
-    return render(request, 'base/room_form.html', context)
-
-
-@login_required(login_url='login')
-def deleteRoom(request, pk):
-    room = Room.objects.get(id=pk)
-
-    if request.user != room.host:
-        return HttpResponse('Your are not allowed here!!')
-
-    if request.method == 'POST':
-        room.delete()
-        return redirect('home')
-    return render(request, 'base/delete.html', {'obj': room})
+#     context = {'form': form, 'topics': topics, 'room': room}
+#     return render(request, 'base/room_form.html', context)
 
 
-@login_required(login_url='login')
-def createRoom(request):
-    form = RoomForm()
-    topics = Topic.objects.all()
-    if request.method == 'POST':
-        topic_name = request.POST.get('topic')
-        topic, created = Topic.objects.get_or_create(name=topic_name)
+# @login_required(login_url='login')
+# def deleteRoom(request, pk):
+#     room = Room.objects.get(id=pk)
 
-        Room.objects.create(
-            host=request.user,
-            topic=topic,
-            name=request.POST.get('name'),
-            description=request.POST.get('description'),
-        )
-        return redirect('home')
+#     if request.user != room.host:
+#         return HttpResponse('Your are not allowed here!!')
 
-    context = {'form': form, 'topics': topics}
-    return render(request, 'base/room_form.html', context)
+#     if request.method == 'POST':
+#         room.delete()
+#         return redirect('home')
+#     return render(request, 'base/delete.html', {'obj': room})
+
+
+# @login_required(login_url='login')
+# def createRoom(request):
+#     form = RoomForm()
+#     topics = Topic.objects.all()
+#     if request.method == 'POST':
+#         topic_name = request.POST.get('topic')
+#         topic, created = Topic.objects.get_or_create(name=topic_name)
+
+#         Room.objects.create(
+#             host=request.user,
+#             topic=topic,
+#             name=request.POST.get('name'),
+#             description=request.POST.get('description'),
+#         )
+#         return redirect('home')
+
+#     context = {'form': form, 'topics': topics}
+#     return render(request, 'base/room_form.html', context)
 
 class CreateFactuur(CreateView):
     model = Facturatielijst
