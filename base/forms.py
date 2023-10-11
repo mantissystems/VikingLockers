@@ -20,12 +20,11 @@ class DataForm(forms.Form):
 class MyUserCreationForm(UserCreationForm):
     class Meta:
         model = User
-        fields = [ 'first_name', 'email', 'password1', 'password2']
-        exclude = ['username']
+        fields = ['first_name', 'username', 'email', 'password1', 'password2']
         labels = {
         "email": "Your email. eg.: info@mail.nl",
-        "password": "minimum length 8",
-        "password2": "deel mij in als host",
+        "password1": "wil in flexpoule",
+        "Password2": "deel mij in als host",
         "username": "Your app-username",
         "name": "Your name",
         }

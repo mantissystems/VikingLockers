@@ -5,12 +5,14 @@
         </div>
     </div>
     <div class="activities__boxHeader roomListRoom__header">
-        <a href="{% url 'update-locker' locker.id %}">{{locker.topic}} => {{locker.email|slice:"0:12"}}... {% if locker.participants.count > 0 %} ({{locker.participants.count}} gebruikers) {% endif %}{% if locker.obsolete %} (opheffen) {% endif %}
-             </a>
+        <a href="{% url 'update-locker' locker.id %}">{{locker.topic}} => {{locker.email|slice:"0:12"}}... 
+        </a>
+        {% if locker.tekst%} {{locker.tekst|linebreaks}}  {% endif %}{% if locker.obsolete %} (opgeheven) {% endif %}
     </div>
 
 </div>
 {% endfor %}
+{% comment %}
 {% if messages %}
 <ul class="messages">
     {% for message in messages %}
@@ -18,4 +20,5 @@
     {% endfor %}
 </ul>
 {% endif %}
+{% endcomment %}
 

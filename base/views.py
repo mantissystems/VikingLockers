@@ -13,7 +13,6 @@ from django.db.models import Q
 from base.forms import RoomForm, UserForm,  MyUserCreationForm,PloegForm,LockerForm,ExcelForm,PersonForm,WachtlijstForm
 from django.views.generic import(TemplateView,ListView)
 from django.contrib.auth.models import AnonymousUser
-from django.contrib import messages
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework.permissions import IsAuthenticated, IsAdminUser
 from rest_framework.response import Response
@@ -23,6 +22,7 @@ from collections import namedtuple
 from rest_framework import status
 from django.views.generic.edit import CreateView, UpdateView,DeleteView
 from django.http import JsonResponse
+from django.utils.safestring import mark_safe
 from django.core.mail import EmailMessage
 from django.core import mail
 from django.http import HttpResponse, HttpResponseRedirect
@@ -62,109 +62,115 @@ def logoutUser(request):
     return redirect('home')
 
 def registerPage(request):
-    # email_used=bool
     form = MyUserCreationForm()
     pemail=request.POST.get('email')
+    print(pemail)
+    try:
+        usr=User.objects.get(email=pemail)
+    except:
+        pass
+    else:
+        messages.error(request, 'User email already in use.')
+
+
     if request.method == 'POST':
         form = MyUserCreationForm(request.POST)
-        if not form.is_valid():
-            post_email = form.cleaned_data.get('email') # Extracting the email value from the form
-            if User.objects.filter(email=post_email).exists():
-                # print('invalid')
-                # messages.error(request, f'[Email]  and/or [Username] already in use.')
-                messages.info(request, 'You are registered successfully!')
-                return HttpResponseRedirect('/berichten/'+post_email)
-
         if form.is_valid():
-            print('valid')
             user = form.save(commit=False)
-            # user.username = user.name.lower()
-            # user.last_name = user.name.lower()
-            from django.db.models.functions import Concat
-            from django.db.models import Value
-            qq=Concat(user, Value(user))
-            print (qq)
-            q=qq
-            url = "/berichten/" + "?q=" + "'controleer en noteer de naam en/of het emailadres'"
-            return HttpResponseRedirect(url)
+            user.username = user.username.lower()
+            print(user.username)
+            user.save()
+            login(request, user)
+            return redirect('home')
         else:
-            messages.error(request, 'email of naam reeds in gebruik', 'warning')
-            email=request.POST.get('name'),request.POST.get('email')
-            q= request.POST.get('email') 
-            url = "/berichten/" + "?q=" +q
+            print('else')
+            url='/berichten'
+            # messages.error(request, 'An error occurred during registration')
+            messages.add_message(request, messages.ERROR, "3.An error occurred during registration", extra_tags="dragonball")
             return HttpResponseRedirect(url)
+
     return render(request, 'base/login_register.html', {'form': form})
+
 
 def home(request):
     lijst='home'
-    from django.utils.safestring import mark_safe
-    # messages.add_message(request, messages.INFO, "Welkom bij Viking Lockers.")    
+    system_messages = messages.get_messages(request)
+    for message in system_messages:
+     print()
+    # This iteration is necessary
+     pass
+    messages.set_level(request, messages.INFO)
     q = request.GET.get('q') if request.GET.get('q') != None else ''
     qq=q.lower()
-    verhuurd =Locker.objects.filter(
-        (Q(verhuurd=True)
-        ) 
-        ).order_by('topic')
-    lockers =Locker.objects.filter(
-    Q(kluisnummer__icontains=q) |
-    Q(email__icontains=q)|
-    Q(tekst__icontains=q) 
-    ).order_by('topic') #.exclude(verhuurd=False)
     A=Q(email__icontains='vrij')
     B=Q(email__icontains='onbekend')
+    B=Q(email__icontains='wachtlijst')
     C=Q(obsolete=True)
     D=Q(opgezegd=True)
 
     onverhuurd =Locker.objects.all().filter(  A | B  | C | D ).order_by('topic')
+    onverhuurd_lijst=onverhuurd.values_list('id')
+    # print(onverhuurd_lijst)
+    verhuurd =Locker.objects.filter(
+        (Q(verhuurd=True)
+        ) 
+    ).order_by('topic') .exclude(id__in=onverhuurd_lijst)
+    lockers =Locker.objects.filter(
+    Q(kluisnummer__icontains=q) |
+    Q(email__icontains=q)|
+    Q(tekst__icontains=q) 
+    ).order_by('topic') .exclude(id__in=onverhuurd_lijst)
     messagelocker=Locker.objects.all().first()    
     rest=verhuurd.count() - onverhuurd.count() 
-    # from django.db.models import Count
     if request.method == 'POST':
             message = Bericht.objects.create(
             user=request.user,
             locker=messagelocker,
             body=request.POST.get('body')
         )
-    if request.user.is_authenticated:
-        try:
-            user=User.objects.get(id=request.user.id)
-            locker2 = Locker.objects.get(kluisnummer=user.locker,email=user.email,verhuurd=True)
-            if locker2:
-                messages.info(request, mark_safe(f"Beheer uw locker: <a href='{locker2.id}/update-locker'>{locker2.kluisnummer}</a>"))
-            else:
-                messages.info(request, f'U heeft nog geen  locker.')
-        except:
-            print('8.not-found-user.locker:', request.user)
-            url = reverse('create-person',)
-            pass
-    elif request.user is not None:
-        # messages.info(request, f'Ubent niet ingelogd. Svp Inloggen / Registreren')
-        print('2.not-none-user:', request.user)
-        url = "/berichten/" + "?q=" + "Ubent niet ingelogd. Svp Inloggen / Registreren"
-        return HttpResponseRedirect(url)
+    if not request.user.is_authenticated:
+        print('1.not-auth:', request.user)
+        count=9
+        # print('2.not-none-user:', request.user)
+        url = "/berichten/"
+        messages.add_message(request, messages.INFO, "2.bent niet ingelogd. Svp Inloggen / Registreren", extra_tags="dragonball")
 
-        # return HttpResponseRedirect('/registreer/')
-        return HttpResponseRedirect('/login/')
-    elif request.user == AnonymousUser:
-          print('3.anonymoususer:', request.user)
-    elif request.user != AnonymousUser:
-            print('4.not-none-and-not-anonymous user:', request.user)
-            try:
-                    user=User.objects.get(id=request.user.id)
-                    yourlocker=Locker.objects.filter(email__icontains=user.email)
-                    yourlocker=Locker.objects.filter(kluisnummer__icontains=user.locker)
-                    cnt=yourlocker.count()
-                    print('6.logged-in-user:', request.user)
-            except:
-                print('7.not-foundlocker-user:', request.user)
-                pass
-            else:
-                print('7.use-user:', request.user)
-    berichten=Bericht.objects.all() ##.filter(user=request.user.id)
+        # messages.warning(request, f'U bent niet ingelogd. Svp Inloggen / Registreren')
+        # messages.debug(request, "%s debug bericht." % count)
+        # messages.info(request, "info bericht.")
+        # messages.success(request, "succes bericht.")
+        # messages.warning(request, "warning bericht.")
+        # messages.error(request, "error bericht.")
+        return HttpResponseRedirect(url)
+    if request.user.is_authenticated:
+        print('1.authorised:', request.user)
+# het berichtenscherm voorzien van ingelogd zijn of niet ingelogd zijn.
+# overbodige meldingen trachten weg te laten.
+# verdelenv an de meldingen over error, debud, warning, 
+# Level Constant 	Value
+# DEBUG 	10
+# INFO   	20
+# SUCCESS 	25
+# WARNING 	30
+# ERROR 	40
+
+    # messages.add_message(request, messages.INFO, "Over 9000!", extra_tags="dragonball")
+    messages.add_message(request, messages.INFO, "Welkom bij Lockermanager", extra_tags="dragonball")
+    # messages.add_message(request, messages.INFO, "Voor meer informatie kunt u inloggen", extra_tags="dragonball")
+    # messages.warning(request, "Voor meer informatie kunt u inloggen", extra_tags="email")
+
+    storage = messages.get_messages(request)
+    for message in storage:
+        print(message)
     url = reverse('berichten',)
     if q!='' or q !=None:
         lijst='home'
-        verhuurd=Locker.objects.all().filter(verhuurd=True)     
+        # verhuurd=Locker.objects.all().filter(verhuurd=True)     
+        verhuurd =Locker.objects.filter(
+        (Q(verhuurd=True)
+        ) 
+        ).order_by('topic') .exclude(id__in=onverhuurd_lijst)
+
     if 'xls' in qq:
         x = qq.replace("xls ", "")
         q=x
@@ -199,23 +205,21 @@ def home(request):
         return HttpResponseRedirect(url)
 
     else:
-        # lage filtering als er gezocht wordt ==> vind obsolete en opgezegd. GEEN exclusions
+        # lage filtering als er gezocht wordt ==> vind obsolete en opgezegd en GEEN exclusions
         A=Q(email__icontains=q)
         B=Q(kluisje__icontains=q)
         C=Q(tekst__icontains=q) 
         # C=Q(obsolete=False)
         # D=Q(opgezegd=False)
-        # exclude_list = ['vrij', 'onbekend', 'Vrij','wachtlijst',]
-        # berichten=Bericht.objects.all()
+        exclude_list = ['vrij', 'onbekend', 'Vrij','wachtlijst','Onbekend',]
+        berichten=Bericht.objects.all()
         # verhuurd =Locker.objects.filter(  (A | B ) & (C & D) ).order_by('topic').exclude(email__in=exclude_list)
         lijst='home'
-        verhuurd =Locker.objects.filter(A | B | C ).order_by('topic') #.exclude(email__in=exclude_list)
-
-    # Q(owners__email__icontains=q) #dit levert redundancy in het template op
+        if q!='' or q !=None:
+            verhuurd =Locker.objects.filter(A | B | C ).order_by('topic').exclude(email__in=exclude_list)
     # ).order_by('topic') #.exclude(verhuurd=False) #ik wil alle lockers tonen
-    rest=verhuurd.count() - onverhuurd.count()
+    rest=168 - onverhuurd.count()
     room_messages = Message.objects.all()
-    # facturatielijst=Facturatielijst.objects.all()
     context = {
                'lijst':lijst,
                'rest':rest,
@@ -226,6 +230,41 @@ def home(request):
                'room_messages': room_messages
                }
     return render(request, 'base/home.html', context)
+# storage.used = False
+    #     try:
+    #         user=User.objects.get(id=request.user.id)
+    #         locker2 = Locker.objects.get(kluisnummer=user.locker,email=user.email,verhuurd=True)
+    #         if locker2:
+    #             messages.info(request, mark_safe(f"Beheer uw locker: <a href='{locker2.id}/update-locker'>{locker2.kluisnummer}</a>"))
+    #         else:
+    #             messages.info(request, f'U heeft nog geen  locker.')
+    #     except:
+    #         print('8.not-found-user.locker:', request.user)
+    #         url = reverse('create-person',)
+    #         pass
+    # elif request.user is not None :
+    #     print('2.not-none-user:', request.user)
+    #     url = "/berichten/" + "?q=" + "Ubent niet ingelogd. Svp Inloggen / Registreren"
+    #     return HttpResponseRedirect(url)
+
+        # return HttpResponseRedirect('/registreer/')
+        # return HttpResponseRedirect('/login/')
+    # elif request.user == AnonymousUser:
+    #       print('3.anonymoususer:', request.user)
+    # elif request.user != AnonymousUser:
+    #         print('4.not-none-and-not-anonymous user:', request.user)
+    #         try:
+    #                 user=User.objects.get(id=request.user.id)
+    #                 yourlocker=Locker.objects.filter(email__icontains=user.email)
+    #                 yourlocker=Locker.objects.filter(kluisnummer__icontains=user.locker)
+    #                 cnt=yourlocker.count()
+    #                 print('6.logged-in-user:', request.user)
+    #         except:
+    #             print('7.not-foundlocker-user:', request.user)
+    #             pass
+    #         else:
+    #             print('7.use-user:', request.user)
+    # berichten=Bericht.objects.all() ##.filter(user=request.user.id)
 
 
 class LockerView (LoginRequiredMixin,ListView):
@@ -265,33 +304,31 @@ def activityPage(request):
 def helpPage(request):
     q = request.GET.get('q') if request.GET.get('q') != None else ''
     aantalusers=User.objects.all()
-    # from django.db.models import Count
-    results = (User.objects
-    .values('owners')
-    .annotate(dcount=Count('email'))
+    results = (Locker.objects
+    .values('kluisnummer')
+    .annotate(dcount=Count('kluisnummer'))
     .order_by()
     )   
-    # results = (Locker.objects
-    # .values('kluisnummer')
-    # .annotate(dcount=Count('kluisnummer'))
-    # .order_by()
-    # )   
-    # joiner=Locker.objects.none
-    # cnt=0
-    # joincnt=0
-    # results = (Locker.objects
-    # .values('kluisnummer')
-    # .annotate(dcount=Count('kluisnummer'))
-    # .order_by()
-    # )       
+    verhuurd =Locker.objects.filter(
+        (Q(verhuurd=True)
+        ) 
+        ).order_by('topic')
+    lockers =Locker.objects.filter(
+    Q(kluisnummer__icontains=q) |
+    Q(email__icontains=q)|
+    Q(tekst__icontains=q) 
+    ).order_by('topic') #.exclude(verhuurd=False)
+    A=Q(email__icontains='vrij')
+    B=Q(email__icontains='onbekend')
+    C=Q(obsolete=True)
+    D=Q(opgezegd=True)
+    onverhuurd =Locker.objects.all().filter(  A | B  | C | D ).order_by('topic')
 
     helptekst=Helptekst.objects.filter(
-            #    'results': results,
-            # Q(publish=True)
             Q(title__icontains=q)|
             Q(content__icontains=q)
         ).order_by('seq').exclude(publish=False)
-    return render(request, 'base/helptekst.html', {'helptekst': helptekst,'aantalusers':aantalusers,'results': results,})
+    return render(request, 'base/helptekst.html', {'helptekst': helptekst,'aantalusers':verhuurd,'results': onverhuurd,})
 
 
 def infoPage(request):
@@ -657,12 +694,7 @@ def excel_regelPage(request,pk):
                 'vikingers':vikingers,
                 'kluis': excel,
                 'form': form,
-            }
-    
-    # if request.user.email != locker.email and not request.user.is_superuser:
-    #     messages.error(request, f'{locker.kluisnummer} : Is niet uw locker')
-    #     return render(request, 'base/berichten.html', {'lockers': lockers,'topics':topics})
-    
+            }    
     if request.method == 'POST':
         form = ExcelForm(request.POST, request.FILES, instance=excel)
         onderhuurder= request.POST.get('onderhuurder')
@@ -674,35 +706,23 @@ def excel_regelPage(request,pk):
         print('onderhuurder',kluis, onderhuurder,sleutels,slotcode)
         if form.is_valid():
             print('form is valid')
-            # if kluis:
-            #     created = Locker.objects.update_or_create(kluisnummer=kluis.id,
-            #         email=excel.email,
-            #         verhuurd=True,
-            #         kluisje=kluis.id)
-
             if onderhuurder:
                 print('onderhuurder', onderhuurder)
                 h=User.objects.get(id=onderhuurder)
-                # excel.owners.add(h)
                 return redirect('locker', kluis.id)
             if huuropheffen:
 
                 h=User.objects.get(id=huuropheffen)
                 print('opheffen',h)
-                # locker.owners.remove(h)
                 form.save()
             return redirect('excel-regel', kluis.id)
     return render(request, 'base/excellijst_form.html', context)
-    # return render(request, 'base/update-locker.html', context)
 
 @login_required(login_url='login')
 def updateRoom(request, pk):
     room = Room.objects.get(id=pk)
     form = RoomForm(instance=room)
     topics = Topic.objects.all()
-    # if request.user != room.host:
-    #     return HttpResponse('Your are not allowed here!!')
-
     if request.method == 'POST':
         topic_name = request.POST.get('topic')
         topic, created = Topic.objects.get_or_create(name=topic_name)
@@ -744,11 +764,6 @@ class PersonListView (ListView):
         
         q = self.request.GET.get('q') if self.request.GET.get('q') != None else ''
         query = self.request.GET.get('q')
-    #     Person.objects.annotate(
-    #     uname=self.Lower('email')
-    # ).order_by('uname').values_list('email', flat=True)
-    #     print(uname)
-
         if query == None: query=""
         print('query',q)
         queryset = Person.objects.filter(
@@ -1438,8 +1453,8 @@ class CreatePerson(CreateView):
 
     def get_form(self, form_class=None):
         form = super().get_form(form_class)
-        form.fields['name'].label = "Name or Nickname"
-        form.fields['email'].label = 'Your e-mail address'
+        form.fields['name'].label = "Naam / Bijnaam"
+        form.fields['email'].label = 'E-mail address'
         return form
 
     # fields = '__all__'
@@ -1499,10 +1514,25 @@ class CreatePerson(CreateView):
     #     return super(CreatePerson,self).form_valid(form)
 
 def berichtenPage(request):
-    # messages.add_message(request, messages.INFO, "Welkom bij Viking Lockers.")    
+    messages.set_level(request, messages.WARNING)
+    messages.add_message(request, messages.INFO, "Welkom bij Viking Lockers.")    
+    # if request.user.is_authenticated:
+    #     try:
+    #         user=User.objects.get(id=request.user.id)
+    #         locker2 = Locker.objects.get(kluisnummer=user.locker,email=user.email,verhuurd=True)
+    #         if locker2:
+    #             messages.info(request, mark_safe(f"Direct naar uw locker: <a href='{locker2.id}/update-locker'>{locker2.kluisnummer}</a>"))
+    #         else:
+    #             messages.info(request, f'U heeft nog geen  locker.')
+    #     except:
+    #         print('8.not-found-user.locker:', request.user)
+    #         url = reverse('create-person',)
+    #         pass
+
     q = request.GET.get('q') if request.GET.get('q') != None else ''
 
-    return render(request, 'base/messages1.html', {'qq':q})
+    return render(request, 'base/messages1.html', {'qq':q,})
+    # return render(request, 'base/messages1.html', {'qq':q,'locker':locker2})
 
 
 @login_required(login_url='login')
@@ -1648,9 +1678,9 @@ def update_locker(request,pk):
     form = list(form)
     topics=Topic.objects.all()
     vikingers=Person.objects.all().order_by('name')
+    url = "/berichten/"
     if request.user.email != locker.email and not request.user.is_superuser:
-        messages.error(request, f'{locker.kluisnummer} : Is niet uw locker')
-        url = reverse('lockers',)
+        messages.add_message(request,messages.INFO, f'{locker.kluisnummer} : Is niet uw locker')
         return HttpResponseRedirect(url)
 
     if request.method == 'POST':
@@ -1739,16 +1769,6 @@ def lockersPage2(request):
     return render(request, 'base/kluisjes.html', context)
     # return render(request, 'base/kluisjes.html', {'lockers': lockers})
 
-# email = EmailMessage(
-#     "Hello",
-#     "Body goes here",
-#     "from@example.com",
-#     ["to1@example.com", "to2@example.com"],
-#     ["bcc@example.com"],
-#     reply_to=["another@example.com"],
-#     headers={"Message-ID": "foo"},
-# )
-
 def lockersPage3(request):
     q = request.GET.get('q') if request.GET.get('q') != None else ''
     kluisjes=Locker.objects.all().filter(verhuurd=False)     
@@ -1781,100 +1801,6 @@ def decodeer(regel,de_matriks_kolom,column,cellengte):
     return oorspronkelijkmatriksnummer
 
 
-class Blokken(TemplateView):
-    template_name = 'base/home.html'
-    def get_context_data(self, **kwargs):
-        hdr=['kol1','kol2','kol3','kol4','kol5','kol6','kol7','kol8','kol9','kol10','kol11','kol12',]#'kol13',] #'kol14']
-        # begincell=0;cellengte=0;eindcell=0
-        begincell=0;cellengte=0;eindcell=0;kolomteller=0;rij=0
-        topics=Room.objects.all().exclude(name='Wachtlijst')
-        kasten= topics #['Heren','Adames','Bdames','Cdames','Ddames']
-        # Matriks.objects.all().delete()
-        for k in kasten:
-            regelteller=0
-            print(k,len(hdr))
-            matrixnaam=k.name 
-            bloknummer='' ;   vv= matrixnaam[0:1]      #voorvoegsel
-            nr=len(hdr)
-            kolommen = len(hdr)-3
-            ronde=len(hdr)
-            r = 0
-            rijen=len(hdr)
-            s = ""
-            w1=''
-            p = 0
-            for teama in range(0,kolommen): 
-                s = ""
-                p = 0
-                for teamb in range(0,kolommen):
-                    if teama != teamb:
-                        p += 1
-                        ronde = (teamb + teama)%kolommen
-                        if ronde == 0: ronde = kolommen
-                        r+=1
-                        s += vv + str(r).zfill(2) #+'|.'
-                        if p%2 == 0:
-                            w1 += str(ronde)
-                            w1 = ""
-                        # else:
-                        #     r+=1
-                        #     s += vv + str(r).zfill(2) #+'|!'
-                        #     ronde += 1
-
-                    # if teama == teamb:
-                    #     r+=1
-                    #     s +=vv +  str(r).zfill(2) #+'|='
-                    #     if r==len(hdr):r=0
-                print(s)
-        #         # ALS DE MATRIKS AL IS AANGEMAAKT,NIET MEER UITVOEREN, wordt opgenomen in het instellingen bestand
-                regelteller+=1
-                # Matriks.objects.update_or_create( 
-                #         kop=s,
-                #         regel=s,
-                #         # ronde=r,
-                #         # x_as=r,
-                #         y_as=regelteller,
-                #         naam=matrixnaam,
-                #         )    
-                # if regelteller==len(hdr):regelteller=0
-                        
-        return
-
-def hernummermatriks(request):
-    print('in hernummermatriks===============')
-    # rij=0
-    # matriks regel-kolomnummering naar kolomvelden overbrengen
-    hdr=['','kol1','kol2','kol3','kol4','kol5','kol6','kol7','kol8','kol9','kol10','kol11','kol12','kol13','kol14']
-    begincell=0;cellengte=0;eindcell=0
-    # matrixen=Matriks.objects.all().values_list('naam',flat=True).distinct()
-    matrixen= ['Heren','ADames','BDames','CDames','DDames']
-
-    # from django.db.models import Count
-    # results = (Matriks.objects
-    # .values('naam')
-    # .annotate(dcount=Count('naam'))
-    # .order_by()
-    # )   
-
-    # matrix=Matriks.objects.filter(y_as__in=(1,2,3,4,5,6)).order_by('y_as').order_by('naam')
-    # matrix=results
-    # for r in matrixen:
-    #     print(r)
-        # matrix=Matriks.objects.filter(naam=r) #.first()
-        # for m in matrix:
-        # # m=matrix
-        #     print(m)
-        #     rij=str(m.y_as)
-        #     cellengte=3
-        #     regel=m.regel
-        #     for kol in range(0,len(hdr)):
-        #         de_matriks_kolom=hdr[kol]
-        #         oorspronkelijkmatriksnummer=decodeer(regel,de_matriks_kolom,kol,cellengte)
-        #         print(m.naam,de_matriks_kolom,begincell,oorspronkelijkmatriksnummer)
-        #         setattr(m, de_matriks_kolom, oorspronkelijkmatriksnummer)
-        #         m.save()
-    context={}
-    return render(request, 'base/home.html', context)
 
 def namedtuplefetchall(cursor):
     "Return all rows from a cursor as a namedtuple"

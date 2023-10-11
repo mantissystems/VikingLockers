@@ -21,17 +21,32 @@
       <div class="topics-page layout__body">
 
         <ul class="topics__list">
-            {{qq}}
+            <!-- {{qq}} -->
             <hr>
-            <a class="btn btn--main btn--pill" href="{% url 'login' %}">Login</a>
-        {% if messages %}
-        <ul class="messages">
-            {% for message in messages %}
-            <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
-            {% endfor %}
-        </ul>
+        {% if not request.user.is_authenticated %}
+
+        <a class="btn btn--main btn--pill" href="{% url 'login' %}">Login</a>
+        {% else %}
+        <a class="btn btn--main btn--pill" href="{% url 'home' %}">Home</a>
         {% endif %}
-        
+        {% if messages %}
+<ul class="messages">
+    {% for message in messages %}
+    <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>
+        {% if message.level == DEFAULT_MESSAGE_LEVELS.INFO %}Info: 
+        {{ message }}<br>
+        {% endif %}
+        {% if message.level == DEFAULT_MESSAGE_LEVELS.WARNING %}Warning: 
+        {{ message }}<br>
+        {% endif %}
+        {% if message.level == DEFAULT_MESSAGE_LEVELS.ERROR %}Error: 
+        {{ message }}<br>
+        {% endif %}
+    </li>
+    {% endfor %}
+</ul>
+{% endif %}
+
         </ul>
       </div>
     </div>

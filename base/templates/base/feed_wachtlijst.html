@@ -1,37 +1,39 @@
 {% comment %}
-{% endcomment %}
 
 <table class="viking-table">
-    <thead>
-      <hr>
-      <tr>
-          <th>1Contact</th>
-        <th>2Huurder</th>
-        <th>3</th>
-      </tr>
-    </thead>
+  <thead>
+    <hr>
+    <tr>
+      <th>2Huurder</th>
+    </tr>
+  </thead>
+  {% endcomment %}
     <tbody>
-    {% for user in object_list %}
+    {% for user in object_listttt %}
     <tr>
 
     <td>1{{user.name}}</td>
-    <td>2
+    {% comment %}
+    <th>1Contact</th>
+    <th>3deelname</th>
+<td>2
       <a href="{% url 'update-person' user.id %}?q={{user.id}}">  <li> {{user.email|truncatechars:13}} </li>
       </span></a>
       <div style="height:100%;width:100%">
         </div>
       </a>
     </td>
-                    <td>3
-                      {% if user.hoofdhuurder == True %}
-                        huur            
-                        {% elif user.wachtlijst == True %}
-                        wl
-                        
-                      {% elif user.onderhuur == True %}
-                        gebr
-                      {% endif %}
-                    </td> 
+    <td>3
+      {% if user.hoofdhuurder == True %}
+      huur            
+      {% elif user.wachtlijst == True %}
+      wachtlst
+      
+      {% elif user.onderhuur == True %}
+      gebr
+      {% endif %}
+    </td> 
+    {% endcomment %}
 
 
         
@@ -40,18 +42,19 @@
     </tbody>
   </table>
 
-  {% comment %}
-
-  <ul>
-  {% for user in object_list %}
-  <li>
-    <a href="{% url 'update-person' user.id %}?q={{user.id}}">{{ user.name }} </span></a> <br>
-
-  </li> 
   
-      {% empty %}
-      <li>No users yet.</li>
-  {% endfor %}
+  <ul>
+    {% for user in object_list %}
+    <li>
+      <a href="{% url 'home' %}?q={{user.name}}">{{ user.name }} </span></a> <br>
+      
+    </li> 
+    
+    {% empty %}
+    <li>No users yet.</li>
+    {% endfor %}
   </ul>
+  {% comment %}
+  <a href="{% url 'update-person' user.id %}?q={{user.id}}">{{ user.name }} </span></a> <br>
   {% endcomment %}
   

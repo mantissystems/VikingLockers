@@ -37,6 +37,7 @@
       </div>
       
       <h2>Personlist {{object_list.count }}</h2>
+      
       {% include 'base/feed_persons.html' %}
       
       {% if request.user.is_superuser %}
@@ -46,8 +47,8 @@
 
     <!-- Activities Start -->
     {% comment %}
+    {% endcomment%}
     {% include 'base/activity_component.html' %}
-{% endcomment%}
     <!-- Activities End -->
   </div>
 </main>

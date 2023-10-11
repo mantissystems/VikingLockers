@@ -33,12 +33,7 @@
 
         <ul class="topics__list">
           <li>
-            {% comment %}
-            <span>{{topic.title}}</span>
-            <a href="{% url 'home' %}?q=helptekst {{topic.title}}"> <span>{{topic.title}}</span>{{ topic.content|wordwrap:8 }} </a>
-            {{question.answer_set.count}}
-            {% endcomment %}
-            <a href="{% url 'helptekst' %}" class="active"><span> aantal registraties: {{aantalusers.count}} van 120</span></a>
+            <a href="{% url 'helptekst' %}" class="active"><span> aantal registraties: {{aantalusers.count}}. Onverhuurd: {{results.count}} </span></a>
           </li>
           <table class="viking-table">
             <tr>
@@ -61,6 +56,7 @@
                   </tbody>
             </thead>
         </table>
+        {% comment %}
         {% if messages %}
         <ul class="messages">
             {% for message in messages %}
@@ -68,6 +64,7 @@
             {% endfor %}
         </ul>
         {% endif %}
+        {% endcomment %}
         
         </ul>
       </div>

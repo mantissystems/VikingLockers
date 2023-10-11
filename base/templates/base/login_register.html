@@ -12,13 +12,13 @@
         </div>
       </div>
       <div class="layout__body">
-        <h2 class="auth__tagline">Log in bij ons Locker systeem</h2>
+        <h2 class="auth__tagline">Find your locker</h2>
 
         <form class="form" action="" method="POST">
           {% csrf_token %}
           <div class="form__group form__group">
             <label for="room_name">Email</label>
-            <input id="username" name="email" type="email" placeholder="bijv. roeit_bij@viking.nl" />
+            <input id="username" name="email" type="email" placeholder="e.g. info@email.com" />
           </div>
           <div class=" form__group">
             <label for="password">Password</label>
@@ -37,26 +37,29 @@
               </path>
             </svg>
 
-            Sign-In
+            Login
           </button>
         </form>
 
         <div class="auth__action">
-          <p>Please Register</p>
-          <hr>
-          {% comment %}
-          <a href="{% url 'register' %}" class="btn btn--link">Registreren</a><hr>
-          <a href="{% url 'create-person' %}" class="btn btn--link">Op de Wachtlijst</a>
-          {% endcomment %}
-          <a class="btn btn--main btn--pill" href="{% url 'register' %}">Register</a>
-          <a class="btn btn--main btn--pill" href="{% url 'create-person' %}">WaitingList</a>
-
-
+          <p>Haven't signed up yet?</p>
+          <a href="{% url 'register' %}" class="btn btn--link">Sign Up (Registreer)</a>
         </div>
       </div>
     </div>
   </div>
   {% else %}
+{% comment %}
+  <div>
+    <form method="POST" action="">
+        {% csrf_token %}
+        {{form.as_p}}
+        <input type="submit" value="Register" />
+    </form>
+    <p>Already signed up yet?</p>
+    <a href="{% url 'login' %}">Login</a>
+</div>
+{% endcomment %}
   <div class="container">
     <div class="layout__box">
       <div class="layout__boxHeader">
@@ -65,7 +68,7 @@
         </div>
       </div>
       <div class="layout__body">
-        <h2 class="auth__tagline">Registreer uzelf als huurder / medehuurder</h2>
+        <h2 class="auth__tagline">Find your locker</h2>
 
         <form class="form" action="" method="POST">
           {% csrf_token %}
@@ -94,10 +97,8 @@
         </form>
 
         <div class="auth__action">
-          <p>Nog geen account?</p>
-          <a href="{% url 'login' %}" class="btn btn--link">Registreren</a>
-          <a href="{% url 'create-person' %}" class="btn btn--link">Op de Wachtlijst</a>
-
+          <p>Already signed up yet?</p>
+          <a href="{% url 'login' %}" class="btn btn--link">Sign Up (Registreer)</a>
         </div>
       </div>
     </div>

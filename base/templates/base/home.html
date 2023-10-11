@@ -1,15 +1,10 @@
 {% extends 'main.html' %}
-
 {% block content %}
-
 <main class="layout layout--3">
   <div class="container">
     <!-- Topics Start -->
-    
     {% include 'base/topics_component.html' %}
-
     <!-- Topics End -->
-
     <!-- Room List Start -->
     <div class="roomList">
       <div class="mobile-menu">
@@ -25,15 +20,8 @@
           </label>
         </form>
         <div class="mobile-menuItems">
-          {% comment %}
-          <a class="btn btn--main btn--pill" href="{% url 'topics' %}">Browse Topics</a>
-          <a class="btn btn--main btn--pill" href="{% url 'activity' %}">Recent Activities</a>
-          <a class="btn btn--main btn--pill" href="{% url 'ploegen' %}">Ploegen</a>
-          <a class="btn btn--main btn--pill" href="{% url 'lockers' %}">Lockers</a>
-          {% endcomment %}  
         </div>
       </div>
-
       <div class="roomList__header">
         <div>  
         </div>
@@ -43,23 +31,16 @@
         {% csrf_token %}
         <input name="body" placeholder="Write your request here..." />
       </form>
-          
-      {% include 'base/feed_member_lockers.html' %}
-      {% if request.user.is_superuser %}
-      {% endif %}
+  {% include 'base/feed_member_lockers.html' %}
+
     </div>
     <!-- Room List End -->
-
     <!-- Activities Start -->
-    
     {% comment %}
-    <h2>Verhuurde Lockers {{kluisjes.count }} van {{allekluisjes.count}} (ruimte voor {{mogelijkheden}}) </h2>
-
-    {% include 'base/messages.html' %}
-    {% endcomment %}
-    {% include 'base/activity_component.html' %}
-
-
+    topics in plaats van activity in verband met de 3-kolommen layout.
+    activities haal te performance naar beneden.
+    {% endcomment%}
+    {% include 'base/topics_component.html' %}
     <!-- Activities End -->
   </div>
 </main>

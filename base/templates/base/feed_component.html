@@ -42,12 +42,6 @@
             {{room.owners.all.count}}{{results.dcount}} onderhuurder(s)
         </a>
         <p class="roomListRoom__topic">{{room.kluisnummer}}</p>
-        {% comment %}
-        <div class="roomListRoom__meta">
-        </div>
-    
-        results
-        {% endcomment %}
     </div>
 </div>
 {% endfor %}
@@ -57,7 +51,9 @@
     {% for message in berichtennnn %}
     <div class="activities__box">
       <div class="activities__boxHeader roomListRoom__header">
-{{message.body}}
+        {% endcomment %}
+
+        {{message.body}}
         {% if request.user == message.user %}
         <div class="roomListRoom__actions">
           <a href="{% url 'delete-bericht' message.id %}">
@@ -70,6 +66,7 @@
           </a>
         </div>
         {% endif %}
+        {% comment %}
 
       </div>
     </div>

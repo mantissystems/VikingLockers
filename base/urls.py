@@ -19,12 +19,13 @@ urlpatterns = [
     path('topics/', views.topicsPage, name="topics"),
     path('users/', views.MemberListView.as_view(), name="users"),
     path('profiles/',login_required(views.PersonListView.as_view()),name='profiles'),
-    path('wachtlijst/',views.Wachtlijst.as_view(),name='wachtlijst'),
+    path('wacht-lijst/',views.Wachtlijst.as_view(),name='wacht-lijst'),
     path('lockers/', views.lockersPage2, name="lockers"),
     path('onverhuurd/', views.lockersPage3, name="onverhuurd"),
     path('excellijst/', views.ExcelView.as_view(), name="excellijst"),
     path('facturatielijst/', views.FacturatieView.as_view(), name="facturatielijst"),
     path('create-person/', views.CreatePerson.as_view(), name="create-person"),          # <=================
+    path('wachtlijst/', views.CreatePerson.as_view(), name="wachtlijst"),          # <=================
     path('create-factuur/', views.CreateFactuur.as_view(), name="create-factuur"),
     path('create-locker/', views.CreateLocker.as_view(), name="create-locker"),
     path('delete-person/<str:pk>',views.PersonDeleteView.as_view(),name='delete-person'),
