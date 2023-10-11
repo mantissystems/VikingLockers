@@ -216,7 +216,7 @@ def home(request):
         # verhuurd =Locker.objects.filter(  (A | B ) & (C & D) ).order_by('topic').exclude(email__in=exclude_list)
         lijst='home'
         if q!='' or q !=None:
-            verhuurd =Locker.objects.filter(A | B | C ).order_by('topic').exclude(email__in=exclude_list)
+            verhuurd =Locker.objects.filter(A | B | C ).order_by('topic') #.exclude(email__in=exclude_list)
     # ).order_by('topic') #.exclude(verhuurd=False) #ik wil alle lockers tonen
     rest=168 - onverhuurd.count()
     room_messages = Message.objects.all()
@@ -850,15 +850,15 @@ class PersonUpdate_id( LoginRequiredMixin,UpdateView):
     model = Person
     def get_form(self, form_class=None):
         form = super().get_form(form_class)
-        form.fields['onderhuur'].label = "Aan = 'Wachtlijst' aanvullen"
-        form.fields['tekst'].label = 'Use ; (semicolon) to split '
-        # form.fields['wachtlijst'].label = 'Checked: creates Person from Tekst-lines'
-        form.fields['hoofdhuurder'].label = 'Checked: sets locker tenant'
+        form.fields['onderhuur'].label = "Mede Huurder"
+        form.fields['tekst'].label = 'Namen  Medegebruikers'
+        form.fields['wachtlijst'].label = 'Wel / Niet wachtlijst'
+        form.fields['hoofdhuurder'].label = 'Wel / Niet Hoofdhuurder'
         return form
 
     # fields = '__all__'
-    fields=['name','onderhuur','tekst','hoofdhuurder',]
-    success_url = reverse_lazy('profiles')
+    fields=['name','onderhuur','tekst','hoofdhuurder','wachtlijst','email']
+    success_url = reverse_lazy('wacht-lijst')
     
     def form_valid(self, form):
         kluis ='wachtlijst' ## form.cleaned_data['locker']  
@@ -870,83 +870,15 @@ class PersonUpdate_id( LoginRequiredMixin,UpdateView):
         # wachtlijst = form.cleaned_data['wachtlijst']  
         # email = form.cleaned_data['email'] 
         tekst = form.cleaned_data['tekst']  
-        if ';' in tekst:
-            txt=tekst.splitlines()
-            for t in txt:
-                u=t.replace(';','')
-                print(u)
+        messages.success(self.request, "The person was updated successfully.")
+        success_url = reverse_lazy('wacht-lijst')
+        return super(PersonUpdate_id,self).form_valid(form)
 
-        try:
-            loc=Locker.objects.get(kluisnummer=kluis)
-            print('kluis bestaat=====>',loc.kluisnummer)
-            if wachtlijstaanvul:            
-                if tekst:
-                    # if ';' in tekst:
-                    txt=tekst.splitlines()
-                    for t in txt:
-                        # u=t.replace(';','')
-                        print(t)
-                        user=Person.objects.update_or_create(name=t,
-                                                            email= t + '@viking.nl',
-                                                            locker=kluis,
-                                                            onderhuur=True,
-                                                            )
-                        print(user.name,'toegevoegd aan',loc.kluisnummer)
-                        loc.participants.add(user)
-                        # try:
-                        #     p=Person.objects.get(name=t)
-                        # except Person.DoesNotExist:
-                        #     user=Person.objects.update_or_create(name=t,
-                        #                                     email= t + '@viking.nl',
-                        #                                     locker=kluis,
-                        #                                     onderhuur=True,
-                        #                                     )
-                        #     print(user.name,'toegevoegd aan',loc.kluisnummer)
-                        #     loc.participants.add(user)
-                        #     pass
-                        # finally:
-                        #     user=Person.objects.update_or_create(name=t,
-                        #                                     # email= u + '@viking.nl',
-                        #                                     # locker=kluis,
-                        #                                     onderhuur=True,
-                        #                                     )
-                        #     print(user.name,'toegevoegd aan',loc.kluisnummer)
-                        #     loc.participants.add(user)
-        except:
-            pass
-
-        # if wachtlijst:            
-        #     if tekst:
-        #         if ';' in tekst and '@' in email:
-        #             txt=tekst.splitlines()
-        #             for t in txt:
-        #                 print(t)
-        #                 u=t.replace(';','')
-        #                 user=Person.objects.update_or_create(name=t,
-        #                                                    email= t + '@viking.nl',
-        #                                                    locker=kluis,
-        #                                                    wachtlijst=True,
-        #                                                    )
         # url = reverse('delete-person', kwargs={'pk': super().person.id})
         # viking= email.replace("@", "")
         # print(viking)
         # string='pbkdf2_sha256$390000$MbAy3r2ahV6QE6xFilyWG5$Hkuz0s9MNtjJ066lD0v9N2tnUv2ZuZLALt2rIL1QSAQ='
- 
-        # if onderhuur==True:
-        #     try:
-        #         u=User.objects.get(email=email)
-        #     except:
-        #         user,User.objects.update_or_create(username=email,
-        #                                                    email=email,
-        #                                                    is_active=True,
-        #                                                    first_name=name,
-        #                                                    last_name=name,
-        #                                                    password=string,
-        #                                                    )
-        #         print('onderhuurder')
-
-        return super(PersonUpdate_id,self).form_valid(form)
-        messages.success(self.request, "The person was updated successfully.")
+  
 
 class EditFactuur( LoginRequiredMixin,UpdateView):
     login_url = '/login/'
@@ -1448,7 +1380,7 @@ class CreatePerson(CreateView):
     model = Person
     fields = ['name','email',]
     # fields='__all__'
-    success_url = reverse_lazy('home')
+    # success_url = reverse_lazy('wacht-lijst')
     model = Person
 
     def get_form(self, form_class=None):
@@ -1459,13 +1391,13 @@ class CreatePerson(CreateView):
 
     # fields = '__all__'
     fields=['name','email',]
-    success_url = reverse_lazy('home')
+    success_url = reverse_lazy('wacht-lijst')
     
     def form_valid(self, form):
         name = form.cleaned_data['name']  
         email = form.cleaned_data['email'] 
         messages.success(self.request, "U bent op de wachtlijst geplaatst.")
-        wachtlijst=Locker.objects.get(kluisnummer='wachtlijst')
+        # wachtlijst=Locker.objects.get(kluisnummer='wachtlijst')
         return super(CreatePerson,self).form_valid(form)
 
     def form_invalid(self, form):

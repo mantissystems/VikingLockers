@@ -7,6 +7,9 @@
       <th>2Huurder</th>
     </tr>
   </thead>
+  <p>This is a &nbsp; regular space.</p> 
+  <p>This is a &ensp; two spaces gap.</p> 
+  <p>This is a &emsp; four spaces gap.</p> 
   {% endcomment %}
     <tbody>
     {% for user in object_listttt %}
@@ -46,8 +49,13 @@
   <ul>
     {% for user in object_list %}
     <li>
+      {% if request.user.is_superuser %}
+
+      <a href="{% url 'update-person' user.id %}?q={{user.id}}">{{ user.name }} &emsp; {{user.email}} </span></a> <br>
+      {% else %}
       <a href="{% url 'home' %}?q={{user.name}}">{{ user.name }} </span></a> <br>
-      
+      {% endif %}
+          
     </li> 
     
     {% empty %}
@@ -55,6 +63,6 @@
     {% endfor %}
   </ul>
   {% comment %}
-  <a href="{% url 'update-person' user.id %}?q={{user.id}}">{{ user.name }} </span></a> <br>
   {% endcomment %}
+
   
