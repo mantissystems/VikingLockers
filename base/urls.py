@@ -51,6 +51,7 @@ urlpatterns = [
     # path('profiles/', views.PersonListView.as_view(), name="profiles"),
     # path('lockers/', login_required(views.LockerView.as_view()), name="lockers"),
    path('m2/', views.m2mtotext, name="m2"),
+   path('m3/', views.m3, name="m3"),
     # path('profiles/', views.profilePage, name="profiles"),
     ]
 # https://docs.djangoproject.com/en/3.1/topics/http/urls/

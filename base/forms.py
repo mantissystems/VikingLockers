@@ -53,11 +53,11 @@ class RoomForm(ModelForm):
         fields = '__all__'
         exclude = ['host', 'participants']
 
-class PloegForm(ModelForm):
-    class Meta:
-        model = Ploeg
-        fields = '__all__'
-        exclude=['participants']
+# class PloegForm(ModelForm):
+#     class Meta:
+#         model = Ploeg
+#         fields = '__all__'
+#         exclude=['participants']
         # def __init__(self, *args, **kwargs):
         #     super().__init__(*args, **kwargs)
         #     widgets = {
@@ -73,12 +73,12 @@ class LockerForm(ModelForm):
     class Meta:
         model = Locker
         fields = '__all__'
-        exclude = ['type','code','owners','participants',]
+        exclude = ['type','code','opzegdatum']
         labels = {
         "verhuurd": "Bent u hoofdhuurder?",
         "topic": "nieuwe benaming",
         "kluisje": "vorige benaming",
-        "participants": "gebruikers",
+        # "participants": "gebruikers",
         "sleutels": "Aantal Sleutels in omloop",
         "code": "Code van codeslot",
         # "type": "Type slot",

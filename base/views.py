@@ -10,7 +10,7 @@ from django.contrib.auth import authenticate, login, logout
 from django.urls import reverse, reverse_lazy
 from base.models import Room,Message,User,Topic,Locker,Ploeg,Helptekst,Bericht,Excellijst,Person,Facturatielijst
 from django.db.models import Q
-from base.forms import RoomForm, UserForm,  MyUserCreationForm,PloegForm,LockerForm,ExcelForm,PersonForm,WachtlijstForm
+from base.forms import RoomForm, UserForm,  MyUserCreationForm,LockerForm,ExcelForm,PersonForm,WachtlijstForm
 from django.views.generic import(TemplateView,ListView)
 from django.contrib.auth.models import AnonymousUser
 from rest_framework.decorators import api_view, permission_classes
@@ -649,40 +649,40 @@ def profilePage(request):
     profiles = Person.objects.all() #filter(name__icontains=q)
     return render(request, 'base/profiles.html', {'profiles': profiles})
 
-def ploegPage(request, pk):
-    ploeg = Ploeg.objects.get(name=pk)
-    participants = ploeg.participants.all()
-    ploegen = Ploeg.objects.all()
-    vikingers=User.objects.all().order_by('username')
-    form = PloegForm(instance=ploeg)
-    context = {
-                'vikingers':vikingers,
-                'participants': participants,
-                'ploegen':ploegen,
-                'ploeg': ploeg,
-                'form': form,
-            }
-    if request.user.ploeg != ploeg.name:
-        messages.error(request, f"'{ploeg.name}' : Is niet uw ploeg")
-        return render(request, 'base/ploegen.html', context)
+# def ploegPage(request, pk):
+#     ploeg = Ploeg.objects.get(name=pk)
+#     participants = ploeg.participants.all()
+#     ploegen = Ploeg.objects.all()
+#     vikingers=User.objects.all().order_by('username')
+#     form = PloegForm(instance=ploeg)
+#     context = {
+#                 'vikingers':vikingers,
+#                 'participants': participants,
+#                 'ploegen':ploegen,
+#                 'ploeg': ploeg,
+#                 'form': form,
+#             }
+#     if request.user.ploeg != ploeg.name:
+#         messages.error(request, f"'{ploeg.name}' : Is niet uw ploeg")
+#         return render(request, 'base/ploegen.html', context)
 
-    if request.method == 'POST':
-        form = PloegForm(request.POST, request.FILES, instance=ploeg)
-        teamlid= request.POST.get('teamlid')
-        teamlideraf= request.POST.get('teamlideraf')
-        if form.is_valid():
-            print('form is valid')
-            if teamlid:
-                t=User.objects.get(id=teamlid)
-                ploeg.participants.add(t)
-            if teamlideraf:
-                t=User.objects.get(id=teamlideraf)
-                ploeg.participants.remove(t)
-            form.save()
-            # return redirect('ploegen')
-            return redirect('ploeg', ploeg.name)
+#     if request.method == 'POST':
+#         form = PloegForm(request.POST, request.FILES, instance=ploeg)
+#         teamlid= request.POST.get('teamlid')
+#         teamlideraf= request.POST.get('teamlideraf')
+#         if form.is_valid():
+#             print('form is valid')
+#             if teamlid:
+#                 t=User.objects.get(id=teamlid)
+#                 ploeg.participants.add(t)
+#             if teamlideraf:
+#                 t=User.objects.get(id=teamlideraf)
+#                 ploeg.participants.remove(t)
+#             form.save()
+#             # return redirect('ploegen')
+#             return redirect('ploeg', ploeg.name)
 
-    return render(request, 'base/update-ploeg.html', context) ##{'form': form})
+#     return render(request, 'base/update-ploeg.html', context) ##{'form': form})
 
 def excel_regelPage(request,pk):
     excel = Excellijst.objects.get(id=pk)
@@ -1085,15 +1085,42 @@ def tel_aantal_registraties(request):
     return HttpResponseRedirect(url)
 
 def m2mtotext(request,):
-    # loc=Locker.objects.get(id=134)
-    # for pp in loc.participants.all():
-    #         print(loc.kluisnummer,pp.name)
-    #         loc.tekst+=pp.email + '\r'
-    #         loc.save()
+    string='pbkdf2_sha256$390000$MbAy3r2ahV6QE6xFilyWG5$Hkuz0s9MNtjJ066lD0v9N2tnUv2ZuZLALt2rIL1QSAQ='
+    for l in Locker.objects.all():
+        if l.email:
+            if '@' in l.email and l.verhuurd==True:
+                try:
+                    u=User.objects.get(email=l.email)
+                    # print(u.email)
+                except:
+                    if not 'viking' in l.email or l.obsolete==False or l.opgezegd==False:                        
+                        print('geen user', l.email)
+                        user=User.objects.update_or_create(username=l.email,
+                                                           email=l.email,
+                                                           is_active=True,
+                                                           first_name=l.email,
+                                                           last_name=l.email,
+                                                           locker=l.kluisnummer,
+                                                           password=string,
+                                                           )
+                        print('created ',user)
+                    pass
+def m3(request,):
+    for u in User.objects.all():
+        if u.email:
+            if '@' in u.email:
+                # if 'viking' in u.email:
+                #     print('to be deleted ',u.email)
+                #     u.delete()
+                try:
+                    l=Locker.objects.get(email=u.email)
+                    u.locker=l.topic
+                    u.save()
+                except:
+                    print('geen huurder', u.email)
+                    pass
 
-    # for l in Locker.objects.all().exclude(tekst=None):
-        # print(length(l.tekst))
-    url = reverse('facturatielijst',)
+    url = reverse('users',)
     return HttpResponseRedirect(url)
 
 @login_required(login_url='login')   

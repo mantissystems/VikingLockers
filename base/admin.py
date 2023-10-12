@@ -20,8 +20,8 @@ class kluisAdmin(admin.ModelAdmin):
 @admin.register(User)
 class UserAdmin(admin.ModelAdmin):
     list_filter = ('is_active','is_staff')
-    list_display = ('username','last_name','email')
-    search_fields = ('last_name','email')
+    list_display = ('username','last_name','email','locker')
+    search_fields = ('last_name','email','locker')
 @admin.register(Person)
 class UserAdmin(admin.ModelAdmin):
     list_filter = ('onderhuur','hoofdhuurder','wachtlijst')

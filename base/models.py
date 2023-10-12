@@ -1,3 +1,5 @@
+import datetime
+from datetime import datetime   
 from django.db import models
 from django.contrib.auth.models import AbstractUser
 from django.urls import reverse
@@ -76,7 +78,9 @@ class Room(models.Model):
 class Locker(models.Model):
     kluisnummer = models.CharField(max_length=200)
     # host = models.ForeignKey(User, on_delete=models.SET_NULL, null=True)
-    email = models.CharField(max_length=200)
+    email = models.CharField(max_length=200,default='--')
+    nieuwe_huurder = models.CharField(max_length=200,default='--')
+    vorige_huurder = models.CharField(max_length=200,default='--')
     kluisje = models.CharField(max_length=200)
     type = models.CharField(max_length=18, choices=SLOT,default='--')     
     topic = models.CharField(max_length=18,default='----')     
@@ -89,6 +93,8 @@ class Locker(models.Model):
     sleutels = models.CharField(max_length=18,default='----')     
     code = models.CharField(max_length=18,default='----')     
     created = models.DateTimeField(auto_now_add=True)
+    opzegdatum = models.DateTimeField(default=datetime.now(), blank=True)
+    updated = models.DateTimeField(auto_now=True)
 
     class Meta:
         ordering = ['kluisnummer']
