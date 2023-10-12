@@ -1105,6 +1105,9 @@ def m2mtotext(request,):
                                                            )
                         print('created ',user)
                     pass
+    url = reverse('users',)
+    return HttpResponseRedirect(url)
+
 def m3(request,):
     for u in User.objects.all():
         if u.email:
@@ -1650,20 +1653,22 @@ def update_locker(request,pk):
         email=request.POST.get('email')
         sleutels= request.POST.get('sleutels')
         huuropheffen= request.POST.get('huuropheffen')
+
         print('onderhuurder', onderhuurder,sleutels,slotcode)
         if form.is_valid():
+            success_url = reverse_lazy('lockers')
             print('form is valid')
             if onderhuurder:
                 print('onderhuurder', onderhuurder)
                 h=Person.objects.get(id=onderhuurder)
                 locker.participants.add(h)
                 return redirect('lockers')
-            if huuropheffen:
+            # if huuropheffen:
 
-                h=Person.objects.get(id=huuropheffen)
-                print('opheffen',h)
-                locker.participants.remove(h)
-                form.save()
+            #     h=Person.objects.get(id=huuropheffen)
+            #     print('opheffen',h)
+            #     locker.participants.remove(h)
+            #     form.save()
 
             if locker.verhuurd == False:
                 users_found=User.objects.all().values_list('email',flat=True)
