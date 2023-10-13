@@ -946,137 +946,137 @@ class FactuurDeleteView(DeleteView):
         return obj
 
 @login_required(login_url='login')   
-def tel_aantal_registraties(request):
-    from django.db.models import Max, Count
-    print('0)in tel_aantal_registraties in facturatielijst===============')
-    Facturatielijst.objects.all().update(is_registered='----',in_excel='----',type='----',sleutels='----',code='---') 
-    print('1)bestaat factuur als locker ===============')
-    for f in Facturatielijst.objects.all():
-        if f:break #tijdelijk uitgeschakelde controle; 
-        try:
-            l=Locker.objects.get(kluisnummer=f.kluisnummer)
-            f.is_registered=l.kluisnummer
-            if l.verhuurd==True:
-                f.code=1
-                l.save()
-                f.save()
-            else:
-                if l.verhuurd==True: f.code=9
-                f.code=0
-            f.save()
-        except: 
-            Locker.DoesNotExist
-            print(f.kluisnummer,'heeft GEEN factuur')
-            f.type=' create f ' ## + f.kluisnummer
-            f.code=0
-            f.save()
-    print('2)bestaat excel als locker ===============')
-    for e in Facturatielijst.objects.all():
-        if e:break #tijdelijk uitgeschakelde controle; de oude excellijst is niet leidend en ook  niet compleet
-        try:
-            l=Excellijst.objects.get(kluisnummer=e.kluisnummer)
-            e.in_excel=l.kluisnummer
-            e.save()
-        except: 
-            Excellijst.DoesNotExist
-            print(e.kluisnummer,'GEEN excel')
-            e.in_excel='===='
-            # f.type=' create ' ## + f.kluisnummer
-            e.save()
-# ====
-    print('3)vind dubbele records  ===============')
-# Getting duplicate files based on case_no and hearing_date
-    files = Facturatielijst.objects.values('kluisnummer', 'email') \
-        .annotate(records=Count('kluisnummer')) \
-        .filter(records__gt=1)
+# def tel_aantal_registraties(request):
+#     from django.db.models import Max, Count
+#     print('0)in tel_aantal_registraties in facturatielijst===============')
+#     Facturatielijst.objects.all().update(is_registered='----',in_excel='----',type='----',sleutels='----',code='---') 
+#     print('1)bestaat factuur als locker ===============')
+#     for f in Facturatielijst.objects.all():
+#         if f:break #tijdelijk uitgeschakelde controle; 
+#         try:
+#             l=Locker.objects.get(kluisnummer=f.kluisnummer)
+#             f.is_registered=l.kluisnummer
+#             if l.verhuurd==True:
+#                 f.code=1
+#                 l.save()
+#                 f.save()
+#             else:
+#                 if l.verhuurd==True: f.code=9
+#                 f.code=0
+#             f.save()
+#         except: 
+#             Locker.DoesNotExist
+#             print(f.kluisnummer,'heeft GEEN factuur')
+#             f.type=' create f ' ## + f.kluisnummer
+#             f.code=0
+#             f.save()
+#     print('2)bestaat excel als locker ===============')
+#     for e in Facturatielijst.objects.all():
+#         if e:break #tijdelijk uitgeschakelde controle; de oude excellijst is niet leidend en ook  niet compleet
+#         try:
+#             l=Excellijst.objects.get(kluisnummer=e.kluisnummer)
+#             e.in_excel=l.kluisnummer
+#             e.save()
+#         except: 
+#             Excellijst.DoesNotExist
+#             print(e.kluisnummer,'GEEN excel')
+#             e.in_excel='===='
+#             # f.type=' create ' ## + f.kluisnummer
+#             e.save()
+# # ====
+#     print('3)vind dubbele records  ===============')
+# # Getting duplicate files based on case_no and hearing_date
+#     files = Facturatielijst.objects.values('kluisnummer', 'email') \
+#         .annotate(records=Count('kluisnummer')) \
+#         .filter(records__gt=1)
 
-    # Check the generated group by query
-    print (files.query)
+#     # Check the generated group by query
+#     print (files.query)
 
-    # Then do operations on duplicates
-    for file in files:
-        # break
-        # Facturatielijst.objects.filter(
-        #     kluisnummer=file['kluisnummer'],
-        #     email=file['email']
-        # ).update(sleutels='remove 1')
-        dubbel=Facturatielijst.objects.filter(
-            kluisnummer=file['kluisnummer'],
-            email=file['email']
-        ).first()
-        dubbel.sleutels='verwijder'
-        dubbel.save()
-        # dubbel.delete()
+#     # Then do operations on duplicates
+#     for file in files:
+#         # break
+#         # Facturatielijst.objects.filter(
+#         #     kluisnummer=file['kluisnummer'],
+#         #     email=file['email']
+#         # ).update(sleutels='remove 1')
+#         dubbel=Facturatielijst.objects.filter(
+#             kluisnummer=file['kluisnummer'],
+#             email=file['email']
+#         ).first()
+#         dubbel.sleutels='verwijder'
+#         dubbel.save()
+#         # dubbel.delete()
 
-# ====
-    print('4)bestaat locker als factuur ===============')
-    for e in Locker.objects.all():
-        if e: break #tijdelijk uitgeschakeld testen herbenaming
-        try:
-            l=Facturatielijst.objects.get(kluisnummer=e.kluisnummer)
-        except: 
-            Facturatielijst.DoesNotExist
-            print(e.kluisnummer,'GEEN factuur',)
-            break
-# ====
-    print("5)zet 'kluisnummer' in 'topic' herstel 'kluisje' herbenaming===============")
-    for e in Locker.objects.all():
-        if e: break #tijdelijk uitgeschakeld
-        # e.kluisje=e.kluisnummer
-        if 'B-' in e.kluisnummer:
-            kl=e.kluisnummer
-            kl2=kl.replace('B-','00')
-            print(kl2,'B')
-            e.topic=kl2
-            e.save()
-        if 'C-' in e.kluisnummer:
-            kl=e.kluisnummer
-            kl2=kl.replace('C-','')
-            print(kl2,'C')
-            e.topic=kl2
-            e.save()
-        if 'A-' in e.kluisnummer:
-            kl=e.kluisnummer
-            kl2=kl.replace('A-','')
-            print(kl2,'A')
-            e.topic=kl2
-            e.save()
+# # ====
+#     print('4)bestaat locker als factuur ===============')
+#     for e in Locker.objects.all():
+#         if e: break #tijdelijk uitgeschakeld testen herbenaming
+#         try:
+#             l=Facturatielijst.objects.get(kluisnummer=e.kluisnummer)
+#         except: 
+#             Facturatielijst.DoesNotExist
+#             print(e.kluisnummer,'GEEN factuur',)
+#             break
+# # ====
+#     print("5)zet 'kluisnummer' in 'topic' herstel 'kluisje' herbenaming===============")
+#     for e in Locker.objects.all():
+#         if e: break #tijdelijk uitgeschakeld
+#         # e.kluisje=e.kluisnummer
+#         if 'B-' in e.kluisnummer:
+#             kl=e.kluisnummer
+#             kl2=kl.replace('B-','00')
+#             print(kl2,'B')
+#             e.topic=kl2
+#             e.save()
+#         if 'C-' in e.kluisnummer:
+#             kl=e.kluisnummer
+#             kl2=kl.replace('C-','')
+#             print(kl2,'C')
+#             e.topic=kl2
+#             e.save()
+#         if 'A-' in e.kluisnummer:
+#             kl=e.kluisnummer
+#             kl2=kl.replace('A-','')
+#             print(kl2,'A')
+#             e.topic=kl2
+#             e.save()
 
-# ====
-    print("6)hernummer 'kluisnummer' in 'renum'===============")
-    x=0
-    for f in Facturatielijst.objects.all():
-        if f: break #tijdelijk uitgeschakeld
-        if 'B-' in f.kluisnummer:
-            kl=f.kluisnummer
-            kl2=kl.replace('B-','00')
-            # print(kl2,'B')
-            f.renum=kl2
-            f.save()
-        if 'C-' in f.kluisnummer:
-            kl=f.kluisnummer
-            kl2=kl.replace('C-','')
-            # print(kl2,'C')
-            f.renum=kl2
-            f.save()
-        if 'A-' in f.kluisnummer:
-            kl=f.kluisnummer
-            kl2=kl.replace('A-','')
-            # print(kl2,'A')
-            f.renum=kl2
-            f.save()
-    for f in Facturatielijst.objects.all():
-        try:
-            Locker.objects.get(topic=f.renum)
-        except:
-            x+=1
-            Locker.DoesNotExist
-            print('2-', x,f.kluisnummer,f.renum)
-                    # wellicht hier creatie van factuurregel Facturatielijst.objects.update_or_create(
-# 
-    print('einde tel_aantal_lockers in facturatielijst')
-    url = reverse('facturatielijst',)
-    return HttpResponseRedirect(url)
+# # ====
+#     print("6)hernummer 'kluisnummer' in 'renum'===============")
+#     x=0
+#     for f in Facturatielijst.objects.all():
+#         if f: break #tijdelijk uitgeschakeld
+#         if 'B-' in f.kluisnummer:
+#             kl=f.kluisnummer
+#             kl2=kl.replace('B-','00')
+#             # print(kl2,'B')
+#             f.renum=kl2
+#             f.save()
+#         if 'C-' in f.kluisnummer:
+#             kl=f.kluisnummer
+#             kl2=kl.replace('C-','')
+#             # print(kl2,'C')
+#             f.renum=kl2
+#             f.save()
+#         if 'A-' in f.kluisnummer:
+#             kl=f.kluisnummer
+#             kl2=kl.replace('A-','')
+#             # print(kl2,'A')
+#             f.renum=kl2
+#             f.save()
+#     for f in Facturatielijst.objects.all():
+#         try:
+#             Locker.objects.get(topic=f.renum)
+#         except:
+#             x+=1
+#             Locker.DoesNotExist
+#             print('2-', x,f.kluisnummer,f.renum)
+#                     # wellicht hier creatie van factuurregel Facturatielijst.objects.update_or_create(
+# # 
+#     print('einde tel_aantal_lockers in facturatielijst')
+#     url = reverse('facturatielijst',)
+#     return HttpResponseRedirect(url)
 
 def m2mtotext(request,):
     string='pbkdf2_sha256$390000$MbAy3r2ahV6QE6xFilyWG5$Hkuz0s9MNtjJ066lD0v9N2tnUv2ZuZLALt2rIL1QSAQ='
@@ -1120,70 +1120,81 @@ def m3(request,):
     url = reverse('users',)
     return HttpResponseRedirect(url)
 
-@login_required(login_url='login')   
-def nummering(request):
-    print('nummering in veld topic===============')
-# ====
-    x=0
-    for i in range (1,72):
-        l= 'Heren ' + str(i).zfill(3)
-        try:
-            k= Locker.objects.get(kluisnummer=l)
-            print(k.kluisnummer)
-            k.topic=l
-            k.save()
-        except Locker.DoesNotExist:
-                if not '00' in l:
-                    print(l)
-                    print('niet',l)
-                pass
-
-            # print('niet',l)
-            # pass
-    # ====
-    for i in range (1,72):
-        l= 'Dames ' + str(i).zfill(3)
-        if 25 <= i <= 49:
-            l= 'Dames ' + 'A-' + str(i).zfill(3)
-        try:
-            k= Locker.objects.get(kluisnummer=l)
-            print(k.kluisnummer)
-            k.topic=l
-            k.save()
-
-        except Locker.DoesNotExist:
-                pass
-        if 25 <= i <= 49:
-            l= 'Dames ' + 'B-' + str(i).zfill(3)
-            if ('B' in l) and i<49:
-                print(l)
-        try:
-            k= Locker.objects.get(kluisnummer=l)
-            print(k.kluisnummer)
-            k.topic=l
-            k.save()
-
-        except Locker.DoesNotExist:
-            print('niet',l)
-            pass
-            if 48 <= i <= 73:
-                l= 'Dames ' + 'C-' + str(i).zfill(3)
-        try:
-            k= Locker.objects.get(kluisnummer=l)
-            print(k.kluisnummer)
-            k.topic=l
-            k.save()
-
-        except Locker.DoesNotExist:
-                if 'C' in l:
-                    # print(l)
-                    print('niet',l)
-                pass
-
-    # ====
-    print('einde nummering')
-    url = reverse('update-user',) #tbv snelheid respons
+def m4(request,):
+    for l in Locker.objects.all():
+        # if l.email:
+        if '@' in l.email :
+            if 'viking' in l.email: # or l.obsolete==False or l.opgezegd==False:                        
+                print('onbekend of vrij', l.email)
+                l.email='onbekend of vrij'
+                l.save()
+    url = reverse('onverhuurd',)
     return HttpResponseRedirect(url)
+
+@login_required(login_url='login')   
+# def nummering(request):
+#     print('nummering in veld topic===============')
+# # ====
+#     x=0
+#     for i in range (1,72):
+#         l= 'Heren ' + str(i).zfill(3)
+#         try:
+#             k= Locker.objects.get(kluisnummer=l)
+#             print(k.kluisnummer)
+#             k.topic=l
+#             k.save()
+#         except Locker.DoesNotExist:
+#                 if not '00' in l:
+#                     print(l)
+#                     print('niet',l)
+#                 pass
+
+#             # print('niet',l)
+#             # pass
+#     # ====
+#     for i in range (1,72):
+#         l= 'Dames ' + str(i).zfill(3)
+#         if 25 <= i <= 49:
+#             l= 'Dames ' + 'A-' + str(i).zfill(3)
+#         try:
+#             k= Locker.objects.get(kluisnummer=l)
+#             print(k.kluisnummer)
+#             k.topic=l
+#             k.save()
+
+#         except Locker.DoesNotExist:
+#                 pass
+#         if 25 <= i <= 49:
+#             l= 'Dames ' + 'B-' + str(i).zfill(3)
+#             if ('B' in l) and i<49:
+#                 print(l)
+#         try:
+#             k= Locker.objects.get(kluisnummer=l)
+#             print(k.kluisnummer)
+#             k.topic=l
+#             k.save()
+
+#         except Locker.DoesNotExist:
+#             print('niet',l)
+#             pass
+#             if 48 <= i <= 73:
+#                 l= 'Dames ' + 'C-' + str(i).zfill(3)
+#         try:
+#             k= Locker.objects.get(kluisnummer=l)
+#             print(k.kluisnummer)
+#             k.topic=l
+#             k.save()
+
+#         except Locker.DoesNotExist:
+#                 if 'C' in l:
+#                     # print(l)
+#                     print('niet',l)
+#                 pass
+
+#     # ====
+#     print('einde nummering')
+#     url = reverse('update-user',) #tbv snelheid respons
+#     return HttpResponseRedirect(url)
 
 def export_onverhuurd(request,):
     import csv

@@ -33,11 +33,8 @@ urlpatterns = [
     path('delete-bericht/<str:pk>/', views.deleteBericht, name="delete-bericht"),
     path('<str:pk>/locker/',views.lockerPage, name='locker'),  
     path('<str:pk>/excel-regel/',views.excel_regelPage, name='excel-regel'),  
-    # path('<str:pk>/update-locker/',views.update_locker, name='update-locker'),  
     path('helptekst/', views.helpPage, name='helptekst'),
     path('berichten/', views.berichtenPage, name="berichten"),
-     path('aantalregistraties/', views.tel_aantal_registraties, name='aantalregistraties'),
-     path('nummering/', views.nummering, name='nummering'),
     path('export_onverhuurd/', views.export_onverhuurd, name="export_onverhuurd"),
     path('export_verhuurd/', views.export_verhuurd, name="export_verhuurd"),
     path('export_emaillijst/', views.export_emaillijst, name="export_emaillijst"),
@@ -47,5 +44,9 @@ urlpatterns = [
     path('excellijst/', views.ExcelView.as_view(), name="excellijst"),
    path('m2/', views.m2mtotext, name="m2"),
    path('m3/', views.m3, name="m3"),
+   path('m4/', views.m4, name="m4"),
     ]
+    # path('<str:pk>/update-locker/',views.update_locker, name='update-locker'),  
+    #  path('aantalregistraties/', views.tel_aantal_registraties, name='aantalregistraties'),
+    #  path('nummering/', views.nummering, name='nummering'),
 # https://docs.djangoproject.com/en/3.1/topics/http/urls/
