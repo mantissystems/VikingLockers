@@ -1535,8 +1535,6 @@ class LockerUpdate( LoginRequiredMixin,UpdateView):
     # initial = {"key": "value"}
     print('in lockerupdate')
     success_url = reverse_lazy('home')
-
-    # fields = ['email','kluisnummer','nieuwe_huurder','vorige_huurder','kluisje','type','topic','verhuurd','opgezegd','obsolete','tekst','sleutels','code','opzegdatum',]
     
     def get_object(self):
         print('in get_object')
