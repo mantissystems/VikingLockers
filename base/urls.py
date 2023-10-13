@@ -24,6 +24,8 @@ urlpatterns = [
     path('create-person/', views.CreatePerson.as_view(), name="create-person"),          # <=================
     path('wachtlijst/', views.CreatePerson.as_view(), name="wachtlijst"),          # <=================
     path('create-locker/', views.CreateLocker.as_view(), name="create-locker"),
+    path('<str:pk>/update-locker/',views.update_locker, name='update-locker'),  
+    path('<str:pk>/update-locker2/',views.LockerUpdate.as_view(), name='update-locker2'),  
     path('delete-person/<str:pk>',views.PersonDeleteView.as_view(),name='delete-person'),
     path('delete-locker/<str:pk>',views.LockerDeleteView.as_view(),name='delete-locker'),
     path('delete-factuur/<str:pk>',views.FactuurDeleteView.as_view(),name='delete-factuur'),
@@ -31,7 +33,7 @@ urlpatterns = [
     path('delete-bericht/<str:pk>/', views.deleteBericht, name="delete-bericht"),
     path('<str:pk>/locker/',views.lockerPage, name='locker'),  
     path('<str:pk>/excel-regel/',views.excel_regelPage, name='excel-regel'),  
-    path('<str:pk>/update-locker/',views.update_locker, name='update-locker'),  
+    # path('<str:pk>/update-locker/',views.update_locker, name='update-locker'),  
     path('helptekst/', views.helpPage, name='helptekst'),
     path('berichten/', views.berichtenPage, name="berichten"),
      path('aantalregistraties/', views.tel_aantal_registraties, name='aantalregistraties'),
@@ -39,19 +41,11 @@ urlpatterns = [
     path('export_onverhuurd/', views.export_onverhuurd, name="export_onverhuurd"),
     path('export_verhuurd/', views.export_verhuurd, name="export_verhuurd"),
     path('export_emaillijst/', views.export_emaillijst, name="export_emaillijst"),
-    path('success/<str:uid>', views.success, name="success"),
     path('facturatielijst/', views.FacturatieView.as_view(), name="facturatielijst"),
     path('edit-factuur/<str:pk>', views.EditFactuur.as_view(), name="edit-factuur"),
     path('create-factuur/', views.CreateFactuur.as_view(), name="create-factuur"),
     path('excellijst/', views.ExcelView.as_view(), name="excellijst"),
-    # path('register/', views.CreateUser.as_view(), name="register"),
-    # path('lockers/', views.LockerView.as_view(), name="lockers"),
-    # path('<str:pk>/update-locker/',views.LockerUpdate.as_view(), name='update-locker'),  
-    # path('<str:row>/create_locker/<str:kol>/',views.create_locker, name='create_locker'),  
-    # path('profiles/', views.PersonListView.as_view(), name="profiles"),
-    # path('lockers/', login_required(views.LockerView.as_view()), name="lockers"),
    path('m2/', views.m2mtotext, name="m2"),
    path('m3/', views.m3, name="m3"),
-    # path('profiles/', views.profilePage, name="profiles"),
     ]
 # https://docs.djangoproject.com/en/3.1/topics/http/urls/

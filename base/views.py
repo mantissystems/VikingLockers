@@ -1,6 +1,7 @@
 import csv
 from typing import Any
-from django.http import HttpResponse, HttpResponseRedirect
+from django import forms
+from django.http import HttpResponse, HttpResponseForbidden, HttpResponseRedirect
 from django.shortcuts import get_object_or_404, redirect, render
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
@@ -12,6 +13,7 @@ from base.models import Room,Message,User,Topic,Locker,Ploeg,Helptekst,Bericht,E
 from django.db.models import Q
 from base.forms import RoomForm, UserForm,  MyUserCreationForm,LockerForm,ExcelForm,PersonForm,WachtlijstForm
 from django.views.generic import(TemplateView,ListView)
+from django.views.generic.detail import SingleObjectMixin
 from django.contrib.auth.models import AnonymousUser
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework.permissions import IsAuthenticated, IsAdminUser
@@ -855,8 +857,7 @@ class PersonUpdate_id( LoginRequiredMixin,UpdateView):
         form.fields['wachtlijst'].label = 'Wel / Niet wachtlijst'
         form.fields['hoofdhuurder'].label = 'Wel / Niet Hoofdhuurder'
         return form
-
-    # fields = '__all__'
+    
     fields=['name','onderhuur','tekst','hoofdhuurder','wachtlijst','email']
     success_url = reverse_lazy('wacht-lijst')
     
@@ -867,17 +868,10 @@ class PersonUpdate_id( LoginRequiredMixin,UpdateView):
         hoofdhuurder = form.cleaned_data['hoofdhuurder']  
         name = form.cleaned_data['name']  
         onderhuurder = form.cleaned_data['onderhuur']  
-        # wachtlijst = form.cleaned_data['wachtlijst']  
-        # email = form.cleaned_data['email'] 
         tekst = form.cleaned_data['tekst']  
         messages.success(self.request, "The person was updated successfully.")
         success_url = reverse_lazy('wacht-lijst')
         return super(PersonUpdate_id,self).form_valid(form)
-
-        # url = reverse('delete-person', kwargs={'pk': super().person.id})
-        # viking= email.replace("@", "")
-        # print(viking)
-        # string='pbkdf2_sha256$390000$MbAy3r2ahV6QE6xFilyWG5$Hkuz0s9MNtjJ066lD0v9N2tnUv2ZuZLALt2rIL1QSAQ='
   
 
 class EditFactuur( LoginRequiredMixin,UpdateView):
@@ -1521,119 +1515,44 @@ def deleteBericht(request, pk):
         return redirect('berichten')
     return render(request, 'base/delete.html', {'obj': message})
 
-class JsonableResponseMixin:
-    """
-    Mixin to add JSON support to a form.
-    Must be used with an object-based FormView (e.g. CreateView)
-    """
 
-    def form_invalid(self, form):
-        response = super().form_invalid(form)
-        if self.request.accepts("text/html"):
-            return response
-        else:
-            return JsonResponse(form.errors, status=400)
-
-    def form_valid(self, form):
-        # We make sure to call the parent's form_valid() method because
-        # it might do some processing (in the case of CreateView, it will
-        # call form.save() for example).
-        response = super().form_valid(form)
-        if self.request.accepts("text/html"):
-            return response
-        else:
-            data = {
-                "pk": self.object.pk,
-            }
-            return JsonResponse(data)
-
-class LockerUpdate( LoginRequiredMixin,JsonableResponseMixin,UpdateView):
+class LockerUpdate( LoginRequiredMixin,UpdateView):
     login_url = '/login/'
-    # redirect_field_name = 'redirect_to'
-
     model = Locker
-    # fields='__all__'
-    fields = ['kluisnummer','email','verhuurd','sleutels','code','kluisje','owners','type']
-        # if request.user.email != locker.email and not request.user.is_superuser:
-        # messages.error(request, f'{locker.kluisnummer} : Is niet uw locker')
-        # return render(request, 'base/berichten.html', {'lockers': lockers,'topics':topics})
+    form_class=LockerForm
+    template_name='base/locker_form.html'
+    # initial = {"key": "value"}
+    print('in lockerupdate')
+    success_url = reverse_lazy('home')
 
-    # fields = ['name','email','wachtlijst']
-    # fields = '__all__'
-    success_url = reverse_lazy('lockers')
-    # def get_object(self):
-    # def get_context_data(self, **kwargs: Any) -> dict[str, Any]:
-            # obj=self.get_object()
-    def get_context_data(self, **kwargs):
-        # Load context from GET request
-        SubcategoryFilter = [
-            ('--', '--'),
-            ('H', 'hang'),      #gebruiker heeft hangslot
-            ('C', 'cijfer'),    #gebruiker heeft cijferslot; code onbekend
-            ]
-        context = super(LockerUpdate, self).get_context_data(**kwargs)
-        # Get id from PhysicalPart instance 
-        context['pk'] = self.object.id
-        # Get category from PhysicalPart instance
-        context['type'] = self.object.type
-        # Add choices to form 'subcategory' field
-        context['form'].fields['type'].choices = SubcategoryFilter[0:]
-        context['vikingers'] = Person.objects.all()
-        # print(onderhuurder)
-        vikingers=Person.objects.all().order_by('email').filter(onderhuur=True)
-        # context['form'].fields['subcategory'].choices = SubcategoryFilter[self.object.type]
-
-        # Return context to be used in form view
-        return context
-
-    # def get_context_data(self, **kwargs):
-    #     # Call the base implementation first to get a context
-    #     context = super().get_context_data(**kwargs)
-    #     # Add in a QuerySet 
-    #     context["vikingers"] = Locker.objects.all()
-    #     # obj = super().get_object(**kwargs)
-    #     # print(obj,'context')
-    #     return context
-            # if self.request.user.email != obj.email and not self.request.user.is_superuser:
-            #   notyours='notyours'
-            #   messages.error(self.request, f'{obj.kluisnummer} : Is niet uw locker')
-            # # url = reverse('home',)
-            # context={'notyours':'notyours'}
-            # return context
-        # return super().get_context_data(**kwargs)
+    # fields = ['email','kluisnummer','nieuwe_huurder','vorige_huurder','kluisje','type','topic','verhuurd','opgezegd','obsolete','tekst','sleutels','code','opzegdatum',]
     
     def get_object(self):
-        obj = get_object_or_404(Locker, id=self.kwargs['pk'])
-
+        print('in get_object')
         _id = self.request.GET.get('pk') if self.request.GET.get('pk') != None else ''
         print(_id)
-        try:
-            obj = get_object_or_404(Locker, id=self.kwargs['pk'])
-            print(obj.email,self.request.user.email)
-            if self.request.user.email != obj.email and not self.request.user.is_superuser:
-            #   notyours='notyours'
-              messages.error(self.request, f'{obj.kluisnummer} : Is niet uw locker')
-              obj=None
-            # url = reverse('home',)
-            # context={'notyours':'notyours'}
-            # return context
-        # return super().get_context_data(**kwargs)
+        obj = get_object_or_404(Locker, id=self.kwargs['pk'])
+        return obj
+    # def get_form(self, form_class=None):
+    #     return form
 
-            return obj
-        except ValueError:
-                obj = get_object_or_404(Locker, kluisnummer=self.kwargs['pk'])
-                return obj
-        # obj = get_object_or_404(User, email__slug=self.kwargs['email'], slug=self.kwargs['email'] )
-        # obj = get_object_or_404(User, id=self.kwargs['pk'])
-        # return obj
-
+    def get_context_data(self, **kwargs):
+        print('in get_context_data')
+        context = super().get_context_data(**kwargs)
+        context["lockers"] = Locker.objects.all()
+        obj = super().get_object(**kwargs)
+        return context
+    
     def form_valid(self, form):
-        kluis = form.cleaned_data['kluisnummer']  
-        email = form.cleaned_data['email'] 
+        print('in form_valid')
+        hoofdhuurder = form.cleaned_data['verhuurd']  
+        name = form.cleaned_data['nieuwe_huurder']  
+        tekst = form.cleaned_data['tekst']  
+        messages.success(self.request, "The Locker was updated successfully.")
+        success_url = reverse_lazy('lockers')
         return super(LockerUpdate,self).form_valid(form)
-        messages.success(self.request, "The person was updated successfully.")
 
-@login_required(login_url='login')
+@login_required(login_url='login') #nog als voorbeeeld voor veldbijwerken bewaren
 def update_locker(request,pk):
     locker = Locker.objects.get(id=pk)
     form = LockerForm(instance=locker)
@@ -1644,71 +1563,56 @@ def update_locker(request,pk):
     if request.user.email != locker.email and not request.user.is_superuser:
         messages.add_message(request,messages.INFO, f'{locker.kluisnummer} : Is niet uw locker')
         return HttpResponseRedirect(url)
+    else:
+        url = reverse('update-locker2', kwargs={'pk':locker.id})
+        return HttpResponseRedirect(url)
 
-    if request.method == 'POST':
-        form = LockerForm(request.POST, request.FILES, instance=locker)
-        onderhuurder= request.POST.get('onderhuurder')
-        slotcode= request.POST.get('code')
-        type= request.POST.get('type')
-        email=request.POST.get('email')
-        sleutels= request.POST.get('sleutels')
-        huuropheffen= request.POST.get('huuropheffen')
 
-        print('onderhuurder', onderhuurder,sleutels,slotcode)
-        if form.is_valid():
-            success_url = reverse_lazy('lockers')
-            print('form is valid')
-            if onderhuurder:
-                print('onderhuurder', onderhuurder)
-                h=Person.objects.get(id=onderhuurder)
-                locker.participants.add(h)
-                return redirect('lockers')
-            # if huuropheffen:
+#     if request.method == 'POST':
+#         form = LockerForm(request.POST, request.FILES, instance=locker)
+#         onderhuurder= request.POST.get('onderhuurder')
+#         slotcode= request.POST.get('code')
+#         type= request.POST.get('type')
+#         email=request.POST.get('email')
+#         sleutels= request.POST.get('sleutels')
+#         huuropheffen= request.POST.get('huuropheffen')
 
-            #     h=Person.objects.get(id=huuropheffen)
-            #     print('opheffen',h)
-            #     locker.participants.remove(h)
-            #     form.save()
+#         print('onderhuurder', onderhuurder,sleutels,slotcode)
+#         if form.is_valid():
+#             success_url = reverse_lazy('lockers')
+#             print('form is valid')
+#             if onderhuurder:
+#                 print('onderhuurder', onderhuurder)
+#                 h=Person.objects.get(id=onderhuurder)
+#                 locker.participants.add(h)
+#                 return redirect('lockers')
+#             # if huuropheffen:
 
-            if locker.verhuurd == False:
-                users_found=User.objects.all().values_list('email',flat=True)
-                overigelockers = Locker.objects.filter(
-                    Q(verhuurd=False)&
-                    Q(email=request.user.email)
-                ).order_by('topic').update(verhuurd=False)
-                try:
-                    locker2 = Locker.objects.get(kluisnummer=locker.kluisnummer,email=locker.email)
-                except Locker.DoesNotExist:
-                    print( 'except verhuurd of niet',locker.kluisnummer,locker.verhuurd)
-            if locker.verhuurd == True:
-                locker.email=email           
-                overigelockers = Locker.objects.filter(
-                    Q(verhuurd=False)&
-                    Q(email=locker.email)
-                ).order_by('topic')
-            form.save()
-            return redirect('lockers')
+#             #     h=Person.objects.get(id=huuropheffen)
+#             #     print('opheffen',h)
+#             #     locker.participants.remove(h)
+#             #     form.save()
 
-    return render(request, 'base/update-locker.html', {'form': form,'vikingers':vikingers,'kluis':locker,'topics':topics})
+#             if locker.verhuurd == False:
+#                 users_found=User.objects.all().values_list('email',flat=True)
+#                 overigelockers = Locker.objects.filter(
+#                     Q(verhuurd=False)&
+#                     Q(email=request.user.email)
+#                 ).order_by('topic').update(verhuurd=False)
+#                 try:
+#                     locker2 = Locker.objects.get(kluisnummer=locker.kluisnummer,email=locker.email)
+#                 except Locker.DoesNotExist:
+#                     print( 'except verhuurd of niet',locker.kluisnummer,locker.verhuurd)
+#             if locker.verhuurd == True:
+#                 locker.email=email           
+#                 overigelockers = Locker.objects.filter(
+#                     Q(verhuurd=False)&
+#                     Q(email=locker.email)
+#                 ).order_by('topic')
+#             form.save()
+#             return redirect('lockers')
 
-def success(request,uid):
-    template=render_to_string('base/email_template.html',{'name':request.user.username})
-    email=EmailMessage(
-        'je bent ingeschreven als huurder',
-        'bericht van wim',
-        # template,
-        settings.EMAIL_HOST_USER,
-        ['wej.bakker@icloud.com'],
-    )
-    email.fail_silently=False,
-    email.send()
-    try:
-            email.send
-    except:
-            return Response("Could not send mail")    
-    project=Locker.objects.all()
-    context={'project':project}
-    return render(request,'base/email_template.html')
+#     return render(request, 'base/update-locker.html', {'form': form,'vikingers':vikingers,'kluis':locker,'topics':topics})
 
 
 def lockersPage2(request):

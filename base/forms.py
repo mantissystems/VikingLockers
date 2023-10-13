@@ -72,8 +72,9 @@ class RoomForm(ModelForm):
 class LockerForm(ModelForm):
     class Meta:
         model = Locker
-        fields = '__all__'
-        exclude = ['type','code','opzegdatum']
+        # fields = '__all__'
+        fields = ['email','kluisnummer','nieuwe_huurder','vorige_huurder','kluisje','type','topic','verhuurd','opgezegd','obsolete','tekst','sleutels','code','opzegdatum',]
+        exclude = ['type','code','opzegdatum','kluisje','obsolete']
         labels = {
         "verhuurd": "Bent u hoofdhuurder?",
         "topic": "nieuwe benaming",

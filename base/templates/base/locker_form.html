@@ -22,7 +22,7 @@
           <h2>{% if locker %} Update {% else %} Create {% endif %} Locker</h2>
          {% for field in form %}
            {% if field.name == 'verhuurd' %}
-           <label for="profile_pic">{{field.label}}</label>
+           <label for="profile_pic">{{field.label}} </label>
            <div class="form__group">
              {{field}}
            </div>
@@ -33,30 +33,7 @@
            {% else %}
            <label for="profile_pic">{{field.label}}</label>
            <div class="form__group">
-              {% if field.name == 'participants' %}
-              <div class="form__group">
-                <select id="onderhuurder" name="onderhuurder" onChange="redirectUrl()">
-                  <option  value="" selected="selected">--- HUURDER TOEVOEGEN:---</option>
-                  {% for org in vikingers %}
-                  <option value="{{org.id}}">{{org.email|capfirst}}</option>
-                  {% endfor %}
-                </select>
-              </div>
-              {% if locker.participants.count > 0 %}
-          <div class="form__group">
-              <select id="huuropheffen" name="huuropheffen" onChange="redirectUrl()">
-                <option  value="" selected="selected">--- HUURDER VERWIJDEREN---</option>
-                {% for org in locker.participants.all %}
-                 <option value="{{org.id}}">{{org.email|capfirst}}</option>
-                {% endfor %}
-              </select>
-  
-          </div>
-          {% endif %}
-
-        {% else %}
              {{field}}
-             {% endif %}
            </div>
            
                   {% if field.errors %}
@@ -66,43 +43,13 @@
          {% endfor %}
          
          <div class="form-buttons">
-          {% if not notyours or request.user.is_superuser %}
            <input type="submit" value="Save" class="btn btn-primary"/>
+          {% if request.user.is_superuser %}
            <a href="{%url 'home'%}" class="btn btn-outline">Cancel</a>
            {% endif %}
            {% if request.user.is_superuser %}
-           <a href="{% url 'create-factuur'%}" class="btn btn--link">Factuur</a>
+           <a href="{% url 'create-factuur'%}" class="btn btn--link">Factuurrr</a>
            {% endif %}
-           {% comment %}
-           <!--  -->
-           {% if field.name == 'participants' %}
-           <div class="form__group">
-           </div>
-
-           <div class="form__group">
-            <select id="onderhuurder" name="onderhuurder" onChange="redirectUrl()">
-              <option  value="" selected="selected">--- GEBRUIKER TOEVOEGEN:---</option>
-              {% for org in vikingers %}
-              <option value="{{org.id}}">{{org.email|capfirst}}</option>
-              {% endfor %}
-            </select>
-          </div>
-          {% if locker.participants.count > 0 %}
-          <div class="form__group">
-              <select id="huuropheffen" name="huuropheffen" onChange="redirectUrl()">
-                <option  value="" selected="selected">--- GEBRUIKER VERWIJDEREN---</option>
-                {% for org in locker.participants.all %}
-                 <option value="{{org.id}}">{{org.email|capfirst}}</option>
-                {% endfor %}
-              </select>
-  
-          </div>
-          {% endif %}
-
-           <!--  -->
-           {% endcomment %}
-           {% if locker %}
-{% endif %}
          </div>
          
        
@@ -112,5 +59,3 @@
   </div>
 </main>
 {% endblock content %}
-{% comment %}
-{% endcomment %}
