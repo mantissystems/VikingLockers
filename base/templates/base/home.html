@@ -30,6 +30,7 @@
         {% csrf_token %}
         <input name="body" placeholder="Write your request here..." />
       </form>
+      {{verhuurd.count}} regels
   {% include 'base/feed_member_lockers.html' %}
 
     </div>

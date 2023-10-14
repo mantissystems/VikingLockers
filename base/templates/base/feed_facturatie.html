@@ -16,7 +16,7 @@
       <a href="{% url 'export_emaillijst' %}" class="btn btn--link">=>Export E-mail</a>
       <hr>
     {% endif %}
-
+      {{object_list.count}} regels
       {% for locker in object_list %}
       <tr>
 

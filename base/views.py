@@ -195,11 +195,11 @@ def home(request):
         q=x
         url = "profiles" + "?q=" +q 
         return HttpResponseRedirect(url)
-    elif 'req' in qq:
-        x = qq.replace("req ", "")
-        q=x
-        url = "berichten" + "?q=" +q 
-        return HttpResponseRedirect(url)
+    # elif 'req' in qq:
+    #     x = qq.replace("req ", "")
+    #     q=x
+    #     url = "berichten" + "?q=" +q 
+    #     return HttpResponseRedirect(url)
     elif 'usr' in qq:
         x = qq.replace("usr ", "")
         q=x
@@ -315,22 +315,15 @@ def helpPage(request):
         (Q(verhuurd=True)
         ) 
         ).order_by('topic')
-    lockers =Locker.objects.filter(
-    Q(kluisnummer__icontains=q) |
-    Q(email__icontains=q)|
-    Q(tekst__icontains=q) 
-    ).order_by('topic') #.exclude(verhuurd=False)
-    A=Q(email__icontains='vrij')
-    B=Q(email__icontains='onbekend')
     C=Q(obsolete=True)
     D=Q(opgezegd=True)
-    onverhuurd =Locker.objects.all().filter(  A | B  | C | D ).order_by('topic')
+    onverhuurd =Locker.objects.all().filter(   C | D ).order_by('topic')
 
     helptekst=Helptekst.objects.filter(
             Q(title__icontains=q)|
             Q(content__icontains=q)
         ).order_by('seq').exclude(publish=False)
-    return render(request, 'base/helptekst.html', {'helptekst': helptekst,'aantalusers':verhuurd,'results': onverhuurd,})
+    return render(request, 'base/helptekst.html', {'helptekst': helptekst,'aantalusers':verhuurd,'results': onverhuurd,'onverhuurd':onverhuurd})
 
 
 def infoPage(request):
@@ -826,19 +819,22 @@ class ExcelView (LoginRequiredMixin, ListView):
         return context
 class FacturatieView (LoginRequiredMixin, ListView):
     login_url='login'
-    model=Facturatielijst
+    print('in facturatieview')
+    model=Excellijst
+    template_name='base/facturatielijst_list.html'
+    paginate_by=14
+    queryset=Facturatielijst.objects.all() 
+
     def get_context_data(self,**kwargs):
         q = self.request.GET.get('q') if self.request.GET.get('q') != None else ''
         query = self.request.GET.get('q')
         print(query)
-        if query == None: 
-            query=""
+        if query == None: query=""
         queryset = Facturatielijst.objects.all().filter(
             Q(email__icontains=query)|
-            Q(kluisnummer__icontains=query)|
-            Q(obsolete=False)
-            ).order_by('renum','id')
-            # ).order_by('kluisnummer','id')
+            Q(renum__icontains=query)|
+            Q(kluisnummer__icontains=query)
+            ).order_by('renum')
         context = {
             'query': query,
             'object_list' :queryset,

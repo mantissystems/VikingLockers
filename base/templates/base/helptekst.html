@@ -19,6 +19,7 @@
       </div>
 
       <div class="topics-page layout__body">
+        {% comment %}
         <form action="" method="GET" class="header__search">
           <label>
             <svg version="1.1" xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32">
@@ -29,11 +30,12 @@
             </svg>
             <input name="q" placeholder="Search" />
           </label>
+          {% endcomment %}
         </form>
 
         <ul class="topics__list">
           <li>
-            <a href="{% url 'helptekst' %}" class="active"><span> aantal registraties: {{aantalusers.count}}. Onverhuurd: {{results.count}} </span></a>
+            <a href="{% url 'helptekst' %}" class="active"><span> aantal huurders: {{aantalusers.count}}. Onverhuurd: {{results.count}} </span></a>
           </li>
           <table class="viking-table">
             <tr>
