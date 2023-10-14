@@ -91,20 +91,17 @@ class ExcelForm(ModelForm):
         model = Excellijst
         fields = '__all__'
         exclude = ['sleutels','code','excel','type']
-        # labels = {
-        # "verhuurd": "Verhuurd",
-        # "owners": "onder huurders",
-        # "sleutels": "Aantal Sleutels in omloop",
-        # "code": "Code van codeslot",
-        # "kluisje": "Locker nummer",
-        # "type": "Type slot",
-
-        # }
 
 
 class UserForm(ModelForm):
     class Meta:
         model = User
-        # fields= '__all__'
-        fields = ['avatar', 'username','locker', 'email']
-        exclude = [ 'avatar','ploeg','bio']
+        fields= '__all__'
+        # fields = ['avatar', 'username','locker', 'email']
+        exclude = [ 'avatar','ploeg','bio','user_permissions','date_joined','groups','password','is_staff','is_superuser','is_active','last_name','last_login']
+        labels = {
+        "first_name": "Short Name",
+        "username": "unieke naam",
+        "locker" : "Huurder van:"
+        }
+

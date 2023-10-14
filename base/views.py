@@ -458,11 +458,45 @@ class CreateUser(CreateView):
             # print(locker)
         return super(CreateUser,self).form_valid(form)
 
+class EditUser( LoginRequiredMixin,UpdateView):
+    login_url = '/login/'
+    model = User
+    form_class=UserForm
+    template_name='base/user_form.html'
+    # initial = {"key": "value"}
+    print('in userupdate')
+    success_url = reverse_lazy('users')
+    
+    def get_object(self):
+        print('in get_object')
+        _id = self.request.GET.get('pk') if self.request.GET.get('pk') != None else ''
+        print(_id)
+        obj = get_object_or_404(User, id=self.kwargs['pk'])
+        return obj
+    # def get_form(self, form_class=None):
+    #     return form
+
+    def get_context_data(self, **kwargs):
+        print('in get_context_data')
+        context = super().get_context_data(**kwargs)
+        context["lockers"] = User.objects.all()
+        obj = super().get_object(**kwargs)
+        return context
+    
+    def form_valid(self, form):
+        print('in form_valid')
+        # hoofdhuurder = form.cleaned_data['verhuurd']  
+        # name = form.cleaned_data['nieuwe_huurder']  
+        # tekst = form.cleaned_data['tekst']  
+        messages.success(self.request, "The User was updated successfully.")
+        success_url = reverse_lazy('users')
+        return super(EditUser,self).form_valid(form)
+
 class updateUser3(LoginRequiredMixin,UpdateView):
     login_url='login'
     model = User
     # fields='__all__'
-    fields = ['username','email','locker']
+    fields = ['username','first_name','email','locker']
     success_url = reverse_lazy('users')
     def get_object(self):
         # obj = get_object_or_404(Locker, kluisnummer__slug=self.kwargs['pk'], slug=self.kwargs['pk'] )
@@ -472,17 +506,17 @@ class updateUser3(LoginRequiredMixin,UpdateView):
     def form_valid(self, form):
         kluis = form.cleaned_data['locker']  
         email = form.cleaned_data['email'] 
-        name=email.split('@')
-        print(name)
-        if kluis:
-            print(kluis)
-            locker, created = Locker.objects.update_or_create(
-            kluisnummer=kluis,
-            email=email,
-            verhuurd=True,
-            type='H',
-            kluisje=kluis,
-            )
+        # name=email.split('@')
+        # print(name)
+        # if kluis:
+        #     print(kluis)
+        #     locker, created = Locker.objects.update_or_create(
+        #     kluisnummer=kluis,
+        #     email=email,
+        #     verhuurd=True,
+        #     type='H',
+        #     kluisje=kluis,
+        #     )
 
         messages.success(self.request, "The user was updated successfully.")
         return super(updateUser3,self).form_valid(form)
@@ -894,6 +928,11 @@ class PersonUpdate(UpdateView):
 class PersonDeleteView(DeleteView):
     model = Person
     success_url ="/"
+    template_name = "base/delete.html"
+
+class UserDeleteView(DeleteView):
+    model = User
+    success_url ="users"
     template_name = "base/delete.html"
 
 class LockerDeleteView(DeleteView):
