@@ -26,7 +26,6 @@
         <div>  
         </div>
       </div>
-      <h2>Verhuurde Lockers {{rest }} van 168 ; {{onverhuurd.count}} onverhuurd </h2>
       <form action="" method="POST">
         {% csrf_token %}
         <input name="body" placeholder="Write your request here..." />
@@ -37,6 +36,7 @@
     <!-- Room List End -->
     <!-- Activities Start -->
     {% comment %}
+    <h2>Verhuurde Lockers {{rest }} van 168 ; {{onverhuurd.count}} onverhuurd </h2>
     topics in plaats van activity in verband met de 3-kolommen layout.
     activities haal te performance naar beneden.
     {% endcomment%}

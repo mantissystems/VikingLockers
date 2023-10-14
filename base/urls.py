@@ -22,7 +22,6 @@ urlpatterns = [
     path('lockers/', views.lockersPage2, name="lockers"),
     path('onverhuurd/', views.lockersPage3, name="onverhuurd"),
     path('create-person/', views.CreatePerson.as_view(), name="create-person"),          # <=================
-    path('wachtlijst/', views.CreatePerson.as_view(), name="wachtlijst"),          # <=================
     path('create-locker/', views.CreateLocker.as_view(), name="create-locker"),
     path('<str:pk>/update-locker/',views.update_locker, name='update-locker'),  
     path('<str:pk>/update-locker2/',views.LockerUpdate.as_view(), name='update-locker2'),  
@@ -31,7 +30,7 @@ urlpatterns = [
     path('delete-factuur/<str:pk>',views.FactuurDeleteView.as_view(),name='delete-factuur'),
     path('delete-message/<str:pk>/', views.deleteMessage, name="delete-message"),
     path('delete-bericht/<str:pk>/', views.deleteBericht, name="delete-bericht"),
-    path('<str:pk>/locker/',views.lockerPage, name='locker'),  
+    # path('<str:pk>/locker/',views.lockerPage, name='locker'),  
     path('<str:pk>/excel-regel/',views.excel_regelPage, name='excel-regel'),  
     path('helptekst/', views.helpPage, name='helptekst'),
     path('berichten/', views.berichtenPage, name="berichten"),
@@ -44,8 +43,9 @@ urlpatterns = [
     path('excellijst/', views.ExcelView.as_view(), name="excellijst"),
    path('m2/', views.m2mtotext, name="m2"),
    path('m3/', views.m3, name="m3"),
-   path('m4/', views.m4, name="m4"),
+#    path('m4/', views.m4, name="m4"),
     ]
+    # path('wachtlijst/', views.CreatePerson.as_view(), name="wachtlijst"), 
     # path('<str:pk>/update-locker/',views.update_locker, name='update-locker'),  
     #  path('aantalregistraties/', views.tel_aantal_registraties, name='aantalregistraties'),
     #  path('nummering/', views.nummering, name='nummering'),

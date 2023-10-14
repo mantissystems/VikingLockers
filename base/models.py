@@ -93,7 +93,8 @@ class Locker(models.Model):
     sleutels = models.CharField(max_length=18,default='----')     
     code = models.CharField(max_length=18,default='----')     
     created = models.DateTimeField(auto_now_add=True)
-    opzegdatum = models.DateTimeField(default=datetime.now(), blank=True)
+    opzegdatum = models.DateTimeField(auto_now_add=True)
+    # opzegdatum = models.DateTimeField(default=datetime.now(), blank=True)
     updated = models.DateTimeField(auto_now=True)
 
     class Meta:

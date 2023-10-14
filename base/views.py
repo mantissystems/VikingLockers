@@ -651,41 +651,6 @@ def profilePage(request):
     profiles = Person.objects.all() #filter(name__icontains=q)
     return render(request, 'base/profiles.html', {'profiles': profiles})
 
-# def ploegPage(request, pk):
-#     ploeg = Ploeg.objects.get(name=pk)
-#     participants = ploeg.participants.all()
-#     ploegen = Ploeg.objects.all()
-#     vikingers=User.objects.all().order_by('username')
-#     form = PloegForm(instance=ploeg)
-#     context = {
-#                 'vikingers':vikingers,
-#                 'participants': participants,
-#                 'ploegen':ploegen,
-#                 'ploeg': ploeg,
-#                 'form': form,
-#             }
-#     if request.user.ploeg != ploeg.name:
-#         messages.error(request, f"'{ploeg.name}' : Is niet uw ploeg")
-#         return render(request, 'base/ploegen.html', context)
-
-#     if request.method == 'POST':
-#         form = PloegForm(request.POST, request.FILES, instance=ploeg)
-#         teamlid= request.POST.get('teamlid')
-#         teamlideraf= request.POST.get('teamlideraf')
-#         if form.is_valid():
-#             print('form is valid')
-#             if teamlid:
-#                 t=User.objects.get(id=teamlid)
-#                 ploeg.participants.add(t)
-#             if teamlideraf:
-#                 t=User.objects.get(id=teamlideraf)
-#                 ploeg.participants.remove(t)
-#             form.save()
-#             # return redirect('ploegen')
-#             return redirect('ploeg', ploeg.name)
-
-#     return render(request, 'base/update-ploeg.html', context) ##{'form': form})
-
 def excel_regelPage(request,pk):
     excel = Excellijst.objects.get(id=pk)
     form = ExcelForm(instance=excel)
@@ -945,7 +910,7 @@ class FactuurDeleteView(DeleteView):
         _id = self.request.GET.get('pk') if self.request.GET.get('pk') != None else ''
         return obj
 
-@login_required(login_url='login')   
+# @login_required(login_url='login')   
 # def tel_aantal_registraties(request):
 #     from django.db.models import Max, Count
 #     print('0)in tel_aantal_registraties in facturatielijst===============')
@@ -1106,9 +1071,6 @@ def m3(request,):
     for u in User.objects.all():
         if u.email:
             if '@' in u.email:
-                # if 'viking' in u.email:
-                #     print('to be deleted ',u.email)
-                #     u.delete()
                 try:
                     l=Locker.objects.get(email=u.email)
                     u.locker=l.topic
@@ -1120,16 +1082,16 @@ def m3(request,):
     url = reverse('users',)
     return HttpResponseRedirect(url)
 
-def m4(request,):
-    for l in Locker.objects.all():
-        # if l.email:
-        if '@' in l.email :
-            if 'viking' in l.email: # or l.obsolete==False or l.opgezegd==False:                        
-                print('onbekend of vrij', l.email)
-                l.email='onbekend of vrij'
-                l.save()
-    url = reverse('onverhuurd',)
-    return HttpResponseRedirect(url)
+# def m4(request,):
+#     for l in Locker.objects.all():
+#         # if l.email:
+#         if '@' in l.email :
+#             if 'viking' in l.email: # or l.obsolete==False or l.opgezegd==False:                        
+#                 print('onbekend of vrij', l.email)
+#                 l.email='onbekend of vrij'
+#                 l.save()
+#     url = reverse('onverhuurd',)
+#     return HttpResponseRedirect(url)
 
 @login_required(login_url='login')   
 # def nummering(request):
@@ -1291,45 +1253,45 @@ def export_verhuurd(request,):
         # return HttpResponseRedirect(url)
 
 
-def lockerPage(request,pk):
-    locker = Locker.objects.get(id=pk)
-    form = LockerForm(instance=locker)
-    lockers=Locker.objects.all().filter(verhuurd=True)
-    topics=Topic.objects.all()
-    vikingers=User.objects.all().order_by('username')
-    context = {
-                'vikingers':vikingers,
-                'kluis': locker,
-                'form': form,
-            }
+# def lockerPage(request,pk):
+#     locker = Locker.objects.get(id=pk)
+#     form = LockerForm(instance=locker)
+#     lockers=Locker.objects.all().filter(verhuurd=True)
+#     topics=Topic.objects.all()
+#     vikingers=User.objects.all().order_by('username')
+#     context = {
+#                 'vikingers':vikingers,
+#                 'kluis': locker,
+#                 'form': form,
+#             }
     
-    if request.user.email != locker.email and not request.user.is_superuser:
-        messages.error(request, f'{locker.kluisnummer} : Is niet uw locker')
-        return render(request, 'base/berichten.html', {'lockers': lockers,'topics':topics})
+#     if request.user.email != locker.email and not request.user.is_superuser:
+#         messages.error(request, f'{locker.kluisnummer} : Is niet uw locker')
+#         return render(request, 'base/berichten.html', {'lockers': lockers,'topics':topics})
     
-    if request.method == 'POST':
-        form = LockerForm(request.POST, request.FILES, instance=locker)
-        onderhuurder= request.POST.get('onderhuurder')
-        slotcode= request.POST.get('code')
-        type= request.POST.get('type')
-        sleutels= request.POST.get('sleutels')
-        huuropheffen= request.POST.get('huuropheffen')
-        print('onderhuurder', onderhuurder,sleutels,slotcode)
-        if form.is_valid():
-            print('form is valid')
-            if onderhuurder:
-                print('onderhuurder', onderhuurder)
-                h=User.objects.get(id=onderhuurder)
-                locker.owners.add(h)
-                return redirect('lockers')
-            if huuropheffen:
+#     if request.method == 'POST':
+#         form = LockerForm(request.POST, request.FILES, instance=locker)
+#         onderhuurder= request.POST.get('onderhuurder')
+#         slotcode= request.POST.get('code')
+#         type= request.POST.get('type')
+#         sleutels= request.POST.get('sleutels')
+#         huuropheffen= request.POST.get('huuropheffen')
+#         print('onderhuurder', onderhuurder,sleutels,slotcode)
+#         if form.is_valid():
+#             print('form is valid')
+#             if onderhuurder:
+#                 print('onderhuurder', onderhuurder)
+#                 h=User.objects.get(id=onderhuurder)
+#                 locker.owners.add(h)
+#                 return redirect('lockers')
+#             if huuropheffen:
 
-                h=User.objects.get(id=huuropheffen)
-                print('opheffen',h)
-                locker.owners.remove(h)
-                form.save()
-            return redirect('locker', locker.id)
-    return render(request, 'base/update-locker.html', context)
+#                 h=User.objects.get(id=huuropheffen)
+#                 print('opheffen',h)
+#                 locker.owners.remove(h)
+#                 form.save()
+#             return redirect('locker', locker.id)
+#     return render(request, 'base/update-locker.html', context)
 
 # @login_required(login_url='login')
 # def updateRoom(request, pk):
