@@ -932,7 +932,7 @@ class PersonDeleteView(DeleteView):
 
 class UserDeleteView(DeleteView):
     model = User
-    success_url ="users"
+    success_url ="/"
     template_name = "base/delete.html"
 
 class LockerDeleteView(DeleteView):
