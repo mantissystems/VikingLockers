@@ -1553,7 +1553,7 @@ class LockerUpdate( LoginRequiredMixin,UpdateView):
     
     def form_valid(self, form):
         print('in form_valid')
-        hoofdhuurder = form.cleaned_data['verhuurd']  
+        # hoofdhuurder = form.cleaned_data['verhuurd']  
         name = form.cleaned_data['nieuwe_huurder']  
         tekst = form.cleaned_data['tekst']  
         messages.success(self.request, "The Locker was updated successfully.")

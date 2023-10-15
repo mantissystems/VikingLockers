@@ -24,7 +24,7 @@
             {% if locker %}
             <small>bijgewerkt: {{locker.updated|timesince}} geleden </small></a><hr>
             <div class="for__group">
-            <a class="btn btn--main btn--main" href="{% url 'huuropzeggen' locker.id %}">HuurOpzeggen</a><br>
+            <a class="btn btn--main btn--main" href="{% url 'huuropzeggen' locker.id %}">Opzeggen</a><br>
         </div>
 
             {% endif %}
