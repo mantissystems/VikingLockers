@@ -41,10 +41,12 @@ urlpatterns = [
     path('edit-factuur/<str:pk>', views.EditFactuur.as_view(), name="edit-factuur"),
     path('create-factuur/', views.CreateFactuur.as_view(), name="create-factuur"),
     path('excellijst/', views.ExcelView.as_view(), name="excellijst"),
+    path('huuropzeggen/<str:pk>', views.huuropzeggen, name="huuropzeggen"),
+    path('polls_results/<int:question_id>/', views.polls_results, name='polls_results'),
+
    path('m2/', views.m2mtotext, name="m2"),  #creates user from locker mail address
    path('m3/', views.m3, name="m3"), #puts usermail in locker
     # path('<str:pk>/locker/',views.lockerPage, name='locker'),  
-#    path('m4/', views.m4, name="m4"),
     ]
     # path('wachtlijst/', views.CreatePerson.as_view(), name="wachtlijst"), 
     # path('<str:pk>/update-locker/',views.update_locker, name='update-locker'),  

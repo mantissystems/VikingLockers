@@ -36,11 +36,12 @@
         </div>
       </div>
       {% if request.user.is_superuser %}
-      {% if lijst == 'onverhuurd' %}
+      <a href="{% url 'export_verhuurd' %}" class="btn btn--link">=>Export Verhuurd</a>
       <a href="{% url 'export_onverhuurd' %}" class="btn btn--link">=>Export Onverhuurd</a>
+      <a href="{% url 'export_emaillijst' %}" class="btn btn--link">=>Export Emaillijst</a>
+      {% if lijst == 'onverhuurd' %}
       {% endif %}
       {% if lijst == 'verhuurd' %}
-      <a href="{% url 'export_verhuurd' %}" class="btn btn--link">=>Export Verhuurd</a>
       {% endif %}
     {% endif %}
 

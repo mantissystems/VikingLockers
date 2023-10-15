@@ -25,6 +25,7 @@ from rest_framework import status
 from django.views.generic.edit import CreateView, UpdateView,DeleteView
 from django.http import JsonResponse
 from django.utils.safestring import mark_safe
+from django.utils import formats
 from django.core.mail import EmailMessage
 from django.core import mail
 from django.http import HttpResponse, HttpResponseRedirect
@@ -634,19 +635,19 @@ def lockersPage(request):
     q = request.GET.get('q') if request.GET.get('q') != None else ''
     lockers = Locker.objects.filter(kluisnummer__icontains=q,verhuurd=True) #[0:15]
     return render(request, 'base/lockers.html', {'lockers': lockers})
-def vrijelockersPage(request):
-    q = request.GET.get('q') if request.GET.get('q') != None else ''
-    lijst='vrijelockerslijst'
-    # vergelijk facturatielijst van heden met de oude excellijst; ===> in_excel; waarde=lockernummer
-    # vergelijk facturatielijst van heden met de registraties; ===> is_registered; waarde=lockernummer
-    # lockers = Facturatielijst.objects.all() ##.filter(excel__icontains='--')
-    lockers = Facturatielijst.objects.filter(
-                    Q(kluisnummer__icontains='--')
-                    # Q(is_registered__icontains='regis')
-                    # Q(is_registered=None) #.filter(type='vrij')
-                ).order_by('kluisnummer') ##.exclude(kluisnummer__icontains='--') ##.update(verhuurd=False)
+# def vrijelockersPage(request):
+#     q = request.GET.get('q') if request.GET.get('q') != None else ''
+#     lijst='vrijelockerslijst'
+#     # vergelijk facturatielijst van heden met de oude excellijst; ===> in_excel; waarde=lockernummer
+#     # vergelijk facturatielijst van heden met de registraties; ===> is_registered; waarde=lockernummer
+#     # lockers = Facturatielijst.objects.all() ##.filter(excel__icontains='--')
+#     lockers = Facturatielijst.objects.filter(
+#                     Q(kluisnummer__icontains='--')
+#                     # Q(is_registered__icontains='regis')
+#                     # Q(is_registered=None) #.filter(type='vrij')
+#                 ).order_by('kluisnummer') ##.exclude(kluisnummer__icontains='--') ##.update(verhuurd=False)
 
-    return render(request, 'base/excellijst.html', {'lockers': lockers,'vrijelockerslijst':lijst})
+#     return render(request, 'base/excellijst.html', {'lockers': lockers,'vrijelockerslijst':lijst})
 
 def excelPage(request):
     q = request.GET.get('q') if request.GET.get('q') != None else ''
@@ -1199,15 +1200,16 @@ def export_onverhuurd(request,):
     B=Q(email__icontains='onbekend')
     C=Q(obsolete=True)
     D=Q(opgezegd=True)
+    E=Q(kluisnummer__icontains='onbekend')
 
-    onverhuurd =Locker.objects.filter(  A | B  | C | D ).order_by('topic')
+    onverhuurd =Locker.objects.filter(  A | B  | C | D | E).order_by('topic')
 
     response = HttpResponse(content_type='text/csv')
     response['Content-Disposition'] = 'attachment; filename="onverhuurd.csv"'
     writer = csv.writer(response)
-    writer.writerow(['id', 'tenant', 'huidig', 'oud','nieuw'])
+    writer.writerow(['id', 'tenant', 'huidig', 'oud','nieuw','keys'])
     for item in onverhuurd:
-        writer.writerow([item.id ,item.email, item.kluisnummer, item.kluisje ,item.topic,";"])
+        writer.writerow([item.id ,item.email, item.kluisnummer, item.kluisje ,item.topic,item.sleutels,";"])
     return response
 def export_emaillijst(request,):
 
@@ -1239,9 +1241,9 @@ def export_verhuurd(request,):
     response = HttpResponse(content_type='text/csv')
     response['Content-Disposition'] = 'attachment; filename="facturatie_lijst.csv"'
     writer = csv.writer(response)
-    writer.writerow(['id', 'tenant', 'y/n','locker','registered', 'keys','xls','obs'])
+    writer.writerow(['id', 'tenant', 'y/n','locker','registered', 'keys','huur','obs'])
     for item in verhuurd:
-        writer.writerow([item.id ,item.email, item.code,item.kluisnummer,item.is_registered, item.sleutels , item.in_excel ,item.obsolete, ";"])
+        writer.writerow([item.id ,item.email, item.code,item.kluisnummer,item.is_registered, item.sleutels , item.in_excel ,item.verhuurd,item.obsolete, ";"])
     return response
 
 # def file_load_view(request):
@@ -1562,63 +1564,21 @@ class LockerUpdate( LoginRequiredMixin,UpdateView):
 def update_locker(request,pk):
     locker = Locker.objects.get(id=pk)
     form = LockerForm(instance=locker)
-    form = list(form)
-    topics=Topic.objects.all()
+    # form = list(form)
+    # topics=Topic.objects.all()
     vikingers=Person.objects.all().order_by('name')
     url = "/berichten/"
     if request.user.email != locker.email and not request.user.is_superuser:
         messages.add_message(request,messages.INFO, f'{locker.kluisnummer} : Is niet uw locker')
+    if locker.opgezegd ==True: # and not request.user.is_superuser:
+        opgezegd = formats.date_format(locker.opzegdatum, "SHORT_DATE_FORMAT")
+        messages.add_message(request,messages.INFO, f'{locker.kluisnummer} : Huur is opgezegd! per {opgezegd}')
         return HttpResponseRedirect(url)
+        # return HttpResponseRedirect(url)
     else:
         url = reverse('update-locker2', kwargs={'pk':locker.id})
         return HttpResponseRedirect(url)
 
-
-#     if request.method == 'POST':
-#         form = LockerForm(request.POST, request.FILES, instance=locker)
-#         onderhuurder= request.POST.get('onderhuurder')
-#         slotcode= request.POST.get('code')
-#         type= request.POST.get('type')
-#         email=request.POST.get('email')
-#         sleutels= request.POST.get('sleutels')
-#         huuropheffen= request.POST.get('huuropheffen')
-
-#         print('onderhuurder', onderhuurder,sleutels,slotcode)
-#         if form.is_valid():
-#             success_url = reverse_lazy('lockers')
-#             print('form is valid')
-#             if onderhuurder:
-#                 print('onderhuurder', onderhuurder)
-#                 h=Person.objects.get(id=onderhuurder)
-#                 locker.participants.add(h)
-#                 return redirect('lockers')
-#             # if huuropheffen:
-
-#             #     h=Person.objects.get(id=huuropheffen)
-#             #     print('opheffen',h)
-#             #     locker.participants.remove(h)
-#             #     form.save()
-
-#             if locker.verhuurd == False:
-#                 users_found=User.objects.all().values_list('email',flat=True)
-#                 overigelockers = Locker.objects.filter(
-#                     Q(verhuurd=False)&
-#                     Q(email=request.user.email)
-#                 ).order_by('topic').update(verhuurd=False)
-#                 try:
-#                     locker2 = Locker.objects.get(kluisnummer=locker.kluisnummer,email=locker.email)
-#                 except Locker.DoesNotExist:
-#                     print( 'except verhuurd of niet',locker.kluisnummer,locker.verhuurd)
-#             if locker.verhuurd == True:
-#                 locker.email=email           
-#                 overigelockers = Locker.objects.filter(
-#                     Q(verhuurd=False)&
-#                     Q(email=locker.email)
-#                 ).order_by('topic')
-#             form.save()
-#             return redirect('lockers')
-
-#     return render(request, 'base/update-locker.html', {'form': form,'vikingers':vikingers,'kluis':locker,'topics':topics})
 
 
 def lockersPage2(request):
@@ -1643,6 +1603,55 @@ def lockersPage2(request):
     return render(request, 'base/kluisjes.html', context)
     # return render(request, 'base/kluisjes.html', {'lockers': lockers})
 
+
+def polls_results(request,question_id):
+    huur = get_object_or_404(Locker, id=question_id)
+    context={'huur':huur.opgezegd}
+    messages.add_message(request,messages.INFO, f'{huur.kluisnummer} : huur opgezegd')
+    return render(request,'base/locker_form.html',context)
+
+def polls_vote(request, question_id):
+    question = get_object_or_404(Locker, id=question_id)
+    try:
+        selected_choice = question.choice_set.get(pk=request.POST['choice'])
+    except (KeyError, Locker.DoesNotExist):
+        # Redisplay the question voting form.
+        return render(request, 'polls/polls_detail.html', {
+            'vraagje': question,
+            'error_message': "You didn't select a choice.",
+        })
+    else:
+        selected_choice.votes += 1
+        selected_choice.save()
+        # Always return an HttpResponseRedirect after successfully dealing
+        # with POST data. This prevents data from being posted twice if a
+        # user hits the Back button.
+        return HttpResponseRedirect(reverse('polls:polls_results', args=(question_id,)))
+
+def huuropzeggen(request, pk):
+    locker = get_object_or_404(Locker, id=pk)
+    try:
+        selected_choice = request.GET.get('opgezegd') if request.GET.get('opgezegd') != None else ''
+    except (KeyError, Locker.DoesNotExist):
+        # Redisplay the form.
+        return render(request, 'base/locker_form.html', {
+            'locker': locker,
+            'error_message': "You didn't select a choice.",
+        })
+    else:
+        print(selected_choice)
+        if request.method == 'POST':
+            locker.opgezegd=True
+            locker.verhuurd=False
+            locker.opzegdatum=date.datetime.now()
+            locker.save()
+            return redirect('home')
+        return render(request, 'base/delete.html', {'obj': locker})
+        # Always return an HttpResponseRedirect after successfully dealing
+        # with POST data. This prevents data from being posted twice if a
+        # user hits the Back button.
+    return HttpResponseRedirect(reverse('polls_results', args=(locker.id,)))
+            
 def lockersPage3(request):
     q = request.GET.get('q') if request.GET.get('q') != None else ''
     kluisjes=Locker.objects.all().filter(verhuurd=False)     
@@ -1673,8 +1682,6 @@ def decodeer(regel,de_matriks_kolom,column,cellengte):
     oorspronkelijkmatriksnummer=c
 
     return oorspronkelijkmatriksnummer
-
-
 
 def namedtuplefetchall(cursor):
     "Return all rows from a cursor as a namedtuple"
