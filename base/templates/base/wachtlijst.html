@@ -59,7 +59,7 @@
         </div>
       </div>
       
-      <h2>Wachtlijst {{object_list.count }}</h2>
+      <h2>{{object_list.count }} regels</h2>
       {% include 'base/feed_wachtlijst.html' %}
       
       {% if request.user.is_superuser %}

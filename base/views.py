@@ -552,13 +552,18 @@ class updateUser_email(LoginRequiredMixin,UpdateView):
 
 def userProfile(request, pk):
     user = User.objects.get(id=pk)
-    rooms = user.room_set.all()
+    # rooms = user.room_set.all()
     lockers = Locker.objects.all()
-    member_lockers = Locker.objects.all().exclude(owners=None)
-    room_messages = user.message_set.all()
+    # member_lockers = Locker.objects.all().exclude(owners=None)
+    # room_messages = user.message_set.all()
     topics = Topic.objects.all()
-    context = {'user': user, 'rooms': rooms,
-               'room_messages': room_messages, 'topics': topics,'lockers':lockers,'member_lockers':member_lockers}
+    context = {'user': user,
+                # 'rooms': rooms,
+               'room_messages': topics,
+                 'topics': topics,
+                 'lockers':lockers,
+                #  'member_lockers':member_lockers
+                }
     return render(request, 'base/profile.html', context)
 
 # @login_required(login_url='login')
@@ -631,10 +636,10 @@ def user_listPage(request):
     users = User.objects.filter(name__icontains=q)
     return render(request, 'base/user_list.html', {'users': users})
 
-def lockersPage(request):
-    q = request.GET.get('q') if request.GET.get('q') != None else ''
-    lockers = Locker.objects.filter(kluisnummer__icontains=q,verhuurd=True) #[0:15]
-    return render(request, 'base/lockers.html', {'lockers': lockers})
+# def lockersPage(request):
+#     q = request.GET.get('q') if request.GET.get('q') != None else ''
+#     lockers = Locker.objects.filter(kluisnummer__icontains=q,verhuurd=True) #[0:15]
+#     return render(request, 'base/lockers.html', {'lockers': lockers})
 # def vrijelockersPage(request):
 #     q = request.GET.get('q') if request.GET.get('q') != None else ''
 #     lijst='vrijelockerslijst'
@@ -786,8 +791,10 @@ class Wachtlijst (ListView):
             Q(name__icontains=query)|
             Q(locker__icontains=query))&Q(wachtlijst=True)
             ).order_by('hoofdhuurder','wachtlijst','onderhuur','email')
+        berichten=Bericht.objects.all()
         context = {
             'query': query,
+            'berichten': berichten,
             'object_list' :queryset,
             }
         return context
@@ -1591,14 +1598,14 @@ def lockersPage2(request):
     C=Q(obsolete=False)
     D=Q(opgezegd=False)
     exclude_list = ['vrij', 'onbekend', 'Vrij','wachtlijst',]
-    # berichten=Bericht.objects.all()
+    topics=Topic.objects.all()
     verhuurd =Locker.objects.filter(  (A | B ) & (C | D) ).order_by('topic').exclude(email__in=exclude_list)
     context = {
                 'verhuurd': verhuurd,
                     'lijst': lijst,
                 'kluisjes': kluisjes,
                 'allekluisjes': allekluisjes,
-                # 'mogelijkheden': mogelijkheden,
+                'topics': topics,
             }
     return render(request, 'base/kluisjes.html', context)
     # return render(request, 'base/kluisjes.html', {'lockers': lockers})
