@@ -53,7 +53,7 @@ def loginPage(request):
             login(request, user)
             return redirect('home')
         else:
-            url = "/berichten/" + "?q=" + "'controleer en noteer de naam en/of het emailadres'"
+            url = "/berichten/" + "?q=" + "'controleer  wachtwoord en/of het emailadres'"
             return HttpResponseRedirect(url)
             # messages.error(request, 'Username OR password does not exit')
 
@@ -88,7 +88,6 @@ def registerPage(request):
         else:
             print('else')
             url='/berichten'
-            # messages.error(request, 'An error occurred during registration')
             messages.add_message(request, messages.ERROR, "3.An error occurred during registration", extra_tags="dragonball")
             return HttpResponseRedirect(url)
 
@@ -168,15 +167,6 @@ def home(request):
         url = "lockers/"  + "?q=" +q 
         return HttpResponseRedirect(url)
 
-        # lijst='home'
-        # verhuurd = Locker.objects.filter(
-        # Q(email__icontains=q)|
-        # Q(topic__icontains=q)|
-        # Q(kluisje__icontains=q)|
-        # Q(kluisnummer__icontains=q)|
-        # Q(tekst__icontains=q) 
-        # ).order_by('topic')
-
     if 'xls' in qq:
         x = qq.replace("xls ", "")
         q=x
@@ -211,71 +201,9 @@ def home(request):
         return HttpResponseRedirect(url)
 
     else:
-    #     # lage filtering als er gezocht wordt ==> vind obsolete en opgezegd en GEEN exclusions
-    #     A=Q(email__icontains=q)
-    #     B=Q(kluisje__icontains=q)
-    #     C=Q(tekst__icontains=q) 
-    #     # C=Q(obsolete=False)
-    #     # D=Q(opgezegd=False)
-    #     exclude_list = ['vrij', 'onbekend', 'Vrij','wachtlijst','Onbekend',]
-    #     berichten=Bericht.objects.all()
-    #     # verhuurd =Locker.objects.filter(  (A | B ) & (C & D) ).order_by('topic').exclude(email__in=exclude_list)
-    #     lijst='home'
-    #     if q!='' or q !=None:
-    #         verhuurd =Locker.objects.filter(A | B | C ).order_by('topic') #.exclude(email__in=exclude_list)
-    # # ).order_by('topic') #.exclude(verhuurd=False) #ik wil alle lockers tonen
-    # rest=168 - onverhuurd.count()
         print('else:',q)
         url = "lockers/"  + "?q=" +q
         return HttpResponseRedirect(url)
-
-# room_messages = Message.objects.all()
-# context = {
-#                'lijst':lijst,
-#                'rest':rest,
-#                 'lockers': lockers,
-#                 'verhuurd': verhuurd,
-#                 'onverhuurd': onverhuurd,
-#                'berichten': berichten, 
-#                'room_messages': room_messages
-#                }
-#     return render(request, 'base/home.html', context)
-# storage.used = False
-    #     try:
-    #         user=User.objects.get(id=request.user.id)
-    #         locker2 = Locker.objects.get(kluisnummer=user.locker,email=user.email,verhuurd=True)
-    #         if locker2:
-    #             messages.info(request, mark_safe(f"Beheer uw locker: <a href='{locker2.id}/update-locker'>{locker2.kluisnummer}</a>"))
-    #         else:
-    #             messages.info(request, f'U heeft nog geen  locker.')
-    #     except:
-    #         print('8.not-found-user.locker:', request.user)
-    #         url = reverse('create-person',)
-    #         pass
-    # elif request.user is not None :
-    #     print('2.not-none-user:', request.user)
-    #     url = "/berichten/" + "?q=" + "Ubent niet ingelogd. Svp Inloggen / Registreren"
-    #     return HttpResponseRedirect(url)
-
-        # return HttpResponseRedirect('/registreer/')
-        # return HttpResponseRedirect('/login/')
-    # elif request.user == AnonymousUser:
-    #       print('3.anonymoususer:', request.user)
-    # elif request.user != AnonymousUser:
-    #         print('4.not-none-and-not-anonymous user:', request.user)
-    #         try:
-    #                 user=User.objects.get(id=request.user.id)
-    #                 yourlocker=Locker.objects.filter(email__icontains=user.email)
-    #                 yourlocker=Locker.objects.filter(kluisnummer__icontains=user.locker)
-    #                 cnt=yourlocker.count()
-    #                 print('6.logged-in-user:', request.user)
-    #         except:
-    #             print('7.not-foundlocker-user:', request.user)
-    #             pass
-    #         else:
-    #             print('7.use-user:', request.user)
-    # berichten=Bericht.objects.all() ##.filter(user=request.user.id)
-
 
 class LockerView (LoginRequiredMixin,ListView):
     login_url='login'
@@ -294,18 +222,8 @@ def get_queryset(self): # new
     return queryset
 paginate_by = 10
 def get_context_data(self, **kwargs):
-        # return context
         context = super(LockerView, self).get_context_data(**kwargs)
-        # context['pk'] = self.object.id
-        # context['object_list'] = Locker.objects.all().filter(verhuurd=True)
-        # print(onderhuurder)
-        # vikingers=Person.objects.all().order_by('email').filter(onderhuur=True)
-        # context['form'].fields['subcategory'].choices = SubcategoryFilter[self.object.type]
-
-        # Return context to be used in form view
         return context
-
-
  
 def activityPage(request):
     room_messages = Message.objects.all()
@@ -364,8 +282,6 @@ def infoPage(request):
 @login_required(login_url='login')
 def room(request, pk):
     room = Locker.objects.get(id=pk)
-    # room_messages = room.message_set.all()
-    # participants = room.participants.all()
     ploegen=Ploeg.objects.all()
     vikingers=User.objects.all().order_by('email')
     topic=room.kluisnummer
@@ -453,14 +369,6 @@ class CreateUser(CreateView):
     # print('usercreateview')
     def form_valid(self, form):
         messages.success(self.request, "Wijzigingen in user zijn opgeslagen.")
-        # locker = form.cleaned_data['locker']  
-        # email = form.cleaned_data['email'] 
-        # if locker:
-        #     Locker.objects.update_or_create(kluisnummer=locker,
-        #                                                    email=email,
-        #                                                    verhuurd=True,
-        #                                                    )
-            # print(locker)
         return super(CreateUser,self).form_valid(form)
 
 class EditUser( LoginRequiredMixin,UpdateView):
@@ -478,8 +386,6 @@ class EditUser( LoginRequiredMixin,UpdateView):
         print(_id)
         obj = get_object_or_404(User, id=self.kwargs['pk'])
         return obj
-    # def get_form(self, form_class=None):
-    #     return form
 
     def get_context_data(self, **kwargs):
         print('in get_context_data')
@@ -490,9 +396,6 @@ class EditUser( LoginRequiredMixin,UpdateView):
     
     def form_valid(self, form):
         print('in form_valid')
-        # hoofdhuurder = form.cleaned_data['verhuurd']  
-        # name = form.cleaned_data['nieuwe_huurder']  
-        # tekst = form.cleaned_data['tekst']  
         messages.success(self.request, "The User was updated successfully.")
         success_url = reverse_lazy('users')
         return super(EditUser,self).form_valid(form)
@@ -511,18 +414,6 @@ class updateUser3(LoginRequiredMixin,UpdateView):
     def form_valid(self, form):
         kluis = form.cleaned_data['locker']  
         email = form.cleaned_data['email'] 
-        # name=email.split('@')
-        # print(name)
-        # if kluis:
-        #     print(kluis)
-        #     locker, created = Locker.objects.update_or_create(
-        #     kluisnummer=kluis,
-        #     email=email,
-        #     verhuurd=True,
-        #     type='H',
-        #     kluisje=kluis,
-        #     )
-
         messages.success(self.request, "The user was updated successfully.")
         return super(updateUser3,self).form_valid(form)
         
@@ -550,12 +441,6 @@ class updateUser_email(LoginRequiredMixin,UpdateView):
         email = form.cleaned_data['email'] 
         if kluis:
             print(kluis)
-            # locker, created = Locker.objects.update_or_create(
-            # kluisnummer=kluis,
-            # email=email,
-            # verhuurd=False,
-            # kluisje=kluis,
-            # )
         else:
                     messages.success(self.request, "Something went wrong.")
         messages.success(self.request, "The locker was updated successfully.")
@@ -576,28 +461,6 @@ def userProfile(request, pk):
                 #  'member_lockers':member_lockers
                 }
     return render(request, 'base/profile.html', context)
-
-# @login_required(login_url='login')
-# def updatePerson(request,pk):
-#     person = Person.objects.get(id=pk)
-#     form = PersonForm(instance=person)
-#     locker= request.POST.get('locker')
-#     huur= request.POST.get('hoofhuurder')
-#     wacht= request.POST.get('wachtlijst')
-#     onder= request.POST.get('onderhuur')
-#     email= request.POST.get('email')
-#     context = {
-#                 'form': form,
-#                 'locker': locker,
-#             }
-#     if request.method == 'POST':
-#         if form.is_valid():
-#             print('valid')
-
-#         if not form.is_valid():
-#             print('invalid')
-#             return redirect('update-person', pk=person.id)
-#     return render(request, 'base/update-person.html', context)
 
 @login_required(login_url='login')
 def myProfile(request):
@@ -647,24 +510,6 @@ def user_listPage(request):
     users = User.objects.filter(name__icontains=q)
     return render(request, 'base/user_list.html', {'users': users})
 
-# def lockersPage(request):
-#     q = request.GET.get('q') if request.GET.get('q') != None else ''
-#     lockers = Locker.objects.filter(kluisnummer__icontains=q,verhuurd=True) #[0:15]
-#     return render(request, 'base/lockers.html', {'lockers': lockers})
-# def vrijelockersPage(request):
-#     q = request.GET.get('q') if request.GET.get('q') != None else ''
-#     lijst='vrijelockerslijst'
-#     # vergelijk facturatielijst van heden met de oude excellijst; ===> in_excel; waarde=lockernummer
-#     # vergelijk facturatielijst van heden met de registraties; ===> is_registered; waarde=lockernummer
-#     # lockers = Facturatielijst.objects.all() ##.filter(excel__icontains='--')
-#     lockers = Facturatielijst.objects.filter(
-#                     Q(kluisnummer__icontains='--')
-#                     # Q(is_registered__icontains='regis')
-#                     # Q(is_registered=None) #.filter(type='vrij')
-#                 ).order_by('kluisnummer') ##.exclude(kluisnummer__icontains='--') ##.update(verhuurd=False)
-
-#     return render(request, 'base/excellijst.html', {'lockers': lockers,'vrijelockerslijst':lijst})
-
 def excelPage(request):
     q = request.GET.get('q') if request.GET.get('q') != None else ''
     lijst='excellijst'
@@ -686,12 +531,10 @@ def excelPage(request):
             
         lockers = Excellijst.objects.filter(kluisnummer__icontains=q)
         return redirect('home')
-    # return render(request, 'base/delete.html', {'obj': room})
     return render(request, 'base/delete.html', {'lockers': lockers,'excellijst':lijst,'menuoptie':menuoptie})
 
 def profilePage(request):
     q = request.GET.get('q') if request.GET.get('q') != None else ''
-    # profiles = User.objects.filter(name__icontains=q)
     profiles = Person.objects.all() #filter(name__icontains=q)
     return render(request, 'base/profiles.html', {'profiles': profiles})
 
@@ -819,16 +662,10 @@ class RequestView (ListView):
         query = self.request.GET.get('q')
         if query == None: query=""
         print('query',q)
-        # queryset = Bericht.objects.all() #filter(
-            # (Q(email__icontains=query)|
-            # Q(name__icontains=query)|
-            # Q(locker__icontains=query))&Q(wachtlijst=True)
-            # ).order_by('hoofdhuurder','wachtlijst','onderhuur','email')
         berichten=Bericht.objects.all()
         context = {
             'query': query,
             'berichten': berichten,
-            # 'object_list' :queryset,
             }
         return context
 
@@ -988,138 +825,6 @@ class FactuurDeleteView(DeleteView):
         _id = self.request.GET.get('pk') if self.request.GET.get('pk') != None else ''
         return obj
 
-# @login_required(login_url='login')   
-# def tel_aantal_registraties(request):
-#     from django.db.models import Max, Count
-#     print('0)in tel_aantal_registraties in facturatielijst===============')
-#     Facturatielijst.objects.all().update(is_registered='----',in_excel='----',type='----',sleutels='----',code='---') 
-#     print('1)bestaat factuur als locker ===============')
-#     for f in Facturatielijst.objects.all():
-#         if f:break #tijdelijk uitgeschakelde controle; 
-#         try:
-#             l=Locker.objects.get(kluisnummer=f.kluisnummer)
-#             f.is_registered=l.kluisnummer
-#             if l.verhuurd==True:
-#                 f.code=1
-#                 l.save()
-#                 f.save()
-#             else:
-#                 if l.verhuurd==True: f.code=9
-#                 f.code=0
-#             f.save()
-#         except: 
-#             Locker.DoesNotExist
-#             print(f.kluisnummer,'heeft GEEN factuur')
-#             f.type=' create f ' ## + f.kluisnummer
-#             f.code=0
-#             f.save()
-#     print('2)bestaat excel als locker ===============')
-#     for e in Facturatielijst.objects.all():
-#         if e:break #tijdelijk uitgeschakelde controle; de oude excellijst is niet leidend en ook  niet compleet
-#         try:
-#             l=Excellijst.objects.get(kluisnummer=e.kluisnummer)
-#             e.in_excel=l.kluisnummer
-#             e.save()
-#         except: 
-#             Excellijst.DoesNotExist
-#             print(e.kluisnummer,'GEEN excel')
-#             e.in_excel='===='
-#             # f.type=' create ' ## + f.kluisnummer
-#             e.save()
-# # ====
-#     print('3)vind dubbele records  ===============')
-# # Getting duplicate files based on case_no and hearing_date
-#     files = Facturatielijst.objects.values('kluisnummer', 'email') \
-#         .annotate(records=Count('kluisnummer')) \
-#         .filter(records__gt=1)
-
-#     # Check the generated group by query
-#     print (files.query)
-
-#     # Then do operations on duplicates
-#     for file in files:
-#         # break
-#         # Facturatielijst.objects.filter(
-#         #     kluisnummer=file['kluisnummer'],
-#         #     email=file['email']
-#         # ).update(sleutels='remove 1')
-#         dubbel=Facturatielijst.objects.filter(
-#             kluisnummer=file['kluisnummer'],
-#             email=file['email']
-#         ).first()
-#         dubbel.sleutels='verwijder'
-#         dubbel.save()
-#         # dubbel.delete()
-
-# # ====
-#     print('4)bestaat locker als factuur ===============')
-#     for e in Locker.objects.all():
-#         if e: break #tijdelijk uitgeschakeld testen herbenaming
-#         try:
-#             l=Facturatielijst.objects.get(kluisnummer=e.kluisnummer)
-#         except: 
-#             Facturatielijst.DoesNotExist
-#             print(e.kluisnummer,'GEEN factuur',)
-#             break
-# # ====
-#     print("5)zet 'kluisnummer' in 'topic' herstel 'kluisje' herbenaming===============")
-#     for e in Locker.objects.all():
-#         if e: break #tijdelijk uitgeschakeld
-#         # e.kluisje=e.kluisnummer
-#         if 'B-' in e.kluisnummer:
-#             kl=e.kluisnummer
-#             kl2=kl.replace('B-','00')
-#             print(kl2,'B')
-#             e.topic=kl2
-#             e.save()
-#         if 'C-' in e.kluisnummer:
-#             kl=e.kluisnummer
-#             kl2=kl.replace('C-','')
-#             print(kl2,'C')
-#             e.topic=kl2
-#             e.save()
-#         if 'A-' in e.kluisnummer:
-#             kl=e.kluisnummer
-#             kl2=kl.replace('A-','')
-#             print(kl2,'A')
-#             e.topic=kl2
-#             e.save()
-
-# # ====
-#     print("6)hernummer 'kluisnummer' in 'renum'===============")
-#     x=0
-#     for f in Facturatielijst.objects.all():
-#         if f: break #tijdelijk uitgeschakeld
-#         if 'B-' in f.kluisnummer:
-#             kl=f.kluisnummer
-#             kl2=kl.replace('B-','00')
-#             # print(kl2,'B')
-#             f.renum=kl2
-#             f.save()
-#         if 'C-' in f.kluisnummer:
-#             kl=f.kluisnummer
-#             kl2=kl.replace('C-','')
-#             # print(kl2,'C')
-#             f.renum=kl2
-#             f.save()
-#         if 'A-' in f.kluisnummer:
-#             kl=f.kluisnummer
-#             kl2=kl.replace('A-','')
-#             # print(kl2,'A')
-#             f.renum=kl2
-#             f.save()
-#     for f in Facturatielijst.objects.all():
-#         try:
-#             Locker.objects.get(topic=f.renum)
-#         except:
-#             x+=1
-#             Locker.DoesNotExist
-#             print('2-', x,f.kluisnummer,f.renum)
-#                     # wellicht hier creatie van factuurregel Facturatielijst.objects.update_or_create(
-# # 
-#     print('einde tel_aantal_lockers in facturatielijst')
-#     url = reverse('facturatielijst',)
-#     return HttpResponseRedirect(url)
 
 def m2mtotext(request,):
     string='pbkdf2_sha256$390000$MbAy3r2ahV6QE6xFilyWG5$Hkuz0s9MNtjJ066lD0v9N2tnUv2ZuZLALt2rIL1QSAQ='
@@ -1292,142 +997,6 @@ def export_verhuurd(request,):
         writer.writerow([item.id ,item.email, item.code,item.kluisnummer,item.is_registered, item.sleutels , item.in_excel ,item.type,item.obsolete, ";"])
     return response
 
-# def file_load_view(request):
-#         send_mail(
-#     "Subject here",
-#     "Here is the message.",
-#     "from@example.com",
-#     ["to@example.com"],
-#     fail_silently=False,
-# )
-        # ============================================================ example write file with appropriate separators
-    # header = ['name', 'area', 'country_code2', 'country_code3']
-    # data = [
-    # ['Albania', 28748, 'AL', 'ALB'],
-    # ['Algeria', 2381741, 'DZ', 'DZA'],
-    # ['American Samoa', 199, 'AS', 'ASM'],
-    # ['Andorra', 468, 'AD', 'AND'],
-    # ['Angola', 1246700, 'AO', 'AGO']]
-    # with open('countries.csv', 'w', encoding='UTF8', newline='') as f:
-    #     writer = csv.writer(f)
-    # # write the header
-    #     writer.writerow(header)
-    # # write multiple rows
-    #     writer.writerows(data)
-    # ============================================================ temporarely  commented out 13-9-23 
-    # Create the HttpResponse object with the appropriate CSV header. 
-    # response = HttpResponse(content_type='text/csv')
-    # response['Content-Disposition'] = 'attachment; filename="facturatielijst.csv"'
-    # # excel: 20200830VolwassenLedenPloegmakelaar.xlsx (libreoffice calc)
-    # writer = csv.writer(response)
-    # writer.writerow(['huurder', 'locker', 'regis', ])
-    # tekst=Facturatielijst.objects.all().values_list('email','kluisnummer','is_registered')
-    # # print(tekst)
-    # for e in tekst:
-    #     writer.writerow([e])
-
-    # return response
-    # ============================================================ temporarely  commented out 13-9-23
-
-    # context={}
-    # return render(request, 'base/home.html', context)
-    # url = reverse('create_locker', kwargs={'row': pk,'kol': kol})
-        # url = reverse('facturatielijst',)
-        # return HttpResponseRedirect(url)
-
-
-# def lockerPage(request,pk):
-#     locker = Locker.objects.get(id=pk)
-#     form = LockerForm(instance=locker)
-#     lockers=Locker.objects.all().filter(verhuurd=True)
-#     topics=Topic.objects.all()
-#     vikingers=User.objects.all().order_by('username')
-#     context = {
-#                 'vikingers':vikingers,
-#                 'kluis': locker,
-#                 'form': form,
-#             }
-    
-#     if request.user.email != locker.email and not request.user.is_superuser:
-#         messages.error(request, f'{locker.kluisnummer} : Is niet uw locker')
-#         return render(request, 'base/berichten.html', {'lockers': lockers,'topics':topics})
-    
-#     if request.method == 'POST':
-#         form = LockerForm(request.POST, request.FILES, instance=locker)
-#         onderhuurder= request.POST.get('onderhuurder')
-#         slotcode= request.POST.get('code')
-#         type= request.POST.get('type')
-#         sleutels= request.POST.get('sleutels')
-#         huuropheffen= request.POST.get('huuropheffen')
-#         print('onderhuurder', onderhuurder,sleutels,slotcode)
-#         if form.is_valid():
-#             print('form is valid')
-#             if onderhuurder:
-#                 print('onderhuurder', onderhuurder)
-#                 h=User.objects.get(id=onderhuurder)
-#                 locker.owners.add(h)
-#                 return redirect('lockers')
-#             if huuropheffen:
-
-#                 h=User.objects.get(id=huuropheffen)
-#                 print('opheffen',h)
-#                 locker.owners.remove(h)
-#                 form.save()
-#             return redirect('locker', locker.id)
-#     return render(request, 'base/update-locker.html', context)
-
-# @login_required(login_url='login')
-# def updateRoom(request, pk):
-#     room = Room.objects.get(id=pk)
-#     form = RoomForm(instance=room)
-#     topics = Topic.objects.all()
-#     # if request.user != room.host:
-#     #     return HttpResponse('Your are not allowed here!!')
-
-#     if request.method == 'POST':
-#         topic_name = request.POST.get('topic')
-#         topic, created = Topic.objects.get_or_create(name=topic_name)
-#         room.name = request.POST.get('name')
-#         room.topic = topic
-#         room.description = request.POST.get('description')
-#         room.save()
-#         return redirect('home')
-
-#     context = {'form': form, 'topics': topics, 'room': room}
-#     return render(request, 'base/room_form.html', context)
-
-
-# @login_required(login_url='login')
-# def deleteRoom(request, pk):
-#     room = Room.objects.get(id=pk)
-
-#     if request.user != room.host:
-#         return HttpResponse('Your are not allowed here!!')
-
-#     if request.method == 'POST':
-#         room.delete()
-#         return redirect('home')
-#     return render(request, 'base/delete.html', {'obj': room})
-
-
-# @login_required(login_url='login')
-# def createRoom(request):
-#     form = RoomForm()
-#     topics = Topic.objects.all()
-#     if request.method == 'POST':
-#         topic_name = request.POST.get('topic')
-#         topic, created = Topic.objects.get_or_create(name=topic_name)
-
-#         Room.objects.create(
-#             host=request.user,
-#             topic=topic,
-#             name=request.POST.get('name'),
-#             description=request.POST.get('description'),
-#         )
-#         return redirect('home')
-
-#     context = {'form': form, 'topics': topics}
-#     return render(request, 'base/room_form.html', context)
 
 class CreateFactuur(CreateView):
     model = Facturatielijst
@@ -1486,61 +1055,10 @@ class CreatePerson(CreateView):
         return HttpResponseRedirect('/berichten/')
         # return super().form_invalid(form)
 
-    # def form_valid(self, form):
-    #     form.instance.person_id = self.kwargs['person_id']
-    #     form.instance.user = self.request.user
-    #     return super().form_valid(form)
-
-    # def get_form(self, form_class=None):
-    #     form = super().get_form(form_class)
-    #     form.fields['name'].label = "Aan = 'Wachtlijst' aanvullen"
-    #     form.fields['email'].label = 'Use ; (semicolon) to split '
-    #     return form
-
-    # def get_context_data(self,**kwargs):
-    #     context = super().get_context_data(**kwargs)
-    #     q = self.request.GET.get('personmail') if self.request.GET.get('personmail') != None else ''
-    #     query = self.request.GET.get('personmail')
-    #     if query == None: query=""
-    #     print(query)
-    #     email = super().form.cleaned_data['email'] 
-    #     if Person.objects.filter(email=email).exists():
-    #             print('invalid')
-    #             messages.error(self.request, f'[Email]  and/or [Username] already in use.')
-    #             # messages.info(self.request, 'Your password has been changed successfully!')
-    #             return HttpResponseRedirect('/help/'+email)
-
-        # context["email"] = query #user.ticket_set.all()
-        # if self.form_valid:
-        #     print("The model object =", self.object)
-
-        # return context
-
-    #     return context
-    
-    # def form_valid(self, form):
-    #     name = form.cleaned_data['name']  
-    #     email = form.cleaned_data['email'] 
-    #     messages.success(self.request, "U bent op de wachtlijst geplaatst.")
-    #     wachtlijst=Locker.objects.get(kluisnummer='wachtlijst')
-    #     return super(CreatePerson,self).form_valid(form)
 
 def berichtenPage(request):
     messages.set_level(request, messages.WARNING)
     messages.add_message(request, messages.INFO, "Welkom bij Viking Lockers.")    
-    # if request.user.is_authenticated:
-    #     try:
-    #         user=User.objects.get(id=request.user.id)
-    #         locker2 = Locker.objects.get(kluisnummer=user.locker,email=user.email,verhuurd=True)
-    #         if locker2:
-    #             messages.info(request, mark_safe(f"Direct naar uw locker: <a href='{locker2.id}/update-locker'>{locker2.kluisnummer}</a>"))
-    #         else:
-    #             messages.info(request, f'U heeft nog geen  locker.')
-    #     except:
-    #         print('8.not-found-user.locker:', request.user)
-    #         url = reverse('create-person',)
-    #         pass
-
     q = request.GET.get('q') if request.GET.get('q') != None else ''
 
     return render(request, 'base/messages1.html', {'qq':q,})
@@ -1634,11 +1152,6 @@ def lockersPage2(request):
     lijst='verhuurd'
     print('lockers:',q)
     A=Q(email__icontains=q)
-    # B=Q(kluisje__icontains=q)
-    # C=Q(obsolete=False)
-    # D=Q(opgezegd=False)
-    # exclude_list = ['vrij', 'onbekend', 'Vrij','wachtlijst',]
-    # verhuurd =Locker.objects.filter(  (A | B ) & (C | D) ).order_by('topic').exclude(email__in=exclude_list)
     topics=Topic.objects.all()
     verhuurd =Locker.objects.filter(
     Q(kluisnummer__icontains=q) |
