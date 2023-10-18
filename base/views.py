@@ -164,14 +164,18 @@ def home(request):
         print(message)
     url = reverse('berichten',)
     if q!='' or q !=None:
-        lijst='home'
-        verhuurd = Locker.objects.filter(
-        Q(email__icontains=q)|
-        Q(topic__icontains=q)|
-        Q(kluisje__icontains=q)|
-        Q(kluisnummer__icontains=q)|
-        Q(tekst__icontains=q) 
-        ).order_by('topic')
+        print('if:',q)
+        url = "lockers/"  + "?q=" +q 
+        return HttpResponseRedirect(url)
+
+        # lijst='home'
+        # verhuurd = Locker.objects.filter(
+        # Q(email__icontains=q)|
+        # Q(topic__icontains=q)|
+        # Q(kluisje__icontains=q)|
+        # Q(kluisnummer__icontains=q)|
+        # Q(tekst__icontains=q) 
+        # ).order_by('topic')
 
     if 'xls' in qq:
         x = qq.replace("xls ", "")
@@ -207,31 +211,35 @@ def home(request):
         return HttpResponseRedirect(url)
 
     else:
-        # lage filtering als er gezocht wordt ==> vind obsolete en opgezegd en GEEN exclusions
-        A=Q(email__icontains=q)
-        B=Q(kluisje__icontains=q)
-        C=Q(tekst__icontains=q) 
-        # C=Q(obsolete=False)
-        # D=Q(opgezegd=False)
-        exclude_list = ['vrij', 'onbekend', 'Vrij','wachtlijst','Onbekend',]
-        berichten=Bericht.objects.all()
-        # verhuurd =Locker.objects.filter(  (A | B ) & (C & D) ).order_by('topic').exclude(email__in=exclude_list)
-        lijst='home'
-        if q!='' or q !=None:
-            verhuurd =Locker.objects.filter(A | B | C ).order_by('topic') #.exclude(email__in=exclude_list)
-    # ).order_by('topic') #.exclude(verhuurd=False) #ik wil alle lockers tonen
-    rest=168 - onverhuurd.count()
-    room_messages = Message.objects.all()
-    context = {
-               'lijst':lijst,
-               'rest':rest,
-                'lockers': lockers,
-                'verhuurd': verhuurd,
-                'onverhuurd': onverhuurd,
-               'berichten': berichten, 
-               'room_messages': room_messages
-               }
-    return render(request, 'base/home.html', context)
+    #     # lage filtering als er gezocht wordt ==> vind obsolete en opgezegd en GEEN exclusions
+    #     A=Q(email__icontains=q)
+    #     B=Q(kluisje__icontains=q)
+    #     C=Q(tekst__icontains=q) 
+    #     # C=Q(obsolete=False)
+    #     # D=Q(opgezegd=False)
+    #     exclude_list = ['vrij', 'onbekend', 'Vrij','wachtlijst','Onbekend',]
+    #     berichten=Bericht.objects.all()
+    #     # verhuurd =Locker.objects.filter(  (A | B ) & (C & D) ).order_by('topic').exclude(email__in=exclude_list)
+    #     lijst='home'
+    #     if q!='' or q !=None:
+    #         verhuurd =Locker.objects.filter(A | B | C ).order_by('topic') #.exclude(email__in=exclude_list)
+    # # ).order_by('topic') #.exclude(verhuurd=False) #ik wil alle lockers tonen
+    # rest=168 - onverhuurd.count()
+        print('else:',q)
+        url = "lockers/"  + "?q=" +q
+        return HttpResponseRedirect(url)
+
+# room_messages = Message.objects.all()
+# context = {
+#                'lijst':lijst,
+#                'rest':rest,
+#                 'lockers': lockers,
+#                 'verhuurd': verhuurd,
+#                 'onverhuurd': onverhuurd,
+#                'berichten': berichten, 
+#                'room_messages': room_messages
+#                }
+#     return render(request, 'base/home.html', context)
 # storage.used = False
     #     try:
     #         user=User.objects.get(id=request.user.id)
@@ -1623,13 +1631,20 @@ def lockersPage2(request):
     kluisjes=Locker.objects.all().filter(verhuurd=True)     
     allekluisjes=Locker.objects.all()     
     lijst='verhuurd'
+    print('lockers:',q)
     A=Q(email__icontains=q)
-    B=Q(kluisje__icontains=q)
-    C=Q(obsolete=False)
-    D=Q(opgezegd=False)
-    exclude_list = ['vrij', 'onbekend', 'Vrij','wachtlijst',]
+    # B=Q(kluisje__icontains=q)
+    # C=Q(obsolete=False)
+    # D=Q(opgezegd=False)
+    # exclude_list = ['vrij', 'onbekend', 'Vrij','wachtlijst',]
+    # verhuurd =Locker.objects.filter(  (A | B ) & (C | D) ).order_by('topic').exclude(email__in=exclude_list)
     topics=Topic.objects.all()
-    verhuurd =Locker.objects.filter(  (A | B ) & (C | D) ).order_by('topic').exclude(email__in=exclude_list)
+    verhuurd =Locker.objects.filter(
+    Q(kluisnummer__icontains=q) |
+    Q(email__icontains=q)|
+    Q(tekst__icontains=q) 
+    ).order_by('topic')# .exclude(id__in=onverhuurd_lijst)
+
     context = {
                 'verhuurd': verhuurd,
                     'lijst': lijst,
