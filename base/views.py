@@ -133,7 +133,7 @@ def home(request):
         count=9
         # print('2.not-none-user:', request.user)
         url = "/berichten/"
-        messages.add_message(request, messages.INFO, "2.bent niet ingelogd. Svp Inloggen / Registreren", extra_tags="dragonball")
+        messages.add_message(request, messages.INFO, "U bent niet ingelogd. Svp Inloggen / Registreren", extra_tags="dragonball")
 
         # messages.warning(request, f'U bent niet ingelogd. Svp Inloggen / Registreren')
         # messages.debug(request, "%s debug bericht." % count)
@@ -146,7 +146,7 @@ def home(request):
         print('1.authorised:', request.user)
 # het berichtenscherm voorzien van ingelogd zijn of niet ingelogd zijn.
 # overbodige meldingen trachten weg te laten.
-# verdelenv an de meldingen over error, debud, warning, 
+# verdelenv an de meldingen over error, debug, warning, 
 # Level Constant 	Value
 # DEBUG 	10
 # INFO   	20
