@@ -21,6 +21,7 @@ urlpatterns = [
     path('profiles/',login_required(views.PersonListView.as_view()),name='profiles'),
     path('wacht-lijst/',views.Wachtlijst.as_view(),name='wacht-lijst'),
     path('lockers/', views.lockersPage2, name="lockers"),
+    path('requests',views.RequestView.as_view(),name='requests'),
     path('onverhuurd/', views.lockersPage3, name="onverhuurd"),
     path('create-person/', views.CreatePerson.as_view(), name="create-person"),          # <=================
     path('create-locker/', views.CreateLocker.as_view(), name="create-locker"),
@@ -44,11 +45,10 @@ urlpatterns = [
     path('huuropzeggen/<str:pk>', views.huuropzeggen, name="huuropzeggen"),
     path('polls_results/<int:question_id>/', views.polls_results, name='polls_results'),
 
-   path('m2/', views.m2mtotext, name="m2"),  #creates user from locker mail address
-   path('m3/', views.m3, name="m3"), #puts usermail in locker
-    # path('<str:pk>/locker/',views.lockerPage, name='locker'),  
+   path('m2/', views.m2mtotext, name="m2"),  #creates user from locker mail address if no user exists
+   path('m3/', views.m3, name="m3"), #puts usermail in get locker by email
+   path('m5/', views.m5, name="m5"), #check facturatielijst in get locker by email
     ]
-    # path('wachtlijst/', views.CreatePerson.as_view(), name="wachtlijst"), 
     # path('<str:pk>/update-locker/',views.update_locker, name='update-locker'),  
     #  path('aantalregistraties/', views.tel_aantal_registraties, name='aantalregistraties'),
     #  path('nummering/', views.nummering, name='nummering'),

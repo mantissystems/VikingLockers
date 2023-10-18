@@ -4,15 +4,12 @@
 
 <main class="layout layout--3">
   <div class="container">
-
     <!-- Topics Start -->
+    {% comment %}
+
+    {% endcomment %}
     {% include 'base/topics_component.html' %}
-    {% if verhuurd %}
-    <h2>{{verhuurd.count}} Regels</h2> 
-    {% endif %}
-    {% if onverhuurd %}
-    <h2>{{onverhuurd.count}} Regels</h2> 
-    {% endif %}
+
     <!-- Topics End -->
 
     <!-- Room List Start -->
@@ -34,28 +31,35 @@
       </div>
 
       <div class="roomList__header">
-        <div>  
+        <div>
+          <div class="roomList__header">
+            <div>
+            </div>
+          {% comment %}
+          {% if request.user.is_superuser %}
+
+          <a class="btn btn--main btn--pill" href="{% url 'login' %}">Login</a>
+          {% else %}
+          <a class="btn btn--main btn--pill" href="{% url 'home' %}">Home</a>
+          {% endif %}
+      
+            {% endcomment %}
+          </div>
         </div>
       </div>
-      {% comment %}
-      {% endcomment %}
-  
-      {% if request.user.is_superuser %}
-      <a href="{% url 'export_verhuurd' %}" class="btn btn--link">=>Export Verhuurd</a><hr>
-      <a href="{% url 'export_onverhuurd' %}" class="btn btn--link">=>Export Onverhuurd</a><hr>
-      <a href="{% url 'export_emaillijst' %}" class="btn btn--link">=>Export Emaillijst</a><hr>
-    {% endif %}
-
-      {% include 'base/feed_member_lockers.html' %}
+      
+      <h2>{{berichten.count }} regels</h2>
+      {% include 'base/feed_requests.html' %}
+      
       {% if request.user.is_superuser %}
       {% endif %}
     </div>
     <!-- Room List End -->
 
     <!-- Activities Start -->
-    {% include 'base/activity_component.html' %}
-
-
+    {% comment %}
+    {% endcomment%}
+    {% include 'base/feed_requests.html' %}
     <!-- Activities End -->
   </div>
 </main>

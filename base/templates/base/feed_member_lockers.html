@@ -1,3 +1,20 @@
+{% if onverhuurd %}
+{% for locker in onverhuurd %}
+<div class="roomListRoom">
+    <div class="roomListRoom__header">
+        <div class="roomListRoom__actions">
+        </div>
+    </div>
+    <div class="activities__boxHeader roomListRoom__header">
+        <a href="{% url 'update-locker' locker.id %}">{{locker.topic}} => {{locker.email|slice:"0:12"}}... 
+        </a>
+        {% if locker.tekst%} {{locker.tekst|linebreaks}}  {% endif %}{% if locker.obsolete %} (opgeheven) {% endif %}
+    </div>
+
+</div>
+{% endfor %}
+{% endif %}
+
 {% for locker in verhuurd %}
 <div class="roomListRoom">
     <div class="roomListRoom__header">

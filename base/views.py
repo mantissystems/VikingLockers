@@ -110,19 +110,16 @@ def home(request):
     B=Q(email__icontains='wachtlijst')
     C=Q(obsolete=True)
     D=Q(opgezegd=True)
-
     onverhuurd =Locker.objects.all().filter(  A | B  | C | D ).order_by('topic')
-    onverhuurd_lijst=onverhuurd.values_list('id')
-    # print(onverhuurd_lijst)
     verhuurd =Locker.objects.filter(
         (Q(verhuurd=True)
         ) 
-    ).order_by('topic') .exclude(id__in=onverhuurd_lijst)
+    ).order_by('topic')# .exclude(id__in=onverhuurd_lijst)
     lockers =Locker.objects.filter(
     Q(kluisnummer__icontains=q) |
     Q(email__icontains=q)|
     Q(tekst__icontains=q) 
-    ).order_by('topic') .exclude(id__in=onverhuurd_lijst)
+    ).order_by('topic')# .exclude(id__in=onverhuurd_lijst)
     messagelocker=Locker.objects.all().first()    
     rest=verhuurd.count() - onverhuurd.count() 
     if request.method == 'POST':
@@ -168,11 +165,13 @@ def home(request):
     url = reverse('berichten',)
     if q!='' or q !=None:
         lijst='home'
-        # verhuurd=Locker.objects.all().filter(verhuurd=True)     
-        verhuurd =Locker.objects.filter(
-        (Q(verhuurd=True)
-        ) 
-        ).order_by('topic') .exclude(id__in=onverhuurd_lijst)
+        verhuurd = Locker.objects.filter(
+        Q(email__icontains=q)|
+        Q(topic__icontains=q)|
+        Q(kluisje__icontains=q)|
+        Q(kluisnummer__icontains=q)|
+        Q(tekst__icontains=q) 
+        ).order_by('topic')
 
     if 'xls' in qq:
         x = qq.replace("xls ", "")
@@ -316,15 +315,19 @@ def helpPage(request):
         (Q(verhuurd=True)
         ) 
         ).order_by('topic')
+    A=Q(email__icontains='vrij')
+    B=Q(email__icontains='bekend')
     C=Q(obsolete=True)
     D=Q(opgezegd=True)
-    onverhuurd =Locker.objects.all().filter(   C | D ).order_by('topic')
+    E=Q(email__icontains='--')
+    F=Q(email__icontains='==')
+    onverhuurd =Locker.objects.all().filter( A | B |  C | D | E | F ).order_by('topic')
 
     helptekst=Helptekst.objects.filter(
             Q(title__icontains=q)|
             Q(content__icontains=q)
         ).order_by('seq').exclude(publish=False)
-    return render(request, 'base/helptekst.html', {'helptekst': helptekst,'aantalusers':verhuurd,'results': onverhuurd,'onverhuurd':onverhuurd})
+    return render(request, 'base/helptekst.html', {'helptekst': helptekst,'aantalusers':verhuurd,'onverhuurd': onverhuurd,'onverhuurd':onverhuurd})
 
 
 def infoPage(request):
@@ -799,6 +802,28 @@ class Wachtlijst (ListView):
             }
         return context
 
+class RequestView (ListView):
+    model=Bericht
+    template_name='base/requests.html'
+    def get_context_data(self,**kwargs):
+        
+        q = self.request.GET.get('q') if self.request.GET.get('q') != None else ''
+        query = self.request.GET.get('q')
+        if query == None: query=""
+        print('query',q)
+        # queryset = Bericht.objects.all() #filter(
+            # (Q(email__icontains=query)|
+            # Q(name__icontains=query)|
+            # Q(locker__icontains=query))&Q(wachtlijst=True)
+            # ).order_by('hoofdhuurder','wachtlijst','onderhuur','email')
+        berichten=Bericht.objects.all()
+        context = {
+            'query': query,
+            'berichten': berichten,
+            # 'object_list' :queryset,
+            }
+        return context
+
 # class ExcelView (ListView):
 class ExcelView (LoginRequiredMixin, ListView):
     login_url='login'
@@ -843,8 +868,10 @@ class FacturatieView (LoginRequiredMixin, ListView):
             Q(renum__icontains=query)|
             Q(kluisnummer__icontains=query)
             ).order_by('renum')
+        check=Facturatielijst.objects.all().exclude(type__icontains='--')
         context = {
             'query': query,
+            'check': check,
             'object_list' :queryset,
             }
         return context
@@ -1124,6 +1151,20 @@ def m3(request,):
 
     url = reverse('users',)
     return HttpResponseRedirect(url)
+def m5(request,):
+    for f in Facturatielijst.objects.all():
+        if f.email:
+            if '@' in f.email:
+                try:
+                    l=Locker.objects.get(email=f.email)
+                    f.type=l.topic
+                    f.save()
+                except:
+                    print('geen huurder', f.email)
+                    pass
+
+    url = reverse('facturatielijst',)
+    return HttpResponseRedirect(url)
 
 # def m4(request,):
 #     for l in Locker.objects.all():
@@ -1204,12 +1245,12 @@ def m3(request,):
 def export_onverhuurd(request,):
     import csv
     A=Q(email__icontains='vrij')
-    B=Q(email__icontains='onbekend')
+    B=Q(email__icontains='bekend')
     C=Q(obsolete=True)
     D=Q(opgezegd=True)
-    E=Q(kluisnummer__icontains='onbekend')
-
-    onverhuurd =Locker.objects.filter(  A | B  | C | D | E).order_by('topic')
+    E=Q(email__icontains='--')
+    F=Q(email__icontains='==')
+    onverhuurd =Locker.objects.all().filter( A | B |  C | D | E | F ).order_by('topic')
 
     response = HttpResponse(content_type='text/csv')
     response['Content-Disposition'] = 'attachment; filename="onverhuurd.csv"'
@@ -1218,16 +1259,11 @@ def export_onverhuurd(request,):
     for item in onverhuurd:
         writer.writerow([item.id ,item.email, item.kluisnummer, item.kluisje ,item.topic,item.sleutels,";"])
     return response
-def export_emaillijst(request,):
 
+def export_emaillijst(request,):
     import csv
-    exclude_list = ['vrij', 'onbekend','wachtlijst',]
-    A=Q(verhuurd=True)
-    B=Q(id__gte=1)
-    C=Q(obsolete=False)
-    D=Q(opgezegd=False)
-    verhuurd =Locker.objects.filter(  (A & D & C)).order_by('topic').exclude(email__icontains=exclude_list)
-    # verhuurd =Locker.objects.filter(A | B ).order_by('topic') .exclude(email__in=exclude_list)
+    # exclude_list = ['vrij', 'onbekend','wachtlijst',]
+    verhuurd =Locker.objects.filter(email__icontains='@').order_by('topic')
     response = HttpResponse(content_type='text/csv')
     response['Content-Disposition'] = 'attachment; filename="email_lijst.csv"'
     writer = csv.writer(response)
@@ -1238,12 +1274,6 @@ def export_emaillijst(request,):
     
 def export_verhuurd(request,):
     import csv
-    # filename="facturatie_lijst.csv"'
-    # spamreader = csv.reader(filename, delimiter=' ', quotechar='|')
-    # for row in spamreader:
-        # print(', '.join(row))
-        # Spam, Spam, Spam, Spam, Spam, Baked Beans
-        # Spam, Lovely Spam, Wonderful Spam
     verhuurd = Facturatielijst.objects.all()
     response = HttpResponse(content_type='text/csv')
     response['Content-Disposition'] = 'attachment; filename="facturatie_lijst.csv"'
@@ -1663,20 +1693,19 @@ def lockersPage3(request):
     q = request.GET.get('q') if request.GET.get('q') != None else ''
     kluisjes=Locker.objects.all().filter(verhuurd=False)     
     allekluisjes=Locker.objects.all()     
-    mogelijkheden=allekluisjes.count() * 2     
-    lijst='onverhuurd'
     A=Q(email__icontains='vrij')
-    B=Q(email__icontains='onbekend')
+    B=Q(email__icontains='bekend')
     C=Q(obsolete=True)
     D=Q(opgezegd=True)
-
-    onverhuurd =Locker.objects.filter(  A | B  | C | D ).order_by('topic')
+    E=Q(email__icontains='--')
+    F=Q(email__icontains='==')
+    onverhuurd =Locker.objects.all().filter( A | B |  C | D | E | F ).order_by('topic')
+    lijst='onverhuurd'
     context = {
-                'verhuurd': onverhuurd,
+                'onverhuurd': onverhuurd,
                     'lijst': lijst,
                 'kluisjes': kluisjes,
                 'allekluisjes': allekluisjes,
-                'mogelijkheden': mogelijkheden,
             }
     return render(request, 'base/kluisjes.html', context)
 

@@ -5,7 +5,7 @@
       <tr>
         <th>Huurder:</th>
         <th>Verhuurd</th>
-        <th>type</th>
+        <th>Check</th>
         <th>renum</th>
         <th>obs</th>
       </tr>
@@ -16,7 +16,7 @@
       <a href="{% url 'export_emaillijst' %}" class="btn btn--link">=>Export E-mail</a>
       <hr>
     {% endif %}
-      {{object_list.count}} regels
+      {{object_list.count}} regels  en {{check.count}} ok
       {% for locker in object_list %}
       <tr>
 
@@ -28,9 +28,12 @@
         </td>
         </a>
       
-                        <td>
-                          <a href="{% url 'create-locker' %}?q={{locker.kluisnummer}}">{{locker.type}} </span></a>        
-                        </td>
+        <td>
+          {% comment %}
+      <a href="{% url 'create-locker' %}?q={{locker.kluisnummer}}">{{locker.type}} </span></a>        
+      {% endcomment %}
+      {{locker.type}}
+    </td>
 
                         <td>
                           <a href="{% url 'update-usermail'  locker.renum %}?q={{locker.renum}}">{{locker.renum}} </span></a>

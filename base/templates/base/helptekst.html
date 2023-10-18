@@ -35,7 +35,7 @@
 
         <ul class="topics__list">
           <li>
-            <a href="{% url 'helptekst' %}" class="active"><span> aantal huurders: {{aantalusers.count}}. Onverhuurd: {{results.count}} </span></a>
+            <a href="{% url 'helptekst' %}" class="active"><span> aantal huurders: {{aantalusers.count}}. Onverhuurd: {{onverhuurd.count}} </span></a>
           </li>
           <table class="viking-table">
             <tr>
@@ -58,14 +58,14 @@
                   </tbody>
             </thead>
         </table>
+        {% if request.user.is_superuser %}
+        <a href="{% url 'm2' %}" class="btn btn--link">=>create user from locker email if no useremail exists</a><hr>
+        <a href="{% url 'm3' %}" class="btn btn--link">=>put new user email back in locker</a><hr>
+        <a href="{% url 'm5' %}" class="btn btn--link">=>check facturatielijst. is every locker present</a><hr>
+        <a href="{% url 'requests' %}" class="btn btn--link">=>berichtenlijst</a><hr>
+      {% endif %}
+  
         {% comment %}
-        {% if messages %}
-        <ul class="messages">
-            {% for message in messages %}
-            <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
-            {% endfor %}
-        </ul>
-        {% endif %}
         {% endcomment %}
         
         </ul>
