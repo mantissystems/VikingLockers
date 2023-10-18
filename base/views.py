@@ -1166,9 +1166,10 @@ def m5(request,):
                 try:
                     l=Locker.objects.get(email=f.email)
                     f.type=l.topic
+                    f.sleutels=l.sleutels
                     f.save()
                 except:
-                    print('geen huurder', f.email)
+                    print('factuur geen locker', f.email)
                     pass
 
     url = reverse('facturatielijst',)
@@ -1288,7 +1289,7 @@ def export_verhuurd(request,):
     writer = csv.writer(response)
     writer.writerow(['id', 'tenant', 'y/n','locker','registered', 'keys','huur','obs'])
     for item in verhuurd:
-        writer.writerow([item.id ,item.email, item.code,item.kluisnummer,item.is_registered, item.sleutels , item.in_excel ,item.verhuurd,item.obsolete, ";"])
+        writer.writerow([item.id ,item.email, item.code,item.kluisnummer,item.is_registered, item.sleutels , item.in_excel ,item.type,item.obsolete, ";"])
     return response
 
 # def file_load_view(request):
