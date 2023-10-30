@@ -6,7 +6,10 @@
   <div class="container">
 
     <!-- Topics Start -->
+    {% comment %}
+    
     {% include 'base/topics_component.html' %}
+    {% endcomment %}
     {% if verhuurd %}
     <h2>{{verhuurd.count}} Regels</h2> 
     {% endif %}
@@ -37,8 +40,6 @@
         <div>  
         </div>
       </div>
-      {% comment %}
-      {% endcomment %}
   
       {% if request.user.is_superuser %}
       <a href="{% url 'export_verhuurd' %}" class="btn btn--link">=>Export Verhuurd</a><hr>

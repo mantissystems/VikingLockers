@@ -23,10 +23,6 @@
             {{huur}}
             {% if locker %}
             <small>bijgewerkt: {{locker.updated|timesince}} geleden </small></a><hr>
-            <div class="for__group">
-            <a class="btn btn--main btn--main" href="{% url 'huuropzeggen' locker.id %}">Opzeggen</a><br>
-        </div>
-
             {% endif %}
          {% for field in form %}
            {% if field.name == 'verhuurd' %}
@@ -59,7 +55,13 @@
            <a href="{% url 'create-factuur'%}" class="btn btn--link">Factuur</a>
            {% endif %}
          </div>
-         
+         <div class="for__group">
+          {% if locker %}
+          <a class="btn btn--main btn--main" href="{% url 'huuropzeggen' locker.id %}">Opzeggen</a><br>
+          {% endif %}
+
+      </div>
+
        
        </form>
              </div>

@@ -23,6 +23,7 @@ urlpatterns = [
     path('lockers/', views.lockersPage2, name="lockers"),
     path('requests',views.RequestView.as_view(),name='requests'),
     path('onverhuurd/', views.lockersPage3, name="onverhuurd"),
+    path('verhuurd/', views.LockerView.as_view(), name="verhuurd"),
     path('create-person/', views.CreatePerson.as_view(), name="create-person"),          # <=================
     path('create-locker/', views.CreateLocker.as_view(), name="create-locker"),
     path('<str:pk>/update-locker/',views.update_locker, name='update-locker'),  #        #<==================

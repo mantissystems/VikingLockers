@@ -11,7 +11,7 @@ from django.contrib.auth import authenticate, login, logout
 from django.urls import reverse, reverse_lazy
 from base.models import Room,Message,User,Topic,Locker,Ploeg,Helptekst,Bericht,Excellijst,Person,Facturatielijst
 from django.db.models import Q
-from base.forms import RoomForm, UserForm,  MyUserCreationForm,LockerForm,ExcelForm,PersonForm,WachtlijstForm
+from base.forms import RoomForm, UserForm,  MyUserCreationForm,LockerForm,ExcelForm,PersonForm,WachtlijstForm,LockerFormAdmin
 from django.views.generic import(TemplateView,ListView)
 from django.views.generic.detail import SingleObjectMixin
 from django.contrib.auth.models import AnonymousUser
@@ -25,6 +25,7 @@ from rest_framework import status
 from django.views.generic.edit import CreateView, UpdateView,DeleteView
 from django.http import JsonResponse
 from django.utils.safestring import mark_safe
+from django.utils import timezone
 from django.utils import formats
 from django.core.mail import EmailMessage
 from django.core import mail
@@ -145,14 +146,6 @@ def home(request):
         print('1.authorised:', request.user)
 # het berichtenscherm voorzien van ingelogd zijn of niet ingelogd zijn.
 # overbodige meldingen trachten weg te laten.
-# verdelenv an de meldingen over error, debug, warning, 
-# Level Constant 	Value
-# DEBUG 	10
-# INFO   	20
-# SUCCESS 	25
-# WARNING 	30
-# ERROR 	40
-
     # messages.add_message(request, messages.INFO, "Over 9000!", extra_tags="dragonball")
     messages.add_message(request, messages.INFO, "Welkom bij Lockermanager", extra_tags="dragonball")
     # messages.add_message(request, messages.INFO, "Voor meer informatie kunt u inloggen", extra_tags="dragonball")
@@ -162,10 +155,10 @@ def home(request):
     for message in storage:
         print(message)
     url = reverse('berichten',)
-    if q!='' or q !=None:
-        print('if:',q)
-        url = "lockers/"  + "?q=" +q 
-        return HttpResponseRedirect(url)
+    # if q!='' or q !=None:
+    #     print('if:',q)
+    #     url = "lockers/"  + "?q=" +q 
+    #     return HttpResponseRedirect(url)
 
     if 'xls' in qq:
         x = qq.replace("xls ", "")
@@ -280,49 +273,49 @@ def infoPage(request):
     return render(request, 'base/info.html', context)
 
 @login_required(login_url='login')
-def room(request, pk):
-    room = Locker.objects.get(id=pk)
-    ploegen=Ploeg.objects.all()
-    vikingers=User.objects.all().order_by('email')
-    topic=room.kluisnummer
+# def room(request, pk):
+#     room = Locker.objects.get(id=pk)
+#     ploegen=Ploeg.objects.all()
+#     vikingers=User.objects.all().order_by('email')
+#     topic=room.kluisnummer
 
-    ftopic=Q(topic__icontains=topic)
-    fverhuurd=Q(verhuurd=True)
+#     ftopic=Q(topic__icontains=topic)
+#     fverhuurd=Q(verhuurd=True)
 
-    verhuurd=Locker.objects.all().filter(ftopic&fverhuurd)  #verzamel verhuurde kluisjes voor de room 
+#     verhuurd=Locker.objects.all().filter(ftopic&fverhuurd)  #verzamel verhuurde kluisjes voor de room 
 
-    if request.method == 'POST':
-        message = Message.objects.create(
-            user=request.user,
-            room=room,
-            body=request.POST.get('body')
-        )
-        room.participants.add(request.user)
-        return redirect('room', pk=room.id)
-    # heren=Matriks.objects.filter(naam__icontains=topic).exclude(y_as__in=(7,8,9)).order_by('y_as')
-    hdr=['', 'kol1','kol2','kol3','kol4','kol5','kol6','kol7','kol8','kol9','kol10','kol11','kol12','kol13']  #LET OP: KOLOM NUL NIET VERGETEN
-    kopmtrx=[]
-    for i in range (0,9):
-        kopmtrx.append(hdr[i])
-    if topic=='Wachtlijst':
-        hdr=['wachtlijst']
-        kopmtrx=hdr
-    topics = Topic.objects.all()[0:5]
-    # q='H35'  #temporary value to test 'highlight' templatetag
-    q=' '
-    context = {
-        'room': room,
-               'topics': topics,
-                # 'heren': heren,
-                'ploegen': ploegen,
-                'verhuurd': verhuurd,
-                'kopmtrx': kopmtrx,
-            #    'participants': participants,
-               'q':q,
-            #    'room_messages': room_messages
-               }
+#     if request.method == 'POST':
+#         message = Message.objects.create(
+#             user=request.user,
+#             room=room,
+#             body=request.POST.get('body')
+#         )
+#         room.participants.add(request.user)
+#         return redirect('room', pk=room.id)
+#     # heren=Matriks.objects.filter(naam__icontains=topic).exclude(y_as__in=(7,8,9)).order_by('y_as')
+#     hdr=['', 'kol1','kol2','kol3','kol4','kol5','kol6','kol7','kol8','kol9','kol10','kol11','kol12','kol13']  #LET OP: KOLOM NUL NIET VERGETEN
+#     kopmtrx=[]
+#     for i in range (0,9):
+#         kopmtrx.append(hdr[i])
+#     if topic=='Wachtlijst':
+#         hdr=['wachtlijst']
+#         kopmtrx=hdr
+#     topics = Topic.objects.all()[0:5]
+#     # q='H35'  #temporary value to test 'highlight' templatetag
+#     q=' '
+#     context = {
+#         'room': room,
+#                'topics': topics,
+#                 # 'heren': heren,
+#                 'ploegen': ploegen,
+#                 'verhuurd': verhuurd,
+#                 'kopmtrx': kopmtrx,
+#             #    'participants': participants,
+#                'q':q,
+#             #    'room_messages': room_messages
+#                }
 
-    return render(request, 'base/room.html', context)
+#     return render(request, 'base/room.html', context)
 
 
 @login_required(login_url='login')
@@ -572,22 +565,22 @@ def excel_regelPage(request,pk):
             return redirect('excel-regel', kluis.id)
     return render(request, 'base/excellijst_form.html', context)
 
-@login_required(login_url='login')
-def updateRoom(request, pk):
-    room = Room.objects.get(id=pk)
-    form = RoomForm(instance=room)
-    topics = Topic.objects.all()
-    if request.method == 'POST':
-        topic_name = request.POST.get('topic')
-        topic, created = Topic.objects.get_or_create(name=topic_name)
-        room.name = request.POST.get('name')
-        room.topic = topic
-        room.description = request.POST.get('description')
-        room.save()
-        return redirect('home')
+# @login_required(login_url='login')
+# def updateRoom(request, pk):
+#     room = Room.objects.get(id=pk)
+#     form = RoomForm(instance=room)
+#     topics = Topic.objects.all()
+#     if request.method == 'POST':
+#         topic_name = request.POST.get('topic')
+#         topic, created = Topic.objects.get_or_create(name=topic_name)
+#         room.name = request.POST.get('name')
+#         room.topic = topic
+#         room.description = request.POST.get('description')
+#         room.save()
+#         return redirect('home')
 
-    context = {'form': form, 'topics': topics, 'room': room}
-    return render(request, 'base/room_form.html', context)
+#     context = {'form': form, 'topics': topics, 'room': room}
+#     return render(request, 'base/room_form.html', context)
 
 # @login_required(login_url='login')   
 
@@ -713,6 +706,7 @@ class FacturatieView (LoginRequiredMixin, ListView):
             Q(renum__icontains=query)|
             Q(kluisnummer__icontains=query)
             ).order_by('renum')
+        print(queryset.query)
         check=Facturatielijst.objects.all().exclude(type__icontains='--')
         context = {
             'query': query,
@@ -1105,9 +1099,11 @@ class LockerUpdate( LoginRequiredMixin,UpdateView):
         print(_id)
         obj = get_object_or_404(Locker, id=self.kwargs['pk'])
         return obj
-    # def get_form(self, form_class=None):
-    #     return form
-
+    def get_form_class(self):
+        if self.request.user.is_superuser:
+            return LockerFormAdmin
+        else:
+            return LockerForm
     def get_context_data(self, **kwargs):
         print('in get_context_data')
         context = super().get_context_data(**kwargs)
@@ -1128,8 +1124,6 @@ class LockerUpdate( LoginRequiredMixin,UpdateView):
 def update_locker(request,pk):
     locker = Locker.objects.get(id=pk)
     form = LockerForm(instance=locker)
-    # form = list(form)
-    # topics=Topic.objects.all()
     vikingers=Person.objects.all().order_by('name')
     url = "/berichten/"
     if request.user.email != locker.email and not request.user.is_superuser:
@@ -1196,6 +1190,7 @@ def polls_vote(request, question_id):
 
 def huuropzeggen(request, pk):
     locker = get_object_or_404(Locker, id=pk)
+    now = timezone.now()
     try:
         selected_choice = request.GET.get('opgezegd') if request.GET.get('opgezegd') != None else ''
     except (KeyError, Locker.DoesNotExist):
@@ -1209,7 +1204,7 @@ def huuropzeggen(request, pk):
         if request.method == 'POST':
             locker.opgezegd=True
             locker.verhuurd=False
-            locker.opzegdatum=date.datetime.now()
+            locker.opzegdatum=now #date.datetime.now()
             locker.save()
             return redirect('home')
         return render(request, 'base/delete.html', {'obj': locker})

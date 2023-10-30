@@ -85,6 +85,22 @@ class LockerForm(ModelForm):
         # "type": "Type slot",
 
         }
+class LockerFormAdmin(ModelForm):
+    class Meta:
+        model = Locker
+        fields = '__all__'
+        # fields = ['email','kluisnummer','nieuwe_huurder','vorige_huurder','kluisje','type','topic','verhuurd','opgezegd','obsolete','tekst','sleutels','code','opzegdatum',]
+        # exclude = ['type','code','opzegdatum','kluisje','obsolete','opgezegd','topic','verhuurd','kluisnummer']
+        labels = {
+        "verhuurd": "Bent u hoofdhuurder?",
+        "topic": "nieuwe benaming",
+        "kluisje": "vorige benaming",
+        "tekst": "Mede gebruikers",
+        "sleutels": "Aantal Sleutels in omloop",
+        "code": "Code van codeslot",
+        "type": "Type slot",
+
+        }
 
 class ExcelForm(ModelForm):
     class Meta:
