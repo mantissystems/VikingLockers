@@ -1,4 +1,21 @@
+<ul>
+    {% for msg in berichten %}
+                    <a href="{% url 'requests' %}?q={{msg.id}}">  
+            </span></a>
+            <div style="height:100%;width:100%">
+            </div>
+        </a>
 
+    <a href="{% url 'requests' %}?q={{msg.id}}"><li>{{msg.body}}</li><span>
+        <div style="height:100%;width:100%">
+        </div>
+    </a>
+    <a href="{% url 'requests' %}?q={{msg.id}}"><li>{{msg.user}}</li></a>
+    {% endfor %}
+</ul>
+
+
+{% comment %}
 <table class="table-bordered">
     <thead>
         <hr>
@@ -7,23 +24,22 @@
             <th></th>
                     </tr>
     </thead>
-    {% comment %}
-  {% endcomment %}
     <tbody>
-    {% for user in berichten %}
-    <tr>
-</td>
-<td>2
-    <a href="{% url 'requests' %}?q={{user.id}}">  <li> {{user.body}} </li>
-    </span></a>
-    <div style="height:100%;width:100%">
-    </div>
-</a>
-</td>        
+        {% for msg in berichten %}
+        <tr>
+        </td>
+        <td>2
+            <a href="{% url 'requests' %}?q={{msg.id}}">  
+            </span></a>
+            <div style="height:100%;width:100%">
+            </div>
+        </a>
+    </td>        
     {% endfor %}
-    </tr>
-    </tbody>
-  </table>
+</tr>
+</tbody>
+</table>
+{% endcomment %}
   
 
   

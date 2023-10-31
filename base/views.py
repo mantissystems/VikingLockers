@@ -654,9 +654,13 @@ class RequestView (ListView):
         q = self.request.GET.get('q') if self.request.GET.get('q') != None else ''
         query = self.request.GET.get('q')
         if query == None: query=""
-        print('query',q)
-        berichten=Bericht.objects.all()
+        # print('query',q)
+        berichten=Bericht.objects.all().filter(
+            Q(body__icontains=query)|
+            Q(id=query)
+            )
         context = {
+
             'query': query,
             'berichten': berichten,
             }

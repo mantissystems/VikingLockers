@@ -48,7 +48,7 @@
         </div>
       </div>
       
-      <h2>{{berichten.count }} regels</h2>
+      <h2>{{berichten.count }}bericht regels</h2>
       {% include 'base/feed_requests.html' %}
       
       {% if request.user.is_superuser %}
@@ -58,8 +58,8 @@
 
     <!-- Activities Start -->
     {% comment %}
-    {% endcomment%}
     {% include 'base/feed_requests.html' %}
+    {% endcomment%}
     <!-- Activities End -->
   </div>
 </main>
