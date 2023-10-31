@@ -868,6 +868,7 @@ def m5(request,):
                     f.sleutels=l.sleutels
                     f.save()
                 except:
+                    Locker.DoesNotExist
                     print('factuur geen locker', f.email)
                     pass
 
@@ -975,9 +976,9 @@ def export_emaillijst(request,):
     response = HttpResponse(content_type='text/csv')
     response['Content-Disposition'] = 'attachment; filename="email_lijst.csv"'
     writer = csv.writer(response)
-    writer.writerow(['id', 'tenant', 'oude naam','nwe naam','huidige', 'C','D'])
+    writer.writerow(['id', 'tenant', 'oude naam','nwe naam','huidige', 'Obs','Opg','Ver','Sl','txt','nwe','vorige'])
     for item in verhuurd:
-        writer.writerow([item.id ,item.email, item.kluisje,item.topic,item.kluisnummer, item.obsolete ,item.opgezegd,";"])
+        writer.writerow([item.id ,item.email, item.kluisje,item.topic,item.kluisnummer, item.obsolete ,item.opgezegd,item.verhuurd,item.sleutels,item.tekst,item.nieuwe_huurder,item.vorige_huurder,";"])
     return response
     
 def export_verhuurd(request,):

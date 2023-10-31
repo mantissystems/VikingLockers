@@ -24,6 +24,9 @@ urlpatterns = [
     path('requests',views.RequestView.as_view(),name='requests'),
     path('onverhuurd/', views.lockersPage3, name="onverhuurd"),
     path('verhuurd/', views.LockerView.as_view(), name="verhuurd"),
+    path('export_verhuurd/', views.export_verhuurd, name="export_verhuurd"),
+    path('export_onverhuurd/', views.export_onverhuurd, name="export_onverhuurd"),
+    path('export_emaillijst/', views.export_emaillijst, name="export_emaillijst"),
     path('create-person/', views.CreatePerson.as_view(), name="create-person"),          # <=================
     path('create-locker/', views.CreateLocker.as_view(), name="create-locker"),
     path('<str:pk>/update-locker/',views.update_locker, name='update-locker'),  #        #<==================
@@ -36,9 +39,6 @@ urlpatterns = [
     path('<str:pk>/excel-regel/',views.excel_regelPage, name='excel-regel'),  
     path('helptekst/', views.helpPage, name='helptekst'),
     path('berichten/', views.berichtenPage, name="berichten"),
-    path('export_onverhuurd/', views.export_onverhuurd, name="export_onverhuurd"),
-    path('export_verhuurd/', views.export_verhuurd, name="export_verhuurd"),
-    path('export_emaillijst/', views.export_emaillijst, name="export_emaillijst"),
     path('facturatielijst/', views.FacturatieView.as_view(), name="facturatielijst"),
     path('edit-factuur/<str:pk>', views.EditFactuur.as_view(), name="edit-factuur"),
     path('create-factuur/', views.CreateFactuur.as_view(), name="create-factuur"),

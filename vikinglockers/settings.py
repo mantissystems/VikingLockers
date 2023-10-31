@@ -135,13 +135,6 @@ else:
 DEFAULT_AUTO_FIELD = 'django.db.models.AutoField'
 CORS_ALLOW_ALL_ORIGINS=True
 SECURE_CONTENT_TYPE_NOSNIFF=False
-EMAIL_HOST='smtp.gmail.com'
-EMAIL_PORT=587
-EMAIL_USE_TLS=True
-EMAIL_FROM='vikinglockers@mantisbv.nl'
-EMAIL_HOST_USER='wej.bakker@gmail.com'
-EMAIL_HOST_PASSWORD='jeaneau34'
-EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 # FIXTURE_DIRS = [BASE_DIR / 'static']
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.1/ref/settings/#default-auto-field
