@@ -970,7 +970,7 @@ def export_onverhuurd(request,):
     writer = csv.writer(response)
     writer.writerow(['id', 'tenant', 'huidig', 'oud','nieuw','keys'])
     for item in onverhuurd:
-        writer.writerow([item.id ,item.email, item.kluisnummer, item.kluisje ,item.topic,item.sleutels,";"])
+        writer.writerow([item.id ,item.email, item.kluisnummer, item.kluisje ,item.topic,item.sleutels,])
     return response
 
 def export_emaillijst(request,):
@@ -982,7 +982,7 @@ def export_emaillijst(request,):
     writer = csv.writer(response)
     writer.writerow(['id', 'tenant', 'oude naam','nwe naam','huidige', 'Obs','Opg','Ver','Sl','txt','nwe','vorige'])
     for item in verhuurd:
-        writer.writerow([item.id ,item.email, item.kluisje,item.topic,item.kluisnummer, item.obsolete ,item.opgezegd,item.verhuurd,item.sleutels,item.tekst,item.nieuwe_huurder,item.vorige_huurder,";"])
+        writer.writerow([item.id ,item.email, item.kluisje,item.topic,item.kluisnummer, item.obsolete ,item.opgezegd,item.verhuurd,item.sleutels,item.tekst,item.nieuwe_huurder,item.vorige_huurder,])
     return response
     
 def export_verhuurd(request,):
@@ -993,7 +993,7 @@ def export_verhuurd(request,):
     writer = csv.writer(response)
     writer.writerow(['id', 'tenant', 'y/n','locker','registered', 'keys','huur','obs'])
     for item in verhuurd:
-        writer.writerow([item.id ,item.email, item.code,item.kluisnummer,item.is_registered, item.sleutels , item.in_excel ,item.type,item.obsolete, ";"])
+        writer.writerow([item.id ,item.email, item.code,item.kluisnummer,item.is_registered, item.sleutels , item.in_excel ,item.type,item.obsolete,])
     return response
 
 
