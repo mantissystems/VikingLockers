@@ -48,6 +48,7 @@ urlpatterns = [
 
    path('m2/', views.m2mtotext, name="m2"),  #creates user from locker mail address if no user exists
    path('m3/', views.m3, name="m3"), #puts usermail in get locker by email
+   path('m4/', views.m4, name="m4"), #puts usermail in get locker by email
    path('m5/', views.m5, name="m5"), #check facturatielijst in get locker by email
     ]
     # path('<str:pk>/update-locker/',views.update_locker, name='update-locker'),  

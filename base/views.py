@@ -879,16 +879,17 @@ def m5(request,):
     url = reverse('facturatielijst',)
     return HttpResponseRedirect(url)
 
-# def m4(request,):
-#     for l in Locker.objects.all():
-#         # if l.email:
-#         if '@' in l.email :
-#             if 'viking' in l.email: # or l.obsolete==False or l.opgezegd==False:                        
-#                 print('onbekend of vrij', l.email)
-#                 l.email='onbekend of vrij'
-#                 l.save()
-#     url = reverse('onverhuurd',)
-#     return HttpResponseRedirect(url)
+def m4(request,):
+    for l in Locker.objects.all():
+        # if l.email:
+        if '@' in l.email :
+                # prepare for password reset of users
+            # if 'viking' in l.email: # or l.obsolete==False or l.opgezegd==False:                        
+                print('onbekend of vrij', l.email)
+                l.email='onbekend of vrij'
+                # l.save()
+    url = reverse('onverhuurd',)
+    return HttpResponseRedirect(url)
 
 @login_required(login_url='login')   
 # def nummering(request):
