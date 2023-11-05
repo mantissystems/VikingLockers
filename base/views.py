@@ -891,6 +891,27 @@ def m4(request,):
     url = reverse('onverhuurd',)
     return HttpResponseRedirect(url)
 
+def m6(request,pk):
+    string='pbkdf2_sha256$390000$MbAy3r2ahV6QE6xFilyWG5$Hkuz0s9MNtjJ066lD0v9N2tnUv2ZuZLALt2rIL1QSAQ='
+    l=Locker.objects.get(id=pk)
+    if '@' in l.email:
+        print(l.email)
+        try:
+            u=User.objects.get(email=l.email)
+            # User.password=string
+            # User.ploeg='viking'
+            # User.save()
+        except:
+            User.DoesNotExist
+            print('geen hit')
+        finally:
+            u.password=string
+            u.ploeg='viking'
+            u.save()
+
+    url = reverse('home',)
+    return HttpResponseRedirect(url)
+
 @login_required(login_url='login')   
 # def nummering(request):
 #     print('nummering in veld topic===============')
@@ -1134,9 +1155,9 @@ def update_locker(request,pk):
     url = "/berichten/"
     if request.user.email != locker.email and not request.user.is_superuser:
         messages.add_message(request,messages.INFO, f'{locker.kluisnummer} : Is niet uw locker')
-    if locker.opgezegd ==True: # and not request.user.is_superuser:
-        opgezegd = formats.date_format(locker.opzegdatum, "SHORT_DATE_FORMAT")
-        messages.add_message(request,messages.INFO, f'{locker.kluisnummer} : Huur is opgezegd! per {opgezegd}')
+        if locker.opgezegd ==True: # and not request.user.is_superuser:
+            opgezegd = formats.date_format(locker.opzegdatum, "SHORT_DATE_FORMAT")
+            messages.add_message(request,messages.INFO, f'{locker.kluisnummer} : Huur is opgezegd! per {opgezegd}')
         return HttpResponseRedirect(url)
         # return HttpResponseRedirect(url)
     else:
