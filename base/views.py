@@ -725,19 +725,20 @@ class PersonUpdate_id( LoginRequiredMixin,UpdateView):
     model = Person
     def get_form(self, form_class=None):
         form = super().get_form(form_class)
-        form.fields['onderhuur'].label = "Mede Huurder"
+        # form.fields['onderhuur'].label = "Mede Huurder"
         form.fields['tekst'].label = 'Namen  Medegebruikers'
         form.fields['wachtlijst'].label = 'Wel / Niet wachtlijst'
-        form.fields['hoofdhuurder'].label = 'Wel / Niet Hoofdhuurder'
+        # form.fields['hoofdhuurder'].label = 'Wel / Niet Hoofdhuurder'
         return form
     
-    fields=['name','onderhuur','tekst','hoofdhuurder','wachtlijst','email']
+    # fields=['name','tekst','wachtlijst','email','kamer']
+    fields='__all__'
     success_url = reverse_lazy('wacht-lijst')
     
     def form_valid(self, form):
         kluis ='wachtlijst' ## form.cleaned_data['locker']  
-        wachtlijstaanvul = form.cleaned_data['onderhuur']  
-        print('onderhuur')
+        # wachtlijstaanvul = form.cleaned_data['onderhuur']  
+        # print('onderhuur')
         hoofdhuurder = form.cleaned_data['hoofdhuurder']  
         name = form.cleaned_data['name']  
         onderhuurder = form.cleaned_data['onderhuur']  
@@ -912,71 +913,25 @@ def m6(request,pk):
     url = reverse('home',)
     return HttpResponseRedirect(url)
 
+def export_wachtlijst(request,):
+    import csv
+    A=Q(kamer__in='H,D,-')
+    B=Q(email__icontains='bekend')
+    C=Q(wachtlijst=True)
+    # D=Q(opgezegd=True)
+    # E=Q(email__icontains='--')
+    # F=Q(email__icontains='==')
+    wachtlijst =Person.objects.all().filter( A | B |  C ).order_by('kamer','email')
+
+    response = HttpResponse(content_type='text/csv')
+    response['Content-Disposition'] = 'attachment; filename="wachtlijst.csv"'
+    writer = csv.writer(response)
+    writer.writerow(['id', 'kamer', 'email', 'wachtlijst',])
+    for i in wachtlijst:
+        writer.writerow([i.id ,i.kamer, i.email, i.wachtlijst ])
+    return response
+
 @login_required(login_url='login')   
-# def nummering(request):
-#     print('nummering in veld topic===============')
-# # ====
-#     x=0
-#     for i in range (1,72):
-#         l= 'Heren ' + str(i).zfill(3)
-#         try:
-#             k= Locker.objects.get(kluisnummer=l)
-#             print(k.kluisnummer)
-#             k.topic=l
-#             k.save()
-#         except Locker.DoesNotExist:
-#                 if not '00' in l:
-#                     print(l)
-#                     print('niet',l)
-#                 pass
-
-#             # print('niet',l)
-#             # pass
-#     # ====
-#     for i in range (1,72):
-#         l= 'Dames ' + str(i).zfill(3)
-#         if 25 <= i <= 49:
-#             l= 'Dames ' + 'A-' + str(i).zfill(3)
-#         try:
-#             k= Locker.objects.get(kluisnummer=l)
-#             print(k.kluisnummer)
-#             k.topic=l
-#             k.save()
-
-#         except Locker.DoesNotExist:
-#                 pass
-#         if 25 <= i <= 49:
-#             l= 'Dames ' + 'B-' + str(i).zfill(3)
-#             if ('B' in l) and i<49:
-#                 print(l)
-#         try:
-#             k= Locker.objects.get(kluisnummer=l)
-#             print(k.kluisnummer)
-#             k.topic=l
-#             k.save()
-
-#         except Locker.DoesNotExist:
-#             print('niet',l)
-#             pass
-#             if 48 <= i <= 73:
-#                 l= 'Dames ' + 'C-' + str(i).zfill(3)
-#         try:
-#             k= Locker.objects.get(kluisnummer=l)
-#             print(k.kluisnummer)
-#             k.topic=l
-#             k.save()
-
-#         except Locker.DoesNotExist:
-#                 if 'C' in l:
-#                     # print(l)
-#                     print('niet',l)
-#                 pass
-
-#     # ====
-#     print('einde nummering')
-#     url = reverse('update-user',) #tbv snelheid respons
-#     return HttpResponseRedirect(url)
-
 def export_onverhuurd(request,):
     import csv
     A=Q(email__icontains='vrij')

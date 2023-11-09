@@ -1,40 +1,4 @@
 {%extends 'main.html'%}
-{% comment %}
-{%block content%}
-
-<div class="center">
- <form method="post" novalidate class="card">
- 	{%csrf_token %}
- 	<h2>{% if person %} Update {%else %} Create {%endif%} Task</h2>
-	{% for field in form %}
-		{% if field.name == 'completed' %}
-			<p>
-				{{ field.label_tag }}
-				{{ field }}
-			</p>
-			{% if field.errors %}
-        		<small class="error">{{ field.errors|striptags  }}</small> 
-        	{% endif %}
-		{% else %}
-    		{{ field.label_tag }} 
-        	{{ field }}
-        	{% if field.errors %}
-        		<small class="error">{{ field.errors|striptags  }}</small> 
-        	{% endif %}
-        {% endif %}
-	{% endfor %}
-	
-	<div class="form-buttons">
-		<input type="submit" value="Save" class="btn btn-primary"/>
-		<a href="{%url 'profiles'%}" class="btn btn-outline">Cancel</a>
-	</div>
-	
-
-</form>
-</div>
-
-{%endblock content%}
-{% endcomment %}
 
 {% block content %}
 <main class="create-room layout">
@@ -56,18 +20,9 @@
       <div class="layout__body">
         <form method="post" novalidate class="card">
           {%csrf_token %}
-          <h2>{% if person %} Update {% else %} Wachtlijst {% endif %} Voeg toe</h2>
+          <h2>{% if person %} Update {% else %} Wachtlijst {% endif %}</h2>
+
          {% for field in form %}
-           {% if field.name == 'completed' %}
-           <label for="profile_pic">{{field.label}}</label>
-           <div class="form__group">
-             {{field}}
-           </div>
-     
-             {% if field.errors %}
-                   <small class="error">{{ field.errors|striptags  }}</small> 
-                 {% endif %}
-           {% else %}
            <label for="profile_pic">{{field.label}}</label>
            <div class="form__group">
              {{field}}
@@ -75,15 +30,14 @@
                   {% if field.errors %}
                    <small class="error">{{ field.errors|striptags  }}</small> 
                  {% endif %}
-               {% endif %}
          {% endfor %}
          
          <div class="form-buttons">
-           <input type="submit" value="Save" class="btn btn-primary"/>
-           <a href="{%url 'home'%}" class="btn btn-outline">Cancel</a>
+           <input type="submit" value="Save" class="btn btn--pill"/>
+           <a href="{%url 'home'%}" class="btn btn--pill">Cancel</a>
            {% if person %}
            {% if request.user.is_superuser %}
-                     <a href="{% url 'delete-person' person.id %}" class="btn btn--link">Delete</a>
+                     <a href="{% url 'delete-person' person.id %}" class="btn btn--pill">Delete</a>
                      {% endif %}
 {% endif %}
          </div>
@@ -97,4 +51,12 @@
 {% endblock content %}
 
 {% comment %}
+{% if field.name == 'completed' %}
+{% else %}
+{% endif %}
+<!--  -->
+{% if field.errors %}
+<small class="error">{{ field.errors|striptags  }}</small> 
+{% endif %}
+
 {% endcomment %}

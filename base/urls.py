@@ -9,10 +9,10 @@ urlpatterns = [
     path('login/', views.loginPage, name="login"),
     path('logout/', views.logoutUser, name="logout"),
     path('register/', views.registerPage, name="register"),
-    path('update-user/', views.updateUser, name="update-user"),
-    path('update-user2/<str:pk>', views.EditUser.as_view(), name="update-user2"),    #<==
     path('delete-user/<str:pk>',views.UserDeleteView.as_view(),name='delete-user'),
     path('update-usermail//<str:kluis>/', views.updateUser_email.as_view(), name="update-usermail"),
+    path('update-user/', views.updateUser, name="update-user"),
+    path('update-user2/<str:pk>', views.EditUser.as_view(), name="update-user2"),    #<==
     path('update-person/<str:pk>', views.PersonUpdate_id.as_view(), name="update-person"),
     path('profile/<str:pk>/', views.userProfile, name="user-profile"),
     path('profile/', views.myProfile, name="profile"),
@@ -27,6 +27,7 @@ urlpatterns = [
     path('export_verhuurd/', views.export_verhuurd, name="export_verhuurd"),
     path('export_onverhuurd/', views.export_onverhuurd, name="export_onverhuurd"),
     path('export_emaillijst/', views.export_emaillijst, name="export_emaillijst"),
+    path('export_wachtlijst/', views.export_wachtlijst, name="export_wachtlijst"),
     path('create-person/', views.CreatePerson.as_view(), name="create-person"),          # <=================
     path('create-locker/', views.CreateLocker.as_view(), name="create-locker"),
     path('<str:pk>/update-locker/',views.update_locker, name='update-locker'),  #        #<==================

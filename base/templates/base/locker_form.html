@@ -47,19 +47,19 @@
          {% endfor %}
          
          <div class="form-buttons">
-           <input type="submit" value="Save" class="btn btn-primary"/>
+           <input type="submit" value="Save" class="btn btn--pill"/>
           {% if request.user.is_superuser %}
-           <a href="{%url 'home'%}" class="btn btn-outline">Cancel</a>
+           <a href="{%url 'home'%}" class="btn btn--pill">Cancel</a>
            {% endif %}
            {% if request.user.is_superuser %}
-           <a href="{% url 'create-factuur'%}" class="btn btn--link">Factuur</a>
+           <a href="{% url 'create-factuur'%}" class="btn btn--pill">Factuur</a>
            {% endif %}
          </div>
          <div class="for__group">
-          {% if locker %}
-          <a class="btn btn--main btn--main" href="{% url 'huuropzeggen' locker.id %}">Opzeggen</a><br>
+          {% if lockerrrr %}
+          <a class="btn btn--pill" href="{% url 'huuropzeggen' locker.id %}">Opzeggen</a><br>
           {% endif %}
-          <a class="btn btn--main btn--main" href="{% url 'm6' locker.id %}">Reset Locker Password</a><br>
+          <a class="btn btn--pill" href="{% url 'm6' locker.id %}">Reset Locker Password for user</a><br>
 
       </div>
 
