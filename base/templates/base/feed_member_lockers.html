@@ -14,7 +14,22 @@
 </div>
 {% endfor %}
 {% endif %}
+<div class = "jumbotron">
+    {% if verhuurd %}
+    {% comment %}
+
+      <p class = 'question'>{{ flashcards }}</p>
+      <p class = 'answer'>{{ flashcards.flash_answer }}</p>
+      <!-- Here we link to the 'flashcard' view, and pass it the ID of the next card in the sequence -->
+      <!-- <a href="{% url 'update-locker' locker.get_next.id %}">Next flashcard</a> -->
+      {% endcomment %}
+      <a href="{% url 'update-locker' 100 %}">Next flashcard</a>
+      {% else %}
+        <p>NO ACCESS RECORDS FOUND!</p>
+      {% endif %}
+  </div>
 {% if verhuurd %}
+
 {% for locker in verhuurd %}
 <div class="roomListRoom">
     <div class="roomListRoom__header">

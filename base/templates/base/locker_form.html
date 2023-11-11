@@ -56,6 +56,7 @@
            {% endif %}
          </div>
          <div class="for__group">
+                <a class="btn btn--pill" href="{% url 'update-locker' locker.get_next.id %}">Next flashcard</a>
           {% if lockerrrr %}
           <a class="btn btn--pill" href="{% url 'huuropzeggen' locker.id %}">Opzeggen</a><br>
           {% endif %}

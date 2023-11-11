@@ -104,7 +104,17 @@ class Locker(models.Model):
 
     class Meta:
         ordering = ['kluisnummer']
-
+    def __str__(self):
+        return self.kluisnummer
+    
+    def get_next(self):
+        next = Locker.objects.filter(id__gt=self.id).order_by('id').first()
+        if next:
+            return next
+    # If the current card is the last one, return the first card in the deck
+        else:
+            return Locker.objects.all().order_by('id').first()     
+        
 class Facturatielijst(models.Model):
     kluisnummer = models.CharField(max_length=200)
     email = models.CharField(max_length=200)
