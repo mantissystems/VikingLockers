@@ -42,7 +42,7 @@ class Topic(models.Model):
 class Person(models.Model):
     name = models.CharField(max_length=200, null=True)
     onderhuur=models.BooleanField(default=False)
-    kamer = models.CharField(max_length=18, choices=KAMER,default='X')
+    kamer = models.CharField(max_length=18, choices=KAMER,default='X')  # <===
     wachtlijst=models.BooleanField(default=False)
     hoofdhuurder=models.BooleanField(default=False)
     locker = models.CharField(max_length=200, null=True)

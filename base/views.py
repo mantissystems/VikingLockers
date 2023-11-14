@@ -637,7 +637,7 @@ class Wachtlijst (ListView):
             (Q(email__icontains=query)|
             Q(name__icontains=query)|
             Q(locker__icontains=query))&Q(wachtlijst=True)
-            ).order_by('hoofdhuurder','wachtlijst','onderhuur','email')
+            ).order_by('kamer','created','email')
         berichten=Bericht.objects.all()
         context = {
             'query': query,

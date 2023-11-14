@@ -51,7 +51,7 @@
     <li>
       {% if request.user.is_superuser %}
       {{user.kamer}}
-      <a href="{% url 'update-person' user.id %}?q={{user.id}}">{{ user.name }} &emsp; {{user.email}} </span></a> <br>
+      <a href="{% url 'update-person' user.id %}?q={{user.id}}">{{ user.name|truncatechars:15}} &emsp; {{user.email|truncatechars:15}} {{user.created|date:'Y:m-d'}} </span></a> <br>
       {% else %}
       {{user.kamer}}
       <a href="{% url 'home' %}?q={{user.name}}">{{ user.name }} </span></a> <br>
