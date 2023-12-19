@@ -1,0 +1,181 @@
+def entrantsPage(request):
+    toernooi=Toernooi.objects.all().latest('created')
+    cat=getattr(toernooi,'category')
+    entrants_in= Entrant.objects.filter(is_in = True,category=cat)
+    entrants_out= Entrant.objects.filter(is_in = False,category=cat)
+    headers=Entrant.objects.all().query.get_meta().fields 
+    header=[]
+    fields=['id','name','seed','points','kenmerk','category','opponents','is_in']
+    u=[]
+    kols=[]
+    for k in headers:
+        if str(k)[13:] in fields:
+            header.append(str(k)[13:])              # fisrst 13 posistions represent schema and table name base_person
+    header.append('Y/N')
+    # print(header)
+    if request.method =="POST":
+        is_in=request.POST.get('isin')
+#  ----------------------------------------------------------
+        if is_in:
+            e=Entrant.objects.all().filter(id=is_in).first()
+            if  e.is_in==False:
+                e.is_in=True
+                e.save()
+        print('in',is_in)
+        is_out=request.POST.get('isout')
+#  ----------------------------------------------------------
+        if is_out:
+            e=Entrant.objects.all().filter(id=is_out).first()
+            if  e.is_in==True:
+                e.is_in=False
+                e.save()
+        print('out',is_out)
+    entrants_in= Entrant.objects.filter(is_in = True,category=cat)
+    entrants_out= Entrant.objects.filter(is_in = False,category=cat)
+
+
+    context = {
+    'cat': cat,
+    'entrants_in':entrants_in,
+    'entrants_out':entrants_out,
+    'kols': header,
+    }
+    return render(request, 'base/entrants.html', context)
+
+========================================================================
+{% extends 'base.html' %}
+{% block content %}
+    {% csrf_token %}
+    <form class="form" method="POST" action="">
+        {% csrf_token %}
+        <div class="form__group">
+        </div>
+
+        <div class="form__group">
+            <input class="btn btn--main btn--pill" type="submit" value="Confirm Selected In / Out " />
+        </div>
+   <table class="viking-table">
+       <thead>
+           <caption> Category [{{cat}}] {{entrants_in.count}} ENTRANTS IN </caption>
+           <tr>
+               {% for k in kols %}
+               
+               <th>{{k}}</th>
+               {% endfor %}
+            </tr>
+        </thead>
+        <tbody>
+            
+            {% for rij in entrants_in %}
+            <td> {{rij.id}}</td>
+            <td> <a href="{% url 'profile' rij.id  %}">  {{rij.name}} </td> 
+                <td> <a href="{% url 'profile' rij.id %}">   {{rij.category}}  </td> 
+                    <td> <a href="{% url 'profile' rij.id %}"> {{rij.seed}}   </td>
+                        <td> <a href="{% url 'profile' rij.id %}"> {{rij.kenmerk}}   </td>
+                            <td> <a href="{% url 'profile' rij.id %}"> {{rij.opponents}}   </td>
+                                <td> <a href="{% url 'profile' rij.id %}"> {{rij.points}}   </td>
+                                    <td> <a href="{% url 'profile' rij.id %}"> {{rij.is_in}}   </td> <td><input type="checkbox" id="isout" name="isout" value={{rij.id}}></td>
+                                        </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                            <table class="viking-table">
+                                <thead>
+                                    <caption> Category [{{cat}}] {{entrants_out.count}} ENTRANTS OUT </caption>
+                                    <tr>
+                                        {% for k in kols %}
+                                        
+                                        <th>{{k}}</th>
+                                        {% endfor %}
+                                     </tr>
+                                 </thead>
+                                 <tbody>
+                                     
+                                     {% for rij in entrants_out %}
+                                     <td> {{rij.id}}</td>
+                                     <td> <a href="{% url 'profile' rij.id  %}">  {{rij.name}} </td> 
+                                         <td> <a href="{% url 'profile' rij.id %}">   {{rij.category}}  </td> 
+                                             <td> <a href="{% url 'profile' rij.id %}"> {{rij.seed}}   </td>
+                                                 <td> <a href="{% url 'profile' rij.id %}"> {{rij.kenmerk}}   </td>
+                                                     <td> <a href="{% url 'profile' rij.id %}"> {{rij.opponents}}   </td>
+                                                         <td> <a href="{% url 'profile' rij.id %}"> {{rij.points}}   </td>
+                                                             <td> <a href="{% url 'profile' rij.id %}"> {{rij.is_in}}   </td> <td><input type="checkbox" id="isin" name="isin" value={{rij.id}}></td>
+                                                                 </tr>
+                                                             {% endfor %}
+                                                         </tbody>
+                                                     </table>
+                         
+                        </form>
+                            <a class="btn btn--main btn--pill" href="{% url 'home' %}">Toernooi</a>
+                        
+
+    {% endblock %}
+    
+    -------------------------------------------------
+    {% extends 'base.html' %}
+{% block content %}
+    {% csrf_token %}
+    <form class="form" method="POST" action="">
+        {% csrf_token %}
+        <div class="form__group">
+        </div>
+
+        <div class="form__group">
+            <input class="btn btn--main btn--pill" type="submit" value="Confirm Selected In / Out " />
+        </div>
+   <table class="viking-table">
+       <thead>
+           <caption> Category [{{cat}}] {{entrants_in.count}} ENTRANTS IN </caption>
+           <tr>
+               {% for k in kols %}
+               
+               <th>{{k}}</th>
+               {% endfor %}
+            </tr>
+        </thead>
+        <tbody>
+            
+            {% for rij in entrants_in %}
+            <td> {{rij.id}}</td>
+            <td> <a href="{% url 'profile' rij.id  %}">  {{rij.name}} </td> 
+                <td> <a href="{% url 'profile' rij.id %}">   {{rij.category}}  </td> 
+                    <td> <a href="{% url 'profile' rij.id %}"> {{rij.seed}}   </td>
+                        <td> <a href="{% url 'profile' rij.id %}"> {{rij.kenmerk}}   </td>
+                            <td> <a href="{% url 'profile' rij.id %}"> {{rij.opponents}}   </td>
+                                <td> <a href="{% url 'profile' rij.id %}"> {{rij.points}}   </td>
+                                    <td> <a href="{% url 'profile' rij.id %}"> {{rij.is_in}}   </td> <td><input type="checkbox" id="isout" name="isout" value={{rij.id}}></td>
+                                        </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                            <table class="viking-table">
+                                <thead>
+                                    <caption> Category [{{cat}}] {{entrants_out.count}} ENTRANTS OUT </caption>
+                                    <tr>
+                                        {% for k in kols %}
+                                        
+                                        <th>{{k}}</th>
+                                        {% endfor %}
+                                     </tr>
+                                 </thead>
+                                 <tbody>
+                                     
+                                     {% for rij in entrants_out %}
+                                     <td> {{rij.id}}</td>
+                                     <td> <a href="{% url 'profile' rij.id  %}">  {{rij.name}} </td> 
+                                         <td> <a href="{% url 'profile' rij.id %}">   {{rij.category}}  </td> 
+                                             <td> <a href="{% url 'profile' rij.id %}"> {{rij.seed}}   </td>
+                                                 <td> <a href="{% url 'profile' rij.id %}"> {{rij.kenmerk}}   </td>
+                                                     <td> <a href="{% url 'profile' rij.id %}"> {{rij.opponents}}   </td>
+                                                         <td> <a href="{% url 'profile' rij.id %}"> {{rij.points}}   </td>
+                                                             <td> <a href="{% url 'profile' rij.id %}"> {{rij.is_in}}   </td> <td><input type="checkbox" id="isin" name="isin" value={{rij.id}}></td>
+                                                                 </tr>
+                                                             {% endfor %}
+                                                         </tbody>
+                                                     </table>
+                         
+                        </form>
+                            <a class="btn btn--main btn--pill" href="{% url 'home' %}">Toernooi</a>
+                        
+
+    {% endblock %}

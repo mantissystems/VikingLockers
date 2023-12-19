@@ -1,0 +1,95 @@
+{% block content %}
+{% endblock content %}
+
+<main class="create-room layout">
+  <div class="container">
+    <div class="layout__box">
+      <div class="layout__boxHeader">
+        <div class="layout__boxTitle">
+           <a href="{% url 'home' %}">
+                      <svg
+                        version="1.1"
+                        xmlns="http://www.w3.org/2000/svg"
+                        width="32"
+                        height="32"
+                        viewBox="0 0 32 32"
+                      >
+                        <title>Terug</title>
+                        <path
+                          d="M13.723 2.286l-13.723 13.714 13.719 13.714 1.616-1.611-10.96-10.96h27.625v-2.286h-27.625l10.965-10.965-1.616-1.607z"
+                        ></path>
+                      </svg>
+                    </a>
+          <h3>Vikinglockers: </h3>
+          {%if toernooi.category == toernooi.init %} status:INIT {%else%} Initialisatie mogelijk {%endif%}
+        </div>
+      </div>
+      <div class="layout__body">
+        <form class="form" action="" method="POST">
+          {% csrf_token %} 
+            
+          {%comment%} 
+          {%endcomment%}
+<!--  -->
+<div class="pill-nav">
+  {% if request.user.is_superuser %}
+  <a href="{% url 'export_verhuurd' %}" class="btn btn--link">=>Export Verhuurd(facturatie)</a><hr>
+  <a href="{% url 'export_onverhuurd' %}" class="btn btn--link">=>Export Onverhuurd(lockers)</a><hr>
+  <a href="{% url 'export_emaillijst' %}" class="btn btn--link">=>Export Emaillijst(lockers)</a><hr>
+  <a href="{% url 'export_wachtlijst' %}" class="btn btn--link">=>Export Wachtlijst</a><hr>
+{% endif %}
+
+    <a class="active" href="{% url 'lockers' %}">Lockers</a>
+    <a class="active" href="{% url 'wacht-lijst' %}">Wachtlijst</a>
+    {% if toernooi.pairing %}
+    <a href="{% url 'berichten' %}">Pairing</a>
+    {%else%}
+    <a class = "active" href="{% url 'excellijst' %}">Excel Lijst</a>
+    {%endif%}
+    <a href="{% url 'facturatielijst' %}">facturatie Lijst</a>
+    <a  href="{% url 'all_lockers' %}">All Lockers</a>
+    {% if todo > 0 %}
+    <a class="active" href="{% url 'get_indeling' %}">[{{todo}}] results to go</a>
+    {%else%}
+    <a class="active" href="{% url 'logout' %}">Logout</a>
+    {%comment%}
+    <a href="{% url 'get_matriks' %}">Matriks</a>
+    <a href="{% url 'init' %}">Initialise</a>
+    <a href="{% url 'reset_initflag' %}">Iniflag</a>
+    <a class="active" href="#">[{{todo}}] results to go</a>
+    <a href="{% url 'uploads' %}">Uploads</a>
+{%endcomment%}
+    {%endif%}
+  </div> 
+  <!--  -->
+  {%comment%}
+  <a href="/get_groepindelingen">api-call</a>
+  <a href="{% url 'init' %}">Init</a>
+          <div class="form__group">
+          </div>
+            <div class="pill-nav">
+              <a class="btn btn--main btn--pill" href="{{request.META.HTTP_REFERER}}"
+              >Cancel</a>
+            <button class="btn btn--main btn--pill" type="submit">Submit</button>
+            <a class="btn btn--main btn--pill" href="{% url 'main' %}">Indelen</a>
+            </div>
+          <div class="form__group">
+  
+  <a class="btn btn--main btn--pill" href="{% url 'upload_entrant' %}">Import</a>
+  <a class="btn btn--main btn--pill" href="{% url 'uploads' %}">Uploads</a>
+</div>
+          <div class="form__group">
+          </div>
+          <div class="pill-nav">
+            
+            <a class="btn btn--main btn--pill" href="{% url 'entrants' %}">Entrants</a>
+            <a class="btn btn--main btn--pill" href="{% url 'get_indeling' %}">Indeling/Uitslagen</a>
+            <a class="btn btn--main btn--pill" href="/get_groepindelingen">api-call</a>
+          </div>
+          <a href="{% url 'home' %}/get_groepindelingen"></a>
+          {%endcomment%}
+        </form>
+      </div>
+    </div>
+  </div>
+</main>

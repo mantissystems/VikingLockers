@@ -52,8 +52,8 @@ urlpatterns = [
    path('m4/', views.m4, name="m4"), #puts usermail in get locker by email
    path('m5/', views.m5, name="m5"), #check facturatielijst in get locker by email
    path('m6/<str:pk>', views.m6, name="m6"), #check facturatielijst in get locker by email
+    path('all_lockers/',views.all_entrantsPage, name='all_lockers'),  
     ]
-    # path('<str:pk>/update-locker/',views.update_locker, name='update-locker'),  
     #  path('aantalregistraties/', views.tel_aantal_registraties, name='aantalregistraties'),
     #  path('nummering/', views.nummering, name='nummering'),
 # https://docs.djangoproject.com/en/3.1/topics/http/urls/

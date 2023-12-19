@@ -1144,7 +1144,78 @@ def lockersPage2(request):
             }
     return render(request, 'base/kluisjes.html', context)
     # return render(request, 'base/kluisjes.html', {'lockers': lockers})
+def teamlideraf(request, hdr_id):
+    leden = []
+    for l in request.POST.getlist('teamlideraf'):
+        leden.append(l)
+        teamhdr = get_object_or_404(Team_hdr, id=hdr_id)
+        print(teamhdr, leden)
+    try:
+        selected_ploeg = Teamlid.objects.all().filter(id=hdr_id)
+    except (KeyError, teamhdr.DoesNotExist):
+        return render(request, 'ploeg/teamhdr_update.html', {
+            'teamhdr': teamhdr,
+            'error_message': "Selecteer een naam.", })
+    else:
+        Teamlid.objects.filter(id__in=request.POST.getlist('teamlideraf'))
+        for t in leden:
+            p = Person.objects.get(id=t)
+            # print(teamhdr, p,'teamlideraf')
+            m = Teamlid.objects.filter(ploeg=teamhdr,
+                                       member=p,)
+            m.delete()
+        # Always return an HttpResponseRedirect after successfully dealing
+        # with POST data. This prevents data from being posted twice if a
+        # user hits the Back button.
+    return HttpResponseRedirect(reverse('ploeg:ploeg_details', args=(hdr_id,)))
 
+def all_entrantsPage(request):
+    # toernooi=Toernooi.objects.all().latest('created')
+    entrants_in= Locker.objects.filter(verhuurd = True)
+    entrants_out= Locker.objects.filter(verhuurd = False)
+    headers=Locker.objects.all().query.get_meta().fields 
+    header=[]
+    fields=['id','kluisnummer','email','points','kenmerk','category','opponents','verhuurd']
+    u=[]
+    kols=[]
+    s='base_locker';l=len(s)+1
+    headers=Locker.objects.all().query.get_meta().fields 
+    header=[]
+    for k in headers:
+        if str(k)[l:] in fields:
+            kols.append(str(k)[l:])              
+    # kols.append('Y/N')
+    # entrants_in= Locker.objects.all()
+    if request.method =="POST":
+        verhuurd=request.POST.get('isin')
+#  ----------------------------------------------------------
+        if verhuurd:
+            e=Locker.objects.all().filter(id=verhuurd).first()
+            if  e.verhuurd==False:
+                e.verhuurd=True
+                e.save()
+        print('in',verhuurd)
+        is_out=request.POST.get('isout')
+#  ----------------------------------------------------------
+        if is_out:
+            e=Locker.objects.all().filter(id=is_out).first()
+            if  e.verhuurd==True:
+                e.verhuurd=False
+                # e.save()
+        print('out',is_out)
+    entrants_in= Locker.objects.filter(verhuurd = True)
+    entrants_out= Locker.objects.filter(verhuurd = False)
+
+
+    entrants_in= Locker.objects.all().filter(verhuurd=True)
+    entrants_out= Locker.objects.all().filter(verhuurd=False)
+    context = {
+    'entrants_in':entrants_in,
+    'entrants_out':entrants_out,
+    'kols': kols,
+    'header': header,
+    }
+    return render(request, 'base/entrants.html', context)
 
 def polls_results(request,question_id):
     huur = get_object_or_404(Locker, id=question_id)

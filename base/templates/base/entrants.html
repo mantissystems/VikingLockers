@@ -1,0 +1,62 @@
+{% extends 'main.html' %}
+{% block content %}
+    {% csrf_token %}
+    <form class="form" method="POST" action="">
+        {% csrf_token %}
+        <div class="form__group">
+        </div>
+
+        <div class="form__group">
+            <input class="btn btn--main btn--pill" type="submit" value="Confirm Selected In / Out " />
+        </div>
+   <table class="viking-table">
+       <thead>
+           <caption>  {{entrants_in.count}} LOCKERS IN </caption>
+           <tr>
+               {% for k in kols %}
+               
+               <th>{{k}}</th>
+               {% endfor %}
+               <th>#</th>
+            </tr>
+        </thead>
+        <tbody>
+            
+            {% for rij in entrants_in %}
+            <td> {{rij.id}}</td>
+            <td> <a href="{% url 'update-locker' rij.id  %}">  {{rij.kluisnummer}} </td> 
+                <td> <a href="{% url 'update-locker' rij.id %}">   {{rij.email|slice:"0:12"}}...   </td> 
+                                    <td> <a href="{% url 'update-locker' rij.id %}">   </td>
+                                        {%if rij.verhuurd%}  <td><input type="checkbox" id="isout" checked="true" name="isout" value={{rij.id}}></td> {%endif%}
+                                        </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                            <table class="viking-table">
+                                <thead>
+                                    <caption>  {{entrants_out.count}} LOCKERS OUT </caption>
+                                    <tr>
+                                        {% for k in kols %}
+                                        
+                                        <th>{{k}}</th>
+                                        {% endfor %}
+                                        <th>#</th>
+                                     </tr>
+                                 </thead>
+                                 <tbody>
+                                     
+                                     {% for rij in entrants_out %}
+                                     <td> {{rij.id}}</td>
+                                     <td> <a href="{% url 'update-locker' rij.id  %}">  {{rij.kluisnummer}} </td> 
+                                         <td> <a href="{% url 'update-locker' rij.id %}">   {{rij.email|slice:"0:12"}}...   </td> 
+                                                             <td> <a href="{% url 'update-locker' rij.id %}"> {{rij.verhuurd}}   </td> <td><input type="checkbox" id="isin" name="isin" value={{rij.id}}></td>
+                                                                 </tr>
+                                                             {% endfor %}
+                                                         </tbody>
+                                                     </table>
+                         
+                        </form>
+                            <a class="btn btn--main btn--pill" href="{% url 'home' %}">Home</a>
+                        
+
+    {% endblock %}
