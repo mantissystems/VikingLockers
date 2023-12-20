@@ -100,7 +100,7 @@ def home(request):
     system_messages = messages.get_messages(request)
     for message in system_messages:
      print()
-    # This iteration is necessary
+    # This iteration is necessary to clear messages
      pass
     messages.set_level(request, messages.INFO)
     q = request.GET.get('q') if request.GET.get('q') != None else ''
@@ -149,9 +149,9 @@ def home(request):
     messages.add_message(request, messages.INFO, "Welkom bij Lockermanager", extra_tags="dragonball")
 
     storage = messages.get_messages(request)
-    for message in storage:
-        print(message)
-    url = reverse('berichten',)
+    # for message in storage:
+        # print(message)
+    # url = reverse('berichten',)
     # if q!='' or q !=None:
     #     print('if:',q)
     #     url = "lockers/"  + "?q=" +q 
@@ -170,7 +170,7 @@ def home(request):
         return HttpResponseRedirect(url)
     elif 'fact' in qq:
         x = qq.replace("fact ", "")
-        print(x)
+        # print(x)
         q=x
         url = "facturatielijst" + "?q=" +q 
         return HttpResponseRedirect(url)
@@ -192,6 +192,8 @@ def home(request):
 
     else:
         print('else:',q)
+        # if q!='' or q !=None:
+        #     print('if:',q)
         url = "all_lockers/"  + "?q=" +q
         return HttpResponseRedirect(url)
 
@@ -700,14 +702,14 @@ class FacturatieView (LoginRequiredMixin, ListView):
     def get_context_data(self,**kwargs):
         q = self.request.GET.get('q') if self.request.GET.get('q') != None else ''
         query = self.request.GET.get('q')
-        print(query)
+        # print(query)
         if query == None: query=""
         queryset = Facturatielijst.objects.all().filter(
             Q(email__icontains=query)|
             Q(renum__icontains=query)|
             Q(kluisnummer__icontains=query)
             ).order_by('renum')
-        print(queryset.query)
+        # print(queryset.query)
         check=Facturatielijst.objects.all().exclude(type__icontains='--')
         context = {
             'query': query,
@@ -1087,7 +1089,7 @@ class LockerUpdate( LoginRequiredMixin,UpdateView):
         print('in get_context_data')
         context = super().get_context_data(**kwargs)
         context["lockers"] = Locker.objects.all()
-        obj = super().get_object(**kwargs)
+        # obj = super().get_object(**kwargs)
         return context
     
     def form_valid(self, form):
@@ -1186,30 +1188,30 @@ def tools(request):
 
         return render(request, 'base/tools.html', context)
 
-def teamlideraf(request, hdr_id):
-    leden = []
-    for l in request.POST.getlist('teamlideraf'):
-        leden.append(l)
-        teamhdr = get_object_or_404(Team_hdr, id=hdr_id)
-        print(teamhdr, leden)
-    try:
-        selected_ploeg = Teamlid.objects.all().filter(id=hdr_id)
-    except (KeyError, teamhdr.DoesNotExist):
-        return render(request, 'ploeg/teamhdr_update.html', {
-            'teamhdr': teamhdr,
-            'error_message': "Selecteer een naam.", })
-    else:
-        Teamlid.objects.filter(id__in=request.POST.getlist('teamlideraf'))
-        for t in leden:
-            p = Person.objects.get(id=t)
-            # print(teamhdr, p,'teamlideraf')
-            m = Teamlid.objects.filter(ploeg=teamhdr,
-                                       member=p,)
-            m.delete()
+# def teamlideraf(request, hdr_id):
+#     leden = []
+#     for l in request.POST.getlist('teamlideraf'):
+#         leden.append(l)
+#         teamhdr = get_object_or_404(Team_hdr, id=hdr_id)
+#         print(teamhdr, leden)
+#     try:
+#         selected_ploeg = Teamlid.objects.all().filter(id=hdr_id)
+#     except (KeyError, teamhdr.DoesNotExist):
+#         return render(request, 'ploeg/teamhdr_update.html', {
+#             'teamhdr': teamhdr,
+#             'error_message': "Selecteer een naam.", })
+#     else:
+#         Teamlid.objects.filter(id__in=request.POST.getlist('teamlideraf'))
+#         for t in leden:
+#             p = Person.objects.get(id=t)
+#             # print(teamhdr, p,'teamlideraf')
+#             m = Teamlid.objects.filter(ploeg=teamhdr,
+#                                        member=p,)
+#             m.delete()
         # Always return an HttpResponseRedirect after successfully dealing
         # with POST data. This prevents data from being posted twice if a
         # user hits the Back button.
-    return HttpResponseRedirect(reverse('ploeg:ploeg_details', args=(hdr_id,)))
+    # return HttpResponseRedirect(reverse('ploeg:ploeg_details', args=(hdr_id,)))
 
 def all_entrantsPage(request):
     q = request.GET.get('q') if request.GET.get('q') != None else ''
@@ -1223,7 +1225,7 @@ def all_entrantsPage(request):
 
     isin = (Locker.objects
         .values('email')
-        .annotate(dcount=Count('id'))
+        .annotate(aantal=Count('id'))
         .order_by()
         )   
     print('isin',isin.count())
@@ -1234,8 +1236,8 @@ def all_entrantsPage(request):
         )   
     # print('dubbelen',doubles.count())
     for d in isin:
-        if d['dcount'] >1:
-            print(d,d['dcount'])
+        if d['aantal'] >1:
+            print(d,d['aantal'])
             messages.add_message(request, messages.INFO, f"{d}")    
         #         k=Locker.objects.filter(name=d['kluisnummer'],topic__icontains='').last()
         #         print(k.name,k.id)

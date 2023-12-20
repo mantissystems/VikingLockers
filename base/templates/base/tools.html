@@ -67,6 +67,11 @@
     <a class="btn btn--main btn--pill" href="{% url 'm3' %}">Browse Uploaded data</a>
     <a class="btn btn--main btn--pill" href="/m4">api-call</a>
     <a class="btn btn--main btn--pill" href="{% url 'm5' %}">Intialiseren</a>
+    {% if request.user.is_superuser %}
+    <a href="{% url 'export_verhuurd' %}" class="btn btn--link">=>Export List</a><br>
+    <a href="{% url 'export_emaillijst' %}" class="btn btn--link">=>Export E-mail</a>
+    <hr>
+  {% endif %}
 
 </div>
 {% if request.user.is_superuser %}

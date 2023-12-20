@@ -1,6 +1,8 @@
 {% extends 'main.html' %}
 {% block content %}
     {% csrf_token %}
+    <a class="btn btn--main btn--pill" href="{% url 'lockers' %}">Home</a>
+
     <form class="form" method="POST" action="">
         {% csrf_token %}
         <div class="form__group">
@@ -11,6 +13,8 @@
             <input class="btn btn--main btn--pill" type="submit" value="Confirm Selected In / Out " />
             {%endif%}
         </div>
+
+          
    <table class="viking-table">
        <thead>
            <caption>  {{entrants_in.count}} LOCKERS IN </caption>
@@ -20,6 +24,7 @@
                <th>{{k}}</th>
                {% endfor %}
                <th>#</th>
+               <th>Tekst</th>
             </tr>
         </thead>
         <tbody>
@@ -30,6 +35,7 @@
                 <td> <a href="{% url 'update-locker' rij.id %}">   {{rij.email|slice:"0:12"}}...   </td> 
                                     <td> <a href="{% url 'update-locker' rij.id %}">   </td>
                                         {%if rij.verhuurd%}  <td><input type="checkbox" id="isout" checked="true" name="isout" value={{rij.id}}></td> {%endif%}
+                                        <td> {{ rij.tekst|wordwrap:15 }} </td>
                                         </tr>
                                     {% endfor %}
                                 </tbody>
@@ -52,13 +58,15 @@
                                      <td> <a href="{% url 'update-locker' rij.id  %}">  {{rij.topic}} </td> 
                                          <td> <a href="{% url 'update-locker' rij.id %}">   {{rij.email|slice:"0:12"}}...   </td> 
                                                              <td> <a href="{% url 'update-locker' rij.id %}">   </td> <td><input type="checkbox" id="isin" name="isin" value={{rij.id}}></td>
+                                                                <td> {{ rij.tekst|wordwrap:15}} </td>
+
                                                                  </tr>
                                                              {% endfor %}
                                                          </tbody>
                                                      </table>
                          
                         </form>
-                            <a class="btn btn--main btn--pill" href="{% url 'home' %}">Home</a>
+                            <a class="btn btn--main btn--pill" href="{% url 'lockers' %}">Home</a>
                         
 
     {% endblock %}

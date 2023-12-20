@@ -21,67 +21,36 @@
                       </svg>
                     </a>
           <h3>Vikinglockers: </h3>
-          {%if toernooi.category == toernooi.init %} status:INIT {%else%} Initialisatie mogelijk {%endif%}
         </div>
       </div>
-      <div class="layout__body">
+      <div class="pill-nav">
         <form class="form" action="" method="POST">
           {% csrf_token %} 
+          <a class="active" href="{% url 'lockers' %}">Lockers</a><br>
+          <a class="active" href="{% url 'wacht-lijst' %}">Wachtlijst</a><br>
+          <a class = "active" href="{% url 'excellijst' %}">Excel Lijst</a><br>
+          <a href="{% url 'facturatielijst' %}">facturatie Lijst</a><br>
+          <a  href="{% url 'all_lockers' %}">All Lockers</a><br>
+          <a class="active" href="{% url 'logout' %}">Logout</a><br>
+          <a href="{% url 'tools' %}">Tools</a><br>
             
           {%comment%} 
+          <!--  -->
+              {% if toernooi.pairing %}
+              <a href="{% url 'berichten' %}">Pairing</a>
+              {%else%}
+              {%endif%}
+              {% if todo > 0 %}
+              <a class="active" href="{% url 'get_indeling' %}">[{{todo}}] results to go</a>
+              {%else%}
+              <a href="{% url 'init' %}">Initialise</a>
+              <a href="{% url 'reset_initflag' %}">Iniflag</a>
+              <a class="active" href="#">[{{todo}}] results to go</a>
+              <a href="{% url 'uploads' %}">Uploads</a>
+                  </div>
+            <!--  -->
           {%endcomment%}
-<!--  -->
-<div class="pill-nav">
 
-    <a class="active" href="{% url 'lockers' %}">Lockers</a>
-    <a class="active" href="{% url 'wacht-lijst' %}">Wachtlijst</a>
-    {% if toernooi.pairing %}
-    <a href="{% url 'berichten' %}">Pairing</a>
-    {%else%}
-    <a class = "active" href="{% url 'excellijst' %}">Excel Lijst</a>
-    {%endif%}
-    <a href="{% url 'facturatielijst' %}">facturatie Lijst</a>
-    <a  href="{% url 'all_lockers' %}">All Lockers</a>
-    {% if todo > 0 %}
-    <a class="active" href="{% url 'get_indeling' %}">[{{todo}}] results to go</a>
-    {%else%}
-    <a class="active" href="{% url 'logout' %}">Logout</a>
-    <a href="{% url 'tools' %}">Tools</a>
-    {%comment%}
-    <a href="{% url 'init' %}">Initialise</a>
-    <a href="{% url 'reset_initflag' %}">Iniflag</a>
-    <a class="active" href="#">[{{todo}}] results to go</a>
-    <a href="{% url 'uploads' %}">Uploads</a>
-{%endcomment%}
-    {%endif%}
-  </div> 
-  <!--  -->
-  {%comment%}
-  <a href="/get_groepindelingen">api-call</a>
-  <a href="{% url 'init' %}">Init</a>
-          <div class="form__group">
-          </div>
-            <div class="pill-nav">
-              <a class="btn btn--main btn--pill" href="{{request.META.HTTP_REFERER}}"
-              >Cancel</a>
-            <button class="btn btn--main btn--pill" type="submit">Submit</button>
-            <a class="btn btn--main btn--pill" href="{% url 'main' %}">Indelen</a>
-            </div>
-          <div class="form__group">
-  
-  <a class="btn btn--main btn--pill" href="{% url 'upload_entrant' %}">Import</a>
-  <a class="btn btn--main btn--pill" href="{% url 'uploads' %}">Uploads</a>
-</div>
-          <div class="form__group">
-          </div>
-          <div class="pill-nav">
-            
-            <a class="btn btn--main btn--pill" href="{% url 'entrants' %}">Entrants</a>
-            <a class="btn btn--main btn--pill" href="{% url 'get_indeling' %}">Indeling/Uitslagen</a>
-            <a class="btn btn--main btn--pill" href="/get_groepindelingen">api-call</a>
-          </div>
-          <a href="{% url 'home' %}/get_groepindelingen"></a>
-          {%endcomment%}
         </form>
       </div>
     </div>
