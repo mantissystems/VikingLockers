@@ -131,25 +131,12 @@ def home(request):
     if not request.user.is_authenticated:
         print('1.not-auth:', request.user)
         count=9
-        # print('2.not-none-user:', request.user)
         url = "/berichten/"
         messages.add_message(request, messages.INFO, "U bent niet ingelogd. Svp Inloggen / Registreren", extra_tags="dragonball")
-
-        # messages.warning(request, f'U bent niet ingelogd. Svp Inloggen / Registreren')
-        # messages.debug(request, "%s debug bericht." % count)
-        # messages.info(request, "info bericht.")
-        # messages.success(request, "succes bericht.")
-        # messages.warning(request, "warning bericht.")
-        # messages.error(request, "error bericht.")
         return HttpResponseRedirect(url)
     if request.user.is_authenticated:
         print('1.authorised:', request.user)
-# het berichtenscherm voorzien van ingelogd zijn of niet ingelogd zijn.
-# overbodige meldingen trachten weg te laten.
-    # messages.add_message(request, messages.INFO, "Over 9000!", extra_tags="dragonball")
     messages.add_message(request, messages.INFO, "Welkom bij Lockermanager", extra_tags="dragonball")
-    # messages.add_message(request, messages.INFO, "Voor meer informatie kunt u inloggen", extra_tags="dragonball")
-    # messages.warning(request, "Voor meer informatie kunt u inloggen", extra_tags="email")
 
     storage = messages.get_messages(request)
     for message in storage:
@@ -195,7 +182,7 @@ def home(request):
 
     else:
         print('else:',q)
-        url = "lockers/"  + "?q=" +q
+        url = "all_lockers/"  + "?q=" +q
         return HttpResponseRedirect(url)
 
 class LockerView (LoginRequiredMixin,ListView):
@@ -1170,8 +1157,16 @@ def teamlideraf(request, hdr_id):
     return HttpResponseRedirect(reverse('ploeg:ploeg_details', args=(hdr_id,)))
 
 def all_entrantsPage(request):
-    # toernooi=Toernooi.objects.all().latest('created')
-    entrants_in= Locker.objects.filter(verhuurd = True)
+    q = request.GET.get('q') if request.GET.get('q') != None else ''
+    print('entrants:',q)
+    entrants_in =Locker.objects.filter(
+    Q(kluisnummer__icontains=q) |
+    Q(email__icontains=q)|
+    Q(tekst__icontains=q)&
+    Q(verhuurd=True) 
+    ).order_by('topic')# .exclude(id__in=onverhuurd_lijst)
+
+    # entrants_in= Locker.objects.filter(verhuurd = True)
     entrants_out= Locker.objects.filter(verhuurd = False)
     headers=Locker.objects.all().query.get_meta().fields 
     header=[]
@@ -1203,11 +1198,11 @@ def all_entrantsPage(request):
                 e.verhuurd=False
                 # e.save()
         print('out',is_out)
-    entrants_in= Locker.objects.filter(verhuurd = True)
+    # entrants_in= Locker.objects.filter(verhuurd = True)
     entrants_out= Locker.objects.filter(verhuurd = False)
 
 
-    entrants_in= Locker.objects.all().filter(verhuurd=True)
+    # entrants_in= Locker.objects.all().filter(verhuurd=True)
     entrants_out= Locker.objects.all().filter(verhuurd=False)
     context = {
     'entrants_in':entrants_in,

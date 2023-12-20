@@ -49,7 +49,7 @@
                                      <td> {{rij.id}}</td>
                                      <td> <a href="{% url 'update-locker' rij.id  %}">  {{rij.kluisnummer}} </td> 
                                          <td> <a href="{% url 'update-locker' rij.id %}">   {{rij.email|slice:"0:12"}}...   </td> 
-                                                             <td> <a href="{% url 'update-locker' rij.id %}"> {{rij.verhuurd}}   </td> <td><input type="checkbox" id="isin" name="isin" value={{rij.id}}></td>
+                                                             <td> <a href="{% url 'update-locker' rij.id %}">   </td> <td><input type="checkbox" id="isin" name="isin" value={{rij.id}}></td>
                                                                  </tr>
                                                              {% endfor %}
                                                          </tbody>
