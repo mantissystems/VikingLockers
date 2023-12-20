@@ -115,12 +115,22 @@ def home(request):
         (Q(verhuurd=True)
         ) 
     ).order_by('topic')# .exclude(id__in=onverhuurd_lijst)
+    # entrants_in =Locker.objects.filter(
+    # Q(kluisnummer__icontains=q) |
+    # Q(email__icontains=q)|
+    # Q(tekst__icontains=q)|
+    # Q(topic__icontains=q)&
+    # Q(verhuurd=True)
+    # ).order_by('topic')# .exclude(id__in=onverhuurd_lijst)
+
     lockers =Locker.objects.filter(
     Q(kluisnummer__icontains=q) |
     Q(email__icontains=q)|
-    Q(tekst__icontains=q) 
+    Q(tekst__icontains=q)&
+    Q(verhuurd=True)
     ).order_by('topic')# .exclude(id__in=onverhuurd_lijst)
     messagelocker=Locker.objects.all().first()    
+    entrants_in=lockers
     rest=verhuurd.count() - onverhuurd.count() 
     if request.method == 'POST':
             message = Bericht.objects.create(
@@ -1160,14 +1170,17 @@ def all_entrantsPage(request):
     q = request.GET.get('q') if request.GET.get('q') != None else ''
     print('entrants:',q)
     entrants_in =Locker.objects.filter(
-    Q(kluisnummer__icontains=q) |
+    (Q(kluisnummer__icontains=q) |
     Q(email__icontains=q)|
-    Q(tekst__icontains=q)&
-    Q(verhuurd=True) 
+    Q(tekst__icontains=q)|
+    Q(topic__icontains=q)) & Q(verhuurd=True)
     ).order_by('topic')# .exclude(id__in=onverhuurd_lijst)
-
+    # .filter(
+    # Q(hide=False) & Q(deleted=False) &
+    # (Q(stock=False) | Q(quantity__gte=1)))
+    
     # entrants_in= Locker.objects.filter(verhuurd = True)
-    entrants_out= Locker.objects.filter(verhuurd = False)
+    # entrants_out= Locker.objects.filter(verhuurd = False)
     headers=Locker.objects.all().query.get_meta().fields 
     header=[]
     fields=['id','kluisnummer','email','points','kenmerk','category','opponents','verhuurd']
@@ -1199,11 +1212,18 @@ def all_entrantsPage(request):
                 # e.save()
         print('out',is_out)
     # entrants_in= Locker.objects.filter(verhuurd = True)
-    entrants_out= Locker.objects.filter(verhuurd = False)
+    # entrants_out= Locker.objects.filter(verhuurd = False)
 
 
     # entrants_in= Locker.objects.all().filter(verhuurd=True)
-    entrants_out= Locker.objects.all().filter(verhuurd=False)
+    # entrants_out= Locker.objects.all().filter(verhuurd=False)
+    entrants_out =Locker.objects.filter(
+    (Q(kluisnummer__icontains=q) |
+    Q(email__icontains=q)|
+    Q(tekst__icontains=q)|
+    Q(topic__icontains=q)) & Q(verhuurd=False)
+    ).order_by('topic')# .exclude(id__in=onverhuurd_lijst)
+
     context = {
     'entrants_in':entrants_in,
     'entrants_out':entrants_out,

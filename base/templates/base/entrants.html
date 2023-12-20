@@ -7,7 +7,9 @@
         </div>
 
         <div class="form__group">
+            {% if request.user.is_superuser %}
             <input class="btn btn--main btn--pill" type="submit" value="Confirm Selected In / Out " />
+            {%endif%}
         </div>
    <table class="viking-table">
        <thead>
@@ -24,7 +26,7 @@
             
             {% for rij in entrants_in %}
             <td> {{rij.id}}</td>
-            <td> <a href="{% url 'update-locker' rij.id  %}">  {{rij.kluisnummer}} </td> 
+            <td> <a href="{% url 'update-locker' rij.id  %}">  {{rij.topic}} </td> 
                 <td> <a href="{% url 'update-locker' rij.id %}">   {{rij.email|slice:"0:12"}}...   </td> 
                                     <td> <a href="{% url 'update-locker' rij.id %}">   </td>
                                         {%if rij.verhuurd%}  <td><input type="checkbox" id="isout" checked="true" name="isout" value={{rij.id}}></td> {%endif%}
@@ -47,7 +49,7 @@
                                      
                                      {% for rij in entrants_out %}
                                      <td> {{rij.id}}</td>
-                                     <td> <a href="{% url 'update-locker' rij.id  %}">  {{rij.kluisnummer}} </td> 
+                                     <td> <a href="{% url 'update-locker' rij.id  %}">  {{rij.topic}} </td> 
                                          <td> <a href="{% url 'update-locker' rij.id %}">   {{rij.email|slice:"0:12"}}...   </td> 
                                                              <td> <a href="{% url 'update-locker' rij.id %}">   </td> <td><input type="checkbox" id="isin" name="isin" value={{rij.id}}></td>
                                                                  </tr>

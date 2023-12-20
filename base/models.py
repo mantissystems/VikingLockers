@@ -82,7 +82,6 @@ class Room(models.Model):
     
 class Locker(models.Model):
     kluisnummer = models.CharField(max_length=200)
-    # host = models.ForeignKey(User, on_delete=models.SET_NULL, null=True)
     email = models.CharField(max_length=200,default='--')
     nieuwe_huurder = models.CharField(max_length=200,default='--')
     vorige_huurder = models.CharField(max_length=200,default='--')
@@ -93,13 +92,10 @@ class Locker(models.Model):
     opgezegd=models.BooleanField(default=False)
     obsolete=models.BooleanField(default=False)
     tekst = models.TextField(blank=True)
-    # owners = models.ManyToManyField(User, related_name='owners', blank=True)
-    # participants = models.ManyToManyField(Person, related_name='participants', blank=True)
     sleutels = models.CharField(max_length=18,default='----')     
     code = models.CharField(max_length=18,default='----')     
     created = models.DateTimeField(auto_now_add=True)
     opzegdatum = models.DateTimeField(auto_now_add=True)
-    # opzegdatum = models.DateTimeField(default=datetime.now(), blank=True)
     updated = models.DateTimeField(auto_now=True)
 
     class Meta:

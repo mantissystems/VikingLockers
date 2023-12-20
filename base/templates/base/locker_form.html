@@ -53,6 +53,7 @@
            {% endif %}
            {% if request.user.is_superuser %}
            <a href="{% url 'create-factuur'%}" class="btn btn--pill">Factuur</a>
+           <a class="btn btn--pill" href="{% url 'm6' locker.id %}">Reset Locker Password for user</a><br>
            {% endif %}
          </div>
          <div class="for__group">
@@ -60,7 +61,6 @@
           {% if lockerrrr %}
           <a class="btn btn--pill" href="{% url 'huuropzeggen' locker.id %}">Opzeggen</a><br>
           {% endif %}
-          <a class="btn btn--pill" href="{% url 'm6' locker.id %}">Reset Locker Password for user</a><br>
 
       </div>
 

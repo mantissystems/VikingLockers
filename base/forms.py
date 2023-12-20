@@ -76,7 +76,7 @@ class LockerForm(ModelForm):
         fields = ['email','kluisnummer','nieuwe_huurder','vorige_huurder','kluisje','type','topic','verhuurd','opgezegd','obsolete','tekst','sleutels','code','opzegdatum',]
         exclude = ['type','code','opzegdatum','kluisje','obsolete','opgezegd','topic','verhuurd','kluisnummer']
         labels = {
-        "verhuurd": "Bent u hoofdhuurder?",
+        "verhuurd": "Verhuurd",
         "topic": "nieuwe benaming",
         "kluisje": "vorige benaming",
         "tekst": "Mede gebruikers",
