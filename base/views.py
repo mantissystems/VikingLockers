@@ -1141,6 +1141,51 @@ def lockersPage2(request):
             }
     return render(request, 'base/kluisjes.html', context)
     # return render(request, 'base/kluisjes.html', {'lockers': lockers})
+
+def tools(request):
+        emptypersonfile=request.POST.get('personfile')
+            # Read the first line of the file
+            #  ----------------------------------------------------------
+
+#  ----------------------------------------------------------
+        # ok=True
+        # importfile   = open('/home/jozef/Downloads/base_person.csv', 'r')
+        # sterkte=1500
+        # if ok:
+        #     data_set = importfile.read() #.decode('UTF-8')
+        #     io_string = io.StringIO(data_set)
+        #     st='I' #init
+        #     for column in csv.reader(io_string, delimiter='|', quotechar="|"):
+                # print(column[1])
+                # if Person.objects.all().filter(name=column[1],category=column[2],rating=column[3]).exists():
+                #     messages.add_message(request, messages.INFO, f"DOUBLE.not loaded->{column[1]}")    
+                #     st='D' #double; alreadey loaded
+                # else:
+                #     st='new'
+                #     try:
+                #         messages.add_message(request, messages.INFO, f"loaded->{column[1]}")    
+                #         column[0]*1 #must be numeric
+                #         if column[2]==toernooi.category:
+                #             created=Person.objects.update_or_create(
+                #             id=column[0],
+                #             category=column[2],
+                #             rating=sterkte,
+                #             name=column[1],
+                #             status=st,
+                #             )
+                #     except:
+                #         pass                        
+
+        url='tools'
+        context = {
+    # 'todo':todo,
+    # 'upload':upload,
+    }
+        # return redirect(url)    
+    # print(context)
+
+        return render(request, 'base/tools.html', context)
+
 def teamlideraf(request, hdr_id):
     leden = []
     for l in request.POST.getlist('teamlideraf'):
@@ -1175,12 +1220,28 @@ def all_entrantsPage(request):
     Q(tekst__icontains=q)|
     Q(topic__icontains=q)) & Q(verhuurd=True)
     ).order_by('topic')# .exclude(id__in=onverhuurd_lijst)
-    # .filter(
-    # Q(hide=False) & Q(deleted=False) &
-    # (Q(stock=False) | Q(quantity__gte=1)))
-    
-    # entrants_in= Locker.objects.filter(verhuurd = True)
-    # entrants_out= Locker.objects.filter(verhuurd = False)
+
+    isin = (Locker.objects
+        .values('email')
+        .annotate(dcount=Count('id'))
+        .order_by()
+        )   
+    print('isin',isin.count())
+    doubles = (Locker.objects
+        .values('kluisnummer')
+        .annotate(dcount=Count('id'))
+        .order_by()
+        )   
+    # print('dubbelen',doubles.count())
+    for d in isin:
+        if d['dcount'] >1:
+            print(d,d['dcount'])
+            messages.add_message(request, messages.INFO, f"{d}")    
+        #         k=Locker.objects.filter(name=d['kluisnummer'],topic__icontains='').last()
+        #         print(k.name,k.id)
+                # if k:
+                    # k.delete()
+
     headers=Locker.objects.all().query.get_meta().fields 
     header=[]
     fields=['id','kluisnummer','email','points','kenmerk','category','opponents','verhuurd']

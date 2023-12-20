@@ -1,0 +1,92 @@
+{% extends 'main.html' %} 
+{% comment %} 30 mrt 2023 {% endcomment %}
+{% block content %}
+<main class="create-room layout">
+  <div class="container">
+    <div class="layout__box">
+      <div class="layout__boxHeader">
+        <div class="layout__boxTitle">
+           <a href="{% url 'home' %}">
+                      <svg
+                        version="1.1"
+                        xmlns="http://www.w3.org/2000/svg"
+                        width="32"
+                        height="32"
+                        viewBox="0 0 32 32"
+                      >
+                        <title>Terug</title>
+                        <path
+                          d="M13.723 2.286l-13.723 13.714 13.719 13.714 1.616-1.611-10.96-10.96h27.625v-2.286h-27.625l10.965-10.965-1.616-1.607z"
+                        ></path>
+                      </svg>
+                    </a>
+          <h3>Toernooi: {{toernooi.toernooinaam}} </h3>
+        </div>
+      </div>
+      <div class="layout__body">
+        <form class="form" action="" method="POST">
+          {% csrf_token %} 
+          <div class="form__group">
+            <label for="toernooinaam">Toernooi Naam</label
+                name="toernooinaam">
+            {{form.toernooinaam}}
+          </div>
+          <div class="form__group">
+            <label for="importfile">Import File</label
+                name="importfile">
+            {{form.file}}
+          </div>
+  
+
+          {%comment%}
+          <button class="btn btn--main btn--pill" type="submit">Submit</button>
+          {%endcomment%}
+          
+          <!--  -->
+          <h3> Upload a file</h3>
+          <!--  -->
+          <input type="radio" id="personfile" name="personfile" value="emptypersonfile">
+          <label for="personfile">Empty Person file</label><br>
+          <!--  -->
+          {{importfile}}: already selected <br>
+          {% if importfile %}
+          {%else%}
+          <input type="file" name="file"><br>
+          <button class="btn btn--main btn--pill" type="submit">Submit</button>
+          {%endif%}
+          <button class="btn btn--main btn--pill" type="submit">Upload file data</button>
+          <a class="btn btn--main btn--pill" href="{{request.META.HTTP_REFERER}}"
+          >Cancel</a>
+
+<!--  -->
+
+<div class="form__group">
+    {%comment%}
+    {%endcomment%}
+    <a class="btn btn--main btn--pill" href="{% url 'm2' %}">Import</a>
+    <a class="btn btn--main btn--pill" href="{% url 'm3' %}">Browse Uploaded data</a>
+    <a class="btn btn--main btn--pill" href="/m4">api-call</a>
+    <a class="btn btn--main btn--pill" href="{% url 'm5' %}">Intialiseren</a>
+
+</div>
+{% if request.user.is_superuser %}
+<a href="{% url 'export_verhuurd' %}" class="btn btn--link">=>Export Verhuurd(facturatie)</a><hr>
+<a href="{% url 'export_onverhuurd' %}" class="btn btn--link">=>Export Onverhuurd(lockers)</a><hr>
+<a href="{% url 'export_emaillijst' %}" class="btn btn--link">=>Export Emaillijst(lockers)</a><hr>
+<a href="{% url 'export_wachtlijst' %}" class="btn btn--link">=>Export Wachtlijst</a><hr>
+{% endif %}
+{% if request.user.is_superuser %}
+<a href="{% url 'm2' %}" class="btn btn--link">=>create user from locker email if no useremail exists</a><hr>
+<a href="{% url 'm3' %}" class="btn btn--link">=>put new user email back in locker</a><hr>
+<a href="{% url 'm5' %}" class="btn btn--link">=>check facturatielijst. is every locker present</a><hr>
+<a href="{% url 'requests' %}" class="btn btn--link">=>berichtenlijst</a><hr>
+{% endif %}
+
+
+<a href="{% url 'home' %}/get_groepindelingen"></a>
+        </form>
+      </div>
+    </div>
+  </div>
+</main>
+{% endblock content %}

@@ -22,6 +22,7 @@ urlpatterns = [
     path('wacht-lijst/',views.Wachtlijst.as_view(),name='wacht-lijst'),
     path('lockers/', views.lockersPage2, name="lockers"),
     path('requests',views.RequestView.as_view(),name='requests'),
+    path('tools/',views.tools, name='tools'),  
     path('onverhuurd/', views.lockersPage3, name="onverhuurd"),
     path('verhuurd/', views.LockerView.as_view(), name="verhuurd"),
     path('export_verhuurd/', views.export_verhuurd, name="export_verhuurd"),

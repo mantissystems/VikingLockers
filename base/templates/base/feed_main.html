@@ -32,12 +32,6 @@
           {%endcomment%}
 <!--  -->
 <div class="pill-nav">
-  {% if request.user.is_superuser %}
-  <a href="{% url 'export_verhuurd' %}" class="btn btn--link">=>Export Verhuurd(facturatie)</a><hr>
-  <a href="{% url 'export_onverhuurd' %}" class="btn btn--link">=>Export Onverhuurd(lockers)</a><hr>
-  <a href="{% url 'export_emaillijst' %}" class="btn btn--link">=>Export Emaillijst(lockers)</a><hr>
-  <a href="{% url 'export_wachtlijst' %}" class="btn btn--link">=>Export Wachtlijst</a><hr>
-{% endif %}
 
     <a class="active" href="{% url 'lockers' %}">Lockers</a>
     <a class="active" href="{% url 'wacht-lijst' %}">Wachtlijst</a>
@@ -52,8 +46,8 @@
     <a class="active" href="{% url 'get_indeling' %}">[{{todo}}] results to go</a>
     {%else%}
     <a class="active" href="{% url 'logout' %}">Logout</a>
+    <a href="{% url 'tools' %}">Tools</a>
     {%comment%}
-    <a href="{% url 'get_matriks' %}">Matriks</a>
     <a href="{% url 'init' %}">Initialise</a>
     <a href="{% url 'reset_initflag' %}">Iniflag</a>
     <a class="active" href="#">[{{todo}}] results to go</a>

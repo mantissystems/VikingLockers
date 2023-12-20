@@ -58,13 +58,6 @@
                   </tbody>
             </thead>
         </table>
-        {% if request.user.is_superuser %}
-        <a href="{% url 'm2' %}" class="btn btn--link">=>create user from locker email if no useremail exists</a><hr>
-        <a href="{% url 'm3' %}" class="btn btn--link">=>put new user email back in locker</a><hr>
-        <a href="{% url 'm5' %}" class="btn btn--link">=>check facturatielijst. is every locker present</a><hr>
-        <a href="{% url 'requests' %}" class="btn btn--link">=>berichtenlijst</a><hr>
-      {% endif %}
-  
         {% comment %}
         {% endcomment %}
         
