@@ -19,12 +19,12 @@
        <thead>
            <caption>  {{entrants_in.count}} LOCKERS IN </caption>
            <tr>
+               <th>#</th>
                {% for k in kols %}
                
                <th>{{k}}</th>
                {% endfor %}
-               <th>#</th>
-               <th>Tekst</th>
+               <th>Medegebruikers</th>
             </tr>
         </thead>
         <tbody>
@@ -35,7 +35,7 @@
                 <td> <a href="{% url 'update-locker' rij.id %}">   {{rij.email|slice:"0:12"}}...   </td> 
                                     <td> <a href="{% url 'update-locker' rij.id %}">   </td>
                                         {%if rij.verhuurd%}  <td><input type="checkbox" id="isout" checked="true" name="isout" value={{rij.id}}></td> {%endif%}
-                                        <td> {{ rij.tekst|wordwrap:15 }} </td>
+                                        <td> {{ rij.tekst|wordwrap:20 }} </td>
                                         </tr>
                                     {% endfor %}
                                 </tbody>
@@ -44,10 +44,12 @@
                                 <thead>
                                     <caption>  {{entrants_out.count}} LOCKERS OUT </caption>
                                     <tr>
+                                        <th>#</th>
                                         {% for k in kols %}
                                         
                                         <th>{{k}}</th>
                                         {% endfor %}
+                                        <th>Medegebruikers</th>
                                         <th>#</th>
                                      </tr>
                                  </thead>

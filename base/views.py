@@ -1246,7 +1246,7 @@ def all_entrantsPage(request):
 
     headers=Locker.objects.all().query.get_meta().fields 
     header=[]
-    fields=['id','kluisnummer','email','points','kenmerk','category','opponents','verhuurd']
+    fields=['kluisnummer','email','points','kenmerk','category','opponents','verhuurd']
     u=[]
     kols=[]
     s='base_locker';l=len(s)+1
