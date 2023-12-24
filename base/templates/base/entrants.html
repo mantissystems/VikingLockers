@@ -1,13 +1,22 @@
 {% extends 'main.html' %}
 {% block content %}
     {% csrf_token %}
+    {%load static%}
     <a class="btn btn--main btn--pill" href="{% url 'lockers' %}">Home</a>
 
     <form class="form" method="POST" action="">
         {% csrf_token %}
         <div class="form__group">
+            <a href="{% url 'home' %}" class="header__logo">
+                <img src="{% static 'images/dames1.JPG' %}" />
+                <img src="{% static 'images/dames2.JPG' %}" />
+                <img src="{% static 'images/dames3.JPG' %}" />
+            </a>
+    
         </div>
+<!--  -->
 
+<!--  -->
         <div class="form__group">
             {% if request.user.is_superuser %}
             <input class="btn btn--main btn--pill" type="submit" value="Confirm Selected In / Out " />

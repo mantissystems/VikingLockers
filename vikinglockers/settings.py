@@ -121,17 +121,28 @@ USE_TZ = True
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.1/howto/static-files/
+# do comment static root path
+
+STATIC_ROOT = os.path.join(BASE_DIR, 'static')
+
+# add static dirs path like this
+
+STATICFILES_DIRS = [os.path.join(BASE_DIR, 'static')]
+
+#----------- OR ---------------
+
+STATICFILES_DIRS = [BASE_DIR / 'staticfiles']
 
 STATIC_URL = '/static/'
 MEDIA_URL='/images/'
-if DEBUG:
-    STATICFILES_DIRS = [
-    os.path.join(BASE_DIR, 'static')]
-else:
-    STATIC_ROOT =     os.path.join(BASE_DIR, 'static')
-    MEDIA_ROOT =     os.path.join(BASE_DIR, 'media')
-    STATICFILES_DIRS = [
-    os.path.join(BASE_DIR, 'staticfiles')]
+# if DEBUG:
+#     STATICFILES_DIRS = [
+#     os.path.join(BASE_DIR, 'static')]
+# else:
+#     STATIC_ROOT =     os.path.join(BASE_DIR, 'static')
+#     MEDIA_ROOT =     os.path.join(BASE_DIR, 'media')
+#     STATICFILES_DIRS = [
+#     os.path.join(BASE_DIR, 'staticfiles')]
 DEFAULT_AUTO_FIELD = 'django.db.models.AutoField'
 CORS_ALLOW_ALL_ORIGINS=True
 SECURE_CONTENT_TYPE_NOSNIFF=False

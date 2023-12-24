@@ -26,31 +26,33 @@
       <div class="pill-nav">
         <form class="form" action="" method="POST">
           {% csrf_token %} 
-          <a class="active" href="{% url 'lockers' %}">Lockers</a><br>
-          <a class="active" href="{% url 'wacht-lijst' %}">Wachtlijst</a><br>
-          <a class = "active" href="{% url 'excellijst' %}">Excel Lijst</a><br>
-          <a href="{% url 'facturatielijst' %}">facturatie Lijst</a><br>
-          <a  href="{% url 'all_lockers' %}">All Lockers</a><br>
-          <a class="active" href="{% url 'logout' %}">Logout</a><br>
-          <a href="{% url 'tools' %}">Tools</a><br>
-            
-          {%comment%} 
-          <!--  -->
-              {% if toernooi.pairing %}
-              <a href="{% url 'berichten' %}">Pairing</a>
-              {%else%}
-              {%endif%}
-              {% if todo > 0 %}
-              <a class="active" href="{% url 'get_indeling' %}">[{{todo}}] results to go</a>
-              {%else%}
-              <a href="{% url 'init' %}">Initialise</a>
-              <a href="{% url 'reset_initflag' %}">Iniflag</a>
-              <a class="active" href="#">[{{todo}}] results to go</a>
-              <a href="{% url 'uploads' %}">Uploads</a>
-                  </div>
-            <!--  -->
-          {%endcomment%}
 
+          <table class="datum-table">
+            <tr>
+              <th>----</th>
+              <th>----</th>
+              <th>----</th>
+            </tr>
+            <tr>
+              <td><a class="btn btn-primary" href="{% url 'all_lockers' %}">All Lockers</a></td>
+              <td><a class="btn btn--main btn--pill" href="{% url 'wacht-lijst' %}">Wachtlijst</a></td>
+              <td> <a class="btn btn-outline" href="{% url 'logout' %}">Logout</a> </td>
+            </tr>
+            <tr>
+             <td></td> <td><a class="btn btn--main btn--pill" href="{% url 'facturatielijst' %}">facturatie Lijst</a></td>
+              <td><a class="btn btn--main btn--pill" href="{% url 'tools' %}">Tools</a></td>
+              <tr>
+                <td></td>
+{%comment%}                
+                <td><a class="btn btn--main btn--pill" href="{% url 'lockers' %}">Lockers</a></td>
+                {%endcomment%}
+                <td><a class = "btn btn--main btn--pill" href="{% url 'excellijst' %}">Excel Lijst</a></td>
+              </tr>
+            </tr>
+          </table> 
+          
+            
+          <!--  -->
         </form>
       </div>
     </div>
