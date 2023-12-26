@@ -17,12 +17,13 @@
 <!--  -->
 
 <!--  -->
+{%comment%}
         <div class="form__group">
             {% if request.user.is_superuser %}
             <input class="btn btn--main btn--pill" type="submit" value="Confirm Selected In / Out " />
             {%endif%}
         </div>
-
+{%endcomment%}
           
    <table class="viking-table">
        <thead>
@@ -43,7 +44,7 @@
             <td> <a href="{% url 'update-locker' rij.id  %}">  {{rij.topic}} </td> 
                 <td> <a href="{% url 'update-locker' rij.id %}">   {{rij.email|slice:"0:12"}}...   </td> 
                                     <td> <a href="{% url 'update-locker' rij.id %}">   </td>
-                                        {%if rij.verhuurd%}  <td><input type="checkbox" id="isout" checked="true" name="isout" value={{rij.id}}></td> {%endif%}
+                                       {%comment%} {%if rij.verhuurd%}  <td><input type="checkbox" id="isout" checked="true" name="isout" value={{rij.id}}></td> {%endif%} {%endcomment%}
                                         <td> {{ rij.tekst|wordwrap:20 }} </td>
                                         </tr>
                                     {% endfor %}
@@ -68,8 +69,8 @@
                                      <td> {{rij.id}}</td>
                                      <td> <a href="{% url 'update-locker' rij.id  %}">  {{rij.topic}} </td> 
                                          <td> <a href="{% url 'update-locker' rij.id %}">   {{rij.email|slice:"0:12"}}...   </td> 
-                                                             <td> <a href="{% url 'update-locker' rij.id %}">   </td> <td><input type="checkbox" id="isin" name="isin" value={{rij.id}}></td>
-                                                                <td> {{ rij.tekst|wordwrap:15}} </td>
+                                                            {%comment%} <td> <a href="{% url 'update-locker' rij.id %}">   </td> <td><input type="checkbox" id="isin" name="isin" value={{rij.id}}></td> {%endcomment%}
+                                                                <td> {{ rij.tekst|wordwrap:20}} </td>
 
                                                                  </tr>
                                                              {% endfor %}

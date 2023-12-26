@@ -1188,31 +1188,6 @@ def tools(request):
 
         return render(request, 'base/tools.html', context)
 
-# def teamlideraf(request, hdr_id):
-#     leden = []
-#     for l in request.POST.getlist('teamlideraf'):
-#         leden.append(l)
-#         teamhdr = get_object_or_404(Team_hdr, id=hdr_id)
-#         print(teamhdr, leden)
-#     try:
-#         selected_ploeg = Teamlid.objects.all().filter(id=hdr_id)
-#     except (KeyError, teamhdr.DoesNotExist):
-#         return render(request, 'ploeg/teamhdr_update.html', {
-#             'teamhdr': teamhdr,
-#             'error_message': "Selecteer een naam.", })
-#     else:
-#         Teamlid.objects.filter(id__in=request.POST.getlist('teamlideraf'))
-#         for t in leden:
-#             p = Person.objects.get(id=t)
-#             # print(teamhdr, p,'teamlideraf')
-#             m = Teamlid.objects.filter(ploeg=teamhdr,
-#                                        member=p,)
-#             m.delete()
-        # Always return an HttpResponseRedirect after successfully dealing
-        # with POST data. This prevents data from being posted twice if a
-        # user hits the Back button.
-    # return HttpResponseRedirect(reverse('ploeg:ploeg_details', args=(hdr_id,)))
-
 def all_entrantsPage(request):
     q = request.GET.get('q') if request.GET.get('q') != None else ''
     print('entrants:',q)
@@ -1234,19 +1209,14 @@ def all_entrantsPage(request):
         .annotate(dcount=Count('id'))
         .order_by()
         )   
-    # print('dubbelen',doubles.count())
     for d in isin:
         if d['aantal'] >1:
             print(d,d['aantal'])
             messages.add_message(request, messages.INFO, f"{d}")    
-        #         k=Locker.objects.filter(name=d['kluisnummer'],topic__icontains='').last()
-        #         print(k.name,k.id)
-                # if k:
-                    # k.delete()
 
     headers=Locker.objects.all().query.get_meta().fields 
     header=[]
-    fields=['kluisnummer','email','points','kenmerk','category','opponents','verhuurd']
+    fields=['kluisnummer','email',]
     u=[]
     kols=[]
     s='base_locker';l=len(s)+1
@@ -1255,8 +1225,6 @@ def all_entrantsPage(request):
     for k in headers:
         if str(k)[l:] in fields:
             kols.append(str(k)[l:])              
-    # kols.append('Y/N')
-    # entrants_in= Locker.objects.all()
     if request.method =="POST":
         verhuurd=request.POST.get('isin')
 #  ----------------------------------------------------------
