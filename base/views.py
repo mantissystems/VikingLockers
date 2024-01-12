@@ -33,7 +33,7 @@ from django.http import HttpResponse, HttpResponseRedirect
 from django.conf import settings
 from django.template.loader import render_to_string  #for email use
 from .admin import LockerResource
-
+from .resources import LockerResource
 
 def loginPage(request):
     page = 'login'
@@ -951,27 +951,39 @@ def export_onverhuurd(request,):
     return response
 
 def export_emaillijst(request,):
-    import csv
-    # exclude_list = ['vrij', 'onbekend','wachtlijst',]
-    verhuurd =Locker.objects.filter(email__icontains='@').order_by('topic')
-    response = HttpResponse(content_type='text/csv')
-    response['Content-Disposition'] = 'attachment; filename="email_lijst.csv"'
-    writer = csv.writer(response)
-    writer.writerow(['id', 'tenant', 'oude naam','nwe naam','huidige', 'Obs','Opg','Ver','Sl','txt','nwe','vorige'])
-    for item in verhuurd:
-        writer.writerow([item.id ,item.email, item.kluisje,item.topic,item.kluisnummer, item.obsolete ,item.opgezegd,item.verhuurd,item.sleutels,item.tekst,item.nieuwe_huurder,item.vorige_huurder,])
-    return response
+    locker_resource = LockerResource()
+    dataset = locker_resource.export()
+    queryset = Locker.objects.filter(verhuurd=True)
+    dataset = locker_resource.export(queryset)    
+    response = HttpResponse(dataset.xls, content_type='application/vnd.ms-excel')
+    response['Content-Disposition'] = 'attachment; filename="persons.xls"'
+    return response    
+    # import csv
+    # # exclude_list = ['vrij', 'onbekend','wachtlijst',]
+    # verhuurd =Locker.objects.filter(email__icontains='@').order_by('topic')
+    # response = HttpResponse(content_type='text/csv')
+    # response['Content-Disposition'] = 'attachment; filename="email_lijst.csv"'
+    # writer = csv.writer(response)
+    # writer.writerow(['id', 'tenant', 'oude naam','nwe naam','huidige', 'Obs','Opg','Ver','Sl','txt','nwe','vorige'])
+    # for item in verhuurd:
+    #     writer.writerow([item.id ,item.email, item.kluisje,item.topic,item.kluisnummer, item.obsolete ,item.opgezegd,item.verhuurd,item.sleutels,item.tekst,item.nieuwe_huurder,item.vorige_huurder,])
+    # return response
     
 def export_verhuurd(request,):
-    import csv
-    verhuurd = Facturatielijst.objects.all()
-    response = HttpResponse(content_type='text/csv')
-    response['Content-Disposition'] = 'attachment; filename="facturatie_lijst.csv"'
-    writer = csv.writer(response)
-    writer.writerow(['id', 'tenant', 'y/n','locker','registered', 'keys','huur','obs'])
-    for item in verhuurd:
-        writer.writerow([item.id ,item.email, item.code,item.kluisnummer,item.is_registered, item.sleutels , item.in_excel ,item.type,item.obsolete,])
-    return response
+    locker_resource = locker_resource()
+    dataset = locker_resource.export()
+    response = HttpResponse(dataset.csv, content_type='text/csv')
+    response['Content-Disposition'] = 'attachment; filename="persons.csv"'
+    return response    
+    # import csv
+    # verhuurd = Facturatielijst.objects.all()
+    # response = HttpResponse(content_type='text/csv')
+    # response['Content-Disposition'] = 'attachment; filename="facturatie_lijst.csv"'
+    # writer = csv.writer(response)
+    # writer.writerow(['id', 'tenant', 'y/n','locker','registered', 'keys','huur','obs'])
+    # for item in verhuurd:
+    #     writer.writerow([item.id ,item.email, item.code,item.kluisnummer,item.is_registered, item.sleutels , item.in_excel ,item.type,item.obsolete,])
+    # return response
 
 
 class CreateFactuur(CreateView):
@@ -1121,20 +1133,25 @@ def update_locker(request,pk):
 # ---------------------------------------------------------------------------    
 class LockerListView(ListView,FormView):
     model=Locker
+    queryset = Locker.objects.all().order_by('-verhuurd','kluisnummer')
     template_name='base/locker_views.html'
     form_class=FormatForm
+    context_object_name = "locker_list"
+
     def get_context_data(self, **kwargs):
         print('in indeling get_context_data')
         s='base_locker';l=len(s)+1
         headers=Locker.objects.all().query.get_meta().fields 
-        fields=['id','kluisnummer','email','tekst','verhuurd','created']
+        fields=['id','kluisnummer','email','tekst','verhuurd','updated']
         header=[]
         for k in headers:
             if str(k)[l:] in fields:
                 header.append(str(k)[l:])              
 
         context = super().get_context_data(**kwargs)
-        context["[lockersmixed]"] = Locker.objects.all().order_by('verhuurd')
+        qs_in=Locker.objects.all().filter(verhuurd=True).order_by('topic')
+        context["lockers_in"] = qs_in
+        context["lockers_out"] =Locker.objects.all().filter(verhuurd=False).order_by('topic')
         context["header"] = header
         context["table"] = s
         return context

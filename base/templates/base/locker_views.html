@@ -45,7 +45,7 @@
           
    <table class="viking-table">
        <thead>
-           <caption>  {{entrants_in.count}} LOCKERS IN </caption>
+           <caption>  {{entrants_in.count}} LOCKERS IN {{lockers_in.count}}; LOCKERS OUT {{lockers_out.count}} </caption>
            <tr>
                <th>#</th>
                {% for k in header %}
@@ -56,17 +56,19 @@
         </thead>
         <tbody>
             
-            {% for rij in object_list %}
+            {% for rij in lockers_in %}
             <td></td>
             <td> {{rij.id}}</td>
             <td> <a href="{% url 'update-locker' rij.id  %}">  {{rij.topic}} </td> 
                 <td> <a href="{% url 'update-locker' rij.id %}">   {{rij.email|slice:"0:12"}}...   </td> 
                     <td> {{ rij.verhuurd }} </td>
-                    <td> {{ rij.tekst|truncatewords:3 }} </td>
-                    <td> {{ rij.updated }} </td>
-                                    <td> <a href="{% url 'update-locker' rij.id %}">   </td>
-                                       {%comment%} {%if rij.verhuurd%}  <td><input type="checkbox" id="isout" checked="true" name="isout" value={{rij.id}}></td> {%endif%} 
-                                       <td> {{ rij.tekst|wordwrap:20 }} </td>
+                    <td> {{ rij.tekst|slice:"0:20"}}... </td>
+                    <td> {{ rij.updated|date:"SHORT_DATE_FORMAT" }} </td>
+                    <td> <a href="{% url 'update-locker' rij.id %}">   </td>
+                        {%comment%} {%if rij.verhuurd%}  <td><input type="checkbox" id="isout" checked="true" name="isout" value={{rij.id}}></td> {%endif%} 
+                        <td> {{ rij.tekst|truncatewords:3 }} </td>
+                        <td> {{ rij.tekst|wordwrap:20 }} </td>
+                        <td> {{ rij.tekst|wordwrap:20 }} </td>
                                        {%endcomment%}
                                         </tr>
                                     {% endfor %}
@@ -74,10 +76,10 @@
                             </table>
                             <table class="viking-table">
                                 <thead>
-                                    <caption>  {{entrants_out.count}} LOCKERS OUT </caption>
+                                    <caption>  {{lockers_out.count}} LOCKERS OUT {{table}} </caption>
                                     <tr>
                                         <th>#</th>
-                                        {% for k in kols %}
+                                        {% for k in header %}
                                         
                                         <th>{{k}}</th>
                                         {% endfor %}
@@ -87,16 +89,23 @@
                                  </thead>
                                  <tbody>
                                      
-                                     {% for rij in entrants_out %}
+                                     {% for rij in lockers_out %}
+                                     <td></td>
                                      <td> {{rij.id}}</td>
                                      <td> <a href="{% url 'update-locker' rij.id  %}">  {{rij.topic}} </td> 
                                          <td> <a href="{% url 'update-locker' rij.id %}">   {{rij.email|slice:"0:12"}}...   </td> 
-                                                            {%comment%} <td> <a href="{% url 'update-locker' rij.id %}">   </td> <td><input type="checkbox" id="isin" name="isin" value={{rij.id}}></td> {%endcomment%}
-                                                                <td> {{ rij.tekst|wordwrap:20}} </td>
-
+                                             <td> {{ rij.verhuurd }} </td>
+                                             <td> {{ rij.tekst|slice:"0:20"}}... </td>
+                                             <td> {{ rij.updated|date:"SHORT_DATE_FORMAT" }} </td>
+                                             <td> <a href="{% url 'update-locker' rij.id %}">   </td>
+                                                 {%comment%} {%if rij.verhuurd%}  <td><input type="checkbox" id="isout" checked="true" name="isout" value={{rij.id}}></td> {%endif%} 
+                                                 <td> {{ rij.tekst|truncatewords:3 }} </td>
+                                                 <td> {{ rij.tekst|wordwrap:20 }} </td>
+                                                 <td> {{ rij.tekst|wordwrap:20 }} </td>
+                                                                {%endcomment%}
                                                                  </tr>
                                                              {% endfor %}
-                                                         </tbody>
+                                                                                  </tbody>
                                                      </table>
                          
                         </form>

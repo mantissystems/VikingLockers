@@ -1,16 +1,11 @@
 from django.contrib import admin
-
 # Register your models here.
 from .models import Room, Topic, Message,Locker,Ploeg,Helptekst,Bericht,Excellijst,Person,Facturatielijst
 from base.models import User,AbstractUser
 from import_export import resources
 from import_export.fields import Field 
-# class LockerResource(resources.ModelResource):
-#     class Meta:
-#         model=Locker
-#         fields=('id','kluisnummer','email','tekst','verhuurd','updated')
-#         export_order=('id','kluisnummer','email','tekst','verhuurd','updated')
-        
+from import_export.admin import ImportExportModelAdmin
+
 class LockerResource(resources.ModelResource):
     created=Field()
     verhuurd=Field()
@@ -48,11 +43,14 @@ class UserAdmin(admin.ModelAdmin):
     list_filter = ('onderhuur','hoofdhuurder','wachtlijst')
     list_display = ('name','email','created')
     search_fields = ('name','email')
-@admin.register(Locker)
-class kluisAdmin(admin.ModelAdmin):
-    list_filter = ('verhuurd','kluisnummer','obsolete')
-    list_display = ('topic','kluisnummer','email','verhuurd','obsolete','sleutels')
-    search_fields = ('topic','kluisnummer','email')
+    @admin.register(Locker)
+    class LockerAdmin(ImportExportModelAdmin):
+        pass    
+# @admin.register(Locker)
+# class kluisAdmin(admin.ModelAdmin):
+#     list_filter = ('verhuurd','kluisnummer','obsolete')
+#     list_display = ('topic','kluisnummer','email','verhuurd','obsolete','sleutels')
+#     search_fields = ('topic','kluisnummer','email')
 @admin.register(Excellijst)
 class kluisAdmin(admin.ModelAdmin):
     list_filter = ('email','kluisnummer','excel')
