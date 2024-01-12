@@ -21,6 +21,7 @@ urlpatterns = [
     path('profiles/',login_required(views.PersonListView.as_view()),name='profiles'),
     path('wacht-lijst/',views.Wachtlijst.as_view(),name='wacht-lijst'),
     path('lockers/', views.lockersPage2, name="lockers"),
+    path('lockerview',views.LockerListView.as_view(),name='lockerview'),
     path('requests',views.RequestView.as_view(),name='requests'),
     path('tools/',views.tools, name='tools'),  
     path('onverhuurd/', views.lockersPage3, name="onverhuurd"),

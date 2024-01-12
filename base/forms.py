@@ -5,6 +5,11 @@ import io
 from django import forms
 import csv
 from django.core.exceptions import ValidationError
+FORMAT_CHOICES=(
+    ('xls','xls'),
+    ('csv','csv'),
+    ('json','json'),
+)
 class DataForm(forms.Form):
     data_file= forms.FileField()
     model=User
@@ -53,22 +58,9 @@ class RoomForm(ModelForm):
         fields = '__all__'
         exclude = ['host', 'participants']
 
-# class PloegForm(ModelForm):
-#     class Meta:
-#         model = Ploeg
-#         fields = '__all__'
-#         exclude=['participants']
-        # def __init__(self, *args, **kwargs):
-        #     super().__init__(*args, **kwargs)
-        #     widgets = {
-        #     'category': forms.CheckboxSelectMultiple
-        # }
-        #     widgets = {
-        #     'persons': forms.SelectMultiple(attrs={'readonly': 'True', 'disabled': 'True'})
-        # }
-        #     where1='is_active=True'
-        #     self.fields['participants'].widget.attrs.update(size='20')
-        #     self.fields['participants'].queryset=User.objects.filter(where1).order_by('name')[0:2]
+class FormatForm(forms.Form):
+    format=forms.ChoiceField(choices=FORMAT_CHOICES,widget=forms.Select(attrs={'class':'form-select'}))
+
 class LockerForm(ModelForm):
     class Meta:
         model = Locker

@@ -1,0 +1,106 @@
+{% extends 'main.html' %}
+{% block content %}
+    {% csrf_token %}
+    {%load static%}
+ <!-- Trigger/Open The Modal -->
+
+ <!-- The Modal -->
+ <div id="myModal" class="modal">
+ 
+   <!-- Modal content -->
+   <div class="modal-content">
+     <span class="close">&times;</span>
+     <p>Some text in the Modal..</p>
+     <form action="" method="post"></form>
+     {% csrf_token %}
+     {{form.as_p}}
+     
+   </div>
+ 
+ </div> 
+
+    <form class="form" method="POST" action="">
+        {% csrf_token %}
+        <div class="form__group">
+            {{form.as_p}}
+
+            <a href="{% url 'home' %}" class="header__logo">
+                <img src="{% static 'images/dames1.JPG' %}" />
+                <img src="{% static 'images/dames2.JPG' %}" />
+                <img src="{% static 'images/dames3.JPG' %}" />
+            </a>
+            <input class="btn btn--main btn--pill" type="submit" value="Confirm Export Format " />
+
+        </div>
+<!--  -->
+
+<!--  -->
+{%comment%}
+        <div class="form__group">
+            {% if request.user.is_superuser %}
+            <input class="btn btn--main btn--pill" type="submit" value="Confirm Selected In / Out " />
+            {%endif%}
+        </div>
+{%endcomment%}
+          
+   <table class="viking-table">
+       <thead>
+           <caption>  {{entrants_in.count}} LOCKERS IN </caption>
+           <tr>
+               <th>#</th>
+               {% for k in header %}
+               
+               <th>{{k}}</th>
+               {% endfor %}
+            </tr>
+        </thead>
+        <tbody>
+            
+            {% for rij in object_list %}
+            <td></td>
+            <td> {{rij.id}}</td>
+            <td> <a href="{% url 'update-locker' rij.id  %}">  {{rij.topic}} </td> 
+                <td> <a href="{% url 'update-locker' rij.id %}">   {{rij.email|slice:"0:12"}}...   </td> 
+                    <td> {{ rij.verhuurd }} </td>
+                    <td> {{ rij.tekst|truncatewords:3 }} </td>
+                    <td> {{ rij.updated }} </td>
+                                    <td> <a href="{% url 'update-locker' rij.id %}">   </td>
+                                       {%comment%} {%if rij.verhuurd%}  <td><input type="checkbox" id="isout" checked="true" name="isout" value={{rij.id}}></td> {%endif%} 
+                                       <td> {{ rij.tekst|wordwrap:20 }} </td>
+                                       {%endcomment%}
+                                        </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                            <table class="viking-table">
+                                <thead>
+                                    <caption>  {{entrants_out.count}} LOCKERS OUT </caption>
+                                    <tr>
+                                        <th>#</th>
+                                        {% for k in kols %}
+                                        
+                                        <th>{{k}}</th>
+                                        {% endfor %}
+                                        <th>Medegebruikers</th>
+                                        <th>#</th>
+                                     </tr>
+                                 </thead>
+                                 <tbody>
+                                     
+                                     {% for rij in entrants_out %}
+                                     <td> {{rij.id}}</td>
+                                     <td> <a href="{% url 'update-locker' rij.id  %}">  {{rij.topic}} </td> 
+                                         <td> <a href="{% url 'update-locker' rij.id %}">   {{rij.email|slice:"0:12"}}...   </td> 
+                                                            {%comment%} <td> <a href="{% url 'update-locker' rij.id %}">   </td> <td><input type="checkbox" id="isin" name="isin" value={{rij.id}}></td> {%endcomment%}
+                                                                <td> {{ rij.tekst|wordwrap:20}} </td>
+
+                                                                 </tr>
+                                                             {% endfor %}
+                                                         </tbody>
+                                                     </table>
+                         
+                        </form>
+                            <a class="btn btn--main btn--pill" href="{% url 'lockers' %}">Home</a>
+                        
+
+    {% endblock %}

@@ -3,6 +3,27 @@ from django.contrib import admin
 # Register your models here.
 from .models import Room, Topic, Message,Locker,Ploeg,Helptekst,Bericht,Excellijst,Person,Facturatielijst
 from base.models import User,AbstractUser
+from import_export import resources
+from import_export.fields import Field 
+# class LockerResource(resources.ModelResource):
+#     class Meta:
+#         model=Locker
+#         fields=('id','kluisnummer','email','tekst','verhuurd','updated')
+#         export_order=('id','kluisnummer','email','tekst','verhuurd','updated')
+        
+class LockerResource(resources.ModelResource):
+    created=Field()
+    verhuurd=Field()
+    model=Locker
+    fields=('id','kluisnummer','email','tekst','verhuurd','updated')
+    export_order=('id','kluisnummer','email','tekst','verhuurd','updated')
+    def dehydrate_verhuurd(self,obj):
+        if obj.verhuurd:
+            return "ja"
+        return "nee"
+    def dehydrate_created(self,obj):
+        return obj.created.strftime("%d-%m-%Y %H:%M:%S")
+
 admin.site.register(Ploeg)
 admin.site.register(Room)
 admin.site.register(Topic)

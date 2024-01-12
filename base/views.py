@@ -11,8 +11,8 @@ from django.contrib.auth import authenticate, login, logout
 from django.urls import reverse, reverse_lazy
 from base.models import Room,Message,User,Topic,Locker,Ploeg,Helptekst,Bericht,Excellijst,Person,Facturatielijst
 from django.db.models import Q
-from base.forms import RoomForm, UserForm,  MyUserCreationForm,LockerForm,ExcelForm,PersonForm,WachtlijstForm,LockerFormAdmin
-from django.views.generic import(TemplateView,ListView)
+from base.forms import RoomForm, UserForm,  MyUserCreationForm,LockerForm,ExcelForm,PersonForm,WachtlijstForm,LockerFormAdmin,FormatForm
+from django.views.generic import(TemplateView,ListView,FormView)
 from django.views.generic.detail import SingleObjectMixin
 from django.contrib.auth.models import AnonymousUser
 from rest_framework.decorators import api_view, permission_classes
@@ -32,6 +32,7 @@ from django.core import mail
 from django.http import HttpResponse, HttpResponseRedirect
 from django.conf import settings
 from django.template.loader import render_to_string  #for email use
+from .admin import LockerResource
 
 
 def loginPage(request):
@@ -1117,9 +1118,39 @@ def update_locker(request,pk):
     else:
         url = reverse('update-locker2', kwargs={'pk':locker.id})
         return HttpResponseRedirect(url)
+# ---------------------------------------------------------------------------    
+class LockerListView(ListView,FormView):
+    model=Locker
+    template_name='base/locker_views.html'
+    form_class=FormatForm
+    def get_context_data(self, **kwargs):
+        print('in indeling get_context_data')
+        s='base_locker';l=len(s)+1
+        headers=Locker.objects.all().query.get_meta().fields 
+        fields=['id','kluisnummer','email','tekst','verhuurd','created']
+        header=[]
+        for k in headers:
+            if str(k)[l:] in fields:
+                header.append(str(k)[l:])              
 
+        context = super().get_context_data(**kwargs)
+        context["[lockersmixed]"] = Locker.objects.all().order_by('verhuurd')
+        context["header"] = header
+        context["table"] = s
+        return context
 
-
+    def post(self,request,**kwargs):
+        qs = self.get_queryset() #.latest("publication_date")
+        data_set=LockerResource().export(qs)
+        format=request.POST.get('format')
+        if format=='xls': ds=data_set.xls
+        elif format=='csv': ds=data_set.csv
+        else: 
+            ds=data_set.json
+        response=HttpResponse(ds,content_type=f"{format}")
+        response['Content-Disposition'] = f"attachment;filename=lockers.{format}"
+        return response
+# ---------------------------------------------------------------------------
 def lockersPage2(request):
     q = request.GET.get('q') if request.GET.get('q') != None else ''
     kluisjes=Locker.objects.all().filter(verhuurd=True)     
