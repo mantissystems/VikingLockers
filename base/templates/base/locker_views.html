@@ -2,7 +2,8 @@
 {% block content %}
     {% csrf_token %}
     {%load static%}
- <!-- Trigger/Open The Modal -->
+{%comment%}
+    <!-- Trigger/Open The Modal -->
 
  <!-- The Modal -->
  <div id="myModal" class="modal">
@@ -18,7 +19,7 @@
    </div>
  
  </div> 
-
+{%endcomment%}
     <form class="form" method="POST" action="">
         {% csrf_token %}
         <div class="form__group">
@@ -29,7 +30,7 @@
                 <img src="{% static 'images/dames2.JPG' %}" />
                 <img src="{% static 'images/dames3.JPG' %}" />
             </a>
-            <input class="btn btn--main btn--pill" type="submit" value="Confirm Export Format " />
+            <input class="btn btn--main btn--pill" type="submit" value="Confirm Format and Export data " />
 
         </div>
 <!--  -->
@@ -43,7 +44,7 @@
         </div>
 {%endcomment%}
           
-   <table class="viking-table">
+   <table class="datum-table">
        <thead>
            <caption>  {{entrants_in.count}} LOCKERS IN {{lockers_in.count}}; LOCKERS OUT {{lockers_out.count}} </caption>
            <tr>
@@ -74,6 +75,7 @@
                                     {% endfor %}
                                 </tbody>
                             </table>
+                            {% if lockers_out.count > 0 %}
                             <table class="viking-table">
                                 <thead>
                                     <caption>  {{lockers_out.count}} LOCKERS OUT {{table}} </caption>
@@ -107,8 +109,8 @@
                                                              {% endfor %}
                                                                                   </tbody>
                                                      </table>
-                         
-                        </form>
+                                                    </form>
+                                                    {%endif%}                         
                             <a class="btn btn--main btn--pill" href="{% url 'lockers' %}">Home</a>
                         
 

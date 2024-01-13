@@ -195,7 +195,7 @@ def home(request):
         print('else:',q)
         # if q!='' or q !=None:
         #     print('if:',q)
-        url = "all_lockers/"  + "?q=" +q
+        url = "lockerview"  + "?q=" +q
         return HttpResponseRedirect(url)
 
 class LockerView (LoginRequiredMixin,ListView):
@@ -1133,8 +1133,6 @@ def update_locker(request,pk):
 # ---------------------------------------------------------------------------    
 class LockerListView(ListView,FormView):
     model=Locker
-    # queryset = Locker.objects.all().order_by('-verhuurd','kluisnummer')
-    # queryset=Locker.objects.all().filter(verhuurd=True).order_by('topic')
     template_name='base/locker_views.html'
     form_class=FormatForm
     context_object_name = "locker_list"
@@ -1145,7 +1143,8 @@ class LockerListView(ListView,FormView):
         return queryset
     
     def get_context_data(self, **kwargs):
-        print('in indeling get_context_data')
+        q = self.request.GET.get('q') if self.request.GET.get('q') != None else ''
+        print('in lockerlistview get_context_data',q)
         s='base_locker';l=len(s)+1
         headers=Locker.objects.all().query.get_meta().fields 
         fields=['id','kluisnummer','email','tekst','verhuurd','updated']
@@ -1156,15 +1155,35 @@ class LockerListView(ListView,FormView):
 
         context = super().get_context_data(**kwargs)
         qs_in=Locker.objects.all().filter(verhuurd=True).order_by('topic')
+        qs_out=Locker.objects.all().filter(verhuurd=False).order_by('topic')
+        qs_in =Locker.objects.filter(
+        Q(kluisnummer__icontains=q) |
+        Q(email__icontains=q)|
+        Q(tekst__icontains=q)&
+        Q(verhuurd=True)
+        ).order_by('topic')# .exclude(id__in=onverhuurd_lijst)
+        if q:qs_out=None
         context["lockers_in"] = qs_in
         self.object_list = qs_in
-        context["lockers_out"] =Locker.objects.all().filter(verhuurd=False).order_by('topic')
+        context["lockers_out"] =qs_out
         context["header"] = header
         context["table"] = s
         return context
 
     def post(self,request,**kwargs):
-        qs = self.get_queryset()
+        q = self.request.GET.get('q') if self.request.GET.get('q') != None else ''
+        qs_in =Locker.objects.filter(
+        Q(kluisnummer__icontains=q) |
+        Q(email__icontains=q)|
+        Q(tekst__icontains=q)&
+        Q(verhuurd=True)
+        ).order_by('topic')# .exclude(id__in=onverhuurd_lijst)
+        if not q:
+            qs = self.get_queryset()
+            qs=Locker.objects.all().filter(verhuurd=True).order_by('topic')
+
+        else:
+            qs=qs_in
         data_set=LockeradminResource().export(qs)
         format=request.POST.get('format')
         if format=='xls': ds=data_set.xls
