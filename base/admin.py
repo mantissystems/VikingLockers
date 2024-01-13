@@ -6,18 +6,20 @@ from import_export import resources
 from import_export.fields import Field 
 from import_export.admin import ImportExportModelAdmin
 
-class LockerResource(resources.ModelResource):
-    created=Field()
+
+class LockeradminResource(resources.ModelResource):
+    updated=Field()
     verhuurd=Field()
-    model=Locker
-    fields=('id','kluisnummer','email','tekst','verhuurd','updated')
-    export_order=('id','kluisnummer','email','tekst','verhuurd','updated')
+    class Meta:
+        model=Locker
+        fields=('id','kluisnummer','email','tekst','verhuurd','updated')
+        export_order=('id','kluisnummer','email','tekst','verhuurd','updated')
     def dehydrate_verhuurd(self,obj):
         if obj.verhuurd:
             return "ja"
         return "nee"
-    def dehydrate_created(self,obj):
-        return obj.created.strftime("%d-%m-%Y %H:%M:%S")
+    def dehydrate_updated(self,obj):
+        return obj.updated.strftime("%d-%m-%Y %H:%M:%S")
 
 admin.site.register(Ploeg)
 admin.site.register(Room)

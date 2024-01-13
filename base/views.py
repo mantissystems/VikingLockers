@@ -32,7 +32,7 @@ from django.core import mail
 from django.http import HttpResponse, HttpResponseRedirect
 from django.conf import settings
 from django.template.loader import render_to_string  #for email use
-from .admin import LockerResource
+from .admin import LockeradminResource
 from .resources import LockerResource
 
 def loginPage(request):
@@ -1133,11 +1133,17 @@ def update_locker(request,pk):
 # ---------------------------------------------------------------------------    
 class LockerListView(ListView,FormView):
     model=Locker
-    queryset = Locker.objects.all().order_by('-verhuurd','kluisnummer')
+    # queryset = Locker.objects.all().order_by('-verhuurd','kluisnummer')
+    # queryset=Locker.objects.all().filter(verhuurd=True).order_by('topic')
     template_name='base/locker_views.html'
     form_class=FormatForm
     context_object_name = "locker_list"
 
+    def get_queryset(self) :
+        queryset=Locker.objects.all().filter(verhuurd=True).order_by('topic')
+        # queryset = Locker.objects.order_by('-topic')
+        return queryset
+    
     def get_context_data(self, **kwargs):
         print('in indeling get_context_data')
         s='base_locker';l=len(s)+1
@@ -1151,14 +1157,15 @@ class LockerListView(ListView,FormView):
         context = super().get_context_data(**kwargs)
         qs_in=Locker.objects.all().filter(verhuurd=True).order_by('topic')
         context["lockers_in"] = qs_in
+        self.object_list = qs_in
         context["lockers_out"] =Locker.objects.all().filter(verhuurd=False).order_by('topic')
         context["header"] = header
         context["table"] = s
         return context
 
     def post(self,request,**kwargs):
-        qs = self.get_queryset() #.latest("publication_date")
-        data_set=LockerResource().export(qs)
+        qs = self.get_queryset()
+        data_set=LockeradminResource().export(qs)
         format=request.POST.get('format')
         if format=='xls': ds=data_set.xls
         elif format=='csv': ds=data_set.csv
