@@ -1139,7 +1139,6 @@ class LockerListView(ListView,FormView):
 
     def get_queryset(self) :
         queryset=Locker.objects.all().filter(verhuurd=True).order_by('topic')
-        # queryset = Locker.objects.order_by('-topic')
         return queryset
     
     def get_context_data(self, **kwargs):
@@ -1148,25 +1147,25 @@ class LockerListView(ListView,FormView):
         s='base_locker';l=len(s)+1
         vh=Q(topic__icontains=q)
         headers=Locker.objects.all().query.get_meta().fields 
-        fields=['id','kluisnummer','email','tekst','verhuurd','updated']
+        fields=['id','kluisnummer','email','tekst','verhuurd','opgezegd','updated']
         header=[]
         for k in headers:
             if str(k)[l:] in fields:
                 header.append(str(k)[l:])              
 
+        obs= Q(obsolete=True)
         context = super().get_context_data(**kwargs)
         qs_in=Locker.objects.all().filter(verhuurd=True).order_by('topic')
-        qs_out=Locker.objects.all().filter(verhuurd=False).order_by('topic')
+        qs_out=Locker.objects.all().exclude(obs).filter(verhuurd=False).order_by('topic')
         if 'verhuurd' in q:
             vh= Q(verhuurd=True)
-        qs_in =Locker.objects.filter(
-        Q(kluisnummer__icontains=q) |
+        qs_in =Locker.objects.exclude(obs).filter(
+        (Q(kluisnummer__icontains=q) |
         Q(vorige_huurder__icontains=q)|
         Q(nieuwe_huurder__icontains=q)|
         Q(email__icontains=q)|
-        Q(tekst__icontains=q)| vh
-        # Q(verhuurd=True)
-        ).order_by('topic')# .exclude(id__in=onverhuurd_lijst)
+        Q(tekst__icontains=q)| vh )
+        ).order_by('topic')
         if q:qs_out=None
         context["lockers_in"] = qs_in
         self.object_list = qs_in
@@ -1182,7 +1181,7 @@ class LockerListView(ListView,FormView):
         Q(email__icontains=q)|
         Q(tekst__icontains=q)&
         Q(verhuurd=True)
-        ).order_by('topic')# .exclude(id__in=onverhuurd_lijst)
+        ).order_by('topic')
         if not q:
             qs = self.get_queryset()
             qs=Locker.objects.all().filter(verhuurd=True).order_by('topic')
