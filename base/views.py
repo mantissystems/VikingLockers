@@ -1161,6 +1161,7 @@ class LockerListView(ListView,FormView):
             vh= Q(verhuurd=True)
         qs_in =Locker.objects.filter(
         Q(kluisnummer__icontains=q) |
+        Q(vorige_huurder__icontains=q)|
         Q(email__icontains=q)|
         Q(tekst__icontains=q)| vh
         # Q(verhuurd=True)
