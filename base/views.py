@@ -1144,8 +1144,9 @@ class LockerListView(ListView,FormView):
     
     def get_context_data(self, **kwargs):
         q = self.request.GET.get('q') if self.request.GET.get('q') != None else ''
-        print('in lockerlistview get_context_data',q)
+        print('in lockerlistview get_context_data:',q)
         s='base_locker';l=len(s)+1
+        vh=Q(topic__icontains=q)
         headers=Locker.objects.all().query.get_meta().fields 
         fields=['id','kluisnummer','email','tekst','verhuurd','updated']
         header=[]
@@ -1156,11 +1157,13 @@ class LockerListView(ListView,FormView):
         context = super().get_context_data(**kwargs)
         qs_in=Locker.objects.all().filter(verhuurd=True).order_by('topic')
         qs_out=Locker.objects.all().filter(verhuurd=False).order_by('topic')
+        if 'verhuurd' in q:
+            vh= Q(verhuurd=True)
         qs_in =Locker.objects.filter(
         Q(kluisnummer__icontains=q) |
         Q(email__icontains=q)|
-        Q(tekst__icontains=q)&
-        Q(verhuurd=True)
+        Q(tekst__icontains=q)| vh
+        # Q(verhuurd=True)
         ).order_by('topic')# .exclude(id__in=onverhuurd_lijst)
         if q:qs_out=None
         context["lockers_in"] = qs_in

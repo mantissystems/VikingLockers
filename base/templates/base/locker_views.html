@@ -25,13 +25,20 @@
         <div class="form__group">
             {{form.as_p}}
 
+            {%comment%}
             <a href="{% url 'home' %}" class="header__logo">
                 <img src="{% static 'images/dames1.JPG' %}" />
                 <img src="{% static 'images/dames2.JPG' %}" />
                 <img src="{% static 'images/dames3.JPG' %}" />
             </a>
             <input class="btn btn--main btn--pill" type="submit" value="Confirm Format and Export data " />
-
+            {%endcomment%}
+            
+            <div class="form__action">
+                <a class="btn btn--dark" href="{{request.META.HTTP_REFERER}}">Cancel</a>
+                <button class="btn btn--main" type="submit">Confirm Format and Export data</button>
+              </div>
+    
         </div>
 <!--  -->
 
@@ -44,7 +51,7 @@
         </div>
 {%endcomment%}
           
-   <table class="datum-table">
+   <table class="viking-table">
        <thead>
            <caption>  {{entrants_in.count}} LOCKERS IN {{lockers_in.count}}; LOCKERS OUT {{lockers_out.count}} </caption>
            <tr>
@@ -66,7 +73,8 @@
                     <td> {{ rij.tekst|slice:"0:20"}}... </td>
                     <td> {{ rij.updated|date:"SHORT_DATE_FORMAT" }} </td>
                     <td> <a href="{% url 'update-locker' rij.id %}">   </td>
-                        {%comment%} {%if rij.verhuurd%}  <td><input type="checkbox" id="isout" checked="true" name="isout" value={{rij.id}}></td> {%endif%} 
+                        {%comment%} 
+                        {%if rij.verhuurd%}  <td><input type="checkbox" id="isout" checked="true" name="isout" value={{rij.id}}></td> {%endif%} 
                         <td> {{ rij.tekst|truncatewords:3 }} </td>
                         <td> {{ rij.tekst|wordwrap:20 }} </td>
                         <td> {{ rij.tekst|wordwrap:20 }} </td>
