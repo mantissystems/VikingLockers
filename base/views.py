@@ -628,7 +628,7 @@ class PersonListView(ListView,FormView):
 
         obs= Q(obsolete=True)
         context = super().get_context_data(**kwargs)
-        qs_in=Person.objects.all() #.filter(verhuurd=True).order_by('topic')
+        qs_in=Person.objects.all().order_by('name')
         # qs_out=Person.objects.all().exclude(obs).filter(verhuurd=False).order_by('topic')
         # if 'verhuurd' in q:
         #     vh= Q(verhuurd=True)

@@ -35,13 +35,15 @@
             <td></td>
             <td> {{rij.id}}</td>
             <td> {{ rij.name }} </td>
-                <td> <a href="{% url 'update-person' rij.id %}">   {{rij.email|slice:"0:12"}}...   </td> 
-                    <td> {{ rij.onderhuur }} </td>
-                    <td> {{ rij.wachtlijst}} </td>
+                <td> <a href="{% url 'update-person' rij.id %}">    </td> 
+                  <td> {{ rij.onderhuur }} </td>
+                  <td> {{ rij.wachtlijst}} </td>
+                  <td> {{ rij.hoofdhuurder }} </td>
+                  <td> {{ rij.locker }} </td>
+                    <td>{{rij.email|slice:"0:12"}}...             </td>
+                      <td>{{rij.tekst|slice:"0:12"}}...</td>
+
                     <td> {{ rij.updated|date:"SHORT_DATE_FORMAT" }} </td>
-                    <td> {{ rij.hoofdhuurder }} </td>
-                    <td> {{ rij.locker }} </td>
-                    <td> {{ rij.wachtlijst }} </td>
                                         </tr>
                                     {% endfor %}
                                 </tbody>
