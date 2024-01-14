@@ -21,6 +21,20 @@ class LockeradminResource(resources.ModelResource):
     def dehydrate_updated(self,obj):
         return obj.updated.strftime("%d-%m-%Y %H:%M:%S")
 
+class PersonadminResource(resources.ModelResource):
+    updated=Field()
+    verhuurd=Field()
+    class Meta:
+        model=Person
+        fields=['id','name','email','onderhuur','wachtlijst','hoofdhuurder','onderhuur','locker','tekst']
+        export_order=['id','name','email','onderhuur','wachtlijst','hoofdhuurder','onderhuur','locker','tekst']
+    # def dehydrate_verhuurd(self,obj):
+    #     if obj.verhuurd:
+    #         return "ja"
+    #     return "nee"
+    # def dehydrate_updated(self,obj):
+    #     return obj.updated.strftime("%d-%m-%Y %H:%M:%S")
+
 admin.site.register(Ploeg)
 admin.site.register(Room)
 admin.site.register(Topic)

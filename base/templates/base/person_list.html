@@ -1,56 +1,53 @@
 {% extends 'main.html' %}
-
 {% block content %}
+    {% csrf_token %}
+    {%load static%}
+    <form class="form" method="POST" action="">
+        {% csrf_token %}
+        <div class="form__group">
+            {{form.as_p}}
 
-<main class="layout layout--3">
-  <div class="container">
-    <!-- Topics Start -->
-    {% comment %}
-
-    {% include 'base/topics_component.html' %}
-    {% endcomment %}
-
-    <!-- Topics End -->
-
-    <!-- Room List Start -->
-    <div class="roomList">
-      <div class="mobile-menu">
-        <form action="{% url 'home' %}" method="GET" class="header__search">
-          <label>
-            <svg version="1.1" xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32">
-              <title>search</title>
-              <path
-                d="M32 30.586l-10.845-10.845c1.771-2.092 2.845-4.791 2.845-7.741 0-6.617-5.383-12-12-12s-12 5.383-12 12c0 6.617 5.383 12 12 12 2.949 0 5.649-1.074 7.741-2.845l10.845 10.845 1.414-1.414zM12 22c-5.514 0-10-4.486-10-10s4.486-10 10-10c5.514 0 10 4.486 10 10s-4.486 10-10 10z">
-              </path>
-            </svg>
-            <input name="q" placeholder="Search ... " />
-          </label>
-        </form>
-        <div class="mobile-menuItems">
+            
+            <div class="form__action">
+                <a class="btn btn--dark" href="{{request.META.HTTP_REFERER}}">Cancel</a>
+                <button class="btn btn--main" type="submit">Confirm Format and Export data</button>
+              </div>
+    
         </div>
-      </div>
+<!--  -->
 
-      <div class="roomList__header">
-        <div>
-  
-        </div>
-      </div>
-      
-      <h2>Personlist {{object_list.count }}</h2>
-      
-      {% include 'base/feed_persons.html' %}
-      
-      {% if request.user.is_superuser %}
-      {% endif %}
-    </div>
-    <!-- Room List End -->
+<!--  -->
+          
+   <table class="viking-table">
+       <thead>
+           <caption>  {{persons.count}} PERSONS  </caption>
+           <tr>
+               <th>#</th>
+               {% for k in header %}
+               
+               <th>{{k}}</th>
+               {% endfor %}
+            </tr>
+        </thead>
+        <tbody>
+            
+            {% for rij in persons_in %}
+            <td></td>
+            <td> {{rij.id}}</td>
+            <td> {{ rij.name }} </td>
+                <td> <a href="{% url 'update-person' rij.id %}">   {{rij.email|slice:"0:12"}}...   </td> 
+                    <td> {{ rij.onderhuur }} </td>
+                    <td> {{ rij.wachtlijst}} </td>
+                    <td> {{ rij.updated|date:"SHORT_DATE_FORMAT" }} </td>
+                    <td> {{ rij.hoofdhuurder }} </td>
+                    <td> {{ rij.locker }} </td>
+                    <td> {{ rij.wachtlijst }} </td>
+                                        </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                                                    </form>
+                            <a class="btn btn--main btn--pill" href="{% url 'lockerview' %}">Home</a>
+                        
 
-    <!-- Activities Start -->
-    {% comment %}
-    {% endcomment%}
-    {% include 'base/activity_component.html' %}
-    <!-- Activities End -->
-  </div>
-</main>
-
-{% endblock %}
+    {% endblock %}

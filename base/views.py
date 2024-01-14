@@ -32,8 +32,8 @@ from django.core import mail
 from django.http import HttpResponse, HttpResponseRedirect
 from django.conf import settings
 from django.template.loader import render_to_string  #for email use
-from .admin import LockeradminResource
-from .resources import LockerResource
+from .admin import LockeradminResource,PersonadminResource
+from .resources import LockerResource,PersonResource
 
 def loginPage(request):
     page = 'login'
@@ -605,7 +605,75 @@ class MemberListView (LoginRequiredMixin, ListView):
         return context
 paginate_by = 20
 
-class PersonListView (ListView):
+class PersonListView(ListView,FormView):
+    model=Person
+    template_name='base/person_list.html'
+    form_class=FormatForm
+    context_object_name = "person_list"
+
+    def get_queryset(self) :
+        queryset=Person.objects.all() #.filter(verhuurd=True).order_by('topic')
+        return queryset
+    
+    def get_context_data(self, **kwargs):
+        q = self.request.GET.get('q') if self.request.GET.get('q') != None else ''
+        print('in personlistview get_context_data:',q)
+        s='base_person';l=len(s)+1
+        headers=Person.objects.all().query.get_meta().fields 
+        fields=['id','name','email','onderhuur','wachtlijst','hoofdhuurder','onderhuur','locker','tekst']
+        header=[]
+        for k in headers:
+            if str(k)[l:] in fields:
+                header.append(str(k)[l:])              
+
+        obs= Q(obsolete=True)
+        context = super().get_context_data(**kwargs)
+        qs_in=Person.objects.all() #.filter(verhuurd=True).order_by('topic')
+        # qs_out=Person.objects.all().exclude(obs).filter(verhuurd=False).order_by('topic')
+        # if 'verhuurd' in q:
+        #     vh= Q(verhuurd=True)
+        # qs_in =Person.objects.exclude(obs).filter(
+        # (Q(kluisnummer__icontains=q) |
+        # Q(vorige_huurder__icontains=q)|
+        # Q(nieuwe_huurder__icontains=q)|
+        # Q(email__icontains=q)|
+        # Q(tekst__icontains=q)| vh )
+        # ).order_by('topic')
+        # if q:qs_out=None
+        context["persons_in"] = qs_in
+        self.object_list = qs_in
+        # context["lockers_out"] =qs_out
+        context["header"] = header
+        context["table"] = s
+        return context
+
+    def post(self,request,**kwargs):
+        q = self.request.GET.get('q') if self.request.GET.get('q') != None else ''
+        qs =Person.objects.all() #filter(
+        # Q(kluisnummer__icontains=q) |
+        # Q(email__icontains=q)|
+        # Q(tekst__icontains=q)&
+        # Q(verhuurd=True)
+        # ).order_by('topic')
+        # if not q:
+        #     qs = self.get_queryset()
+        #     qs=Person.objects.all() #.filter(verhuurd=True).order_by('topic')
+
+        # else:
+        #     qs=qs_in
+        data_set=PersonadminResource().export(qs)
+        format=request.POST.get('format')
+        print(format,'xxxx->')
+        if format=='xls': ds=data_set.xls
+        elif format=='csv': ds=data_set.csv
+        else: 
+            ds=data_set.json
+        response=HttpResponse(ds,content_type=f"{format}")
+        response['Content-Disposition'] = f"attachment;filename=persons.{format}"
+        return response
+# ---------------------------------------------------------------------------
+
+class PersonListView_old (ListView):
     model=Person
     def get_context_data(self,**kwargs):
         
