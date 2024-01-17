@@ -1,5 +1,6 @@
 import csv
 from typing import Any
+from django.contrib import messages
 from django import forms
 from django.http import HttpResponse, HttpResponseForbidden, HttpResponseRedirect
 from django.shortcuts import get_object_or_404, redirect, render
@@ -143,7 +144,13 @@ def home(request):
         print('1.not-auth:', request.user)
         count=9
         url = "/berichten/"
-        messages.add_message(request, messages.INFO, "U bent niet ingelogd. Svp Inloggen / Registreren", extra_tags="dragonball")
+        qs_in=Locker.objects.all().filter(verhuurd=True)
+        qs_outd=Locker.objects.all().filter(verhuurd=False,kluisnummer__icontains='dames').exclude(obsolete=True).exclude(opgezegd=True)
+        qs_outh=Locker.objects.all().filter(verhuurd=False,kluisnummer__icontains='heren').exclude(obsolete=True).exclude(opgezegd=True)
+        messages.add_message(request, messages.INFO, "Welkom bij Viking Lockers.")    
+        messages.add_message(request, messages.INFO, f"{qs_in.count()} lockers bezet. Heren {qs_outh.count()} onbezet. Dames {qs_outd.count()} onbezet.")    
+        messages.add_message(request, messages.INFO, f"Vraag een locker aan via vikinglockers@mantisbv.nl")    
+        messages.add_message(request, messages.ERROR, "U bent niet ingelogd. Svp Inloggen / Registreren", extra_tags="dragonball")
         return HttpResponseRedirect(url)
     if request.user.is_authenticated:
         print('1.authorised:', request.user)
@@ -241,6 +248,7 @@ def helpPage(request):
     E=Q(email__icontains='--')
     F=Q(email__icontains='==')
     onverhuurd =Locker.objects.all().filter( A | B |  C | D | E | F ).order_by('topic')
+    messages.add_message(request, messages.INFO, f"{aantalusers.count()}", extra_tags="dragonball")
 
     helptekst=Helptekst.objects.filter(
             Q(title__icontains=q)|
