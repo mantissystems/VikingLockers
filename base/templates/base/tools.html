@@ -20,9 +20,10 @@
                         ></path>
                       </svg>
                     </a>
-          <h3>Toernooi: {{toernooi.toernooinaam}} </h3>
-        </div>
-      </div>
+                  </div>
+                </div>
+                <h3>TOOLS: locker and user utilities </h3>
+                {%comment%}
       <div class="layout__body">
         <form class="form" action="" method="POST">
           {% csrf_token %} 
@@ -38,9 +39,7 @@
           </div>
   
 
-          {%comment%}
           <button class="btn btn--main btn--pill" type="submit">Submit</button>
-          {%endcomment%}
           
           <!--  -->
           <h3> Upload a file</h3>
@@ -57,34 +56,35 @@
           <button class="btn btn--main btn--pill" type="submit">Upload file data</button>
           <a class="btn btn--main btn--pill" href="{{request.META.HTTP_REFERER}}"
           >Cancel</a>
+          {%endcomment%}
 
 <!--  -->
 
 <div class="form__group">
     {%comment%}
-    {%endcomment%}
-    <a class="btn btn--main btn--pill" href="{% url 'm2' %}">Import</a>
-    <a class="btn btn--main btn--pill" href="{% url 'm3' %}">Browse Uploaded data</a>
     <a class="btn btn--main btn--pill" href="/m4">api-call</a>
-    <a class="btn btn--main btn--pill" href="{% url 'm5' %}">Intialiseren</a>
-    {% if request.user.is_superuser %}
+    <a href="{% url 'export_verhuurd' %}" class="btn btn--link">=>Export Verhuurd(facturatie)</a><hr>
     <a href="{% url 'export_verhuurd' %}" class="btn btn--link">=>Export List</a><br>
+    <a href="{% url 'export_onverhuurd' %}" class="btn btn--link">=>Export Onverhuurd(lockers)</a><hr>
+    <a class="btn btn--main btn--pill" href="{% url 'm3' %}">Browse Uploaded data</a>
+    <a href="{% url 'requests' %}" class="btn btn--link">=>berichtenlijst</a><hr>
+    <a class="btn btn--main btn--pill" href="{% url 'm2' %}">Import</a>
+    <a class="btn btn--main btn--pill" href="{% url 'm5' %}">Intialiseren</a>
     <a href="{% url 'export_emaillijst' %}" class="btn btn--link">=>Export E-mail</a>
+    {%endcomment%}
+    {% if request.user.is_superuser %}
     <hr>
   {% endif %}
 
 </div>
 {% if request.user.is_superuser %}
-<a href="{% url 'export_verhuurd' %}" class="btn btn--link">=>Export Verhuurd(facturatie)</a><hr>
-<a href="{% url 'export_onverhuurd' %}" class="btn btn--link">=>Export Onverhuurd(lockers)</a><hr>
 <a href="{% url 'export_emaillijst' %}" class="btn btn--link">=>Export Emaillijst(lockers)</a><hr>
 <a href="{% url 'export_wachtlijst' %}" class="btn btn--link">=>Export Wachtlijst</a><hr>
 {% endif %}
 {% if request.user.is_superuser %}
 <a href="{% url 'm2' %}" class="btn btn--link">=>create user from locker email if no useremail exists</a><hr>
-<a href="{% url 'm3' %}" class="btn btn--link">=>put new user email back in locker</a><hr>
+<a href="{% url 'm3' %}" class="btn btn--link">=>get new user email and locker. store in locker</a><hr>
 <a href="{% url 'm5' %}" class="btn btn--link">=>check facturatielijst. is every locker present</a><hr>
-<a href="{% url 'requests' %}" class="btn btn--link">=>berichtenlijst</a><hr>
 {% endif %}
 
 

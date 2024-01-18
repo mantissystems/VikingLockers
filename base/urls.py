@@ -26,8 +26,6 @@ urlpatterns = [
     path('tools/',views.tools, name='tools'),  
     path('onverhuurd/', views.lockersPage3, name="onverhuurd"),
     path('verhuurd/', views.LockerView.as_view(), name="verhuurd"),
-    path('export_verhuurd/', views.export_verhuurd, name="export_verhuurd"),
-    path('export_onverhuurd/', views.export_onverhuurd, name="export_onverhuurd"),
     path('export_emaillijst/', views.export_emaillijst, name="export_emaillijst"),
     path('export_wachtlijst/', views.export_wachtlijst, name="export_wachtlijst"),
     path('create-person/', views.CreatePerson.as_view(), name="create-person"),          # <=================
@@ -51,11 +49,13 @@ urlpatterns = [
 
    path('m2/', views.m2mtotext, name="m2"),  #creates user from locker mail address if no user exists
    path('m3/', views.m3, name="m3"), #puts usermail in get locker by email
-   path('m4/', views.m4, name="m4"), #puts usermail in get locker by email
    path('m5/', views.m5, name="m5"), #check facturatielijst in get locker by email
    path('m6/<str:pk>', views.m6, name="m6"), #check facturatielijst in get locker by email
     path('all_lockers/',views.all_entrantsPage, name='all_lockers'),  
     ]
+#    path('m4/', views.m4, name="m4"), #puts usermail in get locker by email
+    # path('export_verhuurd/', views.export_verhuurd, name="export_verhuurd"),
+    # path('export_onverhuurd/', views.export_onverhuurd, name="export_onverhuurd"),
     #  path('aantalregistraties/', views.tel_aantal_registraties, name='aantalregistraties'),
     #  path('nummering/', views.nummering, name='nummering'),
 # https://docs.djangoproject.com/en/3.1/topics/http/urls/

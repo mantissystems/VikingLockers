@@ -148,7 +148,9 @@ def home(request):
         qs_outd=Locker.objects.all().filter(verhuurd=False,kluisnummer__icontains='dames').exclude(obsolete=True).exclude(opgezegd=True)
         qs_outh=Locker.objects.all().filter(verhuurd=False,kluisnummer__icontains='heren').exclude(obsolete=True).exclude(opgezegd=True)
         messages.add_message(request, messages.INFO, "Welkom bij Viking Lockers.")    
-        messages.add_message(request, messages.INFO, f"{qs_in.count()} lockers bezet. Heren {qs_outh.count()} onbezet. Dames {qs_outd.count()} onbezet.")    
+        messages.add_message(request, messages.INFO, f"{qs_in.count()} lockers bezet.")    
+        messages.add_message(request, messages.INFO, f"{qs_outh.count()} bij Heren onbezet.")    
+        messages.add_message(request, messages.INFO, f"{qs_outd.count()} bij Dames  onbezet.")    
         messages.add_message(request, messages.INFO, f"Vraag een locker aan via vikinglockers@mantisbv.nl")    
         messages.add_message(request, messages.ERROR, "U bent niet ingelogd. Svp Inloggen / Registreren", extra_tags="dragonball")
         return HttpResponseRedirect(url)
@@ -279,52 +281,6 @@ def infoPage(request):
              'page':page,
              }
     return render(request, 'base/info.html', context)
-
-@login_required(login_url='login')
-# def room(request, pk):
-#     room = Locker.objects.get(id=pk)
-#     ploegen=Ploeg.objects.all()
-#     vikingers=User.objects.all().order_by('email')
-#     topic=room.kluisnummer
-
-#     ftopic=Q(topic__icontains=topic)
-#     fverhuurd=Q(verhuurd=True)
-
-#     verhuurd=Locker.objects.all().filter(ftopic&fverhuurd)  #verzamel verhuurde kluisjes voor de room 
-
-#     if request.method == 'POST':
-#         message = Message.objects.create(
-#             user=request.user,
-#             room=room,
-#             body=request.POST.get('body')
-#         )
-#         room.participants.add(request.user)
-#         return redirect('room', pk=room.id)
-#     # heren=Matriks.objects.filter(naam__icontains=topic).exclude(y_as__in=(7,8,9)).order_by('y_as')
-#     hdr=['', 'kol1','kol2','kol3','kol4','kol5','kol6','kol7','kol8','kol9','kol10','kol11','kol12','kol13']  #LET OP: KOLOM NUL NIET VERGETEN
-#     kopmtrx=[]
-#     for i in range (0,9):
-#         kopmtrx.append(hdr[i])
-#     if topic=='Wachtlijst':
-#         hdr=['wachtlijst']
-#         kopmtrx=hdr
-#     topics = Topic.objects.all()[0:5]
-#     # q='H35'  #temporary value to test 'highlight' templatetag
-#     q=' '
-#     context = {
-#         'room': room,
-#                'topics': topics,
-#                 # 'heren': heren,
-#                 'ploegen': ploegen,
-#                 'verhuurd': verhuurd,
-#                 'kopmtrx': kopmtrx,
-#             #    'participants': participants,
-#                'q':q,
-#             #    'room_messages': room_messages
-#                }
-
-#     return render(request, 'base/room.html', context)
-
 
 @login_required(login_url='login')
 def updateUser(request):
@@ -572,25 +528,6 @@ def excel_regelPage(request,pk):
                 form.save()
             return redirect('excel-regel', kluis.id)
     return render(request, 'base/excellijst_form.html', context)
-
-# @login_required(login_url='login')
-# def updateRoom(request, pk):
-#     room = Room.objects.get(id=pk)
-#     form = RoomForm(instance=room)
-#     topics = Topic.objects.all()
-#     if request.method == 'POST':
-#         topic_name = request.POST.get('topic')
-#         topic, created = Topic.objects.get_or_create(name=topic_name)
-#         room.name = request.POST.get('name')
-#         room.topic = topic
-#         room.description = request.POST.get('description')
-#         room.save()
-#         return redirect('home')
-
-#     context = {'form': form, 'topics': topics, 'room': room}
-#     return render(request, 'base/room_form.html', context)
-
-# @login_required(login_url='login')   
 
 class MemberListView (LoginRequiredMixin, ListView):
     login_url='login'
@@ -1007,24 +944,24 @@ def export_wachtlijst(request,):
         writer.writerow([i.id ,i.kamer, i.email, i.wachtlijst ])
     return response
 
-@login_required(login_url='login')   
-def export_onverhuurd(request,):
-    import csv
-    A=Q(email__icontains='vrij')
-    B=Q(email__icontains='bekend')
-    C=Q(obsolete=True)
-    D=Q(opgezegd=True)
-    E=Q(email__icontains='--')
-    F=Q(email__icontains='==')
-    onverhuurd =Locker.objects.all().filter( A | B |  C | D | E | F ).order_by('topic')
+# @login_required(login_url='login')   
+# def export_onverhuurd(request,):
+#     import csv
+#     A=Q(email__icontains='vrij')
+#     B=Q(email__icontains='bekend')
+#     C=Q(obsolete=True)
+#     D=Q(opgezegd=True)
+#     E=Q(email__icontains='--')
+#     F=Q(email__icontains='==')
+#     onverhuurd =Locker.objects.all().filter( A | B |  C | D | E | F ).order_by('topic')
 
-    response = HttpResponse(content_type='text/csv')
-    response['Content-Disposition'] = 'attachment; filename="onverhuurd.csv"'
-    writer = csv.writer(response)
-    writer.writerow(['id', 'tenant', 'huidig', 'oud','nieuw','keys'])
-    for item in onverhuurd:
-        writer.writerow([item.id ,item.email, item.kluisnummer, item.kluisje ,item.topic,item.sleutels,])
-    return response
+#     response = HttpResponse(content_type='text/csv')
+#     response['Content-Disposition'] = 'attachment; filename="onverhuurd.csv"'
+#     writer = csv.writer(response)
+#     writer.writerow(['id', 'tenant', 'huidig', 'oud','nieuw','keys'])
+#     for item in onverhuurd:
+#         writer.writerow([item.id ,item.email, item.kluisnummer, item.kluisje ,item.topic,item.sleutels,])
+#     return response
 
 def export_emaillijst(request,):
     locker_resource = LockerResource()
@@ -1121,12 +1058,12 @@ class CreatePerson(CreateView):
 
 
 def berichtenPage(request):
-    messages.set_level(request, messages.WARNING)
+    # messages.set_level(request, messages.WARNING)
     messages.add_message(request, messages.INFO, "Welkom bij Viking Lockers.")    
     q = request.GET.get('q') if request.GET.get('q') != None else ''
-
-    return render(request, 'base/messages1.html', {'qq':q,})
-    # return render(request, 'base/messages1.html', {'qq':q,'locker':locker2})
+    obs= Q(obsolete=True)
+    qs_out=Locker.objects.all().exclude(obs).filter(verhuurd=False).order_by('topic')[0:15] #we laten 15 vrije lockers zien
+    return render(request, 'base/messages1.html', {'qq':q,'onverhuurd':qs_out})
 
 
 @login_required(login_url='login')
@@ -1299,47 +1236,10 @@ def lockersPage2(request):
     # return render(request, 'base/kluisjes.html', {'lockers': lockers})
 
 def tools(request):
-        emptypersonfile=request.POST.get('personfile')
-            # Read the first line of the file
-            #  ----------------------------------------------------------
-
-#  ----------------------------------------------------------
-        # ok=True
-        # importfile   = open('/home/jozef/Downloads/base_person.csv', 'r')
-        # sterkte=1500
-        # if ok:
-        #     data_set = importfile.read() #.decode('UTF-8')
-        #     io_string = io.StringIO(data_set)
-        #     st='I' #init
-        #     for column in csv.reader(io_string, delimiter='|', quotechar="|"):
-                # print(column[1])
-                # if Person.objects.all().filter(name=column[1],category=column[2],rating=column[3]).exists():
-                #     messages.add_message(request, messages.INFO, f"DOUBLE.not loaded->{column[1]}")    
-                #     st='D' #double; alreadey loaded
-                # else:
-                #     st='new'
-                #     try:
-                #         messages.add_message(request, messages.INFO, f"loaded->{column[1]}")    
-                #         column[0]*1 #must be numeric
-                #         if column[2]==toernooi.category:
-                #             created=Person.objects.update_or_create(
-                #             id=column[0],
-                #             category=column[2],
-                #             rating=sterkte,
-                #             name=column[1],
-                #             status=st,
-                #             )
-                #     except:
-                #         pass                        
-
+        # emptypersonfile=request.POST.get('personfile')
         url='tools'
         context = {
-    # 'todo':todo,
-    # 'upload':upload,
     }
-        # return redirect(url)    
-    # print(context)
-
         return render(request, 'base/tools.html', context)
 
 def all_entrantsPage(request):
@@ -1417,30 +1317,6 @@ def all_entrantsPage(request):
     }
     return render(request, 'base/entrants.html', context)
 
-def polls_results(request,question_id):
-    huur = get_object_or_404(Locker, id=question_id)
-    context={'huur':huur.opgezegd}
-    messages.add_message(request,messages.INFO, f'{huur.kluisnummer} : huur opgezegd')
-    return render(request,'base/locker_form.html',context)
-
-def polls_vote(request, question_id):
-    question = get_object_or_404(Locker, id=question_id)
-    try:
-        selected_choice = question.choice_set.get(pk=request.POST['choice'])
-    except (KeyError, Locker.DoesNotExist):
-        # Redisplay the question voting form.
-        return render(request, 'polls/polls_detail.html', {
-            'vraagje': question,
-            'error_message': "You didn't select a choice.",
-        })
-    else:
-        selected_choice.votes += 1
-        selected_choice.save()
-        # Always return an HttpResponseRedirect after successfully dealing
-        # with POST data. This prevents data from being posted twice if a
-        # user hits the Back button.
-        return HttpResponseRedirect(reverse('polls:polls_results', args=(question_id,)))
-
 def huuropzeggen(request, pk):
     locker = get_object_or_404(Locker, id=pk)
     now = timezone.now()
@@ -1464,7 +1340,7 @@ def huuropzeggen(request, pk):
         # Always return an HttpResponseRedirect after successfully dealing
         # with POST data. This prevents data from being posted twice if a
         # user hits the Back button.
-    return HttpResponseRedirect(reverse('polls_results', args=(locker.id,)))
+    return HttpResponseRedirect(reverse('update-locker', args=(locker.id,)))
             
 def lockersPage3(request):
     q = request.GET.get('q') if request.GET.get('q') != None else ''

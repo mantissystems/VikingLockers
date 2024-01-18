@@ -33,7 +33,7 @@
 <ul class="messages">
     {% for message in messages %}
     <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>
-        {% if message.level == DEFAULT_MESSAGE_LEVELS.INFO %}Info: 
+        {% if message.level == DEFAULT_MESSAGE_LEVELS.INFO %}: 
         {{ message }}<br>
         {% endif %}
         {% if message.level == DEFAULT_MESSAGE_LEVELS.WARNING %}Warning: 
@@ -48,6 +48,16 @@
 {% endif %}
 
         </ul>
+        <div>
+VRIJE LOCKERS:
+<hr>
+          <ul>
+            
+            {% for vrij in onverhuurd %}
+            {{vrij.topic}}
+            {% endfor %}
+          </ul>
+        </div>
       </div>
     </div>
   </div>
