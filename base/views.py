@@ -10,7 +10,7 @@ from django.db.models import Count
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth import authenticate, login, logout
 from django.urls import reverse, reverse_lazy
-from base.models import Room,Message,User,Topic,Locker,Ploeg,Helptekst,Bericht,Excellijst,Person,Facturatielijst
+from base.models import Areset,Message,User,Topic,Locker,Ploeg,Helptekst,Bericht,Excellijst,Person,Facturatielijst
 from django.db.models import Q
 from base.forms import RoomForm, UserForm,  MyUserCreationForm,LockerForm,ExcelForm,PersonForm,WachtlijstForm,LockerFormAdmin,FormatForm
 from django.views.generic import(TemplateView,ListView,FormView)
@@ -616,6 +616,27 @@ class PersonListView(ListView,FormView):
         response=HttpResponse(ds,content_type=f"{format}")
         response['Content-Disposition'] = f"attachment;filename=persons.{format}"
         return response
+    
+# ---------------------------------------------------------------------------
+# @login_required(login_url='login')
+def createAreset(request):
+    form = RoomForm()
+    topics = Topic.objects.all()
+    user=User.objects.get(is_superuser=True)
+    if request.method == 'POST':
+        topic_name = request.POST.get('topic') #het is default Autoreset
+        topic, created = Topic.objects.get_or_create(name=topic_name)
+
+        Areset.objects.create(
+            host=user,
+            topic=topic,
+            name=request.POST.get('name'),
+            description=request.POST.get('description'),
+        )
+        return redirect('home')
+
+    context = {'form': form, 'topics': topics}
+    return render(request, 'base/room_form.html', context)
 # ---------------------------------------------------------------------------
 
 class PersonListView_old (ListView):

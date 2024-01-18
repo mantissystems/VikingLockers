@@ -46,6 +46,7 @@ urlpatterns = [
     path('excellijst/', views.ExcelView.as_view(), name="excellijst"),
     path('huuropzeggen/<str:pk>', views.huuropzeggen, name="huuropzeggen"),
     # path('polls_results/<int:question_id>/', views.polls_results, name='polls_results'),
+   path('t1/', views.createAreset, name="t1"),  #werkzaamheden
 
    path('m2/', views.m2mtotext, name="m2"),  #creates user from locker mail address if no user exists
    path('m3/', views.m3, name="m3"), #puts usermail in get locker by email

@@ -1,6 +1,6 @@
 from django.forms import ModelForm
 from django.contrib.auth.forms import UserCreationForm
-from .models import Room, User,Ploeg,Locker,Excellijst,Person
+from .models import Areset, User,Ploeg,Locker,Excellijst,Person
 import io
 from django import forms
 import csv
@@ -54,7 +54,7 @@ class WachtlijstForm(ModelForm):
 
 class RoomForm(ModelForm):
     class Meta:
-        model = Room
+        model = Areset
         fields = '__all__'
         exclude = ['host', 'participants']
 

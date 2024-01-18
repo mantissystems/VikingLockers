@@ -1,6 +1,6 @@
 from django.contrib import admin
 # Register your models here.
-from .models import Room, Topic, Message,Locker,Ploeg,Helptekst,Bericht,Excellijst,Person,Facturatielijst
+from .models import Areset, Topic, Message,Locker,Ploeg,Helptekst,Bericht,Excellijst,Person,Facturatielijst
 from base.models import User,AbstractUser
 from import_export import resources
 from import_export.fields import Field 
@@ -36,7 +36,7 @@ class PersonadminResource(resources.ModelResource):
     #     return obj.updated.strftime("%d-%m-%Y %H:%M:%S")
 
 admin.site.register(Ploeg)
-admin.site.register(Room)
+admin.site.register(Areset)
 admin.site.register(Topic)
 admin.site.register(Message)
 @admin.register(Helptekst)
