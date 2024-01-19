@@ -46,7 +46,17 @@ urlpatterns = [
     path('excellijst/', views.ExcelView.as_view(), name="excellijst"),
     path('huuropzeggen/<str:pk>', views.huuropzeggen, name="huuropzeggen"),
     # path('polls_results/<int:question_id>/', views.polls_results, name='polls_results'),
-   path('t1/', views.createAreset, name="t1"),  #werkzaamheden
+    path('t1/', views.createAreset, name="t1"),  #werkzaamheden
+    path('t2/<str:pk>/', views.areset, name="t2"),
+    path('t3/',views.TimesheetView.as_view(),name='t3'),
+    path('delete-t2/<str:pk>/', views.deleteaReset, name="delete-t2"),
+
+    path('t4/<str:pk>', views.room_start, name="t4"),
+    path('vervolg/', views.vervolg, name="vervolg"),
+    path('update-vervolg/<str:pk>/', views.update_vervolg, name="update-vervolg"),
+    path('stop/', views.stop, name="stop"),
+    path('end/', views.end, name="end"),
+    path('room-clear/<str:pk>', views.clear_tijdregels, name="room-clear"),
 
    path('m2/', views.m2mtotext, name="m2"),  #creates user from locker mail address if no user exists
    path('m3/', views.m3, name="m3"), #puts usermail in get locker by email

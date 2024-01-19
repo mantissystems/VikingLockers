@@ -1,0 +1,54 @@
+{% extends 'main.html' %}
+{% block content %}
+    {% csrf_token %}
+    {%load static%}
+    <form class="form" method="POST" action="">
+        {% csrf_token %}
+        <div class="form__group">
+            {{form.as_p}}
+
+            
+            <div class="form__action">
+                <a class="btn btn--dark" href="{{request.META.HTTP_REFERER}}">Cancel</a>
+                <button class="btn btn--main" type="submit">Confirm Format and Export data</button>
+              </div>
+    
+        </div>
+<!--  -->
+
+<!--  -->
+<a class="btn btn--main " href="{% url 't1' %}">Create Work</a>
+
+   <table class="viking-table">
+       <thead>
+           <caption>  {{timesheets.count}} Timesheets  </caption>
+           <tr>
+               <th>#</th>
+               {% for k in header %}
+               
+               <th>{{k}}</th>
+               {% endfor %}
+            </tr>
+        </thead>
+        <tbody>
+            
+            {% for rij in timesheets %}
+            <td></td>
+            <td> {{rij.id}}</td>
+            <td> {{ rij.host }} </td>
+            <td>
+                <a href="{% url 't2'  rij.id %}">{{rij.name}} </span></a>        
+              </td>        
+                  <td> {{ rij.status }} </td>
+                  <td> {{ rij.description }} </td>
+                  <td> {{ rij.created|date:"SHORT_DATE_FORMAT" }} </td>
+                  <td> {{ rij.updated|date:"SHORT_DATE_FORMAT" }} </td>
+                                        </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                                                    </form>
+                            <a class="btn btn--main btn--pill" href="{% url 'lockerview' %}">Home</a>
+                        
+
+    {% endblock %}

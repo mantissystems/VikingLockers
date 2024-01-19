@@ -68,6 +68,7 @@ class Areset(models.Model):
     host = models.ForeignKey(User, on_delete=models.SET_NULL, null=True)
     topic = models.ForeignKey(Topic, on_delete=models.SET_NULL, null=True)
     name = models.CharField(max_length=200)
+    status = models.CharField(max_length=200)
     description = models.TextField(null=True, blank=True)
     participants = models.ManyToManyField(
         User, related_name='participants', blank=True)
@@ -172,3 +173,25 @@ class Helptekst(models.Model):
     publish=models.BooleanField(default=False)
 
     created_on = models.DateTimeField(auto_now_add=True)
+
+
+class Tijdregel(models.Model):
+    tijdregel = models.ForeignKey(Areset, on_delete=models.CASCADE,default=0)
+    status = models.CharField(max_length=200,default='--')
+    updated = models.DateTimeField(auto_now=True)
+    created = models.DateTimeField(auto_now_add=True)
+    begin = models.DateTimeField(auto_now=True)
+    einde = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        ordering = ['tijdregel']
+    def __str__(self):
+        return self.tijdregel
+    
+    def get_next(self):
+        next = Tijdregel.objects.filter(id__gt=self.id).order_by('id').first()
+        if next:
+            return next
+    # If the current card is the last one, return the first card in the deck
+        else:
+            return Tijdregel.objects.all().order_by('id').first()     

@@ -10,7 +10,7 @@ from django.db.models import Count
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth import authenticate, login, logout
 from django.urls import reverse, reverse_lazy
-from base.models import Areset,Message,User,Topic,Locker,Ploeg,Helptekst,Bericht,Excellijst,Person,Facturatielijst
+from base.models import Areset,Message,User,Topic,Locker,Ploeg,Helptekst,Bericht,Excellijst,Person,Facturatielijst,Tijdregel
 from django.db.models import Q
 from base.forms import RoomForm, UserForm,  MyUserCreationForm,LockerForm,ExcelForm,PersonForm,WachtlijstForm,LockerFormAdmin,FormatForm
 from django.views.generic import(TemplateView,ListView,FormView)
@@ -618,7 +618,62 @@ class PersonListView(ListView,FormView):
         return response
     
 # ---------------------------------------------------------------------------
-# @login_required(login_url='login')
+class TimesheetView(ListView,FormView):
+    model=Areset
+    template_name='base/areset_list.html'
+    form_class=FormatForm
+    context_object_name = "person_list"
+
+    def get_queryset(self) :
+        queryset=Areset.objects.all() #.filter(verhuurd=True).order_by('topic')
+        return queryset
+    
+    def get_context_data(self, **kwargs):
+        q = self.request.GET.get('q') if self.request.GET.get('q') != None else ''
+        print('in personlistview get_context_data:',q)
+        s='base_areset';l=len(s)+1
+        headers=Areset.objects.all().query.get_meta().fields 
+        fields=['id','name','description','updated','created','host','status']
+        header=[]
+        for k in headers:
+            if str(k)[l:] in fields:
+                header.append(str(k)[l:])              
+
+        # obs= Q(obsolete=True)
+        context = super().get_context_data(**kwargs)
+        qs_in=Areset.objects.all().order_by('name')
+        context["timesheets"] = qs_in
+        self.object_list = qs_in
+        context["header"] = header
+        context["table"] = s
+        return context
+
+    # def post(self,request,**kwargs):
+    #     q = self.request.GET.get('q') if self.request.GET.get('q') != None else ''
+    #     qs =Areset.objects.all() #filter(
+    #     # Q(kluisnummer__icontains=q) |
+    #     # Q(email__icontains=q)|
+    #     # Q(tekst__icontains=q)&
+    #     # Q(verhuurd=True)
+    #     # ).order_by('topic')
+    #     # if not q:
+    #     #     qs = self.get_queryset()
+    #     #     qs=Person.objects.all() #.filter(verhuurd=True).order_by('topic')
+
+    #     # else:
+    #     #     qs=qs_in
+    #     data_set=PersonadminResource().export(qs)
+    #     format=request.POST.get('format')
+    #     print(format,'xxxx->')
+    #     if format=='xls': ds=data_set.xls
+    #     elif format=='csv': ds=data_set.csv
+    #     else: 
+    #         ds=data_set.json
+    #     response=HttpResponse(ds,content_type=f"{format}")
+    #     response['Content-Disposition'] = f"attachment;filename=persons.{format}"
+    #     return response
+
+@login_required(login_url='login')
 def createAreset(request):
     form = RoomForm()
     topics = Topic.objects.all()
@@ -626,18 +681,197 @@ def createAreset(request):
     if request.method == 'POST':
         topic_name = request.POST.get('topic') #het is default Autoreset
         topic, created = Topic.objects.get_or_create(name=topic_name)
-
         Areset.objects.create(
             host=user,
             topic=topic,
             name=request.POST.get('name'),
             description=request.POST.get('description'),
         )
-        return redirect('home')
-
+        return redirect('t3')
     context = {'form': form, 'topics': topics}
     return render(request, 'base/room_form.html', context)
 # ---------------------------------------------------------------------------
+
+def areset(request, pk):
+    room = Areset.objects.get(id=pk)
+    tijdregels=Tijdregel.objects.all().filter(tijdregel=room)
+    header=[]
+    s='base_areset';l=len(s)+1
+    headers=Areset.objects.all().query.get_meta().fields 
+    fields=['id','name','description','updated','created','host','status']
+    for k in headers:
+        if str(k)[l:] in fields:
+            header.append(str(k)[l:])              
+
+    header2=[]
+    t='base_tijdregel';l=len(t)+1
+    headers2=Tijdregel.objects.all().query.get_meta().fields 
+    fields2=['id','status','begin','einde','created','updated']
+    for k in headers2:
+        if str(k)[l:] in fields2:
+            header2.append(str(k)[l:])              
+
+    print(header,header2)
+    if request.method == 'POST':
+        s='base_areset';l=len(s)+1
+        headers=Areset.objects.all().query.get_meta().fields 
+        fields=['id','name','description','updated','created','host','status']
+        return redirect('t2', pk=room.id)
+
+    context = {'room': room, 'header':header,'header2':header2,
+               'tijdregels': tijdregels}
+    return render(request, 'base/room.html', context)
+
+@login_required(login_url='login')
+def deleteaReset(request, pk):
+    room = Areset.objects.get(id=pk)
+
+    if request.method == 'POST':
+        room.delete()
+        return redirect('t3')
+    return render(request, 'base/delete.html', {'obj': room})
+
+def room_start(request,pk):
+    usr=request.user
+    now = timezone.now()
+    url = reverse('home')
+    print('startwerk')
+    m=Areset.objects.get(id=pk)
+    if not m.status=='end':
+        m.status='start'
+        m.save()
+    if Tijdregel.objects.filter(tijdregel=m.id,status='start').exists():
+        t=Tijdregel.objects.get(tijdregel=m.id,status='start')
+        print('niet aan te mmaken',m)
+        t.status='start'
+        t.begin=now, 
+        t.einde=now, 
+        t.save()
+        
+    else:
+        try:
+            t=Tijdregel.objects.get(tijdregel=m.id,status='start')
+        except:
+            Tijdregel.DoesNotExist
+            print('aan te maken',m)
+            t=Tijdregel.objects.update_or_create(
+                status='start',
+            begin=now, 
+            einde=now, 
+                tijdregel=m,
+            )
+        finally:
+            print('aangemaakt',m)
+    return HttpResponseRedirect(reverse('t2', args=(m.id,)))
+    # return HttpResponseRedirect(url)
+
+def vervolg(request):
+    import datetime
+    usr=request.user
+    now=  datetime.date.today()
+    url = reverse('home')
+    print('startwerk')
+    m=Areset.objects.latest('updated')
+    if not m.status=='end':
+        m.status='start'
+        m.save()
+    if Tijdregel.objects.filter(tijdregel=m.id,status='start').exists():
+        tr= Tijdregel.objects.filter(tijdregel=m.id,status__icontains='vervolg')
+        trc=tr.count()
+        vg=Tijdregel.objects.filter(updated__isnull=False).latest('updated')
+        vlg=Tijdregel.objects.latest('begin')
+        vlg.begin=now
+        vlg.save()
+        Tijdregel.objects.update_or_create(
+         status='vervolg' + str(trc),
+            begin=now, 
+            einde=now, 
+            tijdregel=m,
+    )
+    return HttpResponseRedirect(url)
+
+def stop(request):
+    usr=request.user
+    name=''
+    now = timezone.now()
+
+    url = reverse('t3')
+    print('eindewerk')
+    m=Areset.objects.latest('updated')
+    if Tijdregel.objects.filter(tijdregel=m.id,status='stop').exists():
+        print('niet aanmmaken',m)
+        if not m.status=='end':
+            m.status='stop'
+            m.save()
+    if Tijdregel.objects.filter(tijdregel=m.id,status='stop').exists():
+        # t=Tijdregel.objects.get(tijdregel=m.id,status='stop')
+        v=Tijdregel.objects.latest('updated')
+        v.status='stop'
+        v.begin=now, 
+        v.einde=now, 
+        v.save()
+
+    else:
+        # Tijdregel.DoesNotExist
+        print('aan te maken',m)
+        t=Tijdregel.objects.update_or_create(
+            status='stop',
+            begin=now, 
+            einde=now,
+            tijdregel=m,
+        )
+        # finally:
+        print('aangemaakt',m)
+    return HttpResponseRedirect(url)
+
+def clear_tijdregels(request,pk):
+    url = reverse('t3')
+    m=Areset.objects.get(id=pk)
+    m.status='clear'
+    m.save()
+    Tijdregel.objects.all().filter(tijdregel=m).delete()
+    return HttpResponseRedirect(url)
+
+def end(request):
+    usr=request.user
+    msg=''
+    m=''
+    name=''
+    now = timezone.now()
+    url = reverse('t3')
+    # print('eindewerk')
+    m=Areset.objects.latest('updated')
+    if not m.status=='end':
+        m.status='end'
+        m.save()
+    return HttpResponseRedirect(url)
+
+
+def update_vervolg(request,pk):
+    import datetime
+    usr=request.user
+    now=  datetime.date.today()
+    url = reverse('t3')
+    # print('startwerk')
+    m=Areset.objects.get(id=pk)
+    if not m.status=='end':
+        m.status='start'
+        m.save()
+    if Tijdregel.objects.filter(tijdregel=m.id,status='start').exists():
+        tr= Tijdregel.objects.filter(tijdregel=m.id,status__icontains='vervolg')
+        trc=tr.count()
+        vg=Tijdregel.objects.filter(updated__isnull=False).latest('updated')
+        vlg=Tijdregel.objects.latest('begin')
+        vlg.begin=now
+        vlg.save()
+        Tijdregel.objects.update_or_create(
+         status='vervolg' + str(trc),
+            begin=now, 
+            einde=now, 
+            tijdregel=m,
+    )
+    return HttpResponseRedirect(reverse('t2', args=(m.id,)))
+    # return HttpResponseRedirect(url)
 
 class PersonListView_old (ListView):
     model=Person
