@@ -806,8 +806,10 @@ def clear_tijdregels(request,pk):
     m=Areset.objects.get(id=pk)
     m.status='clear'
     m.save()
-    Tijdregel.objects.all().filter(tijdregel=m).delete()
-    return HttpResponseRedirect(url)
+    if request.method == 'POST':
+        Tijdregel.objects.all().filter(tijdregel=m).delete()
+        return HttpResponseRedirect(url)
+    return render(request, 'base/delete.html', {'obj': m})
 
 def end(request):
     usr=request.user
@@ -822,7 +824,6 @@ def end(request):
         m.status='end'
         m.save()
     return HttpResponseRedirect(url)
-
 
 def update_vervolg(request,pk):
     import datetime
