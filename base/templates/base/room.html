@@ -51,31 +51,49 @@
       <div class="room__box scroll">
         <div class="room__header scroll">
           <div class="room__info">
-            <h3>{{room.name}} {{room.created|date:'Y-m-d H:i'}}</h3>
+            <h3>{{room.name}} {{ room.created|date:"SHORT_DATE_FORMAT" }}  {{room.created|date:"D"}}</h3>
             <span>{{room.created|timesince}} ago</span>
           </div>
-          <div class="room__hosted">
-          </div>
-                <div class="room__details">
-          </div>
           
-          <span class="room__topics">{{room.topic}}</span>
+          <span class="room__topics">STATUS:{{room.status}}</span>
           <a class="btn btn--pill" href="{% url 't4' room.id %}">Start</a>
           <a class="btn btn--pill" href="{% url 'update-vervolg' room.id %}">Vervolg</a>
           <a class="btn btn--pill" href="{% url 'room-clear' room.id %}">Clear</a>
           <a class="btn btn--pill" href="{% url 'stop' %}">Stop</a>
-          <a class="btn btn--pill" href="{% url 'end' %}">End</a>
-          {% comment %}
-          {% endcomment %}
-          
+          <a class="btn btn--pill" href="{% url 't3' %}">Lijst</a>
+          <table class="viking-table">
+            <thead>
+                <caption>  {{tijdregels.count}} Tijdregels  </caption>
+                <tr>
+                    <th>#</th>
+                    {% for k in header2 %}
+                    
+                    <th>{{k}}</th>
+                    {% endfor %}
+                 </tr>
+             </thead>
+             <tbody>
+                 
+                 {% for rij in tijdregels %}
+                 <td></td>
+                 <td> {{rij.id}}</td>
+                 <td> {{rij.status}}</td>        
+                       <td> {{rij.updated|date:'H:i'}} </td>
+                       <td>{{rij.created|date:'H:i'}} </td>
+                       <td>{{rij.begin|date:'H:i'}}  </td>
+                       <td>{{rij.einde|date:'H:i'}} </td>
+                     
+                                             </tr>
+                                         {% endfor %}
+                                     </tbody>
+                                 </table>          
         </div>
-
-
       </div>
     </div>
     <!-- Room End -->
-
     <!--   Start -->
+    {% comment %}
+
     <div class="participants">
       <h3 class="participants__top">Tijdregels <span>({{tijdregels.count}} started)</span></h3>
       <div class="participants__list scroll">
@@ -98,12 +116,12 @@
                  <td>
                      <a href="{% url 't2'  rij.id %}">{{rij.status}} </span></a>        
                    </td>        
-                       <td> {{ rij.description }} </td>
-                       <td> {{ rij.created|date:"SHORT_DATE_FORMAT" }} </td>
+                       <td> {{rij.begin|date:'H:i'}} </td>
+                       <td>{{rij.created|date:'H:i'}} </td>
                        <td> {{ rij.updated|date:"SHORT_DATE_FORMAT" }} </td>
-                       <td> {{tijd.status}} C: {{tijd.created|date:'H:i'}} B: {{tijd.begin|date:'H:i'}} E:{{tijd.einde|date:'H:i'}} </td>
-                       <td> B: {{tijd.begin|date:'H:i'}}</td>
-                       <td> E:{{tijd.einde|date:'H:i'}} </td>
+                       <td> {{rij.status}} C: {{rij.created|date:'H:i'}} B: {{rij.begin|date:'H:i'}} E:{{rij.einde|date:'H:i'}} </td>
+                       <td> B: {{rij.begin|date:'H:i'}}</td>
+                       <td> E:{{rij.einde|date:'H:i'}} </td>
 
                                              </tr>
                                          {% endfor %}
@@ -115,6 +133,8 @@
         </a>
       </div>
     </div>
+    {% endcomment %}
+
     <!--  End -->
 </main>
 <script src="script.js"></script>

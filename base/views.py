@@ -622,6 +622,7 @@ class TimesheetView(ListView,FormView):
     model=Areset
     template_name='base/areset_list.html'
     form_class=FormatForm
+    success_url = reverse_lazy('t3')
     context_object_name = "person_list"
 
     def get_queryset(self) :
@@ -638,8 +639,6 @@ class TimesheetView(ListView,FormView):
         for k in headers:
             if str(k)[l:] in fields:
                 header.append(str(k)[l:])              
-
-        # obs= Q(obsolete=True)
         context = super().get_context_data(**kwargs)
         qs_in=Areset.objects.all().order_by('name')
         context["timesheets"] = qs_in
@@ -648,35 +647,13 @@ class TimesheetView(ListView,FormView):
         context["table"] = s
         return context
 
-    # def post(self,request,**kwargs):
-    #     q = self.request.GET.get('q') if self.request.GET.get('q') != None else ''
-    #     qs =Areset.objects.all() #filter(
-    #     # Q(kluisnummer__icontains=q) |
-    #     # Q(email__icontains=q)|
-    #     # Q(tekst__icontains=q)&
-    #     # Q(verhuurd=True)
-    #     # ).order_by('topic')
-    #     # if not q:
-    #     #     qs = self.get_queryset()
-    #     #     qs=Person.objects.all() #.filter(verhuurd=True).order_by('topic')
-
-    #     # else:
-    #     #     qs=qs_in
-    #     data_set=PersonadminResource().export(qs)
-    #     format=request.POST.get('format')
-    #     print(format,'xxxx->')
-    #     if format=='xls': ds=data_set.xls
-    #     elif format=='csv': ds=data_set.csv
-    #     else: 
-    #         ds=data_set.json
-    #     response=HttpResponse(ds,content_type=f"{format}")
-    #     response['Content-Disposition'] = f"attachment;filename=persons.{format}"
-    #     return response
-
 @login_required(login_url='login')
 def createAreset(request):
     form = RoomForm()
     topics = Topic.objects.all()
+    werk=Areset.objects.all()
+    for w in werk:
+        print(w.name)
     user=User.objects.get(is_superuser=True)
     if request.method == 'POST':
         topic_name = request.POST.get('topic') #het is default Autoreset
@@ -688,7 +665,7 @@ def createAreset(request):
             description=request.POST.get('description'),
         )
         return redirect('t3')
-    context = {'form': form, 'topics': topics}
+    context = {'form': form, 'topics': topics,'werk':werk}
     return render(request, 'base/room_form.html', context)
 # ---------------------------------------------------------------------------
 
@@ -711,7 +688,7 @@ def areset(request, pk):
         if str(k)[l:] in fields2:
             header2.append(str(k)[l:])              
 
-    print(header,header2)
+    # print(header,header2)
     if request.method == 'POST':
         s='base_areset';l=len(s)+1
         headers=Areset.objects.all().query.get_meta().fields 

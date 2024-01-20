@@ -48,7 +48,7 @@ urlpatterns = [
     # path('polls_results/<int:question_id>/', views.polls_results, name='polls_results'),
     path('t1/', views.createAreset, name="t1"),  #werkzaamheden
     path('t2/<str:pk>/', views.areset, name="t2"),
-    path('t3/',views.TimesheetView.as_view(),name='t3'),
+    path('t3/',views.TimesheetView.as_view(),name='t3'), #timesheet list
     path('delete-t2/<str:pk>/', views.deleteaReset, name="delete-t2"),
 
     path('t4/<str:pk>', views.room_start, name="t4"),
