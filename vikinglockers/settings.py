@@ -72,26 +72,60 @@ TEMPLATES = [
 WSGI_APPLICATION = 'vikinglockers.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/4.1/ref/settings/#databases
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': BASE_DIR / 'viking.sqlite3',
+    }
+}
+# DATABASES = {
+#    'default': {
+#        'ENGINE': 'django.db.backends.postgresql',
+#        'NAME': 'railway',
+#        'USER': 'postgres',
+#        'PASSWORD':'V0CRWmkgvstecDD07V1i',
+#        'HOST':'containers-us-west-135.railway.app',
+#        'PORT': '7980'
+#    }
+# }
+# ----------------------------------
+# PGHOST
+# PGDATABASE railway
 # DATABASES = {
 #     'default': {
-#         'ENGINE': 'django.db.backends.sqlite3',
-#         'NAME': BASE_DIR / 'viking.sqlite3',
+#         'ENGINE': 'django.db.backends.postgresql',
+#         'OPTIONS': {
+#             'service': 'my_service',
+#             'passfile': '~/.pg_service.conf',
+#         },
 #     }
 # }
-
-DATABASES = {
-   'default': {
-       'ENGINE': 'django.db.backends.postgresql',
-       'NAME': 'railway',
-       'USER': 'postgres',
-       'PASSWORD':'V0CRWmkgvstecDD07V1i',
-       'HOST':'containers-us-west-135.railway.app',
-       'PORT': '7980'
-   }
-}
+# DATABASES = {
+#    'default': {
+#        'ENGINE': 'django.db.backends.postgresql',
+# 'DATABASE_PRIVATE_URL':'postgresql://postgres:CF3B1ga3bcB5eFFa5DDg44EC5FedbgF6@postgres.railway.internal:5432/railway',
+# 'DATABASE_URL': 'postgresql://postgres:CF3B1ga3bcB5eFFa5DDg44EC5FedbgF6@monorail.proxy.rlwy.net:58927/railway',
+# 'NO_TS_TUNE': True ,
+# 'PGDATA': '/var/lib/postgresql/data/pgdata',
+# 'PGDATABASE': '/var/lib/postgresql/data/pgdata',
+# 'PGHOST': 'monorail.proxy.rlwy.net',
+# 'PGPASSWORD': 'CF3B1ga3bcB5eFFa5DDg44EC5FedbgF6',
+# 'PGPORT': '58927',
+# 'PGUSER': 'postgres ',
+# 'POSTGRES_DB': 'railway',
+# 'POSTGRES_PASSWORD': 'CF3B1ga3bcB5eFFa5DDg44EC5FedbgF6',
+# 'POSTGRES_USER': 'postgres',
+# 'RAILWAY_RUN_UID': '0',
+# 'SSL_CERT_DAYS': '820',
+    #    'NAME': 'railway',
+    #    'USER': 'postgres',
+    #    'PASSWORD':'V0CRWmkgvstecDD07V1i',
+    #    'HOST':'containers-us-west-135.railway.app',
+    #    'PORT': '7980'
+#    }
+# }
 # Password validation
 # https://docs.djangoproject.com/en/4.1/ref/settings/#auth-password-validators
-
 AUTH_PASSWORD_VALIDATORS = [
     {
         'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator',
