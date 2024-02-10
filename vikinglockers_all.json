@@ -1,7 +1,3 @@
-in userupdate
-in excelview
-in facturatieview
-in lockerupdate
 [
 {
   "model": "admin.logentry",

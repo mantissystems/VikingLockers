@@ -15,6 +15,7 @@ __pycache__/
 local_settings.py
 # *.sqlite3 #totdat postgres connectie er is
 # viking.sqlite3
+*.json
 db.sqlite3-journal
 # media
 # images/

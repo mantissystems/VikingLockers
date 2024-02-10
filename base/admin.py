@@ -1,6 +1,6 @@
 from django.contrib import admin
 # Register your models here.
-from .models import Areset, Topic, Message,Locker,Ploeg,Helptekst,Bericht,Excellijst,Person,Facturatielijst
+from .models import Areset, Topic, Message,Locker,Ploeg,Helptekst,Bericht,Excellijst,Person,Facturatielijst,Areset,Tijdregel
 from base.models import User,AbstractUser
 from import_export import resources
 from import_export.fields import Field 
@@ -36,7 +36,7 @@ class PersonadminResource(resources.ModelResource):
     #     return obj.updated.strftime("%d-%m-%Y %H:%M:%S")
 
 admin.site.register(Ploeg)
-admin.site.register(Areset)
+# admin.site.register(Areset)
 admin.site.register(Topic)
 admin.site.register(Message)
 @admin.register(Helptekst)
@@ -54,11 +54,26 @@ class UserAdmin(admin.ModelAdmin):
     list_filter = ('is_active','is_staff')
     list_display = ('username','last_name','email','locker')
     search_fields = ('last_name','email','locker')
+# @admin.register(Person)
+# class UserAdmin(admin.ModelAdmin):
+#     list_filter = ('onderhuur','hoofdhuurder','wachtlijst')
+#     list_display = ('name','email','created')
+#     search_fields = ('name','email')
+
+@admin.register(Tijdregel)
+class TijdregelAdmin(ImportExportModelAdmin):
+    pass
+
+
 @admin.register(Person)
-class UserAdmin(admin.ModelAdmin):
-    list_filter = ('onderhuur','hoofdhuurder','wachtlijst')
-    list_display = ('name','email','created')
-    search_fields = ('name','email')
+class PersonAdmin(ImportExportModelAdmin):
+    pass
+
+@admin.register(Areset)
+class AresetAdmin(ImportExportModelAdmin):
+    pass
+
+
     @admin.register(Locker)
     class LockerAdmin(ImportExportModelAdmin):
         pass    
