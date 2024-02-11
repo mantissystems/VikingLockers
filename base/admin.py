@@ -67,6 +67,12 @@ class TijdregelAdmin(ImportExportModelAdmin):
 @admin.register(User)
 class UserAdmin(ImportExportModelAdmin):
     pass
+@admin.register(Excellijst)
+class UserAdmin(ImportExportModelAdmin):
+    pass
+@admin.register(Facturatielijst)
+class UserAdmin(ImportExportModelAdmin):
+    pass
 
 @admin.register(Person)
 class PersonAdmin(ImportExportModelAdmin):
@@ -85,13 +91,13 @@ class AresetAdmin(ImportExportModelAdmin):
 #     list_filter = ('verhuurd','kluisnummer','obsolete')
 #     list_display = ('topic','kluisnummer','email','verhuurd','obsolete','sleutels')
 #     search_fields = ('topic','kluisnummer','email')
-@admin.register(Excellijst)
-class kluisAdmin(admin.ModelAdmin):
-    list_filter = ('email','kluisnummer','excel')
-    list_display = ('kluisnummer','excel','email')
-    search_fields = ('kluisnummer','email','excel')
-@admin.register(Facturatielijst)
-class factuurAdmin(admin.ModelAdmin):
-    list_filter = ('email','in_excel','is_registered')
-    list_display = ('email','kluisnummer','in_excel','type')
-    search_fields = ('email','type')
+# @admin.register(Excellijst)
+# class kluisAdmin(admin.ModelAdmin):
+#     list_filter = ('email','kluisnummer','excel')
+#     list_display = ('kluisnummer','excel','email')
+#     search_fields = ('kluisnummer','email','excel')
+# @admin.register(Facturatielijst)
+# class factuurAdmin(admin.ModelAdmin):
+#     list_filter = ('email','in_excel','is_registered')
+#     list_display = ('email','kluisnummer','in_excel','type')
+#     search_fields = ('email','type')
