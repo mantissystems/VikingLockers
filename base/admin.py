@@ -49,11 +49,11 @@ class kluisAdmin(admin.ModelAdmin):
     list_filter = ('user','user')
     list_display = ('user','body')
     search_fields = ('user','body')
-@admin.register(User)
-class UserAdmin(admin.ModelAdmin):
-    list_filter = ('is_active','is_staff')
-    list_display = ('username','last_name','email','locker')
-    search_fields = ('last_name','email','locker')
+# @admin.register(User)
+# class UserAdmin(admin.ModelAdmin):
+#     list_filter = ('is_active','is_staff')
+#     list_display = ('username','last_name','email','locker')
+#     search_fields = ('last_name','email','locker')
 # @admin.register(Person)
 # class UserAdmin(admin.ModelAdmin):
 #     list_filter = ('onderhuur','hoofdhuurder','wachtlijst')
@@ -64,6 +64,9 @@ class UserAdmin(admin.ModelAdmin):
 class TijdregelAdmin(ImportExportModelAdmin):
     pass
 
+@admin.register(User)
+class UserAdmin(ImportExportModelAdmin):
+    pass
 
 @admin.register(Person)
 class PersonAdmin(ImportExportModelAdmin):
