@@ -82,7 +82,6 @@ class PersonAdmin(ImportExportModelAdmin):
 class AresetAdmin(ImportExportModelAdmin):
     pass
 
-
     @admin.register(Locker)
     class LockerAdmin(ImportExportModelAdmin):
         pass    

@@ -1404,7 +1404,7 @@ class LockerListView(ListView,FormView):
         context = super().get_context_data(**kwargs)
         qs_in=Locker.objects.all().filter(verhuurd=True).order_by('topic')
         qs_out=Locker.objects.all().exclude(obs).filter(verhuurd=False).order_by('topic')
-        if 'verhuurd' in q:
+        if 'verhuurd' in q and q:
             vh= Q(verhuurd=True)
         qs_in =Locker.objects.exclude(obs).filter(
         (Q(kluisnummer__icontains=q) |
