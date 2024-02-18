@@ -1394,7 +1394,7 @@ class LockerListView(ListView,FormView):
         s='base_locker';l=len(s)+1
         vh=Q(topic__icontains=q)
         headers=Locker.objects.all().query.get_meta().fields 
-        fields=['id','kluisnummer','email','tekst','verhuurd','opgezegd','updated']
+        fields=['id','kluisnummer','email','tekst','verhuurd','opgezegd','updated','code']
         header=[]
         for k in headers:
             if str(k)[l:] in fields:
