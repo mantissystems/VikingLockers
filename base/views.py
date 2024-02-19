@@ -660,7 +660,7 @@ def createAreset(request):
         topic_name = request.POST.get('topic') #het is default Autoreset
         topic, created = Topic.objects.get_or_create(name=topic_name)
         Areset.objects.create(
-            host=user,
+            # host=user,
             topic=topic,
             name=request.POST.get('name'),
             description=request.POST.get('description'),
