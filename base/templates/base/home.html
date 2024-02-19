@@ -2,10 +2,13 @@
 {% block content %}
 <main class="layout layout--3">
   <div class="container">
+    {%comment%}
     <!-- Topics Start -->
     {% include 'base/topics_component.html' %}
     <!-- Topics End -->
+    {%endcomment%}
     <!-- Room List Start -->
+    
     <div class="roomList">
       <div class="mobile-menu">
         <form action="{% url 'home' %}" method="GET" class="header__search">

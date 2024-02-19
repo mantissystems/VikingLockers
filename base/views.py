@@ -221,7 +221,7 @@ def get_queryset(self): # new
     queryset = Locker.objects.filter(
         Q(verhuurd=True)&
         Q(email__in=users_found) 
-    ).order_by('topic')
+    ).order_by('-updated','topic')
     return queryset
 paginate_by = 10
 def get_context_data(self, **kwargs):
@@ -1160,23 +1160,23 @@ def m6(request,pk):
     url = reverse('home',)
     return HttpResponseRedirect(url)
 
-def export_wachtlijst(request,):
-    import csv
-    A=Q(kamer__in='H,D,-')
-    B=Q(email__icontains='bekend')
-    C=Q(wachtlijst=True)
-    # D=Q(opgezegd=True)
-    # E=Q(email__icontains='--')
-    # F=Q(email__icontains='==')
-    wachtlijst =Person.objects.all().filter( A | B |  C ).order_by('kamer','email')
+# def export_wachtlijst(request,):
+#     import csv
+#     A=Q(kamer__in='H,D,-')
+#     B=Q(email__icontains='bekend')
+#     C=Q(wachtlijst=True)
+#     # D=Q(opgezegd=True)
+#     # E=Q(email__icontains='--')
+#     # F=Q(email__icontains='==')
+#     wachtlijst =Person.objects.all().filter( A | B |  C ).order_by('kamer','email')
 
-    response = HttpResponse(content_type='text/csv')
-    response['Content-Disposition'] = 'attachment; filename="wachtlijst.csv"'
-    writer = csv.writer(response)
-    writer.writerow(['id', 'kamer', 'email', 'wachtlijst',])
-    for i in wachtlijst:
-        writer.writerow([i.id ,i.kamer, i.email, i.wachtlijst ])
-    return response
+#     response = HttpResponse(content_type='text/csv')
+#     response['Content-Disposition'] = 'attachment; filename="wachtlijst.csv"'
+#     writer = csv.writer(response)
+#     writer.writerow(['id', 'kamer', 'email', 'wachtlijst',])
+#     for i in wachtlijst:
+#         writer.writerow([i.id ,i.kamer, i.email, i.wachtlijst ])
+#     return response
 
 # @login_required(login_url='login')   
 # def export_onverhuurd(request,):
@@ -1197,14 +1197,14 @@ def export_wachtlijst(request,):
 #         writer.writerow([item.id ,item.email, item.kluisnummer, item.kluisje ,item.topic,item.sleutels,])
 #     return response
 
-def export_emaillijst(request,):
-    locker_resource = LockerResource()
-    dataset = locker_resource.export()
-    queryset = Locker.objects.filter(verhuurd=True)
-    dataset = locker_resource.export(queryset)    
-    response = HttpResponse(dataset.xls, content_type='application/vnd.ms-excel')
-    response['Content-Disposition'] = 'attachment; filename="persons.xls"'
-    return response    
+# def export_emaillijst(request,):
+#     locker_resource = LockerResource()
+#     dataset = locker_resource.export()
+#     queryset = Locker.objects.filter(verhuurd=True)
+#     dataset = locker_resource.export(queryset)    
+#     response = HttpResponse(dataset.xls, content_type='application/vnd.ms-excel')
+#     response['Content-Disposition'] = 'attachment; filename="persons.xls"'
+#     return response    
     # import csv
     # # exclude_list = ['vrij', 'onbekend','wachtlijst',]
     # verhuurd =Locker.objects.filter(email__icontains='@').order_by('topic')
@@ -1380,6 +1380,7 @@ def update_locker(request,pk):
 # ---------------------------------------------------------------------------    
 class LockerListView(ListView,FormView):
     model=Locker
+    # template_name='home.html'
     template_name='base/locker_views.html'
     form_class=FormatForm
     context_object_name = "locker_list"
@@ -1392,7 +1393,7 @@ class LockerListView(ListView,FormView):
         q = self.request.GET.get('q') if self.request.GET.get('q') != None else ''
         print('in lockerlistview get_context_data:',q)
         s='base_locker';l=len(s)+1
-        vh=Q(topic__icontains=q)
+        verh=Q(topic__icontains=q)
         headers=Locker.objects.all().query.get_meta().fields 
         fields=['id','kluisnummer','email','tekst','verhuurd','opgezegd','updated','code']
         header=[]
@@ -1405,18 +1406,19 @@ class LockerListView(ListView,FormView):
         qs_in=Locker.objects.all().filter(verhuurd=True).order_by('topic')
         qs_out=Locker.objects.all().exclude(obs).filter(verhuurd=False).order_by('topic')
         if 'verhuurd' in q and q:
-            vh= Q(verhuurd=True)
+            verh= Q(verhuurd=True)
         qs_in =Locker.objects.exclude(obs).filter(
         (Q(kluisnummer__icontains=q) |
         Q(vorige_huurder__icontains=q)|
         Q(nieuwe_huurder__icontains=q)|
         Q(email__icontains=q)|
-        Q(tekst__icontains=q)| vh )
+        Q(tekst__icontains=q)| verh )
         ).order_by('topic')
         if q:qs_out=None
+        if not q: qs_in = self.get_queryset()
         context["lockers_in"] = qs_in
-        self.object_list = qs_in
         context["lockers_out"] =qs_out
+        self.object_list = qs_in
         context["header"] = header
         context["table"] = s
         return context

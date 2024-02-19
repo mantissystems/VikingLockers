@@ -26,8 +26,6 @@ urlpatterns = [
     path('tools/',views.tools, name='tools'),  
     path('onverhuurd/', views.lockersPage3, name="onverhuurd"),
     path('verhuurd/', views.LockerView.as_view(), name="verhuurd"),
-    path('export_emaillijst/', views.export_emaillijst, name="export_emaillijst"),
-    path('export_wachtlijst/', views.export_wachtlijst, name="export_wachtlijst"),
     path('create-person/', views.CreatePerson.as_view(), name="create-person"),          # <=================
     path('create-locker/', views.CreateLocker.as_view(), name="create-locker"),
     path('<str:pk>/update-locker/',views.update_locker, name='update-locker'),  #        #<==================
@@ -45,12 +43,10 @@ urlpatterns = [
     path('create-factuur/', views.CreateFactuur.as_view(), name="create-factuur"),
     path('excellijst/', views.ExcelView.as_view(), name="excellijst"),
     path('huuropzeggen/<str:pk>', views.huuropzeggen, name="huuropzeggen"),
-    # path('polls_results/<int:question_id>/', views.polls_results, name='polls_results'),
     path('t1/', views.createAreset, name="t1"),  #werkzaamheden
     path('t2/<str:pk>/', views.areset, name="t2"),
     path('t3/',views.TimesheetView.as_view(),name='t3'), #timesheet list
     path('delete-t2/<str:pk>/', views.deleteaReset, name="delete-t2"),
-
     path('t4/<str:pk>', views.room_start, name="t4"),
     path('vervolg/', views.vervolg, name="vervolg"),
     path('update-vervolg/<str:pk>/', views.update_vervolg, name="update-vervolg"),
@@ -64,6 +60,9 @@ urlpatterns = [
    path('m6/<str:pk>', views.m6, name="m6"), #check facturatielijst in get locker by email
     path('all_lockers/',views.all_entrantsPage, name='all_lockers'),  
     ]
+    # path('export_emaillijst/', views.export_emaillijst, name="export_emaillijst"),
+    # path('export_wachtlijst/', views.export_wachtlijst, name="export_wachtlijst"),
+    # path('polls_results/<int:question_id>/', views.polls_results, name='polls_results'),
 #    path('m4/', views.m4, name="m4"), #puts usermail in get locker by email
     # path('export_verhuurd/', views.export_verhuurd, name="export_verhuurd"),
     # path('export_onverhuurd/', views.export_onverhuurd, name="export_onverhuurd"),

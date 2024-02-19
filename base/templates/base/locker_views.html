@@ -22,22 +22,22 @@
 {%endcomment%}
     <form class="form" method="POST" action="">
         {% csrf_token %}
+        
+        {%comment%}
         <div class="form__group">
             {{form.as_p}}
-
-            {%comment%}
             <a href="{% url 'home' %}" class="header__logo">
                 <img src="{% static 'images/dames1.JPG' %}" />
                 <img src="{% static 'images/dames2.JPG' %}" />
                 <img src="{% static 'images/dames3.JPG' %}" />
             </a>
             <input class="btn btn--main btn--pill" type="submit" value="Confirm Format and Export data " />
-            {%endcomment%}
-            
             <div class="form__action">
                 <a class="btn btn--dark" href="{{request.META.HTTP_REFERER}}">Cancel</a>
                 <button class="btn btn--main" type="submit">Confirm Format and Export data</button>
               </div>
+            {%endcomment%}
+            
     
         </div>
 <!--  -->
