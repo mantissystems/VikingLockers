@@ -117,14 +117,7 @@ def home(request):
     verhuurd =Locker.objects.filter(
         (Q(verhuurd=True)
         ) 
-    ).order_by('topic')# .exclude(id__in=onverhuurd_lijst)
-    # entrants_in =Locker.objects.filter(
-    # Q(kluisnummer__icontains=q) |
-    # Q(email__icontains=q)|
-    # Q(tekst__icontains=q)|
-    # Q(topic__icontains=q)&
-    # Q(verhuurd=True)
-    # ).order_by('topic')# .exclude(id__in=onverhuurd_lijst)
+    ).order_by('topic')
 
     lockers =Locker.objects.filter(
     Q(kluisnummer__icontains=q) |
@@ -160,14 +153,6 @@ def home(request):
     messages.add_message(request, messages.INFO, "Welkom bij Lockermanager", extra_tags="dragonball")
 
     storage = messages.get_messages(request)
-    # for message in storage:
-        # print(message)
-    # url = reverse('berichten',)
-    # if q!='' or q !=None:
-    #     print('if:',q)
-    #     url = "lockers/"  + "?q=" +q 
-    #     return HttpResponseRedirect(url)
-
     if 'xls' in qq:
         x = qq.replace("xls ", "")
         q=x
@@ -190,11 +175,6 @@ def home(request):
         q=x
         url = "profiles" + "?q=" +q 
         return HttpResponseRedirect(url)
-    # elif 'req' in qq:
-    #     x = qq.replace("req ", "")
-    #     q=x
-    #     url = "berichten" + "?q=" +q 
-    #     return HttpResponseRedirect(url)
     elif 'usr' in qq:
         x = qq.replace("usr ", "")
         q=x
@@ -203,8 +183,6 @@ def home(request):
 
     else:
         print('else:',q)
-        # if q!='' or q !=None:
-        #     print('if:',q)
         url = "lockerview"  + "?q=" +q
         return HttpResponseRedirect(url)
 
@@ -212,7 +190,6 @@ class LockerView (LoginRequiredMixin,ListView):
     login_url='login'
     model=Locker
 def get_context_data(self, **kwargs):
-        # context = super().get_context_data(**kwargs)
         context = super(LockerView, self).get_context_data(**kwargs)
         return context
 
@@ -299,8 +276,6 @@ def updateUser(request):
             if user.locker == 'xx':
                 messages.success(request, f'Uw locker opheffen?: {user.locker}')
                 print('locker opheffen?')
-            # print(user.ploeg)
-            # ploeg, created = Ploeg.objects.update_or_create(name=user.ploeg)
             ploeg, created = Ploeg.objects.get_or_create(name=team)
             locker, created = Locker.objects.update_or_create(kluisnummer=user.locker,
                                                            email=user.email,
@@ -310,8 +285,6 @@ def updateUser(request):
             except: 
                 Ploeg.DoesNotExist
                 url = reverse('update-user')
-                print('fout',user.ploeg)
-                # ploeg, created = Ploeg.objects.get_or_create(name=user.ploeg)
                 ploeg, created = Ploeg.objects.get_or_create(name=team)
                 # messages.error(request, f'1 Teamleider per ploeg  {user.ploeg} wordt niet aangemaakt of was reeds aangemaakt tijdens registratie')
                 return HttpResponseRedirect(url)
@@ -406,17 +379,12 @@ class updateUser_email(LoginRequiredMixin,UpdateView):
 
 def userProfile(request, pk):
     user = User.objects.get(id=pk)
-    # rooms = user.room_set.all()
     lockers = Locker.objects.all()
-    # member_lockers = Locker.objects.all().exclude(owners=None)
-    # room_messages = user.message_set.all()
     topics = Topic.objects.all()
     context = {'user': user,
-                # 'rooms': rooms,
                'room_messages': topics,
                  'topics': topics,
                  'lockers':lockers,
-                #  'member_lockers':member_lockers
                 }
     return render(request, 'base/profile.html', context)
 
@@ -424,7 +392,6 @@ def userProfile(request, pk):
 def myProfile(request):
     user = request.user
     form = UserForm(instance=user)
-    # print(form)
     berichten=Bericht.objects.all().filter(user=request.user.id)
     locker= request.POST.get('locker')
     context = {
@@ -533,8 +500,6 @@ def excel_regelPage(request,pk):
 class MemberListView (LoginRequiredMixin, ListView):
     login_url='login'
     model=User
-# class MemberListView (ListView):
-#     model=User
     def get_context_data(self,**kwargs):
         q = self.request.GET.get('q') if self.request.GET.get('q') != None else ''
         query = self.request.GET.get('q')
@@ -575,38 +540,15 @@ class PersonListView(ListView,FormView):
         obs= Q(obsolete=True)
         context = super().get_context_data(**kwargs)
         qs_in=Person.objects.all().order_by('name')
-        # qs_out=Person.objects.all().exclude(obs).filter(verhuurd=False).order_by('topic')
-        # if 'verhuurd' in q:
-        #     vh= Q(verhuurd=True)
-        # qs_in =Person.objects.exclude(obs).filter(
-        # (Q(kluisnummer__icontains=q) |
-        # Q(vorige_huurder__icontains=q)|
-        # Q(nieuwe_huurder__icontains=q)|
-        # Q(email__icontains=q)|
-        # Q(tekst__icontains=q)| vh )
-        # ).order_by('topic')
-        # if q:qs_out=None
         context["persons_in"] = qs_in
         self.object_list = qs_in
-        # context["lockers_out"] =qs_out
         context["header"] = header
         context["table"] = s
         return context
 
     def post(self,request,**kwargs):
         q = self.request.GET.get('q') if self.request.GET.get('q') != None else ''
-        qs =Person.objects.all() #filter(
-        # Q(kluisnummer__icontains=q) |
-        # Q(email__icontains=q)|
-        # Q(tekst__icontains=q)&
-        # Q(verhuurd=True)
-        # ).order_by('topic')
-        # if not q:
-        #     qs = self.get_queryset()
-        #     qs=Person.objects.all() #.filter(verhuurd=True).order_by('topic')
-
-        # else:
-        #     qs=qs_in
+        qs =Person.objects.all()
         data_set=PersonadminResource().export(qs)
         format=request.POST.get('format')
         print(format,'xxxx->')
@@ -741,7 +683,6 @@ def room_start(request,pk):
         finally:
             print('aangemaakt',m)
     return HttpResponseRedirect(reverse('t2', args=(m.id,)))
-    # return HttpResponseRedirect(url)
 
 def vervolg(request):
     import datetime
@@ -782,7 +723,6 @@ def stop(request):
             m.status='stop'
             m.save()
     if Tijdregel.objects.filter(tijdregel=m.id,status='stop').exists():
-        # t=Tijdregel.objects.get(tijdregel=m.id,status='stop')
         v=Tijdregel.objects.latest('updated')
         v.status='stop'
         v.begin=now, 
@@ -798,7 +738,6 @@ def stop(request):
             einde=now,
             tijdregel=m,
         )
-        # finally:
         print('aangemaakt',m)
     return HttpResponseRedirect(url)
 
@@ -913,7 +852,6 @@ class RequestView (ListView):
             }
         return context
 
-# class ExcelView (ListView):
 class ExcelView (LoginRequiredMixin, ListView):
     login_url='login'
     print('in excelview')
@@ -966,26 +904,19 @@ class FacturatieView (LoginRequiredMixin, ListView):
             }
         return context
 
-
 class PersonUpdate_id( LoginRequiredMixin,UpdateView):
     login_url = '/login/'
     model = Person
     def get_form(self, form_class=None):
         form = super().get_form(form_class)
-        # form.fields['onderhuur'].label = "Mede Huurder"
         form.fields['tekst'].label = 'Namen  Medegebruikers'
         form.fields['wachtlijst'].label = 'Wel / Niet wachtlijst'
-        # form.fields['hoofdhuurder'].label = 'Wel / Niet Hoofdhuurder'
-        return form
-    
-    # fields=['name','tekst','wachtlijst','email','kamer']
+        return form    
     fields='__all__'
     success_url = reverse_lazy('wacht-lijst')
     
     def form_valid(self, form):
-        kluis ='wachtlijst' ## form.cleaned_data['locker']  
-        # wachtlijstaanvul = form.cleaned_data['onderhuur']  
-        # print('onderhuur')
+        kluis ='wachtlijst'
         hoofdhuurder = form.cleaned_data['hoofdhuurder']  
         name = form.cleaned_data['name']  
         onderhuurder = form.cleaned_data['onderhuur']  
@@ -1159,79 +1090,6 @@ def m6(request,pk):
 
     url = reverse('home',)
     return HttpResponseRedirect(url)
-
-# def export_wachtlijst(request,):
-#     import csv
-#     A=Q(kamer__in='H,D,-')
-#     B=Q(email__icontains='bekend')
-#     C=Q(wachtlijst=True)
-#     # D=Q(opgezegd=True)
-#     # E=Q(email__icontains='--')
-#     # F=Q(email__icontains='==')
-#     wachtlijst =Person.objects.all().filter( A | B |  C ).order_by('kamer','email')
-
-#     response = HttpResponse(content_type='text/csv')
-#     response['Content-Disposition'] = 'attachment; filename="wachtlijst.csv"'
-#     writer = csv.writer(response)
-#     writer.writerow(['id', 'kamer', 'email', 'wachtlijst',])
-#     for i in wachtlijst:
-#         writer.writerow([i.id ,i.kamer, i.email, i.wachtlijst ])
-#     return response
-
-# @login_required(login_url='login')   
-# def export_onverhuurd(request,):
-#     import csv
-#     A=Q(email__icontains='vrij')
-#     B=Q(email__icontains='bekend')
-#     C=Q(obsolete=True)
-#     D=Q(opgezegd=True)
-#     E=Q(email__icontains='--')
-#     F=Q(email__icontains='==')
-#     onverhuurd =Locker.objects.all().filter( A | B |  C | D | E | F ).order_by('topic')
-
-#     response = HttpResponse(content_type='text/csv')
-#     response['Content-Disposition'] = 'attachment; filename="onverhuurd.csv"'
-#     writer = csv.writer(response)
-#     writer.writerow(['id', 'tenant', 'huidig', 'oud','nieuw','keys'])
-#     for item in onverhuurd:
-#         writer.writerow([item.id ,item.email, item.kluisnummer, item.kluisje ,item.topic,item.sleutels,])
-#     return response
-
-# def export_emaillijst(request,):
-#     locker_resource = LockerResource()
-#     dataset = locker_resource.export()
-#     queryset = Locker.objects.filter(verhuurd=True)
-#     dataset = locker_resource.export(queryset)    
-#     response = HttpResponse(dataset.xls, content_type='application/vnd.ms-excel')
-#     response['Content-Disposition'] = 'attachment; filename="persons.xls"'
-#     return response    
-    # import csv
-    # # exclude_list = ['vrij', 'onbekend','wachtlijst',]
-    # verhuurd =Locker.objects.filter(email__icontains='@').order_by('topic')
-    # response = HttpResponse(content_type='text/csv')
-    # response['Content-Disposition'] = 'attachment; filename="email_lijst.csv"'
-    # writer = csv.writer(response)
-    # writer.writerow(['id', 'tenant', 'oude naam','nwe naam','huidige', 'Obs','Opg','Ver','Sl','txt','nwe','vorige'])
-    # for item in verhuurd:
-    #     writer.writerow([item.id ,item.email, item.kluisje,item.topic,item.kluisnummer, item.obsolete ,item.opgezegd,item.verhuurd,item.sleutels,item.tekst,item.nieuwe_huurder,item.vorige_huurder,])
-    # return response
-    
-def export_verhuurd(request,):
-    locker_resource = locker_resource()
-    dataset = locker_resource.export()
-    response = HttpResponse(dataset.csv, content_type='text/csv')
-    response['Content-Disposition'] = 'attachment; filename="persons.csv"'
-    return response    
-    # import csv
-    # verhuurd = Facturatielijst.objects.all()
-    # response = HttpResponse(content_type='text/csv')
-    # response['Content-Disposition'] = 'attachment; filename="facturatie_lijst.csv"'
-    # writer = csv.writer(response)
-    # writer.writerow(['id', 'tenant', 'y/n','locker','registered', 'keys','huur','obs'])
-    # for item in verhuurd:
-    #     writer.writerow([item.id ,item.email, item.code,item.kluisnummer,item.is_registered, item.sleutels , item.in_excel ,item.type,item.obsolete,])
-    # return response
-
 
 class CreateFactuur(CreateView):
     model = Facturatielijst
