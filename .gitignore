@@ -16,7 +16,7 @@ __pycache__/
 local_settings.py
 # *.sqlite3 #totdat postgres connectie er is INTUSSEN VIA IMPORT EXPORT DATA SYNCHRONISEREN
 viking.sqlite3
-*.json
+*json
 db.sqlite3-journal
 
 # media
