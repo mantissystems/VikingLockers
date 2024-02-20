@@ -1270,6 +1270,7 @@ class LockerListView(ListView,FormView):
         Q(vorige_huurder__icontains=q)|
         Q(nieuwe_huurder__icontains=q)|
         Q(email__icontains=q)|
+        Q(code__contains=q)|
         Q(tekst__icontains=q)| verh )
         ).order_by('topic')
         if q:qs_out=None
