@@ -1239,7 +1239,7 @@ def update_locker(request,pk):
 class LockerListView(ListView,FormView):
     model=Locker
     # template_name='home.html'
-    template_name='base/locker_views.html'
+    template_name='base/lockerview_list.html'
     form_class=FormatForm
     context_object_name = "locker_list"
 

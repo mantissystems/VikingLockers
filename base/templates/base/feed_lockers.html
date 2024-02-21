@@ -1,90 +1,77 @@
-Lockerlist {{object_list.count}}
-<table class="viking-table">
-  <thead>
-    <hr>
-    <tr>
-      <th>Huurder:</th>
-      <th>Locker</th>
-      <th>Sleutels</th>
-      <th>Verhuurd</th>
-      <th>Onderh</th>
-    </tr>
-  </thead>
-  <tbody>
-    {% for locker in object_list %}
-    <tr>
-
-    <td>
-      <a href="{% url 'update-locker' locker.id %}?q={{locker.id}}">{{locker.email|truncatechars:10}}... </span></a>
-      <div style="height:100%;width:100%">
+{% block content %}
+    {% csrf_token %}
+    {%load static%}
+    <form class="form" method="POST" action="">
+        {% csrf_token %}
+        
+            
+    
         </div>
-      </a>
-    </td>
-          <td>
-              {{locker.kluisnummer}}
-               </td>
-               <td>{{locker.sleutels}}</td>
-                  <td>{{locker.verhuurd}}</td>
-                  {% if locker.owners.count > 0 %}
-                  <td>{{locker.owners.count}}</td>
-                     {% else %}
-                 <td>----</td>
-        {% endif%}
-    {% endfor %}
-    </tr>
-  </tbody>
-</table>
-{% comment %}
-<table class="viking-table">
-    <thead>
-      <hr>
-      <tr>
-        <th>Lockers:</th>
-        <th></th>
-        <th></th>
-        <th></th>
-        <th>Onderhuur</th>
-        <th></th>
-      </tr>
-    </thead>
-    <tbody>
-      {% for locker in object_list %}
-      <tr>
+<!--  -->
 
-      <td>
-        <a href="{% url 'update-locker' locker.id %}?q={{locker.id}}">{{locker.topic}} {{locker.kluisnummer}}{{locker.obsolete}} {% if locker.obsolete %}
-          opheffen
-          {% else %}
-          {{locker.obsolete}}
-        {% endif %}
-</span></a>
-        <div style="height:100%;width:100%">
-          </div>
-        </a>
-      </td>
-            <td>
-                {{locker.lockername}}
-                 </td>
-                 <td>
-                    <td>
-                        {% if locker.kluisnummer == '----' %}
-                          ------
-                          {% else %}
-
-                          {{locker.email|slice:"0:8"}}
-                        {% endif %}
-                      </td> 
-                    <td>
-                      {% for own in locker.owners.all %}
-                      {{own.email|slice:"9"}}... <br>
-                      {% endfor %}
-                      {% if locker.owner%}
-                      {% endif %}
-                    </td> </td>
-
+<!--  -->
           
-      {% endfor %}
-      </tr>
-    </tbody>
-  </table>
-  {% endcomment %}
+   <table class="viking-table">
+       <thead>
+           <caption>  {{entrants_in.count}} LOCKERS IN {{lockers_in.count}}; LOCKERS OUT {{lockers_out.count}} </caption>
+           <tr>
+               <th>#</th>
+               {% for k in header %}
+               
+               <th>{{k}}</th>
+               {% endfor %}
+            </tr>
+        </thead>
+        <tbody>
+            
+            {% for rij in lockers_in %}
+            <td></td>
+            <td> {{rij.id}}</td>
+            <td> <a href="{% url 'update-locker' rij.id  %}">  {{rij.topic}} </td> 
+                <td> <a href="{% url 'update-locker' rij.id %}">   {{rij.email|slice:"0:12"}}...   </td> 
+                    <td> {{ rij.verhuurd }} </td>
+                    <td> {{ rij.opgezegd }} </td>
+                    <td> {{ rij.tekst|slice:"0:20"}}... </td>
+                    <td> {{ rij.code }} </td>
+                    <td> {{ rij.updated|date:"SHORT_DATE_FORMAT" }} </td>
+                    <td> <a href="{% url 'update-locker' rij.id %}">   </td>
+                                        </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                            <hr>
+                            {% if lockers_out.count > 0 %}
+                            <table class="viking-table">
+                                <thead>
+                                    <caption>  {{lockers_out.count}} LOCKERS OUT {{table}} </caption>
+                                    <tr>
+                                        <th>#</th>
+                                        {% for k in header %}
+                                        
+                                        <th>{{k}}</th>
+                                        {% endfor %}
+                                     </tr>
+                                 </thead>
+                                 <tbody>
+                                     
+                                     {% for rij in lockers_out %}
+                                     <td></td>
+                                     <td> {{rij.id}}</td>
+                                     <td> <a href="{% url 'update-locker' rij.id  %}">  {{rij.topic}} </td> 
+                                         <td> <a href="{% url 'update-locker' rij.id %}">   {{rij.email|slice:"0:12"}}...   </td> 
+                                             <td> {{ rij.verhuurd }} </td>
+                                             <td> {{ rij.opgezegd }} </td>
+                                             <td> {{ rij.tekst|slice:"0:20"}}... </td>
+                                             <td> {{ rij.code }} </td>
+                                             <td> {{ rij.updated|date:"SHORT_DATE_FORMAT" }} </td>
+                                             <td> <a href="{% url 'update-locker' rij.id %}">   </td>
+                                                                 </tr>
+                                                             {% endfor %}
+                                                                                  </tbody>
+                                                     </table>
+                                                    </form>
+                                                    {%endif%}                         
+                            <a class="btn btn--main btn--pill" href="{% url 'lockers' %}">Home</a>
+                        
+
+    {% endblock %}
