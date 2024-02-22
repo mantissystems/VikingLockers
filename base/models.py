@@ -102,7 +102,7 @@ class Locker(models.Model):
     email = models.CharField(max_length=200,default='--')
     nieuwe_huurder = models.CharField(max_length=200,default='--')
     vorige_huurder = models.CharField(max_length=200,default='--')
-    kluisje = models.CharField(max_length=200)
+    label = models.CharField(max_length=200)
     type = models.CharField(max_length=18, choices=SLOT,default='--')     
     topic = models.CharField(max_length=18,default='----')     
     verhuurd=models.BooleanField(default=False)
