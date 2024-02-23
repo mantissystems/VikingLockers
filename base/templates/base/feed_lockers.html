@@ -39,8 +39,6 @@
                                     {% endfor %}
                                 </tbody>
                             </table>
-                            <hr>
-                            <br>
                             {% if lockers_out.count > 0 %}
                             <table class="viking-table">
                                 <thead>
@@ -72,8 +70,8 @@
                                                      </table>
                                                     </form>
                                                     {%endif%}                         
+                                                    <a class="btn btn--main btn--pill" href="{% url 'lockers' %}">Home</a>
                                                     {%comment%}
-                            <a class="btn btn--main btn--pill" href="{% url 'lockers' %}">Home</a>
                         {%endcomment%}
 
     {% endblock %}
