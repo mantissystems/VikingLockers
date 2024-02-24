@@ -113,18 +113,18 @@ def home(request):
     B=Q(email__icontains='wachtlijst')
     C=Q(obsolete=True)
     D=Q(opgezegd=True)
-    onverhuurd =Locker.objects.all().filter(  A | B  | C | D ).order_by('topic')
+    onverhuurd =Locker.objects.all().filter(  A | B  | C | D ).order_by('locker')
     verhuurd =Locker.objects.filter(
         (Q(verhuurd=True)
         ) 
-    ).order_by('topic')
+    ).order_by('locker')
 
     lockers =Locker.objects.filter(
     Q(kluisnummer__icontains=q) |
     Q(email__icontains=q)|
     Q(tekst__icontains=q)&
     Q(verhuurd=True)
-    ).order_by('topic')# .exclude(id__in=onverhuurd_lijst)
+    ).order_by('locker')# .exclude(id__in=onverhuurd_lijst)
     messagelocker=Locker.objects.all().first()    
     entrants_in=lockers
     rest=verhuurd.count() - onverhuurd.count() 
@@ -198,7 +198,7 @@ def get_queryset(self): # new
     queryset = Locker.objects.filter(
         Q(verhuurd=True)&
         Q(email__in=users_found) 
-    ).order_by('-updated','topic')
+    ).order_by('-updated','locker')
     return queryset
 paginate_by = 10
 def get_context_data(self, **kwargs):
@@ -220,14 +220,14 @@ def helpPage(request):
     verhuurd =Locker.objects.filter(
         (Q(verhuurd=True)
         ) 
-        ).order_by('topic')
+        ).order_by('locker')
     A=Q(email__icontains='vrij')
     B=Q(email__icontains='bekend')
     C=Q(obsolete=True)
     D=Q(opgezegd=True)
     E=Q(email__icontains='--')
     F=Q(email__icontains='==')
-    onverhuurd =Locker.objects.all().filter( A | B |  C | D | E | F ).order_by('topic')
+    onverhuurd =Locker.objects.all().filter( A | B |  C | D | E | F ).order_by('locker')
     messages.add_message(request, messages.INFO, f"{aantalusers.count()}", extra_tags="dragonball")
 
     helptekst=Helptekst.objects.filter(
@@ -1318,7 +1318,7 @@ def lockersPage2(request):
     Q(kluisnummer__icontains=q) |
     Q(email__icontains=q)|
     Q(tekst__icontains=q) 
-    ).order_by('topic')# .exclude(id__in=onverhuurd_lijst)
+    ).order_by('locker')# .exclude(id__in=onverhuurd_lijst)
 
     context = {
                 'verhuurd': verhuurd,
@@ -1344,8 +1344,8 @@ def all_entrantsPage(request):
     (Q(kluisnummer__icontains=q) |
     Q(email__icontains=q)|
     Q(tekst__icontains=q)|
-    Q(topic__icontains=q)) & Q(verhuurd=True)
-    ).order_by('topic')# .exclude(id__in=onverhuurd_lijst)
+    Q(locker__icontains=q)) & Q(verhuurd=True)
+    ).order_by('locker')# .exclude(id__in=onverhuurd_lijst)
 
     isin = (Locker.objects
         .values('email')
@@ -1401,8 +1401,8 @@ def all_entrantsPage(request):
     (Q(kluisnummer__icontains=q) |
     Q(email__icontains=q)|
     Q(tekst__icontains=q)|
-    Q(topic__icontains=q)) & Q(verhuurd=False)
-    ).order_by('topic')# .exclude(id__in=onverhuurd_lijst)
+    Q(locker__icontains=q)) & Q(verhuurd=False)
+    ).order_by('locker')# .exclude(id__in=onverhuurd_lijst)
 
     context = {
     'entrants_in':entrants_in,

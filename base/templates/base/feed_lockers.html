@@ -27,7 +27,7 @@
             {% for rij in lockers_in %}
             <td></td>
             <td> {{rij.id}}</td>
-            <td> <a href="{% url 'update-locker' rij.id  %}">  {{rij.topic}} </td> 
+            <td> <a href="{% url 'update-locker' rij.id  %}">  {{rij.locker}} </td> 
                 <td> <a href="{% url 'update-locker' rij.id %}">   {{rij.email|slice:"0:12"}}...   </td> 
                     <td> {{ rij.verhuurd }} </td>
                     <td> {{ rij.opgezegd }} </td>
@@ -56,7 +56,7 @@
                                      {% for rij in lockers_out %}
                                      <td></td>
                                      <td> {{rij.id}}</td>
-                                     <td> <a href="{% url 'update-locker' rij.id  %}">  {{rij.topic}} </td> 
+                                     <td> <a href="{% url 'update-locker' rij.id  %}">  {{rij.locker}} </td> 
                                          <td> <a href="{% url 'update-locker' rij.id %}">   {{rij.email|slice:"0:12"}}...   </td> 
                                              <td> {{ rij.verhuurd }} </td>
                                              <td> {{ rij.opgezegd }} </td>
