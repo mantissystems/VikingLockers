@@ -97,94 +97,168 @@ def registerPage(request):
 
     return render(request, 'base/login_register.html', {'form': form})
 
+class Home(ListView):
+    model=Locker
+    # template_name='home.html'
+    template_name='base/home.html'
+    # form_class=FormatForm
+    context_object_name = "locker_list"
 
-def home(request):
-    lijst='home'
-    system_messages = messages.get_messages(request)
-    for message in system_messages:
-     print()
-    # This iteration is necessary to clear messages
-     pass
-    messages.set_level(request, messages.INFO)
-    q = request.GET.get('q') if request.GET.get('q') != None else ''
-    qq=q.lower()
-    A=Q(email__icontains='vrij')
-    B=Q(email__icontains='onbekend')
-    B=Q(email__icontains='wachtlijst')
-    C=Q(obsolete=True)
-    D=Q(opgezegd=True)
-    onverhuurd =Locker.objects.all().filter(  A | B  | C | D ).order_by('locker')
-    verhuurd =Locker.objects.filter(
-        (Q(verhuurd=True)
-        ) 
-    ).order_by('locker')
+    def get_queryset(self) :
+        queryset=Locker.objects.all().filter(verhuurd=True).order_by('locker')
+        return queryset
+    
+    def get_context_data(self, **kwargs):
+        q = self.request.GET.get('q') if self.request.GET.get('q') != None else ''
+        print('in lockerlistview get_context_data:',q)
+        s='base_locker';l=len(s)+1
+        verh=Q(locker__icontains=q)
+        headers=Locker.objects.all().query.get_meta().fields 
+        fields=['id','kluisnummer','email','tekst','verhuurd','opgezegd','updated','code']
+        header=[]
+        for k in headers:
+            if str(k)[l:] in fields:
+                header.append(str(k)[l:])              
 
-    lockers =Locker.objects.filter(
-    Q(kluisnummer__icontains=q) |
-    Q(email__icontains=q)|
-    Q(tekst__icontains=q)&
-    Q(verhuurd=True)
-    ).order_by('locker')# .exclude(id__in=onverhuurd_lijst)
-    messagelocker=Locker.objects.all().first()    
-    entrants_in=lockers
-    rest=verhuurd.count() - onverhuurd.count() 
-    if request.method == 'POST':
-            message = Bericht.objects.create(
-            user=request.user,
-            locker=messagelocker,
-            body=request.POST.get('body')
-        )
-    if not request.user.is_authenticated:
-        print('1.not-auth:', request.user)
-        count=9
-        url = "/berichten/"
-        qs_in=Locker.objects.all().filter(verhuurd=True)
-        qs_outd=Locker.objects.all().filter(verhuurd=False,kluisnummer__icontains='dames').exclude(obsolete=True).exclude(opgezegd=True)
-        qs_outh=Locker.objects.all().filter(verhuurd=False,kluisnummer__icontains='heren').exclude(obsolete=True).exclude(opgezegd=True)
-        messages.add_message(request, messages.INFO, "Welkom bij Viking Lockers.")    
-        messages.add_message(request, messages.INFO, f"{qs_in.count()} lockers bezet.")    
-        messages.add_message(request, messages.INFO, f"{qs_outh.count()} bij Heren onbezet.")    
-        messages.add_message(request, messages.INFO, f"{qs_outd.count()} bij Dames  onbezet.")    
-        messages.add_message(request, messages.INFO, f"Vraag een locker aan via vikinglockers@mantisbv.nl")    
-        messages.add_message(request, messages.ERROR, "U bent niet ingelogd. Svp Inloggen / Registreren", extra_tags="dragonball")
-        return HttpResponseRedirect(url)
-    if request.user.is_authenticated:
-        print('1.authorised:', request.user)
-    messages.add_message(request, messages.INFO, "Welkom bij Lockermanager", extra_tags="dragonball")
-
-    storage = messages.get_messages(request)
-    if 'xls' in qq:
-        x = qq.replace("xls ", "")
-        q=x
-        queryset = Excellijst.objects.filter(
+        obs= Q(obsolete=True)
+        context = super().get_context_data(**kwargs)
+        qs_in=Locker.objects.all().filter(verhuurd=True).order_by('locker')
+        qs_out=Locker.objects.all().exclude(obs).filter(verhuurd=False).order_by('locker')
+        if 'verhuurd' in q and q:
+            verh= Q(verhuurd=True)
+        qs_in =Locker.objects.exclude(obs).filter(
+        (Q(kluisnummer__icontains=q) |
+        Q(vorige_huurder__icontains=q)|
+        Q(nieuwe_huurder__icontains=q)|
         Q(email__icontains=q)|
-        Q(type__icontains=q)|
-        Q(excel__icontains=q)|
-        Q(kluisnummer__icontains=q)
-        ).order_by('kluisnummer')
-        url = "excellijst" + "?q=" +q 
-        return HttpResponseRedirect(url)
-    elif 'fact' in qq:
-        x = qq.replace("fact ", "")
-        # print(x)
-        q=x
-        url = "facturatielijst" + "?q=" +q 
-        return HttpResponseRedirect(url)
-    elif 'pers' in qq:
-        x = qq.replace("pers ", "")
-        q=x
-        url = "profiles" + "?q=" +q 
-        return HttpResponseRedirect(url)
-    elif 'usr' in qq:
-        x = qq.replace("usr ", "")
-        q=x
-        url = "users" + "?q=" +q 
-        return HttpResponseRedirect(url)
+        Q(code__contains=q)|
+        Q(tekst__icontains=q)| verh )
+        ).order_by('locker')
+        if q:qs_out=None
+        if not q: qs_in = self.get_queryset()
+        context["lockers_in"] = qs_in
+        context["lockers_out"] =qs_out
+        self.object_list = qs_in
+        context["header"] = header
+        context["table"] = s
+        return context
 
-    else:
-        print('else:',q)
-        url = "lockerview"  + "?q=" +q
-        return HttpResponseRedirect(url)
+    def post(self,request,**kwargs):
+        q = self.request.GET.get('q') if self.request.GET.get('q') != None else ''
+        qs_in =Locker.objects.filter(
+        Q(kluisnummer__icontains=q) |
+        Q(email__icontains=q)|
+        Q(tekst__icontains=q)&
+        Q(verhuurd=True)
+        ).order_by('locker')
+        if not q:
+            qs = self.get_queryset()
+            qs=Locker.objects.all().filter(verhuurd=True).order_by('locker')
+
+        else:
+            qs=qs_in
+        data_set=LockeradminResource().export(qs)
+        format=request.POST.get('format')
+        if format=='xls': ds=data_set.xls
+        elif format=='csv': ds=data_set.csv
+        else: 
+            ds=data_set.json
+        response=HttpResponse(ds,content_type=f"{format}")
+        response['Content-Disposition'] = f"attachment;filename=lockers.{format}"
+        return response
+# ---------------------------------------------------------------------------
+
+# def home(request):
+#     lijst='home'
+#     system_messages = messages.get_messages(request)
+#     for message in system_messages:
+#      print()
+#     # This iteration is necessary to clear messages
+#      pass
+#     messages.set_level(request, messages.INFO)
+#     q = request.GET.get('q') if request.GET.get('q') != None else ''
+#     qq=q.lower()
+#     A=Q(email__icontains='vrij')
+#     B=Q(email__icontains='onbekend')
+#     B=Q(email__icontains='wachtlijst')
+#     C=Q(obsolete=True)
+#     D=Q(opgezegd=True)
+#     onverhuurd =Locker.objects.all().filter(  A | B  | C | D ).order_by('locker')
+#     verhuurd =Locker.objects.filter(
+#         (Q(verhuurd=True)
+#         ) 
+#     ).order_by('locker')
+
+#     lockers =Locker.objects.filter(
+#     Q(kluisnummer__icontains=q) |
+#     Q(email__icontains=q)|
+#     Q(tekst__icontains=q)&
+#     Q(verhuurd=True)
+#     ).order_by('locker')# .exclude(id__in=onverhuurd_lijst)
+#     messagelocker=Locker.objects.all().first()    
+#     entrants_in=lockers
+#     rest=verhuurd.count() - onverhuurd.count() 
+#     if request.method == 'POST':
+#             message = Bericht.objects.create(
+#             user=request.user,
+#             locker=messagelocker,
+#             body=request.POST.get('body')
+#         )
+#     if not request.user.is_authenticated:
+#         print('1.not-auth:', request.user)
+#         count=9
+#         url = "/berichten/"
+#         qs_in=Locker.objects.all().filter(verhuurd=True)
+#         qs_outd=Locker.objects.all().filter(verhuurd=False,kluisnummer__icontains='dames').exclude(obsolete=True).exclude(opgezegd=True)
+#         qs_outh=Locker.objects.all().filter(verhuurd=False,kluisnummer__icontains='heren').exclude(obsolete=True).exclude(opgezegd=True)
+#         messages.add_message(request, messages.INFO, "Welkom bij Viking Lockers.")    
+#         messages.add_message(request, messages.INFO, f"{qs_in.count()} lockers bezet.")    
+#         messages.add_message(request, messages.INFO, f"{qs_outh.count()} bij Heren onbezet.")    
+#         messages.add_message(request, messages.INFO, f"{qs_outd.count()} bij Dames  onbezet.")    
+#         messages.add_message(request, messages.INFO, f"Vraag een locker aan via vikinglockers@mantisbv.nl")    
+#         messages.add_message(request, messages.ERROR, "U bent niet ingelogd. Svp Inloggen / Registreren", extra_tags="dragonball")
+#         return HttpResponseRedirect(url)
+#     if request.user.is_authenticated:
+#         print('1.authorised:', request.user)
+#     messages.add_message(request, messages.INFO, "Welkom bij Lockermanager", extra_tags="dragonball")
+
+#     storage = messages.get_messages(request)
+#     if 'xls' in qq:
+#         x = qq.replace("xls ", "")
+#         q=x
+#         queryset = Excellijst.objects.filter(
+#         Q(email__icontains=q)|
+#         Q(type__icontains=q)|
+#         Q(excel__icontains=q)|
+#         Q(kluisnummer__icontains=q)
+#         ).order_by('kluisnummer')
+#         url = "excellijst" + "?q=" +q 
+#         return HttpResponseRedirect(url)
+#     elif 'fact' in qq:
+#         x = qq.replace("fact ", "")
+#         # print(x)
+#         q=x
+#         url = "facturatielijst" + "?q=" +q 
+#         return HttpResponseRedirect(url)
+#     elif 'pers' in qq:
+#         x = qq.replace("pers ", "")
+#         q=x
+#         url = "profiles" + "?q=" +q 
+#         return HttpResponseRedirect(url)
+#     elif 'usr' in qq:
+#         x = qq.replace("usr ", "")
+#         q=x
+#         url = "users" + "?q=" +q 
+#         return HttpResponseRedirect(url)
+
+#     # else:
+#     #     print('else:',q)
+#     #     url = "lockerview"  + "?q=" +q
+#     #     return HttpResponseRedirect(url)
+#     context={
+#         'lockers_in':lockers,
+#     }
+#     return render(request, 'base/home.html', context)
 
 class LockerView (LoginRequiredMixin,ListView):
     login_url='login'
