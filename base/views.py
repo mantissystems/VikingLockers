@@ -97,7 +97,7 @@ def registerPage(request):
 
     return render(request, 'base/login_register.html', {'form': form})
 
-class Home(ListView):
+class HomeView(ListView):
     model=Locker
     # template_name='home.html'
     template_name='base/home.html'
@@ -110,7 +110,7 @@ class Home(ListView):
     
     def get_context_data(self, **kwargs):
         q = self.request.GET.get('q') if self.request.GET.get('q') != None else ''
-        print('in lockerlistview get_context_data:',q)
+        print('in homeView get_context_data:',q)
         s='base_locker';l=len(s)+1
         verh=Q(locker__icontains=q)
         headers=Locker.objects.all().query.get_meta().fields 
@@ -125,13 +125,14 @@ class Home(ListView):
         qs_in=Locker.objects.all().filter(verhuurd=True).order_by('locker')
         qs_out=Locker.objects.all().exclude(obs).filter(verhuurd=False).order_by('locker')
         if 'verhuurd' in q and q:
+            print('q:->',q)
             verh= Q(verhuurd=True)
         qs_in =Locker.objects.exclude(obs).filter(
         (Q(kluisnummer__icontains=q) |
         Q(vorige_huurder__icontains=q)|
         Q(nieuwe_huurder__icontains=q)|
         Q(email__icontains=q)|
-        Q(code__contains=q)|
+        Q(code__icontains=q)|
         Q(tekst__icontains=q)| verh )
         ).order_by('locker')
         if q:qs_out=None
@@ -1310,76 +1311,76 @@ def update_locker(request,pk):
         url = reverse('update-locker2', kwargs={'pk':locker.id})
         return HttpResponseRedirect(url)
 # ---------------------------------------------------------------------------    
-class LockerListView(ListView,FormView):
-    model=Locker
-    # template_name='home.html'
-    template_name='base/lockerview_list.html'
-    form_class=FormatForm
-    context_object_name = "locker_list"
+# class LockerListView(ListView,FormView):
+#     model=Locker
+#     # template_name='home.html'
+#     template_name='base/lockerview_list.html'
+#     form_class=FormatForm
+#     context_object_name = "locker_list"
 
-    def get_queryset(self) :
-        queryset=Locker.objects.all().filter(verhuurd=True).order_by('locker')
-        return queryset
+#     def get_queryset(self) :
+#         queryset=Locker.objects.all().filter(verhuurd=True).order_by('locker')
+#         return queryset
     
-    def get_context_data(self, **kwargs):
-        q = self.request.GET.get('q') if self.request.GET.get('q') != None else ''
-        print('in lockerlistview get_context_data:',q)
-        s='base_locker';l=len(s)+1
-        verh=Q(locker__icontains=q)
-        headers=Locker.objects.all().query.get_meta().fields 
-        fields=['id','kluisnummer','email','tekst','verhuurd','opgezegd','updated','code']
-        header=[]
-        for k in headers:
-            if str(k)[l:] in fields:
-                header.append(str(k)[l:])              
+#     def get_context_data(self, **kwargs):
+#         q = self.request.GET.get('q') if self.request.GET.get('q') != None else ''
+#         print('in lockerlistview get_context_data:',q)
+#         s='base_locker';l=len(s)+1
+#         verh=Q(locker__icontains=q)
+#         headers=Locker.objects.all().query.get_meta().fields 
+#         fields=['id','kluisnummer','email','tekst','verhuurd','opgezegd','updated','code']
+#         header=[]
+#         for k in headers:
+#             if str(k)[l:] in fields:
+#                 header.append(str(k)[l:])              
 
-        obs= Q(obsolete=True)
-        context = super().get_context_data(**kwargs)
-        qs_in=Locker.objects.all().filter(verhuurd=True).order_by('locker')
-        qs_out=Locker.objects.all().exclude(obs).filter(verhuurd=False).order_by('locker')
-        if 'verhuurd' in q and q:
-            verh= Q(verhuurd=True)
-        qs_in =Locker.objects.exclude(obs).filter(
-        (Q(kluisnummer__icontains=q) |
-        Q(vorige_huurder__icontains=q)|
-        Q(nieuwe_huurder__icontains=q)|
-        Q(email__icontains=q)|
-        Q(code__contains=q)|
-        Q(tekst__icontains=q)| verh )
-        ).order_by('locker')
-        if q:qs_out=None
-        if not q: qs_in = self.get_queryset()
-        context["lockers_in"] = qs_in
-        context["lockers_out"] =qs_out
-        self.object_list = qs_in
-        context["header"] = header
-        context["table"] = s
-        return context
+#         obs= Q(obsolete=True)
+#         context = super().get_context_data(**kwargs)
+#         qs_in=Locker.objects.all().filter(verhuurd=True).order_by('locker')
+#         qs_out=Locker.objects.all().exclude(obs).filter(verhuurd=False).order_by('locker')
+#         if 'verhuurd' in q and q:
+#             verh= Q(verhuurd=True)
+#         qs_in =Locker.objects.exclude(obs).filter(
+#         (Q(kluisnummer__icontains=q) |
+#         Q(vorige_huurder__icontains=q)|
+#         Q(nieuwe_huurder__icontains=q)|
+#         Q(email__icontains=q)|
+#         Q(code__contains=q)|
+#         Q(tekst__icontains=q)| verh )
+#         ).order_by('locker')
+#         if q:qs_out=None
+#         if not q: qs_in = self.get_queryset()
+#         context["lockers_in"] = qs_in
+#         context["lockers_out"] =qs_out
+#         self.object_list = qs_in
+#         context["header"] = header
+#         context["table"] = s
+#         return context
 
-    def post(self,request,**kwargs):
-        q = self.request.GET.get('q') if self.request.GET.get('q') != None else ''
-        qs_in =Locker.objects.filter(
-        Q(kluisnummer__icontains=q) |
-        Q(email__icontains=q)|
-        Q(tekst__icontains=q)&
-        Q(verhuurd=True)
-        ).order_by('locker')
-        if not q:
-            qs = self.get_queryset()
-            qs=Locker.objects.all().filter(verhuurd=True).order_by('locker')
+#     def post(self,request,**kwargs):
+#         q = self.request.GET.get('q') if self.request.GET.get('q') != None else ''
+#         qs_in =Locker.objects.filter(
+#         Q(kluisnummer__icontains=q) |
+#         Q(email__icontains=q)|
+#         Q(tekst__icontains=q)&
+#         Q(verhuurd=True)
+#         ).order_by('locker')
+#         if not q:
+#             qs = self.get_queryset()
+#             qs=Locker.objects.all().filter(verhuurd=True).order_by('locker')
 
-        else:
-            qs=qs_in
-        data_set=LockeradminResource().export(qs)
-        format=request.POST.get('format')
-        if format=='xls': ds=data_set.xls
-        elif format=='csv': ds=data_set.csv
-        else: 
-            ds=data_set.json
-        response=HttpResponse(ds,content_type=f"{format}")
-        response['Content-Disposition'] = f"attachment;filename=lockers.{format}"
-        return response
-# ---------------------------------------------------------------------------
+#         else:
+#             qs=qs_in
+#         data_set=LockeradminResource().export(qs)
+#         format=request.POST.get('format')
+#         if format=='xls': ds=data_set.xls
+#         elif format=='csv': ds=data_set.csv
+#         else: 
+#             ds=data_set.json
+#         response=HttpResponse(ds,content_type=f"{format}")
+#         response['Content-Disposition'] = f"attachment;filename=lockers.{format}"
+#         return response
+# # ---------------------------------------------------------------------------
 def lockersPage2(request):
     q = request.GET.get('q') if request.GET.get('q') != None else ''
     kluisjes=Locker.objects.all().filter(verhuurd=True)     
