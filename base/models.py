@@ -98,7 +98,7 @@ class Areset(models.Model):
         return self.name
     
 class Locker(models.Model):
-    kluisnummer = models.CharField(max_length=200)
+    lockerlabel = models.CharField(max_length=200)
     email = models.CharField(max_length=200,default='--')
     nieuwe_huurder = models.CharField(max_length=200,default='--')
     vorige_huurder = models.CharField(max_length=200,default='--')
@@ -117,9 +117,9 @@ class Locker(models.Model):
     updated = models.DateTimeField(auto_now=True)
 
     class Meta:
-        ordering = ['kluisnummer']
+        ordering = ['lockerlabel']
     def __str__(self):
-        return self.kluisnummer
+        return self.lockerlabel
     
     def get_next(self):
         next = Locker.objects.filter(id__gt=self.id).order_by('id').first()
@@ -130,7 +130,7 @@ class Locker(models.Model):
             return Locker.objects.all().order_by('id').first()     
         
 class Facturatielijst(models.Model):
-    kluisnummer = models.CharField(max_length=200)
+    lockerlabel = models.CharField(max_length=200)
     email = models.CharField(max_length=200)
     in_excel = models.CharField(max_length=200,default='----')     
     renum = models.CharField(max_length=200, null=True)
@@ -145,7 +145,7 @@ class Facturatielijst(models.Model):
         ordering = ['email']
 
 class Excellijst(models.Model):
-    kluisnummer = models.CharField(max_length=200)
+    lockerlabel = models.CharField(max_length=200)
     email = models.CharField(max_length=200)
     excel = models.CharField(max_length=200,default='----')     
     type = models.CharField(max_length=18, choices=SLOT,default='--')     

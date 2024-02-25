@@ -114,7 +114,7 @@ class HomeView(ListView):
         s='base_locker';l=len(s)+1
         verh=Q(locker__icontains=q)
         headers=Locker.objects.all().query.get_meta().fields 
-        fields=['id','kluisnummer','email','tekst','verhuurd','opgezegd','updated','code']
+        fields=['id','lockerlabel','email','tekst','verhuurd','opgezegd','updated','code']
         header=[]
         for k in headers:
             if str(k)[l:] in fields:
@@ -128,7 +128,7 @@ class HomeView(ListView):
             print('q:->',q)
             verh= Q(verhuurd=True)
         qs_in =Locker.objects.exclude(obs).filter(
-        (Q(kluisnummer__icontains=q) |
+        (Q(lockerlabel__icontains=q) |
         Q(vorige_huurder__icontains=q)|
         Q(nieuwe_huurder__icontains=q)|
         Q(email__icontains=q)|
@@ -147,7 +147,7 @@ class HomeView(ListView):
     def post(self,request,**kwargs):
         q = self.request.GET.get('q') if self.request.GET.get('q') != None else ''
         qs_in =Locker.objects.filter(
-        Q(kluisnummer__icontains=q) |
+        Q(lockerlabel__icontains=q) |
         Q(email__icontains=q)|
         Q(tekst__icontains=q)&
         Q(verhuurd=True)
@@ -191,7 +191,7 @@ class HomeView(ListView):
 #     ).order_by('locker')
 
 #     lockers =Locker.objects.filter(
-#     Q(kluisnummer__icontains=q) |
+#     Q(lockerlabel__icontains=q) |
 #     Q(email__icontains=q)|
 #     Q(tekst__icontains=q)&
 #     Q(verhuurd=True)
@@ -210,8 +210,8 @@ class HomeView(ListView):
 #         count=9
 #         url = "/berichten/"
 #         qs_in=Locker.objects.all().filter(verhuurd=True)
-#         qs_outd=Locker.objects.all().filter(verhuurd=False,kluisnummer__icontains='dames').exclude(obsolete=True).exclude(opgezegd=True)
-#         qs_outh=Locker.objects.all().filter(verhuurd=False,kluisnummer__icontains='heren').exclude(obsolete=True).exclude(opgezegd=True)
+#         qs_outd=Locker.objects.all().filter(verhuurd=False,lockerlabel__icontains='dames').exclude(obsolete=True).exclude(opgezegd=True)
+#         qs_outh=Locker.objects.all().filter(verhuurd=False,lockerlabel__icontains='heren').exclude(obsolete=True).exclude(opgezegd=True)
 #         messages.add_message(request, messages.INFO, "Welkom bij Viking Lockers.")    
 #         messages.add_message(request, messages.INFO, f"{qs_in.count()} lockers bezet.")    
 #         messages.add_message(request, messages.INFO, f"{qs_outh.count()} bij Heren onbezet.")    
@@ -231,8 +231,8 @@ class HomeView(ListView):
 #         Q(email__icontains=q)|
 #         Q(type__icontains=q)|
 #         Q(excel__icontains=q)|
-#         Q(kluisnummer__icontains=q)
-#         ).order_by('kluisnummer')
+#         Q(lockerlabel__icontains=q)
+#         ).order_by('lockerlabel')
 #         url = "excellijst" + "?q=" +q 
 #         return HttpResponseRedirect(url)
 #     elif 'fact' in qq:
@@ -288,8 +288,8 @@ def helpPage(request):
     q = request.GET.get('q') if request.GET.get('q') != None else ''
     aantalusers=User.objects.all()
     results = (Locker.objects
-    .values('kluisnummer')
-    .annotate(dcount=Count('kluisnummer'))
+    .values('lockerlabel')
+    .annotate(dcount=Count('lockerlabel'))
     .order_by()
     )   
     verhuurd =Locker.objects.filter(
@@ -352,7 +352,7 @@ def updateUser(request):
                 messages.success(request, f'Uw locker opheffen?: {user.locker}')
                 print('locker opheffen?')
             ploeg, created = Ploeg.objects.get_or_create(name=team)
-            locker, created = Locker.objects.update_or_create(kluisnummer=user.locker,
+            locker, created = Locker.objects.update_or_create(lockerlabel=user.locker,
                                                            email=user.email,
                                                            kluisje=user.locker)
             try:
@@ -413,7 +413,7 @@ class updateUser3(LoginRequiredMixin,UpdateView):
     fields = ['username','first_name','email','locker']
     success_url = reverse_lazy('users')
     def get_object(self):
-        # obj = get_object_or_404(Locker, kluisnummer__slug=self.kwargs['pk'], slug=self.kwargs['pk'] )
+        # obj = get_object_or_404(Locker, lockerlabel__slug=self.kwargs['pk'], slug=self.kwargs['pk'] )
         obj = get_object_or_404(User, id=self.kwargs['pk'])
         return obj
 
@@ -431,7 +431,7 @@ class updateUser_email(LoginRequiredMixin,UpdateView):
     success_url = reverse_lazy('users')
     def get_object(self):
         print(self.kwargs['kluis'])
-        obj = get_object_or_404(Locker, kluisnummer=self.kwargs['kluis'],)# slug=self.kwargs['kluis'] )
+        obj = get_object_or_404(Locker, lockerlabel=self.kwargs['kluis'],)# slug=self.kwargs['kluis'] )
         return obj
     def get_context_data(self,**kwargs):
         locker=self.get_object()
@@ -443,7 +443,7 @@ class updateUser_email(LoginRequiredMixin,UpdateView):
         return context
 
     def form_valid(self, form):
-        kluis = form.cleaned_data['kluisnummer']  
+        kluis = form.cleaned_data['lockerlabel']  
         email = form.cleaned_data['email'] 
         if kluis:
             print(kluis)
@@ -484,7 +484,7 @@ def myProfile(request):
         if request.POST.get('locker'):
             print('requested', request.POST.get('locker'))            
             locker, created = Locker.objects.update_or_create(
-            kluisnummer=request.POST.get('locker'),
+            lockerlabel=request.POST.get('locker'),
             email=request.POST.get('locker'),
             verhuurd=False,
             kluisje=request.POST.get('locker'))
@@ -492,7 +492,7 @@ def myProfile(request):
             print('invalid')
         if form.is_valid():
             locker, created = Locker.objects.update_or_create(
-            kluisnummer=request.POST.get('locker'),
+            lockerlabel=request.POST.get('locker'),
             email=user.email,
             verhuurd=False,
             kluisje=request.POST.get('locker'))
@@ -514,7 +514,7 @@ def excelPage(request):
     q = request.GET.get('q') if request.GET.get('q') != None else ''
     lijst='excellijst'
     menuoptie='bijwerken'
-    lockers = Excellijst.objects.filter(kluisnummer__icontains=q)
+    lockers = Excellijst.objects.filter(lockerlabel__icontains=q)
     if request.method == 'POST':
         qs=Facturatielijst.objects.all()
         for f in qs:
@@ -523,13 +523,13 @@ def excelPage(request):
                 f.save()
             elif Excellijst.objects.filter(email=f.email).exists():
                 f.in_excel='in_excel'
-            elif  '--' in f.kluisnummer:
+            elif  '--' in f.lockerlabel:
                 f.type='vrij'
                 f.save()
             # else:
             #     f.save()
             
-        lockers = Excellijst.objects.filter(kluisnummer__icontains=q)
+        lockers = Excellijst.objects.filter(lockerlabel__icontains=q)
         return redirect('home')
     return render(request, 'base/delete.html', {'lockers': lockers,'excellijst':lijst,'menuoptie':menuoptie})
 
@@ -554,7 +554,7 @@ def excel_regelPage(request,pk):
         onderhuurder= request.POST.get('onderhuurder')
         slotcode= request.POST.get('code')
         type= request.POST.get('type')
-        kluis= request.POST.get('kluisnummer')
+        kluis= request.POST.get('lockerlabel')
         sleutels= request.POST.get('sleutels')
         huuropheffen= request.POST.get('huuropheffen')
         print('onderhuurder',kluis, onderhuurder,sleutels,slotcode)
@@ -945,8 +945,8 @@ class ExcelView (LoginRequiredMixin, ListView):
             Q(email__icontains=query)|
             Q(type__icontains=query)|
             Q(excel__icontains=query)|
-            Q(kluisnummer__icontains=query)
-            ).order_by('kluisnummer')
+            Q(lockerlabel__icontains=query)
+            ).order_by('lockerlabel')
         context = {
             'query': query,
             'object_list' :queryset,
@@ -968,7 +968,7 @@ class FacturatieView (LoginRequiredMixin, ListView):
         queryset = Facturatielijst.objects.all().filter(
             Q(email__icontains=query)|
             Q(renum__icontains=query)|
-            Q(kluisnummer__icontains=query)
+            Q(lockerlabel__icontains=query)
             ).order_by('renum')
         # print(queryset.query)
         check=Facturatielijst.objects.all().exclude(type__icontains='--')
@@ -1005,7 +1005,7 @@ class EditFactuur( LoginRequiredMixin,UpdateView):
     login_url = '/login/'
     # redirect_field_name = 'redirect_to'
     model = Facturatielijst
-    fields = ['kluisnummer','email','in_excel','is_registered','sleutels','obsolete']
+    fields = ['lockerlabel','email','in_excel','is_registered','sleutels','obsolete']
     # fields = '__all__'
     success_url = reverse_lazy('facturatielijst')
     
@@ -1094,7 +1094,7 @@ def m2mtotext(request,):
                                                            is_active=True,
                                                            first_name=l.email,
                                                            last_name=l.email,
-                                                           locker=l.kluisnummer,
+                                                           locker=l.lockerlabel,
                                                            password=string,
                                                            )
                         print('created ',user)
@@ -1168,7 +1168,7 @@ def m6(request,pk):
 
 class CreateFactuur(CreateView):
     model = Facturatielijst
-    fields = ['kluisnummer','email',]
+    fields = ['lockerlabel','email',]
     # fields='__all__'
     success_url = reverse_lazy('facturatielijst')
     
@@ -1178,7 +1178,7 @@ class CreateFactuur(CreateView):
     
 class CreateLocker(CreateView):
     model = Locker
-    fields = ['kluisnummer','email','verhuurd']
+    fields = ['lockerlabel','email','verhuurd']
     # fields='__all__'
     success_url = reverse_lazy('facturatielijst')
     def __init__(self, **kwargs):
@@ -1214,7 +1214,7 @@ class CreatePerson(CreateView):
         name = form.cleaned_data['name']  
         email = form.cleaned_data['email'] 
         messages.success(self.request, "U bent op de wachtlijst geplaatst.")
-        # wachtlijst=Locker.objects.get(kluisnummer='wachtlijst')
+        # wachtlijst=Locker.objects.get(lockerlabel='wachtlijst')
         return super(CreatePerson,self).form_valid(form)
 
     def form_invalid(self, form):
@@ -1301,10 +1301,10 @@ def update_locker(request,pk):
     vikingers=Person.objects.all().order_by('name')
     url = "/berichten/"
     if request.user.email != locker.email and not request.user.is_superuser:
-        messages.add_message(request,messages.INFO, f'{locker.kluisnummer} : Is niet uw locker')
+        messages.add_message(request,messages.INFO, f'{locker.lockerlabel} : Is niet uw locker')
         if locker.opgezegd ==True: # and not request.user.is_superuser:
             opgezegd = formats.date_format(locker.opzegdatum, "SHORT_DATE_FORMAT")
-            messages.add_message(request,messages.INFO, f'{locker.kluisnummer} : Huur is opgezegd! per {opgezegd}')
+            messages.add_message(request,messages.INFO, f'{locker.lockerlabel} : Huur is opgezegd! per {opgezegd}')
         return HttpResponseRedirect(url)
         # return HttpResponseRedirect(url)
     else:
@@ -1328,7 +1328,7 @@ def update_locker(request,pk):
 #         s='base_locker';l=len(s)+1
 #         verh=Q(locker__icontains=q)
 #         headers=Locker.objects.all().query.get_meta().fields 
-#         fields=['id','kluisnummer','email','tekst','verhuurd','opgezegd','updated','code']
+#         fields=['id','lockerlabel','email','tekst','verhuurd','opgezegd','updated','code']
 #         header=[]
 #         for k in headers:
 #             if str(k)[l:] in fields:
@@ -1341,7 +1341,7 @@ def update_locker(request,pk):
 #         if 'verhuurd' in q and q:
 #             verh= Q(verhuurd=True)
 #         qs_in =Locker.objects.exclude(obs).filter(
-#         (Q(kluisnummer__icontains=q) |
+#         (Q(lockerlabel__icontains=q) |
 #         Q(vorige_huurder__icontains=q)|
 #         Q(nieuwe_huurder__icontains=q)|
 #         Q(email__icontains=q)|
@@ -1360,7 +1360,7 @@ def update_locker(request,pk):
 #     def post(self,request,**kwargs):
 #         q = self.request.GET.get('q') if self.request.GET.get('q') != None else ''
 #         qs_in =Locker.objects.filter(
-#         Q(kluisnummer__icontains=q) |
+#         Q(lockerlabel__icontains=q) |
 #         Q(email__icontains=q)|
 #         Q(tekst__icontains=q)&
 #         Q(verhuurd=True)
@@ -1390,7 +1390,7 @@ def lockersPage2(request):
     A=Q(email__icontains=q)
     topics=Topic.objects.all()
     verhuurd =Locker.objects.filter(
-    Q(kluisnummer__icontains=q) |
+    Q(lockerlabel__icontains=q) |
     Q(email__icontains=q)|
     Q(tekst__icontains=q) 
     ).order_by('locker')# .exclude(id__in=onverhuurd_lijst)
@@ -1416,7 +1416,7 @@ def all_entrantsPage(request):
     q = request.GET.get('q') if request.GET.get('q') != None else ''
     print('entrants:',q)
     entrants_in =Locker.objects.filter(
-    (Q(kluisnummer__icontains=q) |
+    (Q(lockerlabel__icontains=q) |
     Q(email__icontains=q)|
     Q(tekst__icontains=q)|
     Q(locker__icontains=q)) & Q(verhuurd=True)
@@ -1429,7 +1429,7 @@ def all_entrantsPage(request):
         )   
     print('isin',isin.count())
     doubles = (Locker.objects
-        .values('kluisnummer')
+        .values('lockerlabel')
         .annotate(dcount=Count('id'))
         .order_by()
         )   
@@ -1440,7 +1440,7 @@ def all_entrantsPage(request):
 
     headers=Locker.objects.all().query.get_meta().fields 
     header=[]
-    fields=['kluisnummer','email',]
+    fields=['lockerlabel','email',]
     u=[]
     kols=[]
     s='base_locker';l=len(s)+1
@@ -1473,7 +1473,7 @@ def all_entrantsPage(request):
     # entrants_in= Locker.objects.all().filter(verhuurd=True)
     # entrants_out= Locker.objects.all().filter(verhuurd=False)
     entrants_out =Locker.objects.filter(
-    (Q(kluisnummer__icontains=q) |
+    (Q(lockerlabel__icontains=q) |
     Q(email__icontains=q)|
     Q(tekst__icontains=q)|
     Q(locker__icontains=q)) & Q(verhuurd=False)

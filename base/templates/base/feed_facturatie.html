@@ -19,13 +19,13 @@
         <a href="{% url 'edit-factuur'  locker.id %}?q={{locker.id}}">{{locker.email|truncatechars:12}} </span></a>        
       </td>
         <td>
-          <a href="{% url 'update-usermail'  locker.kluisnummer %}?q={{locker.id}}">{{locker.kluisnummer}} </span></a>
+          <a href="{% url 'update-usermail'  locker.lockerlabel %}?q={{locker.id}}">{{locker.lockerlabel}} </span></a>
         </td>
         </a>
       
         <td>
           {% comment %}
-      <a href="{% url 'create-locker' %}?q={{locker.kluisnummer}}">{{locker.type}} </span></a>        
+      <a href="{% url 'create-locker' %}?q={{locker.lockerlabel}}">{{locker.type}} </span></a>        
       {% endcomment %}
       {{locker.type}}
     </td>
