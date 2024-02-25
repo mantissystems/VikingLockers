@@ -34,16 +34,16 @@
                
                <th>{{k}}</th>
                {% endfor %}
-               <th>Medegebruikers</th>
             </tr>
         </thead>
         <tbody>
             
             {% for rij in entrants_in %}
             <td> {{rij.id}}</td>
-            <td> <a href="{% url 'update-locker' rij.id  %}">  {{rij.topic}} </td> 
+            <td> <a href="{% url 'update-locker' rij.id  %}">  {{rij.lockerlabel}} </td> 
                 <td> <a href="{% url 'update-locker' rij.id %}">   {{rij.email|slice:"0:12"}}...   </td> 
-                                    <td> <a href="{% url 'update-locker' rij.id %}">   </td>
+                    <td>{{rij.label}}</td>
+                    <td> <a href="{% url 'update-locker' rij.id %}">   </td>
                                        {%comment%} {%if rij.verhuurd%}  <td><input type="checkbox" id="isout" checked="true" name="isout" value={{rij.id}}></td> {%endif%} {%endcomment%}
                                         <td> {{ rij.tekst|wordwrap:20 }} </td>
                                         </tr>
@@ -59,7 +59,6 @@
                                         
                                         <th>{{k}}</th>
                                         {% endfor %}
-                                        <th>Medegebruikers</th>
                                         <th>#</th>
                                      </tr>
                                  </thead>
@@ -67,8 +66,9 @@
                                      
                                      {% for rij in entrants_out %}
                                      <td> {{rij.id}}</td>
-                                     <td> <a href="{% url 'update-locker' rij.id  %}">  {{rij.topic}} </td> 
+                                     <td> <a href="{% url 'update-locker' rij.id  %}">  {{rij.lockerlabel}} </td> 
                                          <td> <a href="{% url 'update-locker' rij.id %}">   {{rij.email|slice:"0:12"}}...   </td> 
+                                            <td>{{rij.label}}</td>
                                                             {%comment%} <td> <a href="{% url 'update-locker' rij.id %}">   </td> <td><input type="checkbox" id="isin" name="isin" value={{rij.id}}></td> {%endcomment%}
                                                                 <td> {{ rij.tekst|wordwrap:20}} </td>
 

@@ -1440,7 +1440,7 @@ def all_entrantsPage(request):
 
     headers=Locker.objects.all().query.get_meta().fields 
     header=[]
-    fields=['lockerlabel','email',]
+    fields=['lockerlabel','email','label','tekst']
     u=[]
     kols=[]
     s='base_locker';l=len(s)+1
