@@ -59,7 +59,7 @@ def loginPage(request):
         else:
             url = "/berichten/" + "?q=" + "'controleer  wachtwoord en/of het emailadres'"
             return HttpResponseRedirect(url)
-            # messages.error(request, 'Username OR password does not exit')
+            # messages.error(request, 'Username OR password does not exist')
 
     context = {'page': page}
     return render(request, 'base/login_register.html', context)
@@ -99,11 +99,29 @@ def registerPage(request):
 
 class HomeView(ListView):
     model=Locker
-    # template_name='home.html'
     template_name='base/home.html'
-    # form_class=FormatForm
+    form_class=FormatForm
+    initial = {"key": "value"}
     context_object_name = "locker_list"
 
+    def get(self, request, *args, **kwargs):
+        form = self.form_class(initial=self.initial)
+        if not request.user.is_authenticated:
+            print('1.not-auth:', request.user)
+            messages.warning(request, f'U bent niet ingelogd. Svp Inloggen / Registreren')
+        # print('2.not-none-user:', request.user)
+            url = "/berichten/"        
+            return HttpResponseRedirect(url)
+        q = self.request.GET.get('q') if self.request.GET.get('q') != None else ''
+        q=q.strip()
+        print('in homeView in get:',q)
+        q = self.request.GET.get('q') if self.request.GET.get('q') != None else ''
+        q=q.strip()
+        print('in homeView get_context_data:',q)
+        if not q: qs_in = self.get_queryset()
+        context = super().get_context_data(**kwargs)
+
+        return render(request, self.template_name, {"form": form,'context': context})
     def get_queryset(self) :
         queryset=Locker.objects.all().filter(verhuurd=True).order_by('locker')
         return queryset
@@ -1136,8 +1154,8 @@ def berichtenPage(request):
     # messages.set_level(request, messages.WARNING)
     messages.add_message(request, messages.INFO, "Welkom bij Viking Lockers.")    
     q = request.GET.get('q') if request.GET.get('q') != None else ''
-    obs= Q(obsolete=True)
-    qs_out=Locker.objects.all().exclude(obs).filter(verhuurd=False).order_by('topic')[0:15] #we laten 15 vrije lockers zien
+    obs= Q(obsolete=True,tekst__icontains='gezaagd')
+    qs_out=Locker.objects.all().exclude(obs).filter(verhuurd=False).order_by('lockerlabel') #[0:15] #we laten 15 vrije lockers zien
     return render(request, 'base/messages1.html', {'qq':q,'onverhuurd':qs_out})
 
 

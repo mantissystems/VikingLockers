@@ -22,7 +22,6 @@ urlpatterns = [
     path('profiles/',login_required(views.PersonListView.as_view()),name='profiles'),
     path('wacht-lijst/',views.Wachtlijst.as_view(),name='wacht-lijst'),
     path('lockers/', views.lockersPage2, name="lockers"),
-    # path('lockerview',views.LockerListView.as_view(),name='lockerview'),
     path('requests',views.RequestView.as_view(),name='requests'),
     path('tools/',views.tools, name='tools'),  
     path('onverhuurd/', views.lockersPage3, name="onverhuurd"),
@@ -61,6 +60,7 @@ urlpatterns = [
    path('m6/<str:pk>', views.m6, name="m6"), #check facturatielijst in get locker by email
     path('all_lockers/',views.all_entrantsPage, name='all_lockers'),  
     ]
+    # path('lockerview',views.LockerListView.as_view(),name='lockerview'),
     # path('export_emaillijst/', views.export_emaillijst, name="export_emaillijst"),
     # path('export_wachtlijst/', views.export_wachtlijst, name="export_wachtlijst"),
     # path('polls_results/<int:question_id>/', views.polls_results, name='polls_results'),
