@@ -102,26 +102,27 @@ class HomeView(ListView):
     template_name='base/home.html'
     form_class=FormatForm
     initial = {"key": "value"}
-    context_object_name = "locker_list"
+    context_object_name = "object_list"
+    # object_list='locker_list'
 
-    def get(self, request, *args, **kwargs):
-        form = self.form_class(initial=self.initial)
-        if not request.user.is_authenticated:
-            print('1.not-auth:', request.user)
-            messages.warning(request, f'U bent niet ingelogd. Svp Inloggen / Registreren')
-        # print('2.not-none-user:', request.user)
-            url = "/berichten/"        
-            return HttpResponseRedirect(url)
-        q = self.request.GET.get('q') if self.request.GET.get('q') != None else ''
-        q=q.strip()
-        print('in homeView in get:',q)
-        q = self.request.GET.get('q') if self.request.GET.get('q') != None else ''
-        q=q.strip()
-        print('in homeView get_context_data:',q)
-        if not q: qs_in = self.get_queryset()
-        context = super().get_context_data(**kwargs)
+    # def get(self, request, *args, **kwargs):
+    #     form = self.form_class(initial=self.initial)
+    #     if not request.user.is_authenticated:
+    #         print('1.not-auth:', request.user)
+    #         messages.warning(request, f'U bent niet ingelogd. Svp Inloggen / Registreren')
+    #     # print('2.not-none-user:', request.user)
+    #         url = "/berichten/"        
+    #         return HttpResponseRedirect(url)
+        # q = self.request.GET.get('q') if self.request.GET.get('q') != None else ''
+        # q=q.strip()
+        # print('in homeView in get:',q)
+        # q = self.request.GET.get('q') if self.request.GET.get('q') != None else ''
+        # q=q.strip()
+    # print('in homeView get_context_data:',q)
+    # if not q: qs_in = self.get_queryset()
+    # context = super().get_context_data(**kwargs)
 
-        return render(request, self.template_name, {"form": form,'context': context})
+    # return render(request, self.template_name, {"form": form,'context': context})
     def get_queryset(self) :
         queryset=Locker.objects.all().filter(verhuurd=True).order_by('locker')
         return queryset
@@ -158,7 +159,7 @@ class HomeView(ListView):
         if not q: qs_in = self.get_queryset()
         context["lockers_in"] = qs_in
         context["lockers_out"] =qs_out
-        self.object_list = qs_in
+        # self.object_list = qs_in
         context["header"] = header
         context["table"] = s
         return context
