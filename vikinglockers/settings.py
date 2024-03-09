@@ -4,7 +4,12 @@ from pathlib import Path
 BASE_DIR = Path(__file__).resolve().parent.parent
 env = environ.Env()
 environ.Env.read_env()
-SECRET_KEY = env("SECRET_KEY")
+# env.read_env(env.str('ENV_PATH', '.env'))
+# SECRET_KEY = 'django-insecure-+sec^71^9)-814+l48ssq(@hn%q#r@yxk04g3o+ib^lj&x2$6n'
+# env = environ.Env()
+# environ.Env.read_env()
+# SECRET_KEY = env("SECRET_KEY")
+SECRET_KEY = 'django-insecure-)r2waboda$o)g39!ap!l7dx$numws6k7zi9=m*3e1hbudc!2&r'
 DEBUG = False
 ALLOWED_HOSTS = ['*', 'http://127.0.0.1',
 'https://vikinglockers.up.railway.app',]
@@ -13,6 +18,7 @@ CSRF_TRUSTED_ORIGINS = [
     'https://vikinglockers.up.railway.app',
     'http://127.0.0.1',
 ]
+# Application definition
 INSTALLED_APPS = [
     'django.contrib.admin',
     'django.contrib.auth',
@@ -70,14 +76,13 @@ TEMPLATES = [
 WSGI_APPLICATION = 'vikinglockers.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/4.1/ref/settings/#databases
-# SECRET_KEY = env("SECRET_KEY")
 
 DATABASES = {
    'default': {
        'ENGINE': 'django.db.backends.postgresql',
-       'NAME': env("DATABASE_NAME"), #'',
-       'USER': env("DATABASE_USER"), #'',
-       'PASSWORD':env("DATABASE_PASS"), #',
+       'NAME': 'railway',
+       'USER': 'postgres',
+       'PASSWORD':'CF3B1ga3bcB5eFFa5DDg44EC5FedbgF6',
        'HOST':'monorail.proxy.rlwy.net',
        'PORT': '58927'
    }
