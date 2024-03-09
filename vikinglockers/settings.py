@@ -4,8 +4,7 @@ from pathlib import Path
 BASE_DIR = Path(__file__).resolve().parent.parent
 env = environ.Env()
 environ.Env.read_env()
-# SECRET_KEY = env("SECRET_KEY")
-SECRET_KEY = 'django-insecure-)r2waboda$o)g39!ap!l7dx$numws6k7zi9=m*3e1hbudc!2&r'
+SECRET_KEY = env("SECRET_KEY")
 DEBUG = False
 ALLOWED_HOSTS = ['*', 'http://127.0.0.1',
 'https://vikinglockers.up.railway.app',]

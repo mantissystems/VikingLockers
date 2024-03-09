@@ -18,11 +18,11 @@ local_settings.py
 viking.sqlite3
 *json
 db.sqlite3-journal
-.env
+# .env
 # media
 # images/
 venv/
-.env
+# .env
 .venv
 
 # If your build process includes running collectstatic, then you probably don't need or want to include staticfiles/
