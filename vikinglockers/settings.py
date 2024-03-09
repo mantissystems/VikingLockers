@@ -13,7 +13,6 @@ CSRF_TRUSTED_ORIGINS = [
     'https://vikinglockers.up.railway.app',
     'http://127.0.0.1',
 ]
-# Application definition
 INSTALLED_APPS = [
     'django.contrib.admin',
     'django.contrib.auth',
