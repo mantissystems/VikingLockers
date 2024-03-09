@@ -22,6 +22,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'base',    
+     'api.apps.ApiConfig',
     'import_export',
     # 'debug_toolbar',
     'rest_framework',
