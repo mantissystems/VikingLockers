@@ -131,6 +131,8 @@ class HomeView(ListView):
         q = self.request.GET.get('q') if self.request.GET.get('q') != None else ''
         q=q.strip()
         print('in homeView get_context_data:',q)
+        if not self.request.user.is_superuser:
+            messages.add_message(self.request, messages.INFO, "U bent niet ingelogd.")    
         s='base_locker';l=len(s)+1
         verh=Q(locker__icontains=q)
         headers=Locker.objects.all().query.get_meta().fields 
@@ -163,6 +165,15 @@ class HomeView(ListView):
         context["header"] = header
         context["table"] = s
         return context
+    # def get_form_class(self):
+    #     print('in homeView get_form_class=====:')
+
+    #     if not self.request.user.is_superuser:
+    #         url='/berichten'
+    #         messages.add_message(self.request, messages.ERROR, "3.An error occurred during registration", extra_tags="dragonball")
+    #         return HttpResponseRedirect(url)
+        # else:
+        #     return LockerForm
 
     def post(self,request,**kwargs):
         q = self.request.GET.get('q') if self.request.GET.get('q') != None else ''

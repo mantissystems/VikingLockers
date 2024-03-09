@@ -1,11 +1,10 @@
-# import environ
+import environ
 import os
 from pathlib import Path
-
 BASE_DIR = Path(__file__).resolve().parent.parent
-# env=environ.Env()
-
-SECRET_KEY = 'django-insecure-)r2waboda$o)g39!ap!l7dx$numws6k7zi9=m*3e1hbudc!2&r'
+env = environ.Env()
+environ.Env.read_env()
+SECRET_KEY = env("SECRET_KEY")
 DEBUG = False
 ALLOWED_HOSTS = ['*', 'http://127.0.0.1',
 'https://vikinglockers.up.railway.app',]
@@ -72,13 +71,14 @@ TEMPLATES = [
 WSGI_APPLICATION = 'vikinglockers.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/4.1/ref/settings/#databases
+# SECRET_KEY = env("SECRET_KEY")
 
 DATABASES = {
    'default': {
        'ENGINE': 'django.db.backends.postgresql',
-       'NAME': 'railway',
-       'USER': 'postgres',
-       'PASSWORD':'CF3B1ga3bcB5eFFa5DDg44EC5FedbgF6',
+       'NAME': env("DATABASE_NAME"), #'',
+       'USER': env("DATABASE_USER"), #'',
+       'PASSWORD':env("DATABASE_PASS"), #',
        'HOST':'monorail.proxy.rlwy.net',
        'PORT': '58927'
    }

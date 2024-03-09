@@ -34,9 +34,10 @@
         </div>
       </div>
       
-      {% include 'base/feed_lockers.html' %}
-      
       {% if request.user.is_superuser %}
+      {% include 'base/feed_lockers.html' %}
+      {%else %}
+      {% include 'base/messages1.html' %}
       {% endif %}
     </div>
     <!-- Room List End -->

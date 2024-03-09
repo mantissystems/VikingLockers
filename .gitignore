@@ -18,7 +18,7 @@ local_settings.py
 viking.sqlite3
 *json
 db.sqlite3-journal
-
+.env
 # media
 # images/
 venv/
