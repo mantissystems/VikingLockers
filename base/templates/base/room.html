@@ -55,12 +55,6 @@
             <span>{{room.created|timesince}} ago</span>
           </div>
           
-          <span class="room__topics">STATUS:{{room.status}}</span>
-          <a class="btn btn--pill" href="{% url 't4' room.id %}">Start</a>
-          <a class="btn btn--pill" href="{% url 'update-vervolg' room.id %}">Vervolg</a>
-          <a class="btn btn--pill" href="{% url 'room-clear' room.id %}">Clear</a>
-          <a class="btn btn--pill" href="{% url 'stop' %}">Stop</a>
-          <a class="btn btn--pill" href="{% url 't3' %}">Lijst</a>
           <table class="viking-table">
             <thead>
                 <caption>  {{tijdregels.count}} Tijdregels  </caption>
@@ -87,8 +81,21 @@
                                          {% endfor %}
                                      </tbody>
                                  </table>          
+                                           <span class="room__topics">STATUS:{{room.status}}</span>
+          <a class="btn btn--pill" href="{% url 't4' room.id %}">Start</a>
+          <a class="btn btn--pill" href="{% url 'update-vervolg' room.id %}">Vervolg</a>
+          <a class="btn btn--pill" href="{% url 'room-clear' room.id %}">Clear</a>
+          <a class="btn btn--pill" href="{% url 'stop' %}">Stop</a>
+          <a class="btn btn--pill" href="{% url 't3' %}">Lijst</a>
+
         </div>
-      </div>
+        <span class="room__topics">STATUS:{{room.status}}</span>
+        <a class="btn btn--pill" href="{% url 't4' room.id %}">Start</a>
+        <a class="btn btn--pill" href="{% url 'update-vervolg' room.id %}">Vervolg</a>
+        <a class="btn btn--pill" href="{% url 'room-clear' room.id %}">Clear</a>
+        <a class="btn btn--pill" href="{% url 'stop' %}">Stop</a>
+        <a class="btn btn--pill" href="{% url 't3' %}">Lijst</a>
+    </div>
     </div>
     <!-- Room End -->
     <!--   Start -->
