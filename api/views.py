@@ -3,7 +3,7 @@ from django.shortcuts import render
 from rest_framework.response import Response
 from rest_framework.decorators import api_view
 from rest_framework.serializers import Serializer
-from base.models import Bericht as Note
+from base.models import Bericht # as Note
 from .serializers import NoteSerializer
 from api import serializers
 # from .utils import updateNote, getNoteDetail, deleteNote, getNotesList, createNote
@@ -85,14 +85,14 @@ def getNotesList(request):
 
 
 def getNoteDetail(request, pk):
-    notes = Note.objects.get(id=pk)
+    notes = Bericht.objects.get(id=pk)
     serializer = NoteSerializer(notes, many=False)
     return Response(serializer.data)
 
 @api_view(['POST'])
 def createNote(request):
     data = request.data
-    note = Note.objects.create(
+    note = Bericht.objects.create(
         body=data['body']
     )
     serializer = NoteSerializer(note, many=False)
@@ -102,7 +102,7 @@ def createNote(request):
 @api_view(['PUT'])
 def updateNote(request, pk):
     data = request.data
-    note = Note.objects.get(id=pk)
+    note = Bericht.objects.get(id=pk)
     serializer = NoteSerializer(instance=note, data=data)
 
     if serializer.is_valid():
@@ -113,6 +113,6 @@ def updateNote(request, pk):
 
 @api_view(['DELETE'])
 def deleteNote(request, pk):
-    note = Note.objects.get(id=pk)
+    note = Bericht.objects.get(id=pk)
     note.delete()
     return Response('Note was deleted!')
