@@ -10,9 +10,9 @@ from django.db.models import Count
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth import authenticate, login, logout
 from django.urls import reverse, reverse_lazy
-from base.models import Areset,Message,User,Topic,Locker,Ploeg,Helptekst,Bericht,Excellijst,Person,Facturatielijst,Tijdregel
+from base.models import Areset,Message,User,Topic,Locker,Ploeg,Helptekst,Bericht,Person,Facturatielijst,Tijdregel
 from django.db.models import Q
-from base.forms import RoomForm, UserForm,  MyUserCreationForm,LockerForm,ExcelForm,PersonForm,WachtlijstForm,LockerFormAdmin,FormatForm
+from base.forms import RoomForm, UserForm,  MyUserCreationForm,LockerForm,PersonForm,WachtlijstForm,LockerFormAdmin,FormatForm
 from django.views.generic import(TemplateView,ListView,FormView)
 from django.views.generic.detail import SingleObjectMixin
 from django.contrib.auth.models import AnonymousUser
@@ -865,13 +865,13 @@ class RequestView (ListView):
             }
         return context
 
-class ExcelView (LoginRequiredMixin, ListView):
+class inspecties (LoginRequiredMixin, ListView):
     login_url='login'
     print('in excelview')
-    model=Excellijst
+    model=Locker
     template_name='base/excellijst_list.html'
     paginate_by=14
-    queryset=Excellijst.objects.all() 
+    queryset=Locker.objects.all() 
 
     def get_context_data(self,**kwargs):
         q = self.request.GET.get('q') if self.request.GET.get('q') != None else ''
@@ -879,7 +879,7 @@ class ExcelView (LoginRequiredMixin, ListView):
         print(query)
         if query == None: query=""
         # queryset=Excellijst.objects.all().filter(email__icontains=query)
-        queryset = Excellijst.objects.all().filter(
+        queryset = Locker.objects.all().filter(
             Q(email__icontains=query)|
             Q(type__icontains=query)|
             Q(excel__icontains=query)|
@@ -890,32 +890,32 @@ class ExcelView (LoginRequiredMixin, ListView):
             'object_list' :queryset,
             }
         return context
-class FacturatieView (LoginRequiredMixin, ListView):
-    login_url='login'
-    print('in facturatieview')
-    model=Excellijst
-    template_name='base/facturatielijst_list.html'
-    paginate_by=14
-    queryset=Facturatielijst.objects.all() 
+# class FacturatieView (LoginRequiredMixin, ListView):
+#     login_url='login'
+#     print('in facturatieview')
+#     model=Excellijst
+#     template_name='base/facturatielijst_list.html'
+#     paginate_by=14
+#     queryset=Facturatielijst.objects.all() 
 
-    def get_context_data(self,**kwargs):
-        q = self.request.GET.get('q') if self.request.GET.get('q') != None else ''
-        query = self.request.GET.get('q')
-        # print(query)
-        if query == None: query=""
-        queryset = Facturatielijst.objects.all().filter(
-            Q(email__icontains=query)|
-            Q(renum__icontains=query)|
-            Q(lockerlabel__icontains=query)
-            ).order_by('renum')
-        # print(queryset.query)
-        check=Facturatielijst.objects.all().exclude(type__icontains='--')
-        context = {
-            'query': query,
-            'check': check,
-            'object_list' :queryset,
-            }
-        return context
+#     def get_context_data(self,**kwargs):
+#         q = self.request.GET.get('q') if self.request.GET.get('q') != None else ''
+#         query = self.request.GET.get('q')
+#         # print(query)
+#         if query == None: query=""
+#         queryset = Facturatielijst.objects.all().filter(
+#             Q(email__icontains=query)|
+#             Q(renum__icontains=query)|
+#             Q(lockerlabel__icontains=query)
+#             ).order_by('renum')
+#         # print(queryset.query)
+#         check=Facturatielijst.objects.all().exclude(type__icontains='--')
+#         context = {
+#             'query': query,
+#             'check': check,
+#             'object_list' :queryset,
+#             }
+#         return context
 
 class PersonUpdate_id( LoginRequiredMixin,UpdateView):
     login_url = '/login/'
@@ -1252,27 +1252,24 @@ def update_locker(request,pk):
 # ---------------------------------------------------------------------------
 def lockersPage2(request):
     q = request.GET.get('q') if request.GET.get('q') != None else ''
-    kluisjes=Locker.objects.all().filter(verhuurd=True)     
-    allekluisjes=Locker.objects.all()     
-    lijst='verhuurd'
-    print('lockers:',q)
     A=Q(email__icontains=q)
-    topics=Topic.objects.all()
-    verhuurd =Locker.objects.filter(
-    Q(lockerlabel__icontains=q) |
-    Q(email__icontains=q)|
-    Q(tekst__icontains=q) 
+    lockers_in =Locker.objects.filter(
+    Q(email__icontains='vrij')|
+    Q(email__icontains='onbekend')
     ).order_by('locker')# .exclude(id__in=onverhuurd_lijst)
+    s='base_locker';l=len(s)+1
+    headers=Locker.objects.all().query.get_meta().fields 
+    fields=['id','lockerlabel','email','tekst','verhuurd','opgezegd','updated','code','sleutels']
+    header=[]
+    for k in headers:
+        if str(k)[l:] in fields:
+            header.append(str(k)[l:])              
 
     context = {
-                'verhuurd': verhuurd,
-                    'lijst': lijst,
-                'kluisjes': kluisjes,
-                'allekluisjes': allekluisjes,
-                'topics': topics,
+                    'header': header,
+                'lockers_in': lockers_in,
             }
-    return render(request, 'base/kluisjes.html', context)
-    # return render(request, 'base/kluisjes.html', {'lockers': lockers})
+    return render(request, 'base/facturatielijst_list.html', context)
 
 def tools(request):
         # emptypersonfile=request.POST.get('personfile')

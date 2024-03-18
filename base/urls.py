@@ -1,5 +1,5 @@
 from django.urls import path
-from . import views
+from base import views
 from django.contrib.auth.decorators import login_required
 
 urlpatterns = [
@@ -24,7 +24,7 @@ urlpatterns = [
     path('lockers/', views.lockersPage2, name="lockers"),
     path('requests',views.RequestView.as_view(),name='requests'),
     path('tools/',views.tools, name='tools'),  
-    path('onverhuurd/', views.lockersPage3, name="onverhuurd"),
+    # path('Inspecties/', views.InspectiesPage, name="Inspecties"),
     path('verhuurd/', views.LockerView.as_view(), name="verhuurd"),
     path('create-person/', views.CreatePerson.as_view(), name="create-person"),          # <=================
     path('create-locker/', views.CreateLocker.as_view(), name="create-locker"),
@@ -35,13 +35,11 @@ urlpatterns = [
     path('delete-factuur/<str:pk>',views.FactuurDeleteView.as_view(),name='delete-factuur'),
     path('delete-message/<str:pk>/', views.deleteMessage, name="delete-message"),
     path('delete-bericht/<str:pk>/', views.deleteBericht, name="delete-bericht"),
-    path('<str:pk>/excel-regel/',views.excel_regelPage, name='excel-regel'),  
     path('helptekst/', views.helpPage, name='helptekst'),
     path('berichten/', views.berichtenPage, name="berichten"),
-    path('facturatielijst/', views.FacturatieView.as_view(), name="facturatielijst"),
+    # path('facturatielijst/', views.FacturatieView.as_view(), name="facturatielijst"),
     path('edit-factuur/<str:pk>', views.EditFactuur.as_view(), name="edit-factuur"),
     path('create-factuur/', views.CreateFactuur.as_view(), name="create-factuur"),
-    path('excellijst/', views.ExcelView.as_view(), name="excellijst"),
     path('huuropzeggen/<str:pk>', views.huuropzeggen, name="huuropzeggen"),
     path('t1/', views.createAreset, name="t1"),  #werkzaamheden
     path('t2/<str:pk>/', views.areset, name="t2"),
@@ -60,13 +58,15 @@ urlpatterns = [
    path('m6/<str:pk>', views.m6, name="m6"), #check facturatielijst in get locker by email
     path('all_lockers/',views.all_entrantsPage, name='all_lockers'),  
     ]
+    # path('<str:pk>/excel-regel/',views.excel_regelPage, name='excel-regel'),  
     # path('lockerview',views.LockerListView.as_view(),name='lockerview'),
+    # path('excellijst/', views.ExcelView.as_view(), name="excellijst"),
     # path('export_emaillijst/', views.export_emaillijst, name="export_emaillijst"),
     # path('export_wachtlijst/', views.export_wachtlijst, name="export_wachtlijst"),
     # path('polls_results/<int:question_id>/', views.polls_results, name='polls_results'),
 #    path('m4/', views.m4, name="m4"), #puts usermail in get locker by email
     # path('export_verhuurd/', views.export_verhuurd, name="export_verhuurd"),
-    # path('export_onverhuurd/', views.export_onverhuurd, name="export_onverhuurd"),
+    # path('export_inspecties/', views.export_inspecties, name="export_inspecties"),
     #  path('aantalregistraties/', views.tel_aantal_registraties, name='aantalregistraties'),
     #  path('nummering/', views.nummering, name='nummering'),
 # https://docs.djangoproject.com/en/3.1/topics/http/urls/

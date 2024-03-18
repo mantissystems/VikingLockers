@@ -1,6 +1,6 @@
 from django.forms import ModelForm
 from django.contrib.auth.forms import UserCreationForm
-from .models import Areset, User,Ploeg,Locker,Excellijst,Person
+from .models import Areset, User,Ploeg,Locker,Person
 import io
 from django import forms
 import csv
@@ -93,13 +93,6 @@ class LockerFormAdmin(ModelForm):
         "type": "Type slot",
 
         }
-
-class ExcelForm(ModelForm):
-    class Meta:
-        model = Excellijst
-        fields = '__all__'
-        exclude = ['sleutels','code','excel','type']
-
 
 class UserForm(ModelForm):
     class Meta:

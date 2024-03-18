@@ -1,44 +1,27 @@
-
 <table class="viking-table">
-    <thead>
-      <hr>
+  <thead>
+      <caption>  {{inspecties.count}} Tijdregels  </caption>
       <tr>
-        <th>Huurder:</th>
-        <th>Verhuurd</th>
-        <th>Check</th>
-        <th>renum</th>
-        <th>obs</th>
-      </tr>
-    </thead>
-    <tbody>
-      {{object_list.count}} regels  en {{check.count}} ok
-      {% for locker in object_list %}
-      <tr>
-
-      <td>
-        <a href="{% url 'edit-factuur'  locker.id %}?q={{locker.id}}">{{locker.email|truncatechars:12}} </span></a>        
-      </td>
-        <td>
-          <a href="{% url 'update-usermail'  locker.lockerlabel %}?q={{locker.id}}">{{locker.lockerlabel}} </span></a>
-        </td>
-        </a>
-      
-        <td>
-          {% comment %}
-      <a href="{% url 'create-locker' %}?q={{locker.lockerlabel}}">{{locker.type}} </span></a>        
-      {% endcomment %}
-      {{locker.type}}
-    </td>
-
-                        <td>
-                          <a href="{% url 'update-usermail'  locker.renum %}?q={{locker.renum}}">{{locker.renum}} </span></a>
-                          <td>
-                            {% if locker.obsolete %} (obs) {% endif %}
-                          </td>
-
-                        </td>
+          <th>#</th>
+          {% for k in headers %}
           
-      {% endfor %}
-      </tr>
-    </tbody>
-  </table>
+          <th>{{k}}</th>
+          {% endfor %}
+       </tr>
+   </thead>
+   <tbody>
+       
+       {% for rij in inspecties %}
+       <td></td>
+       <td> {{rij.id}}</td>
+       <td> {{rij.status}}</td>        
+             <td> {{rij.updated|date:'H:i'}} </td>
+             <td>{{rij.created|date:'H:i'}} </td>
+             <td>{{rij.begin|date:'H:i'}}  </td>
+             <td>{{rij.einde|date:'H:i'}} </td>
+           
+                                   </tr>
+                               {% endfor %}
+                           </tbody>
+                       </table>          
+

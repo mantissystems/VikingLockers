@@ -1,6 +1,6 @@
 from django.contrib import admin
 # Register your models here.
-from .models import Areset, Topic, Message,Locker,Ploeg,Helptekst,Bericht,Excellijst,Person,Facturatielijst,Areset,Tijdregel
+from .models import Areset, Topic, Message,Locker,Ploeg,Helptekst,Bericht,Person,Facturatielijst,Areset,Tijdregel
 from base.models import User,AbstractUser
 from import_export import resources
 from import_export.fields import Field 
@@ -65,9 +65,6 @@ class TijdregelAdmin(ImportExportModelAdmin):
     pass
 
 @admin.register(User)
-class UserAdmin(ImportExportModelAdmin):
-    pass
-@admin.register(Excellijst)
 class UserAdmin(ImportExportModelAdmin):
     pass
 @admin.register(Facturatielijst)

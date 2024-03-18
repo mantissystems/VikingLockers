@@ -4,8 +4,10 @@ from rest_framework.response import Response
 from rest_framework.decorators import api_view
 from rest_framework.serializers import Serializer
 from base.models import Bericht,Locker,User # as Note
-from .serializers import NoteSerializer
+from .serializers import NoteSerializer,LockerSerializer
 from api import serializers
+from django.db.models import Q
+
 # from .utils import updateNote, getNoteDetail, deleteNote, getNotesList, createNote
 # Create your views here.
 
@@ -64,6 +66,14 @@ def getNotes(request):
     if request.method == 'POST':
         return createNote(request)
 
+@api_view(['GET', 'POST'])
+def getInspecties(request):
+    if request.method == 'GET':
+        return getInspectieList(request)
+
+    if request.method == 'POST':
+        return createNote(request)
+
 
 @api_view(['GET', 'PUT', 'DELETE'])
 def getNote(request, pk):
@@ -83,6 +93,13 @@ def getNotesList(request):
     serializer = NoteSerializer(notes, many=True)
     return Response(serializer.data)
 
+def getInspectieList(request):
+    lockers = Locker.objects.all().filter(
+        Q(email__icontains='onbekend')|
+        Q(email__icontains='vrij')
+    ).order_by('-updated')
+    serializer = LockerSerializer(lockers, many=True)
+    return Response(serializer.data)
 
 def getNoteDetail(request, pk):
     notes = Bericht.objects.get(id=pk)

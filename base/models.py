@@ -144,17 +144,6 @@ class Facturatielijst(models.Model):
     class Meta:
         ordering = ['email']
 
-class Excellijst(models.Model):
-    lockerlabel = models.CharField(max_length=200)
-    email = models.CharField(max_length=200)
-    excel = models.CharField(max_length=200,default='----')     
-    type = models.CharField(max_length=18, choices=SLOT,default='--')     
-    sleutels = models.CharField(max_length=18,default='----')     
-    code = models.CharField(max_length=18,default='----')     
-    created = models.DateTimeField(auto_now_add=True)
-
-    class Meta:
-        ordering = ['email']
 
 class Message(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)

@@ -5,7 +5,6 @@
 <main class="layout layout--3">
   <div class="container">
     <!-- Topics Start -->
-    {% include 'base/topics_component.html' %}
 
     <!-- Topics End -->
 
@@ -23,18 +22,16 @@
             <input name="q" placeholder="Search ... " />
           </label>
         </form>
-        <div class="mobile-menuItems">
-        </div>
       </div>
 
       <div class="roomList__header">
         <div>
-  
+  <h2>Inspectielijst</h2>
         </div>
       </div>
       
-      {% include 'base/feed_facturatie.html' %}
-      
+      {% include 'base/feed_lockers.html' %}
+
       {% if request.user.is_superuser %}
       {% endif %}
     </div>
@@ -42,8 +39,6 @@
 
     <!-- Activities Start -->
     
-    {% include 'base/activity_component.html' %}
-
     <!-- Activities End -->
   </div>
 </main>
