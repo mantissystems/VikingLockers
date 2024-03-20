@@ -9,17 +9,18 @@ from django.contrib.auth.decorators import login_required
 from django.db.models import Count
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth import authenticate, login, logout
+from django.contrib.auth.models import AnonymousUser
+from django.contrib.auth.hashers import make_password
+from django.contrib.auth.forms import UserCreationForm
 from django.urls import reverse, reverse_lazy
 from base.models import Areset,Message,User,Topic,Locker,Ploeg,Helptekst,Bericht,Person,Facturatielijst,Tijdregel
 from django.db.models import Q
 from base.forms import RoomForm, UserForm,  MyUserCreationForm,LockerForm,PersonForm,WachtlijstForm,LockerFormAdmin,FormatForm
 from django.views.generic import(TemplateView,ListView,FormView)
 from django.views.generic.detail import SingleObjectMixin
-from django.contrib.auth.models import AnonymousUser
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework.permissions import IsAuthenticated, IsAdminUser
 from rest_framework.response import Response
-from django.contrib.auth.hashers import make_password
 from django.db import connection
 from collections import namedtuple
 from rest_framework import status
@@ -42,16 +43,16 @@ def loginPage(request):
         return redirect('home')
 
     if request.method == 'POST':
-        email = request.POST.get('email').lower()
+        # email = request.POST.get('email').lower()
         password = request.POST.get('password')
-        username=request.POST.get('email').lower()
-
+        username=request.POST.get('username') #.lower()
+        print(username,'login test usename not null')
         try:
-            user = User.objects.get(email=email)
+            user = User.objects.get(username=username)
         except:
             messages.error(request, 'User does not exist')
 
-        user = authenticate(request, email=email, password=password)
+        user = authenticate(request, username=username, password=password)
 
         if user is not None:
             login(request, user)
@@ -68,32 +69,52 @@ def logoutUser(request):
     logout(request)
     return redirect('home')
 
+# def registerPage(request):
+#     # form = MyUserCreationForm()
+#     form=UserCreationForm
+#     pemail=request.POST.get('email')
+#     print(pemail)
+#     try:
+#         usr=User.objects.get(email=pemail)
+#     except:
+#         pass
+#     else:
+#         messages.error(request, 'User email already in use.')
+
+
+#     if request.method == 'POST':
+#         # form = MyUserCreationForm(request.POST)
+#         form = UserCreationForm(request.POST)
+#         if form.is_valid():
+#             user = form.save(commit=False)
+#             user.username = user.username.lower()
+#             print(user.username)
+#             user.save()
+#             login(request, user)
+#             return redirect('home')
+#         else:
+#             print('else')
+#             url='/berichten'
+#             messages.ERROR, ("3.An error occurred during registration")
+#             return HttpResponseRedirect(url)
+
+#     return render(request, 'base/login_register.html', {'form': form})
+
+
+
 def registerPage(request):
     form = MyUserCreationForm()
-    pemail=request.POST.get('email')
-    print(pemail)
-    try:
-        usr=User.objects.get(email=pemail)
-    except:
-        pass
-    else:
-        messages.error(request, 'User email already in use.')
-
 
     if request.method == 'POST':
         form = MyUserCreationForm(request.POST)
         if form.is_valid():
             user = form.save(commit=False)
             user.username = user.username.lower()
-            print(user.username)
             user.save()
             login(request, user)
             return redirect('home')
         else:
-            print('else')
-            url='/berichten'
-            messages.add_message(request, messages.ERROR, "3.An error occurred during registration", extra_tags="dragonball")
-            return HttpResponseRedirect(url)
+            messages.error(request, 'An error occurred during registration')
 
     return render(request, 'base/login_register.html', {'form': form})
 
@@ -1259,7 +1280,7 @@ def lockersPage2(request):
     ).order_by('locker')# .exclude(id__in=onverhuurd_lijst)
     s='base_locker';l=len(s)+1
     headers=Locker.objects.all().query.get_meta().fields 
-    fields=['id','lockerlabel','email','tekst','verhuurd','opgezegd','updated','code','sleutels']
+    fields=['id','lockerlabel','email','tekst','verhuurd','opgezegd','updated','code','type','sleutels']
     header=[]
     for k in headers:
         if str(k)[l:] in fields:

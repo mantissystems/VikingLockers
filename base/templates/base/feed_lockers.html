@@ -33,7 +33,11 @@
                     <td> {{ rij.opgezegd }} </td>
                     <td> {{ rij.tekst|slice:"0:20"}}... </td>
                     <td> {{ rij.code }} </td>
+                    <td> {{ rij.sleutels }} </td>
+                    <td> {{ rij.type }} </td>
+                    {%comment%}
                     <td> {{ rij.updated|date:"SHORT_DATE_FORMAT" }} </td>
+                    {%endcomment%}
                     <td> <a href="{% url 'update-locker' rij.id %}">   </td>
                                         </tr>
                                     {% endfor %}
@@ -62,6 +66,7 @@
                                              <td> {{ rij.opgezegd }} </td>
                                              <td> {{ rij.tekst|slice:"0:20"}}... </td>
                                              <td> {{ rij.code }} </td>
+                                             <td> {{ rij.sleutels }} </td>
                                              <td> {{ rij.updated|date:"SHORT_DATE_FORMAT" }} </td>
                                              <td> <a href="{% url 'update-locker' rij.id %}">   </td>
                                                                  </tr>

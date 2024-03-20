@@ -3,21 +3,36 @@ from datetime import datetime
 from django.db import models
 from django.contrib.auth.models import AbstractUser
 from django.urls import reverse
-# from django.contrib.auth.models import User
+from django.contrib.auth.models import User
 KAMER = [
      ('', '--------'),
             ('D', 'D'),
             ('H', 'H'),
 ]
+# class User(AbstractUser):
+#     username = models.CharField(max_length=200, null=True)
+#     # ploeg = models.CharField(max_length=200, null=True)
+#     # locker = models.CharField(max_length=200, null=True)
+#     email = models.EmailField(unique=True, null=True)
+#     # bio = models.TextField(null=True)
+#     avatar = models.ImageField(null=True, default="avatar.svg")
+#     USERNAME_FIELD = 'email'
+#     REQUIRED_FIELDS = ['first_name']
+
+
+
 class User(AbstractUser):
-    username = models.CharField(max_length=200, null=True)
-    ploeg = models.CharField(max_length=200, null=True)
-    locker = models.CharField(max_length=200, null=True)
+    name = models.CharField(max_length=200, null=True)
     email = models.EmailField(unique=True, null=True)
-    # bio = models.TextField(null=True)
+    bio = models.TextField(null=True)
+
     avatar = models.ImageField(null=True, default="avatar.svg")
+
     USERNAME_FIELD = 'email'
-    REQUIRED_FIELDS = ['first_name']
+    REQUIRED_FIELDS = []
+
+
+
 SLOT = [
             ('--', '--'),
             ('H', 'hang'),      #gebruiker heeft hangslot
