@@ -25,14 +25,21 @@ class DataForm(forms.Form):
 class MyUserCreationForm(UserCreationForm):
     class Meta:
         model = User
-        fields = ['first_name', 'username', 'email', 'password1', 'password2']
-        labels = {
-        "email": "Your email. eg.: info@mail.nl",
-        "password1": "wil in flexpoule",
-        "Password2": "deel mij in als host",
-        "username": "Your app-username",
-        "name": "Your name",
-        }
+        # fields = '__all__'
+        fields = ['username', 'email', 'password1', 'password2']
+
+# class MyUserCreationForm(UserCreationForm):
+#     class Meta:
+#         model = User
+#         # fields = ['first_name', 'username', 'email', 'password1', 'password2']
+#         fields = ['first_name',  'email', 'password1', 'password2']
+#         labels = {
+#         "email": "Your email. eg.: info@mail.nl",
+#         "password1": "wil in flexpoule",
+#         "Password2": "deel mij in als host",
+#         # "username": "Your app-username",
+#         "name": "Your name",
+#         }
 
 class PersonForm(ModelForm):
     def __init__(self,*args,**kwargs):
@@ -98,11 +105,11 @@ class UserForm(ModelForm):
     class Meta:
         model = User
         fields= '__all__'
-        # fields = ['avatar', 'username','locker', 'email']
-        exclude = [ 'avatar','ploeg','bio','user_permissions','date_joined','groups','password','is_staff','is_superuser','is_active','last_name','last_login']
-        labels = {
-        "first_name": "Short Name",
-        "username": "unieke naam",
-        "locker" : "Huurder van:"
-        }
+        fields = ['name', 'username', 'email']
+        # exclude = [ 'avatar','ploeg','bio','user_permissions','date_joined','groups','password','is_staff','is_superuser','is_active','last_name','last_login']
+        # labels = {
+        # "first_name": "Short Name",
+        # "username": "unieke naam",
+        # "locker" : "Huurder van:"
+        # }
 

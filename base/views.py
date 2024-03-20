@@ -43,16 +43,16 @@ def loginPage(request):
         return redirect('home')
 
     if request.method == 'POST':
-        # email = request.POST.get('email').lower()
+        # email = request.POST.get('username').lower()
         password = request.POST.get('password')
         username=request.POST.get('username') #.lower()
-        print(username,'login test usename not null')
+        print(username,'login test username not null')
         try:
-            user = User.objects.get(username=username)
+            user = User.objects.get(email=username)
         except:
             messages.error(request, 'User does not exist')
 
-        user = authenticate(request, username=username, password=password)
+        user = authenticate(request, email=username, password=password)
 
         if user is not None:
             login(request, user)
@@ -107,13 +107,26 @@ def registerPage(request):
 
     if request.method == 'POST':
         form = MyUserCreationForm(request.POST)
+        pemail=request.POST.get('email')
+        puser=request.POST.get('username')
+        # print(pemail,puser)
+
+        # print(user.username,user)
+        print('user.username,user')
+        if not form.is_valid():
+            print('registration invalid')
+
         if form.is_valid():
-            user = form.save(commit=False)
+            user = form.save(commit=True)
+            name='mantis'
+            bio='=bio='
             user.username = user.username.lower()
+            print(user.username,user)
             user.save()
             login(request, user)
             return redirect('home')
         else:
+        #     print(request)
             messages.error(request, 'An error occurred during registration')
 
     return render(request, 'base/login_register.html', {'form': form})
@@ -469,67 +482,67 @@ def user_listPage(request):
     users = User.objects.filter(name__icontains=q)
     return render(request, 'base/user_list.html', {'users': users})
 
-def excelPage(request):
-    q = request.GET.get('q') if request.GET.get('q') != None else ''
-    lijst='excellijst'
-    menuoptie='bijwerken'
-    lockers = Excellijst.objects.filter(lockerlabel__icontains=q)
-    if request.method == 'POST':
-        qs=Facturatielijst.objects.all()
-        for f in qs:
-            if User.objects.filter(email=f.email).exists():
-                f.is_registered='registered'
-                f.save()
-            elif Excellijst.objects.filter(email=f.email).exists():
-                f.in_excel='in_excel'
-            elif  '--' in f.lockerlabel:
-                f.type='vrij'
-                f.save()
-            # else:
-            #     f.save()
+# def excelPage(request):
+#     q = request.GET.get('q') if request.GET.get('q') != None else ''
+#     lijst='excellijst'
+#     menuoptie='bijwerken'
+#     lockers = Excellijst.objects.filter(lockerlabel__icontains=q)
+#     if request.method == 'POST':
+#         qs=Facturatielijst.objects.all()
+#         for f in qs:
+#             if User.objects.filter(email=f.email).exists():
+#                 f.is_registered='registered'
+#                 f.save()
+#             elif Excellijst.objects.filter(email=f.email).exists():
+#                 f.in_excel='in_excel'
+#             elif  '--' in f.lockerlabel:
+#                 f.type='vrij'
+#                 f.save()
+#             # else:
+#             #     f.save()
             
-        lockers = Excellijst.objects.filter(lockerlabel__icontains=q)
-        return redirect('home')
-    return render(request, 'base/delete.html', {'lockers': lockers,'excellijst':lijst,'menuoptie':menuoptie})
+#         lockers = Excellijst.objects.filter(lockerlabel__icontains=q)
+#         return redirect('home')
+#     return render(request, 'base/delete.html', {'lockers': lockers,'excellijst':lijst,'menuoptie':menuoptie})
 
 def profilePage(request):
     q = request.GET.get('q') if request.GET.get('q') != None else ''
     profiles = Person.objects.all() #filter(name__icontains=q)
     return render(request, 'base/profiles.html', {'profiles': profiles})
 
-def excel_regelPage(request,pk):
-    excel = Excellijst.objects.get(id=pk)
-    form = ExcelForm(instance=excel)
-    lockers=Excellijst.objects.all()
-    # topics=Topic.objects.all()
-    vikingers=User.objects.all().order_by('username')
-    context = {
-                'vikingers':vikingers,
-                'kluis': excel,
-                'form': form,
-            }    
-    if request.method == 'POST':
-        form = ExcelForm(request.POST, request.FILES, instance=excel)
-        onderhuurder= request.POST.get('onderhuurder')
-        slotcode= request.POST.get('code')
-        type= request.POST.get('type')
-        kluis= request.POST.get('lockerlabel')
-        sleutels= request.POST.get('sleutels')
-        huuropheffen= request.POST.get('huuropheffen')
-        print('onderhuurder',kluis, onderhuurder,sleutels,slotcode)
-        if form.is_valid():
-            print('form is valid')
-            if onderhuurder:
-                print('onderhuurder', onderhuurder)
-                h=User.objects.get(id=onderhuurder)
-                return redirect('locker', kluis.id)
-            if huuropheffen:
+# def excel_regelPage(request,pk):
+#     excel = Excellijst.objects.get(id=pk)
+#     form = ExcelForm(instance=excel)
+#     lockers=Excellijst.objects.all()
+#     # topics=Topic.objects.all()
+#     vikingers=User.objects.all().order_by('username')
+#     context = {
+#                 'vikingers':vikingers,
+#                 'kluis': excel,
+#                 'form': form,
+#             }    
+#     if request.method == 'POST':
+#         form = ExcelForm(request.POST, request.FILES, instance=excel)
+#         onderhuurder= request.POST.get('onderhuurder')
+#         slotcode= request.POST.get('code')
+#         type= request.POST.get('type')
+#         kluis= request.POST.get('lockerlabel')
+#         sleutels= request.POST.get('sleutels')
+#         huuropheffen= request.POST.get('huuropheffen')
+#         print('onderhuurder',kluis, onderhuurder,sleutels,slotcode)
+#         if form.is_valid():
+#             print('form is valid')
+#             if onderhuurder:
+#                 print('onderhuurder', onderhuurder)
+#                 h=User.objects.get(id=onderhuurder)
+#                 return redirect('locker', kluis.id)
+#             if huuropheffen:
 
-                h=User.objects.get(id=huuropheffen)
-                print('opheffen',h)
-                form.save()
-            return redirect('excel-regel', kluis.id)
-    return render(request, 'base/excellijst_form.html', context)
+#                 h=User.objects.get(id=huuropheffen)
+#                 print('opheffen',h)
+#                 form.save()
+#             return redirect('excel-regel', kluis.id)
+#     return render(request, 'base/excellijst_form.html', context)
 
 class MemberListView (LoginRequiredMixin, ListView):
     login_url='login'
@@ -540,9 +553,9 @@ class MemberListView (LoginRequiredMixin, ListView):
         if query == None: query=""
         queryset = User.objects.filter(
             Q(email__icontains=query)|
-            Q(username__icontains=query)|
-            Q(locker__icontains=query)
+            Q(username__icontains=query)
             ).order_by('email')
+            # Q(locker__icontains=query)
         context = {
             'query': query,
             'object_list' :queryset,
