@@ -3,8 +3,9 @@ from django.shortcuts import render
 from rest_framework.response import Response
 from rest_framework.decorators import api_view
 from rest_framework.serializers import Serializer
-from base.models import Bericht,Locker,User # as Note
-from .serializers import NoteSerializer,LockerSerializer
+# from base.models import Bericht,Locker,User # as Note
+from base.models import Locker # as Note
+# from .serializers import NoteSerializer,LockerSerializer
 from api import serializers
 from django.db.models import Q
 
@@ -88,10 +89,10 @@ def getNote(request, pk):
         return deleteNote(request, pk)
 
 
-def getNotesList(request):
-    notes = Bericht.objects.all().order_by('-updated')
-    serializer = NoteSerializer(notes, many=True)
-    return Response(serializer.data)
+# def getNotesList(request):
+#     notes = Bericht.objects.all().order_by('-updated')
+#     serializer = NoteSerializer(notes, many=True)
+#     return Response(serializer.data)
 
 def getInspectieList(request):
     lockers = Locker.objects.all().filter(
@@ -101,39 +102,39 @@ def getInspectieList(request):
     serializer = LockerSerializer(lockers, many=True)
     return Response(serializer.data)
 
-def getNoteDetail(request, pk):
-    notes = Bericht.objects.get(id=pk)
-    serializer = NoteSerializer(notes, many=False)
-    return Response(serializer.data)
+# def getNoteDetail(request, pk):
+#     notes = Bericht.objects.get(id=pk)
+#     serializer = NoteSerializer(notes, many=False)
+#     return Response(serializer.data)
 
-@api_view(['POST'])
-def createNote(request):
-    loc=Locker.objects.all().first()
-    usr=User.objects.all().first()
-    data = request.data
-    note = Bericht.objects.create(
-        body=data['body'],
-        locker=loc,
-        user=usr
-    )
-    serializer = NoteSerializer(note, many=False)
-    return Response(serializer.data)
-
-
-@api_view(['PUT'])
-def updateNote(request, pk):
-    data = request.data
-    note = Bericht.objects.get(id=pk)
-    serializer = NoteSerializer(instance=note, data=data)
-
-    if serializer.is_valid():
-        serializer.save()
-
-    return Response(serializer.data)
+# @api_view(['POST'])
+# def createNote(request):
+#     loc=Locker.objects.all().first()
+#     usr=User.objects.all().first()
+#     data = request.data
+#     note = Bericht.objects.create(
+#         body=data['body'],
+#         locker=loc,
+#         user=usr
+#     )
+#     serializer = NoteSerializer(note, many=False)
+#     return Response(serializer.data)
 
 
-@api_view(['DELETE'])
-def deleteNote(request, pk):
-    note = Bericht.objects.get(id=pk)
-    note.delete()
-    return Response('Note was deleted!')
+# @api_view(['PUT'])
+# def updateNote(request, pk):
+#     data = request.data
+#     note = Bericht.objects.get(id=pk)
+#     serializer = NoteSerializer(instance=note, data=data)
+
+#     if serializer.is_valid():
+#         serializer.save()
+
+#     return Response(serializer.data)
+
+
+# @api_view(['DELETE'])
+# def deleteNote(request, pk):
+#     note = Bericht.objects.get(id=pk)
+#     note.delete()
+#     return Response('Note was deleted!')

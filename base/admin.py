@@ -1,7 +1,7 @@
 from django.contrib import admin
 # Register your models here.
-from .models import Areset, Topic, Message,Locker,Ploeg,Helptekst,Bericht,Person,Facturatielijst,Areset,Tijdregel
-from base.models import User,AbstractUser
+from .models import  Topic, Message,Locker,Ploeg,Helptekst,Bericht,Person,Facturatielijst
+# from base.models import User,AbstractUser
 from import_export import resources
 from import_export.fields import Field 
 from import_export.admin import ImportExportModelAdmin
@@ -45,10 +45,10 @@ class helpAdmin(admin.ModelAdmin):
     list_display = ('title','content','seq','publish')
     search_fields = ('title','content')
 @admin.register(Bericht)
-class kluisAdmin(admin.ModelAdmin):
-    list_filter = ('user','user')
-    list_display = ('user','body')
-    search_fields = ('user','body')
+# class kluisAdmin(admin.ModelAdmin):
+#     list_filter = ('user','user')
+#     list_display = ('user','body')
+#     search_fields = ('user','body')
 # @admin.register(User)
 # class UserAdmin(admin.ModelAdmin):
 #     list_filter = ('is_active','is_staff')
@@ -60,13 +60,13 @@ class kluisAdmin(admin.ModelAdmin):
 #     list_display = ('name','email','created')
 #     search_fields = ('name','email')
 
-@admin.register(Tijdregel)
-class TijdregelAdmin(ImportExportModelAdmin):
-    pass
+# @admin.register(Tijdregel)
+# class TijdregelAdmin(ImportExportModelAdmin):
+#     pass
 
-@admin.register(User)
-class UserAdmin(ImportExportModelAdmin):
-    pass
+# @admin.register(User)
+# class UserAdmin(ImportExportModelAdmin):
+#     pass
 @admin.register(Facturatielijst)
 class UserAdmin(ImportExportModelAdmin):
     pass
@@ -75,9 +75,9 @@ class UserAdmin(ImportExportModelAdmin):
 class PersonAdmin(ImportExportModelAdmin):
     pass
 
-@admin.register(Areset)
-class AresetAdmin(ImportExportModelAdmin):
-    pass
+# @admin.register(Areset)
+# class AresetAdmin(ImportExportModelAdmin):
+#     pass
 
     @admin.register(Locker)
     class LockerAdmin(ImportExportModelAdmin):

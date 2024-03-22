@@ -13,9 +13,9 @@ from django.contrib.auth.models import AnonymousUser
 from django.contrib.auth.hashers import make_password
 from django.contrib.auth.forms import UserCreationForm
 from django.urls import reverse, reverse_lazy
-from base.models import Areset,Message,User,Topic,Locker,Ploeg,Helptekst,Bericht,Person,Facturatielijst,Tijdregel
+from base.models import Message,Topic,Locker,Ploeg,Helptekst,Bericht,Person,Facturatielijst,Room
 from django.db.models import Q
-from base.forms import RoomForm, UserForm,  MyUserCreationForm,LockerForm,PersonForm,WachtlijstForm,LockerFormAdmin,FormatForm
+from base.forms import RoomForm,LockerForm,WachtlijstForm,LockerFormAdmin,FormatForm
 from django.views.generic import(TemplateView,ListView,FormView)
 from django.views.generic.detail import SingleObjectMixin
 from rest_framework.decorators import api_view, permission_classes
@@ -43,16 +43,16 @@ def loginPage(request):
         return redirect('home')
 
     if request.method == 'POST':
-        # email = request.POST.get('username').lower()
+        # email = request.POST.get('email').lower()
         password = request.POST.get('password')
         username=request.POST.get('username') #.lower()
-        print(username,'login test username not null')
+        print(username,'login test usename not null')
         try:
-            user = User.objects.get(email=username)
+            user = User.objects.get(username=username)
         except:
             messages.error(request, 'User does not exist')
 
-        user = authenticate(request, email=username, password=password)
+        user = authenticate(request, username=username, password=password)
 
         if user is not None:
             login(request, user)
@@ -107,26 +107,13 @@ def registerPage(request):
 
     if request.method == 'POST':
         form = MyUserCreationForm(request.POST)
-        pemail=request.POST.get('email')
-        puser=request.POST.get('username')
-        # print(pemail,puser)
-
-        # print(user.username,user)
-        print('user.username,user')
-        if not form.is_valid():
-            print('registration invalid')
-
         if form.is_valid():
-            user = form.save(commit=True)
-            name='mantis'
-            bio='=bio='
+            user = form.save(commit=False)
             user.username = user.username.lower()
-            print(user.username,user)
             user.save()
             login(request, user)
             return redirect('home')
         else:
-        #     print(request)
             messages.error(request, 'An error occurred during registration')
 
     return render(request, 'base/login_register.html', {'form': form})
@@ -339,138 +326,138 @@ def updateUser(request):
             return redirect('user-profile', pk=user.id)
     return render(request, 'base/update-user.html', context)
 
-class CreateUser(CreateView):
-    model = User
-    fields = ['first_name','email',]
-    # fields='__all__'
-    success_url = reverse_lazy('home')
-    # print('usercreateview')
-    def form_valid(self, form):
-        messages.success(self.request, "Wijzigingen in user zijn opgeslagen.")
-        return super(CreateUser,self).form_valid(form)
+# class CreateUser(CreateView):
+#     model = User
+#     fields = ['first_name','email',]
+#     # fields='__all__'
+#     success_url = reverse_lazy('home')
+#     # print('usercreateview')
+#     def form_valid(self, form):
+#         messages.success(self.request, "Wijzigingen in user zijn opgeslagen.")
+#         return super(CreateUser,self).form_valid(form)
 
-class EditUser( LoginRequiredMixin,UpdateView):
-    login_url = '/login/'
-    model = User
-    form_class=UserForm
-    template_name='base/user_form.html'
-    # initial = {"key": "value"}
-    print('in userupdate')
-    success_url = reverse_lazy('users')
+# class EditUser( LoginRequiredMixin,UpdateView):
+#     login_url = '/login/'
+#     model = User
+#     form_class=UserForm
+#     template_name='base/user_form.html'
+#     # initial = {"key": "value"}
+#     print('in userupdate')
+#     success_url = reverse_lazy('users')
     
-    def get_object(self):
-        print('in get_object')
-        _id = self.request.GET.get('pk') if self.request.GET.get('pk') != None else ''
-        print(_id)
-        obj = get_object_or_404(User, id=self.kwargs['pk'])
-        return obj
+#     def get_object(self):
+#         print('in get_object')
+#         _id = self.request.GET.get('pk') if self.request.GET.get('pk') != None else ''
+#         print(_id)
+#         obj = get_object_or_404(User, id=self.kwargs['pk'])
+#         return obj
 
-    def get_context_data(self, **kwargs):
-        print('in get_context_data')
-        context = super().get_context_data(**kwargs)
-        context["lockers"] = User.objects.all()
-        obj = super().get_object(**kwargs)
-        return context
+#     def get_context_data(self, **kwargs):
+#         print('in get_context_data')
+#         context = super().get_context_data(**kwargs)
+#         context["lockers"] = User.objects.all()
+#         obj = super().get_object(**kwargs)
+#         return context
     
-    def form_valid(self, form):
-        print('in form_valid')
-        messages.success(self.request, "The User was updated successfully.")
-        success_url = reverse_lazy('users')
-        return super(EditUser,self).form_valid(form)
+#     def form_valid(self, form):
+#         print('in form_valid')
+#         messages.success(self.request, "The User was updated successfully.")
+#         success_url = reverse_lazy('users')
+#         return super(EditUser,self).form_valid(form)
 
-class updateUser3(LoginRequiredMixin,UpdateView):
-    login_url='login'
-    model = User
-    # fields='__all__'
-    fields = ['username','first_name','email','locker']
-    success_url = reverse_lazy('users')
-    def get_object(self):
-        # obj = get_object_or_404(Locker, lockerlabel__slug=self.kwargs['pk'], slug=self.kwargs['pk'] )
-        obj = get_object_or_404(User, id=self.kwargs['pk'])
-        return obj
+# class updateUser3(LoginRequiredMixin,UpdateView):
+#     login_url='login'
+#     model = User
+#     # fields='__all__'
+#     fields = ['username','first_name','email','locker']
+#     success_url = reverse_lazy('users')
+#     def get_object(self):
+#         # obj = get_object_or_404(Locker, lockerlabel__slug=self.kwargs['pk'], slug=self.kwargs['pk'] )
+#         obj = get_object_or_404(User, id=self.kwargs['pk'])
+#         return obj
 
-    def form_valid(self, form):
-        kluis = form.cleaned_data['locker']  
-        email = form.cleaned_data['email'] 
-        messages.success(self.request, "The user was updated successfully.")
-        return super(updateUser3,self).form_valid(form)
+#     def form_valid(self, form):
+#         kluis = form.cleaned_data['locker']  
+#         email = form.cleaned_data['email'] 
+#         messages.success(self.request, "The user was updated successfully.")
+#         return super(updateUser3,self).form_valid(form)
         
-class updateUser_email(LoginRequiredMixin,UpdateView):
-    login_url='login'
-    model = Locker
-    fields='__all__'
-    # fields = ['username','email','locker']
-    success_url = reverse_lazy('users')
-    def get_object(self):
-        print(self.kwargs['kluis'])
-        obj = get_object_or_404(Locker, lockerlabel=self.kwargs['kluis'],)# slug=self.kwargs['kluis'] )
-        return obj
-    def get_context_data(self,**kwargs):
-        locker=self.get_object()
-        print(locker)
-        form = LockerForm(instance=locker)
-        context = {
-            'form': form,
-            }
-        return context
+# class updateUser_email(LoginRequiredMixin,UpdateView):
+#     login_url='login'
+#     model = Locker
+#     fields='__all__'
+#     # fields = ['username','email','locker']
+#     success_url = reverse_lazy('users')
+#     def get_object(self):
+#         print(self.kwargs['kluis'])
+#         obj = get_object_or_404(Locker, lockerlabel=self.kwargs['kluis'],)# slug=self.kwargs['kluis'] )
+#         return obj
+#     def get_context_data(self,**kwargs):
+#         locker=self.get_object()
+#         print(locker)
+#         form = LockerForm(instance=locker)
+#         context = {
+#             'form': form,
+#             }
+#         return context
 
-    def form_valid(self, form):
-        kluis = form.cleaned_data['lockerlabel']  
-        email = form.cleaned_data['email'] 
-        if kluis:
-            print(kluis)
-        else:
-                    messages.success(self.request, "Something went wrong.")
-        messages.success(self.request, "The locker was updated successfully.")
-        return super(updateUser_email,self).form_valid(form)
+#     def form_valid(self, form):
+#         kluis = form.cleaned_data['lockerlabel']  
+#         email = form.cleaned_data['email'] 
+#         if kluis:
+#             print(kluis)
+#         else:
+#                     messages.success(self.request, "Something went wrong.")
+#         messages.success(self.request, "The locker was updated successfully.")
+#         return super(updateUser_email,self).form_valid(form)
 
-def userProfile(request, pk):
-    user = User.objects.get(id=pk)
-    lockers = Locker.objects.all()
-    topics = Topic.objects.all()
-    context = {'user': user,
-               'room_messages': topics,
-                 'topics': topics,
-                 'lockers':lockers,
-                }
-    return render(request, 'base/profile.html', context)
+# def userProfile(request, pk):
+#     user = User.objects.get(id=pk)
+#     lockers = Locker.objects.all()
+#     topics = Topic.objects.all()
+#     context = {'user': user,
+#                'room_messages': topics,
+#                  'topics': topics,
+#                  'lockers':lockers,
+#                 }
+#     return render(request, 'base/profile.html', context)
 
-@login_required(login_url='login')
-def myProfile(request):
-    user = request.user
-    form = UserForm(instance=user)
-    berichten=Bericht.objects.all().filter(user=request.user.id)
-    locker= request.POST.get('locker')
-    context = {
-                'berichten':berichten,
-                'form': form,
-                'locker': locker,
-            }
-    if request.method == 'POST':
-                # fields = ['avatar', 'name', 'username','locker', 'email']
-        form.name=request.POST.get('name')
-        form.name=request.POST.get('name')
-        form.email=request.POST.get('email')
-        form.locker=request.POST.get('locker')
-        form.verhuurd=False
-        if request.POST.get('locker'):
-            print('requested', request.POST.get('locker'))            
-            locker, created = Locker.objects.update_or_create(
-            lockerlabel=request.POST.get('locker'),
-            email=request.POST.get('locker'),
-            verhuurd=False,
-            kluisje=request.POST.get('locker'))
-        if not form.is_valid():
-            print('invalid')
-        if form.is_valid():
-            locker, created = Locker.objects.update_or_create(
-            lockerlabel=request.POST.get('locker'),
-            email=user.email,
-            verhuurd=False,
-            kluisje=request.POST.get('locker'))
-            form.save()
-            return redirect('update-profile', pk=user.id)
-    return render(request, 'base/update-profile.html', context)
+# @login_required(login_url='login')
+# def myProfile(request):
+#     user = request.user
+#     form = UserForm(instance=user)
+#     berichten=Bericht.objects.all().filter(user=request.user.id)
+#     locker= request.POST.get('locker')
+#     context = {
+#                 'berichten':berichten,
+#                 'form': form,
+#                 'locker': locker,
+#             }
+#     if request.method == 'POST':
+#                 # fields = ['avatar', 'name', 'username','locker', 'email']
+#         form.name=request.POST.get('name')
+#         form.name=request.POST.get('name')
+#         form.email=request.POST.get('email')
+#         form.locker=request.POST.get('locker')
+#         form.verhuurd=False
+#         if request.POST.get('locker'):
+#             print('requested', request.POST.get('locker'))            
+#             locker, created = Locker.objects.update_or_create(
+#             lockerlabel=request.POST.get('locker'),
+#             email=request.POST.get('locker'),
+#             verhuurd=False,
+#             kluisje=request.POST.get('locker'))
+#         if not form.is_valid():
+#             print('invalid')
+#         if form.is_valid():
+#             locker, created = Locker.objects.update_or_create(
+#             lockerlabel=request.POST.get('locker'),
+#             email=user.email,
+#             verhuurd=False,
+#             kluisje=request.POST.get('locker'))
+#             form.save()
+#             return redirect('update-profile', pk=user.id)
+#     return render(request, 'base/update-profile.html', context)
 
 def topicsPage(request):
     q = request.GET.get('q') if request.GET.get('q') != None else ''
@@ -482,86 +469,86 @@ def user_listPage(request):
     users = User.objects.filter(name__icontains=q)
     return render(request, 'base/user_list.html', {'users': users})
 
-# def excelPage(request):
-#     q = request.GET.get('q') if request.GET.get('q') != None else ''
-#     lijst='excellijst'
-#     menuoptie='bijwerken'
-#     lockers = Excellijst.objects.filter(lockerlabel__icontains=q)
-#     if request.method == 'POST':
-#         qs=Facturatielijst.objects.all()
-#         for f in qs:
-#             if User.objects.filter(email=f.email).exists():
-#                 f.is_registered='registered'
-#                 f.save()
-#             elif Excellijst.objects.filter(email=f.email).exists():
-#                 f.in_excel='in_excel'
-#             elif  '--' in f.lockerlabel:
-#                 f.type='vrij'
-#                 f.save()
-#             # else:
-#             #     f.save()
+def excelPage(request):
+    q = request.GET.get('q') if request.GET.get('q') != None else ''
+    lijst='excellijst'
+    menuoptie='bijwerken'
+    lockers = Excellijst.objects.filter(lockerlabel__icontains=q)
+    if request.method == 'POST':
+        qs=Facturatielijst.objects.all()
+        for f in qs:
+            if User.objects.filter(email=f.email).exists():
+                f.is_registered='registered'
+                f.save()
+            elif Excellijst.objects.filter(email=f.email).exists():
+                f.in_excel='in_excel'
+            elif  '--' in f.lockerlabel:
+                f.type='vrij'
+                f.save()
+            # else:
+            #     f.save()
             
-#         lockers = Excellijst.objects.filter(lockerlabel__icontains=q)
-#         return redirect('home')
-#     return render(request, 'base/delete.html', {'lockers': lockers,'excellijst':lijst,'menuoptie':menuoptie})
+        lockers = Excellijst.objects.filter(lockerlabel__icontains=q)
+        return redirect('home')
+    return render(request, 'base/delete.html', {'lockers': lockers,'excellijst':lijst,'menuoptie':menuoptie})
 
 def profilePage(request):
     q = request.GET.get('q') if request.GET.get('q') != None else ''
     profiles = Person.objects.all() #filter(name__icontains=q)
     return render(request, 'base/profiles.html', {'profiles': profiles})
 
-# def excel_regelPage(request,pk):
-#     excel = Excellijst.objects.get(id=pk)
-#     form = ExcelForm(instance=excel)
-#     lockers=Excellijst.objects.all()
-#     # topics=Topic.objects.all()
-#     vikingers=User.objects.all().order_by('username')
-#     context = {
-#                 'vikingers':vikingers,
-#                 'kluis': excel,
-#                 'form': form,
-#             }    
-#     if request.method == 'POST':
-#         form = ExcelForm(request.POST, request.FILES, instance=excel)
-#         onderhuurder= request.POST.get('onderhuurder')
-#         slotcode= request.POST.get('code')
-#         type= request.POST.get('type')
-#         kluis= request.POST.get('lockerlabel')
-#         sleutels= request.POST.get('sleutels')
-#         huuropheffen= request.POST.get('huuropheffen')
-#         print('onderhuurder',kluis, onderhuurder,sleutels,slotcode)
-#         if form.is_valid():
-#             print('form is valid')
-#             if onderhuurder:
-#                 print('onderhuurder', onderhuurder)
-#                 h=User.objects.get(id=onderhuurder)
-#                 return redirect('locker', kluis.id)
-#             if huuropheffen:
+def excel_regelPage(request,pk):
+    excel = Excellijst.objects.get(id=pk)
+    form = ExcelForm(instance=excel)
+    lockers=Excellijst.objects.all()
+    # topics=Topic.objects.all()
+    vikingers=User.objects.all().order_by('username')
+    context = {
+                'vikingers':vikingers,
+                'kluis': excel,
+                'form': form,
+            }    
+    if request.method == 'POST':
+        form = ExcelForm(request.POST, request.FILES, instance=excel)
+        onderhuurder= request.POST.get('onderhuurder')
+        slotcode= request.POST.get('code')
+        type= request.POST.get('type')
+        kluis= request.POST.get('lockerlabel')
+        sleutels= request.POST.get('sleutels')
+        huuropheffen= request.POST.get('huuropheffen')
+        print('onderhuurder',kluis, onderhuurder,sleutels,slotcode)
+        if form.is_valid():
+            print('form is valid')
+            if onderhuurder:
+                print('onderhuurder', onderhuurder)
+                h=User.objects.get(id=onderhuurder)
+                return redirect('locker', kluis.id)
+            if huuropheffen:
 
-#                 h=User.objects.get(id=huuropheffen)
-#                 print('opheffen',h)
-#                 form.save()
-#             return redirect('excel-regel', kluis.id)
-#     return render(request, 'base/excellijst_form.html', context)
+                h=User.objects.get(id=huuropheffen)
+                print('opheffen',h)
+                form.save()
+            return redirect('excel-regel', kluis.id)
+    return render(request, 'base/excellijst_form.html', context)
 
-class MemberListView (LoginRequiredMixin, ListView):
-    login_url='login'
-    model=User
-    def get_context_data(self,**kwargs):
-        q = self.request.GET.get('q') if self.request.GET.get('q') != None else ''
-        query = self.request.GET.get('q')
-        if query == None: query=""
-        queryset = User.objects.filter(
-            Q(email__icontains=query)|
-            Q(username__icontains=query)
-            ).order_by('email')
-            # Q(locker__icontains=query)
-        context = {
-            'query': query,
-            'object_list' :queryset,
-            }
-        return context
-paginate_by = 20
+# class MemberListView (LoginRequiredMixin, ListView):
+#     login_url='login'
+#     model=User
+#     def get_context_data(self,**kwargs):
+#         q = self.request.GET.get('q') if self.request.GET.get('q') != None else ''
+#         query = self.request.GET.get('q')
+#         if query == None: query=""
+#         queryset = User.objects.filter(
+#             Q(email__icontains=query)|
+#             Q(username__icontains=query)|
+#             Q(locker__icontains=query)
+#             ).order_by('email')
+#         context = {
+#             'query': query,
+#             'object_list' :queryset,
+#             }
+#         return context
+# paginate_by = 20
 
 class PersonListView(ListView,FormView):
     model=Person
@@ -609,14 +596,14 @@ class PersonListView(ListView,FormView):
     
 # ---------------------------------------------------------------------------
 class TimesheetView(ListView,FormView):
-    model=Areset
+    model=Room
     template_name='base/areset_list.html'
     form_class=FormatForm
     success_url = reverse_lazy('t3')
     context_object_name = "person_list"
 
     def get_queryset(self) :
-        queryset=Areset.objects.all() #.filter(verhuurd=True).order_by('topic')
+        queryset=Room.objects.all() #.filter(verhuurd=True).order_by('topic')
         return queryset
     
     def get_context_data(self, **kwargs):
@@ -1030,10 +1017,10 @@ class PersonDeleteView(DeleteView):
     success_url ="/"
     template_name = "base/delete.html"
 
-class UserDeleteView(DeleteView):
-    model = User
-    success_url ="/"
-    template_name = "base/delete.html"
+# class UserDeleteView(DeleteView):
+#     model = User
+#     success_url ="/"
+#     template_name = "base/delete.html"
 
 class LockerDeleteView(DeleteView):
     model = Locker
@@ -1050,44 +1037,44 @@ class FactuurDeleteView(DeleteView):
         return obj
 
 
-def m2mtotext(request,):
-    string='pbkdf2_sha256$390000$MbAy3r2ahV6QE6xFilyWG5$Hkuz0s9MNtjJ066lD0v9N2tnUv2ZuZLALt2rIL1QSAQ='
-    for l in Locker.objects.all():
-        if l.email:
-            if '@' in l.email and l.verhuurd==True:
-                try:
-                    u=User.objects.get(email=l.email)
-                    # print(u.email)
-                except:
-                    if not 'viking' in l.email or l.obsolete==False or l.opgezegd==False:                        
-                        print('geen user', l.email)
-                        user=User.objects.update_or_create(username=l.email,
-                                                           email=l.email,
-                                                           is_active=True,
-                                                           first_name=l.email,
-                                                           last_name=l.email,
-                                                           locker=l.lockerlabel,
-                                                           password=string,
-                                                           )
-                        print('created ',user)
-                    pass
-    url = reverse('users',)
-    return HttpResponseRedirect(url)
+# def m2mtotext(request,):
+#     string='pbkdf2_sha256$390000$MbAy3r2ahV6QE6xFilyWG5$Hkuz0s9MNtjJ066lD0v9N2tnUv2ZuZLALt2rIL1QSAQ='
+#     for l in Locker.objects.all():
+#         if l.email:
+#             if '@' in l.email and l.verhuurd==True:
+#                 try:
+#                     u=User.objects.get(email=l.email)
+#                     # print(u.email)
+#                 except:
+#                     if not 'viking' in l.email or l.obsolete==False or l.opgezegd==False:                        
+#                         print('geen user', l.email)
+#                         user=User.objects.update_or_create(username=l.email,
+#                                                            email=l.email,
+#                                                            is_active=True,
+#                                                            first_name=l.email,
+#                                                            last_name=l.email,
+#                                                            locker=l.lockerlabel,
+#                                                            password=string,
+#                                                            )
+#                         print('created ',user)
+#                     pass
+#     url = reverse('users',)
+#     return HttpResponseRedirect(url)
 
-def m3(request,):
-    for u in User.objects.all():
-        if u.email:
-            if '@' in u.email:
-                try:
-                    l=Locker.objects.get(email=u.email)
-                    u.locker=l.topic
-                    u.save()
-                except:
-                    print('geen huurder', u.email)
-                    pass
+# def m3(request,):
+#     for u in User.objects.all():
+#         if u.email:
+#             if '@' in u.email:
+#                 try:
+#                     l=Locker.objects.get(email=u.email)
+#                     u.locker=l.topic
+#                     u.save()
+#                 except:
+#                     print('geen huurder', u.email)
+#                     pass
 
-    url = reverse('users',)
-    return HttpResponseRedirect(url)
+#     url = reverse('users',)
+#     return HttpResponseRedirect(url)
 def m5(request,):
     for f in Facturatielijst.objects.all():
         if f.email:
@@ -1117,26 +1104,26 @@ def m4(request,):
     url = reverse('onverhuurd',)
     return HttpResponseRedirect(url)
 
-def m6(request,pk):
-    string='pbkdf2_sha256$390000$MbAy3r2ahV6QE6xFilyWG5$Hkuz0s9MNtjJ066lD0v9N2tnUv2ZuZLALt2rIL1QSAQ='
-    l=Locker.objects.get(id=pk)
-    if '@' in l.email:
-        print(l.email)
-        try:
-            u=User.objects.get(email=l.email)
-            # User.password=string
-            # User.ploeg='viking'
-            # User.save()
-        except:
-            User.DoesNotExist
-            print('geen hit')
-        finally:
-            u.password=string
-            u.ploeg='viking'
-            u.save()
+# def m6(request,pk):
+#     string='pbkdf2_sha256$390000$MbAy3r2ahV6QE6xFilyWG5$Hkuz0s9MNtjJ066lD0v9N2tnUv2ZuZLALt2rIL1QSAQ='
+#     l=Locker.objects.get(id=pk)
+#     if '@' in l.email:
+#         print(l.email)
+#         try:
+#             u=User.objects.get(email=l.email)
+#             # User.password=string
+#             # User.ploeg='viking'
+#             # User.save()
+#         except:
+#             User.DoesNotExist
+#             print('geen hit')
+#         finally:
+#             u.password=string
+#             u.ploeg='viking'
+#             u.save()
 
-    url = reverse('home',)
-    return HttpResponseRedirect(url)
+#     url = reverse('home',)
+#     return HttpResponseRedirect(url)
 
 class CreateFactuur(CreateView):
     model = Facturatielijst

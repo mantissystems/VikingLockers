@@ -5,7 +5,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 env = environ.Env()
 environ.Env.read_env()
 SECRET_KEY = env("SECRET_KEY")
-DEBUG = False
+DEBUG = True
 ALLOWED_HOSTS = ['*', 'http://127.0.0.1',
 'https://vikinglockers.up.railway.app',]
 
@@ -21,14 +21,14 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'base',    
-     'api.apps.ApiConfig',
+    'base.apps.BaseConfig',    
+    #  'api.apps.ApiConfig',
     'import_export',
     # 'debug_toolbar',
     'rest_framework',
     'corsheaders',
 ]
-AUTH_USER_MODEL = 'base.User'
+# AUTH_USER_MODEL = 'base.User'
 # INTERNAL_IPS = ["127.0.0.1",] #debug toolbar
 MIDDLEWARE = [
     # 'debug_toolbar.middleware.DebugToolbarMiddleware', ## tijdens debug 
@@ -76,13 +76,25 @@ WSGI_APPLICATION = 'vikinglockers.wsgi.application'
 DATABASES = {
    'default': {
        'ENGINE': 'django.db.backends.postgresql',
-       'NAME':env("DATABASE_NAME"), 
-       'USER': env("DATABASE_USER"),
-       'PASSWORD':env("DATABASE_PASS"),
-       'HOST':'monorail.proxy.rlwy.net',
-       'PORT': '58927'
+       'NAME':env("PGDATABASE"), 
+       'USER': env("PGUSER"),
+       'PASSWORD':env("PGPASSWORD"),
+       'HOST':env("PGHOST"),
+       'PORT': env("PGPORT")
    }
 }
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.postgresql',
+#         'NAME': '<PGDATABASE>', railway
+#         'USER': '<PGUSER>', postgres
+#         'PASSWORD': '<PGPASSWORD>',CF3B1ga3bcB5eFFa5DDg44EC5FedbgF6
+#         'HOST': '<PGHOST>',monorail.proxy.rlwy.net
+#         'PORT': '<PGPORT>',58927
+#     }
+# }
+
+# -------------------------------------
 # Password validation
 # https://docs.djangoproject.com/en/4.1/ref/settings/#auth-password-validators
 AUTH_PASSWORD_VALIDATORS = [

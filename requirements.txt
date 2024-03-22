@@ -13,3 +13,4 @@ whitenoise==6.2.0
 psycopg2==2.9.2
 djangorestframework-simplejwt
 django-import-export
+# django-debug-toolbar

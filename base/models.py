@@ -1,7 +1,7 @@
 import datetime
 from datetime import datetime   
 from django.db import models
-from django.contrib.auth.models import AbstractUser
+# from django.contrib.auth.models import AbstractUser
 from django.urls import reverse
 from django.contrib.auth.models import User
 KAMER = [
@@ -21,16 +21,15 @@ KAMER = [
 
 
 
-class User(AbstractUser):
-    #  pass
-    name = models.CharField(max_length=200, null=True)
-    email = models.EmailField(unique=True, null=True)
-    # bio = models.TextField(null=True)
+# class User(AbstractUser):
+#     # name = models.CharField(max_length=200, null=True)
+#     email = models.EmailField(unique=True, null=True)
+#     # bio = models.TextField(null=True)
 
-    # avatar = models.ImageField(null=True, default="avatar.svg")
+#     # avatar = models.ImageField(null=True, default="avatar.svg")
 
-    USERNAME_FIELD = 'email'
-    REQUIRED_FIELDS = []
+#     USERNAME_FIELD = 'email'
+#     REQUIRED_FIELDS = []
 
 
 
@@ -60,7 +59,7 @@ class Room(models.Model):
     # topic = models.ForeignKey(Topic, on_delete=models.SET_NULL, null=True)
     name = models.CharField(max_length=200)
     description = models.TextField(null=True, blank=True)
-    participants = models.CharField(max_length=200,default='1')
+    # participants = models.CharField(max_length=200,default='1')
     # participants = models.ManyToManyField(
     #     User, related_name='participants', blank=True)
     updated = models.DateTimeField(auto_now=True)
@@ -90,28 +89,28 @@ class Person(models.Model):
 
 class Ploeg(models.Model):
     name = models.CharField(max_length=200)
-    participants = models.ManyToManyField(
-        User, related_name='teammembers', blank=True)
+    # participants = models.ManyToManyField(
+    #     User, related_name='teammembers', blank=True)
 
     def __str__(self):
         return self.name
 
-class Areset(models.Model):
-    # host = models.ForeignKey(User, on_delete=models.SET_NULL, null=True)
-    topic = models.ForeignKey(Topic, on_delete=models.SET_NULL, null=True)
-    name = models.CharField(max_length=200)
-    status = models.CharField(max_length=200)
-    description = models.TextField(null=True, blank=True)
-    participants = models.ManyToManyField(
-        User, related_name='participants', blank=True)
-    updated = models.DateTimeField(auto_now=True)
-    created = models.DateTimeField(auto_now_add=True)
+# class Areset(models.Model):
+#     # host = models.ForeignKey(User, on_delete=models.SET_NULL, null=True)
+#     topic = models.ForeignKey(Topic, on_delete=models.SET_NULL, null=True)
+#     name = models.CharField(max_length=200)
+#     status = models.CharField(max_length=200)
+#     description = models.TextField(null=True, blank=True)
+#     # participants = models.ManyToManyField(
+#     #     User, related_name='participants', blank=True)
+#     updated = models.DateTimeField(auto_now=True)
+#     created = models.DateTimeField(auto_now_add=True)
 
-    class Meta:
-        ordering = ['-updated', '-created']
+#     class Meta:
+#         ordering = ['-updated', '-created']
 
-    def __str__(self):
-        return self.name
+#     def __str__(self):
+#         return self.name
     
 class Locker(models.Model):
     lockerlabel = models.CharField(max_length=200)
@@ -162,7 +161,7 @@ class Facturatielijst(models.Model):
 
 
 class Message(models.Model):
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    # user = models.ForeignKey(User, on_delete=models.CASCADE)
     locker = models.ForeignKey(Locker, on_delete=models.CASCADE)
     body = models.TextField()
     updated = models.DateTimeField(auto_now=True)
@@ -175,7 +174,7 @@ class Message(models.Model):
         return self.body[0:50]
 
 class Bericht(models.Model):
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    # user = models.ForeignKey(User, on_delete=models.CASCADE)
     locker = models.ForeignKey(Locker, on_delete=models.CASCADE)
     body = models.TextField()
     updated = models.DateTimeField(auto_now=True)
@@ -197,23 +196,23 @@ class Helptekst(models.Model):
     created_on = models.DateTimeField(auto_now_add=True)
 
 
-class Tijdregel(models.Model):
-    tijdregel = models.ForeignKey(Areset, on_delete=models.CASCADE,default=0)
-    status = models.CharField(max_length=200,default='--')
-    updated = models.DateTimeField(auto_now=True)
-    created = models.DateTimeField(auto_now_add=True)
-    begin = models.DateTimeField(auto_now=True)
-    einde = models.DateTimeField(auto_now=True)
+# class Tijdregel(models.Model):
+#     tijdregel = models.ForeignKey(Areset, on_delete=models.CASCADE,default=0)
+#     status = models.CharField(max_length=200,default='--')
+#     updated = models.DateTimeField(auto_now=True)
+#     created = models.DateTimeField(auto_now_add=True)
+#     begin = models.DateTimeField(auto_now=True)
+#     einde = models.DateTimeField(auto_now=True)
 
-    class Meta:
-        ordering = ['tijdregel']
-    def __str__(self):
-        return self.tijdregel
+#     class Meta:
+#         ordering = ['tijdregel']
+#     def __str__(self):
+#         return self.tijdregel
     
-    def get_next(self):
-        next = Tijdregel.objects.filter(id__gt=self.id).order_by('id').first()
-        if next:
-            return next
-    # If the current card is the last one, return the first card in the deck
-        else:
-            return Tijdregel.objects.all().order_by('id').first()     
+#     def get_next(self):
+#         next = Tijdregel.objects.filter(id__gt=self.id).order_by('id').first()
+#         if next:
+#             return next
+#     # If the current card is the last one, return the first card in the deck
+#         else:
+#             return Tijdregel.objects.all().order_by('id').first()     

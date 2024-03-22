@@ -10,15 +10,15 @@ urlpatterns = [
     path('login/', views.loginPage, name="login"),
     path('logout/', views.logoutUser, name="logout"),
     path('register/', views.registerPage, name="register"),
-    path('delete-user/<str:pk>',views.UserDeleteView.as_view(),name='delete-user'),
-    path('update-usermail//<str:kluis>/', views.updateUser_email.as_view(), name="update-usermail"),
+    # path('delete-user/<str:pk>',views.UserDeleteView.as_view(),name='delete-user'),
+    # path('update-usermail//<str:kluis>/', views.updateUser_email.as_view(), name="update-usermail"),
     path('update-user/', views.updateUser, name="update-user"),
-    path('update-user2/<str:pk>', views.EditUser.as_view(), name="update-user2"),    #<==
+    # path('update-user2/<str:pk>', views.EditUser.as_view(), name="update-user2"),    #<==
     path('update-person/<str:pk>', views.PersonUpdate_id.as_view(), name="update-person"),
-    path('profile/<str:pk>/', views.userProfile, name="user-profile"),
-    path('profile/', views.myProfile, name="profile"),
+    # path('profile/<str:pk>/', views.userProfile, name="user-profile"),
+    # path('profile/', views.myProfile, name="profile"),
     path('topics/', views.topicsPage, name="topics"),
-    path('users/', views.MemberListView.as_view(), name="users"),
+    # path('users/', views.MemberListView.as_view(), name="users"),
     path('profiles/',login_required(views.PersonListView.as_view()),name='profiles'),
     path('wacht-lijst/',views.Wachtlijst.as_view(),name='wacht-lijst'),
     path('lockers/', views.lockersPage2, name="lockers"),
@@ -52,10 +52,10 @@ urlpatterns = [
     path('end/', views.end, name="end"),
     path('room-clear/<str:pk>', views.clear_tijdregels, name="room-clear"),
 
-   path('m2/', views.m2mtotext, name="m2"),  #creates user from locker mail address if no user exists
-   path('m3/', views.m3, name="m3"), #puts usermail in get locker by email
+#    path('m2/', views.m2mtotext, name="m2"),  #creates user from locker mail address if no user exists
+#    path('m3/', views.m3, name="m3"), #puts usermail in get locker by email
    path('m5/', views.m5, name="m5"), #check facturatielijst in get locker by email
-   path('m6/<str:pk>', views.m6, name="m6"), #check facturatielijst in get locker by email
+#    path('m6/<str:pk>', views.m6, name="m6"), #check facturatielijst in get locker by email
     path('all_lockers/',views.all_entrantsPage, name='all_lockers'),  
     ]
     # path('<str:pk>/excel-regel/',views.excel_regelPage, name='excel-regel'),  
