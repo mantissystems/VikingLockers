@@ -76,7 +76,7 @@ WSGI_APPLICATION = 'vikinglockers.wsgi.application'
 DATABASES = {
    'default': {
        'ENGINE': 'django.db.backends.postgresql',
-       'NAME':env("PGDATABASE"), 
+       'NAME':'railway', # env("PGDATABASE"), 
        'USER': env("PGUSER"),
        'PASSWORD':env("PGPASSWORD"),
        'HOST':env("PGHOST"),
