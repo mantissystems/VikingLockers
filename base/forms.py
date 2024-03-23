@@ -1,11 +1,11 @@
 from django.forms import ModelForm
 from django.contrib.auth.forms import UserCreationForm
+from django.contrib.auth.models import User
 from .models import  Room,Ploeg,Locker,Person
-import io
 from django import forms
+import io
 import csv
 from django.core.exceptions import ValidationError
-from django.contrib.auth.models import User
 
 FORMAT_CHOICES=(
     ('xls','xls'),
@@ -24,11 +24,11 @@ FORMAT_CHOICES=(
 #                 email=user['email']
 #             )
 
-# class MyUserCreationForm(UserCreationForm):
-#     class Meta:
-#         model = User
-#         # fields = '__all__'
-#         fields = ['username', 'email', 'password1', 'password2']
+class MyUserCreationForm(UserCreationForm):
+    class Meta:
+        model = User
+        # fields = '__all__'
+        fields = ['username', 'email', 'password1', 'password2']
 
 # class MyUserCreationForm(UserCreationForm):
 #     class Meta:

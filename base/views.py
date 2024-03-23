@@ -16,7 +16,7 @@ from django.contrib.auth.models import User
 from django.urls import reverse, reverse_lazy
 from base.models import Message,Topic,Locker,Ploeg,Helptekst,Bericht,Person,Facturatielijst,Room
 from django.db.models import Q
-from base.forms import RoomForm,LockerForm,WachtlijstForm,LockerFormAdmin,FormatForm,UserForm
+from base.forms import RoomForm,LockerForm,WachtlijstForm,LockerFormAdmin,FormatForm,UserForm,MyUserCreationForm
 from django.views.generic import(TemplateView,ListView,FormView)
 from django.views.generic.detail import SingleObjectMixin
 from rest_framework.decorators import api_view, permission_classes
@@ -45,6 +45,8 @@ class SignUpView(CreateView):
 # --------------------------------------------
 
 def home(request):
+    print('in home ')
+
     q = request.GET.get('q') if request.GET.get('q') != None else ''
     q=q.strip()
     rooms = Room.objects.filter(
@@ -52,6 +54,15 @@ def home(request):
         Q(name__icontains=q) |
         Q(description__icontains=q)
     )
+    s='base_locker';l=len(s)+1
+    # verh=Q(locker__icontains=q)
+    headers=Locker.objects.all().query.get_meta().fields 
+    fields=['id','lockerlabel','email','tekst','verhuurd','opgezegd','updated','code']
+    header=[]
+    for k in headers:
+        if str(k)[l:] in fields:
+            header.append(str(k)[l:])              
+
     topics = Topic.objects.all()[0:5]
     room_count = rooms.count()
     room_messages = Message.objects.filter(
@@ -71,6 +82,7 @@ def home(request):
         'rooms': rooms,
         'lockers_in':qs_in,
         'topics': topics,
+        'header':header,
         'room_count': room_count, 
         'room_messages': room_messages}
     return render(request, 'base/home.html', context)
@@ -105,11 +117,11 @@ def loginPage(request):
 
 def logoutUser(request):
     logout(request)
-    return redirect('home')
+    return redirect('login')
 
 def registerPage(request):
-    # form = MyUserCreationForm()
-    form=UserCreationForm
+    form = MyUserCreationForm()
+    # form=UserCreationForm
     pemail=request.POST.get('email')
     print(pemail)
     try:
@@ -121,15 +133,17 @@ def registerPage(request):
 
 
     if request.method == 'POST':
-        # form = MyUserCreationForm(request.POST)
-        form = UserCreationForm(request.POST)
+        form = MyUserCreationForm(request.POST)
+        # form = UserCreationForm(request.POST)
         if form.is_valid():
             user = form.save(commit=False)
             user.username = user.username.lower()
             print(user.username)
             user.save()
+            user=form.cleaned_data.get('username')
+            messages.success(request,'Account was created for ' + user)
             login(request, user)
-            return redirect('home')
+            return redirect('login')
         else:
             print('else')
             url='/berichten'
@@ -157,6 +171,7 @@ def registerPage(request):
 #     return render(request, 'base/login_register.html', {'form': form})
 
 class HomeView(ListView):
+    print('in HomeView')
     model=Locker
     template_name='base/home.html'
     form_class=FormatForm

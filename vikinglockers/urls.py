@@ -7,11 +7,11 @@ from django.views.static import serve
 urlpatterns = [
     # path('__debug__/', include('debug_toolbar.urls')),        
     path('admin/', admin.site.urls),
-    path("accounts/", include("accounts.urls")),  # signup page loads first
-    path("accounts/", include("django.contrib.auth.urls")),  # authentication still active
     path('', include('base.urls')),
+    path("accounts/", include("accounts.urls")),  # signup page loads first
+    # path("accounts/", include("django.contrib.auth.urls")),  # authentication still active
     path("base/", include("django.contrib.auth.urls")),  # authentication still active
-    path('home/', TemplateView.as_view(template_name='base/login_register.html')),
+    path('home/', TemplateView.as_view(template_name='base/home')),
  ] # + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
     # path('api/', include('api.urls')),
