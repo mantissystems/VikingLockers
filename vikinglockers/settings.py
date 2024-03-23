@@ -5,7 +5,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 env = environ.Env()
 environ.Env.read_env()
 SECRET_KEY = env("SECRET_KEY")
-DEBUG = False
+DEBUG = True
 ALLOWED_HOSTS = ['*', 'http://127.0.0.1',
 'https://vikinglockers.up.railway.app',]
 
@@ -73,26 +73,26 @@ WSGI_APPLICATION = 'vikinglockers.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/4.1/ref/settings/#databases
 
-DATABASES = {
-   'default': {
-       'ENGINE': 'django.db.backends.postgresql',
-       'NAME':'railway', # env("PGDATABASE"), 
-       'USER': env("PGUSER"),
-       'PASSWORD':env("PGPASSWORD"),
-       'HOST':env("PGHOST"),
-       'PORT':'58927' # env("PGPORT")
-   }
-}
 # DATABASES = {
-#     'default': {
-#         'ENGINE': 'django.db.backends.postgresql',
-#         'NAME': '<PGDATABASE>', railway
-#         'USER': '<PGUSER>', postgres
-#         'PASSWORD': '<PGPASSWORD>',CF3B1ga3bcB5eFFa5DDg44EC5FedbgF6
-#         'HOST': '<PGHOST>',monorail.proxy.rlwy.net
-#         'PORT': '<PGPORT>',58927
-#     }
+#    'default': {
+#        'ENGINE': 'django.db.backends.postgresql',
+#        'NAME':'railway', # env("PGDATABASE"), 
+#        'USER': env("PGUSER"),
+#        'PASSWORD':env("PGPASSWORD"),
+#        'HOST':env("PGHOST"),
+#        'PORT':'58927' # env("PGPORT")
+#    }
 # }
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': 'railway', 
+        'USER': 'postgres', 
+        'PASSWORD': 'jDrDmVWnNYVswUdhcDlskaiwPlkOiHGU',
+        'HOST': 'roundhouse.proxy.rlwy.net',
+        'PORT': '51623',
+    }
+}
 
 # -------------------------------------
 # Password validation
