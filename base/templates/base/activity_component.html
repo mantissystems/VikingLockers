@@ -6,7 +6,9 @@
     {% for message in berichten %}
     <div class="activities__box">
         <div class="activities__boxHeader roomListRoom__header">
+            {%comment%}
             <a href="{% url 'user-profile' message.user.id %}" class="roomListRoom__author">
+                {%endcomment%}
                 <div class="avatar avatar--small">
                     <img src="{{message.user.avatar.url}}" />
                 </div>
@@ -18,7 +20,9 @@
 
             {% if request.user == message.user or request.user.is_superuser %}
             <div class="roomListRoom__actions">
+                {%comment%}
                 <a href="{% url 'delete-bericht' message.id %}">
+                    {%endcomment%}
                     <svg version="1.1" xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32">
                         <title>remove</title>
                         <path

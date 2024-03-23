@@ -95,22 +95,22 @@ class Ploeg(models.Model):
     def __str__(self):
         return self.name
 
-# class Areset(models.Model):
-#     # host = models.ForeignKey(User, on_delete=models.SET_NULL, null=True)
-#     topic = models.ForeignKey(Topic, on_delete=models.SET_NULL, null=True)
-#     name = models.CharField(max_length=200)
-#     status = models.CharField(max_length=200)
-#     description = models.TextField(null=True, blank=True)
-#     # participants = models.ManyToManyField(
-#     #     User, related_name='participants', blank=True)
-#     updated = models.DateTimeField(auto_now=True)
-#     created = models.DateTimeField(auto_now_add=True)
+class Areset(models.Model):
+    # host = models.ForeignKey(User, on_delete=models.SET_NULL, null=True)
+    topic = models.ForeignKey(Topic, on_delete=models.SET_NULL, null=True)
+    name = models.CharField(max_length=200)
+    status = models.CharField(max_length=200)
+    description = models.TextField(null=True, blank=True)
+    # participants = models.ManyToManyField(
+    #     User, related_name='participants', blank=True)
+    updated = models.DateTimeField(auto_now=True)
+    created = models.DateTimeField(auto_now_add=True)
 
-#     class Meta:
-#         ordering = ['-updated', '-created']
+    class Meta:
+        ordering = ['-updated', '-created']
 
-#     def __str__(self):
-#         return self.name
+    def __str__(self):
+        return self.name
     
 class Locker(models.Model):
     lockerlabel = models.CharField(max_length=200)
@@ -196,23 +196,23 @@ class Helptekst(models.Model):
     created_on = models.DateTimeField(auto_now_add=True)
 
 
-# class Tijdregel(models.Model):
-#     tijdregel = models.ForeignKey(Areset, on_delete=models.CASCADE,default=0)
-#     status = models.CharField(max_length=200,default='--')
-#     updated = models.DateTimeField(auto_now=True)
-#     created = models.DateTimeField(auto_now_add=True)
-#     begin = models.DateTimeField(auto_now=True)
-#     einde = models.DateTimeField(auto_now=True)
+class Tijdregel(models.Model):
+    tijdregel = models.ForeignKey(Areset, on_delete=models.CASCADE,default=0)
+    status = models.CharField(max_length=200,default='--')
+    updated = models.DateTimeField(auto_now=True)
+    created = models.DateTimeField(auto_now_add=True)
+    begin = models.DateTimeField(auto_now=True)
+    einde = models.DateTimeField(auto_now=True)
 
-#     class Meta:
-#         ordering = ['tijdregel']
-#     def __str__(self):
-#         return self.tijdregel
+    class Meta:
+        ordering = ['tijdregel']
+    def __str__(self):
+        return self.tijdregel
     
-#     def get_next(self):
-#         next = Tijdregel.objects.filter(id__gt=self.id).order_by('id').first()
-#         if next:
-#             return next
-#     # If the current card is the last one, return the first card in the deck
-#         else:
-#             return Tijdregel.objects.all().order_by('id').first()     
+    def get_next(self):
+        next = Tijdregel.objects.filter(id__gt=self.id).order_by('id').first()
+        if next:
+            return next
+    # If the current card is the last one, return the first card in the deck
+        else:
+            return Tijdregel.objects.all().order_by('id').first()     

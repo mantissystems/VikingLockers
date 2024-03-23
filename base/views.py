@@ -14,7 +14,7 @@ from django.contrib.auth.hashers import make_password
 from django.contrib.auth.forms import UserCreationForm,UserChangeForm
 from django.contrib.auth.models import User
 from django.urls import reverse, reverse_lazy
-from base.models import Message,Topic,Locker,Ploeg,Helptekst,Bericht,Person,Facturatielijst,Room
+from base.models import Message,Topic,Locker,Ploeg,Helptekst,Bericht,Person,Facturatielijst,Room,Areset,Tijdregel
 from django.db.models import Q
 from base.forms import RoomForm,LockerForm,WachtlijstForm,LockerFormAdmin,FormatForm,UserForm,MyUserCreationForm
 from django.views.generic import(TemplateView,ListView,FormView)

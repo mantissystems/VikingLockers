@@ -10,7 +10,7 @@ urlpatterns = [
     path('', include('base.urls')),
     path("accounts/", include("accounts.urls")),  # signup page loads first
     # path("accounts/", include("django.contrib.auth.urls")),  # authentication still active
-    path("base/", include("django.contrib.auth.urls")),  # authentication still active
+    # path("base/", include("django.contrib.auth.urls")),  # authentication still active
     path('home/', TemplateView.as_view(template_name='base/home')),
  ] # + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
