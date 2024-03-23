@@ -5,7 +5,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 env = environ.Env()
 environ.Env.read_env()
 SECRET_KEY = env("SECRET_KEY")
-DEBUG = True
+DEBUG = False
 ALLOWED_HOSTS = ['*', 'http://127.0.0.1',
 'https://vikinglockers.up.railway.app',]
 
@@ -24,16 +24,16 @@ INSTALLED_APPS = [
     'base.apps.BaseConfig',    
     #  'api.apps.ApiConfig',
     'import_export',
-    # 'debug_toolbar',
+    'debug_toolbar',
     'rest_framework',
     'corsheaders',
 ]
 # AUTH_USER_MODEL = 'base.User'
-# INTERNAL_IPS = ["127.0.0.1",] #debug toolbar
+INTERNAL_IPS = ["127.0.0.1",] #debug toolbar
+
 MIDDLEWARE = [
-    # 'debug_toolbar.middleware.DebugToolbarMiddleware', ## tijdens debug 
+    'debug_toolbar.middleware.DebugToolbarMiddleware', ## tijdens debug 
     'django.middleware.security.SecurityMiddleware',
-    "corsheaders.middleware.CorsMiddleware",  #29-10-2022
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -42,7 +42,6 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
-
 ROOT_URLCONF = 'vikinglockers.urls'
 from django.contrib.messages import constants as messages
 MESSAGE_TAGS = {
@@ -152,6 +151,11 @@ MEDIA_URL='/images/'
 DEFAULT_AUTO_FIELD = 'django.db.models.AutoField'
 CORS_ALLOW_ALL_ORIGINS=True
 SECURE_CONTENT_TYPE_NOSNIFF=False
+LOGIN_REDIRECT_URL = "/"
+# LOGOUT_REDIRECT_URL = "/"  # new
+# django_project/settings.py
+LOGIN_REDIRECT_URL = "home"
+
 # FIXTURE_DIRS = [BASE_DIR / 'static']
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.1/ref/settings/#default-auto-field

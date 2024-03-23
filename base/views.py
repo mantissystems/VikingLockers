@@ -34,8 +34,14 @@ from django.core import mail
 from django.http import HttpResponse, HttpResponseRedirect
 from django.conf import settings
 from django.template.loader import render_to_string  #for email use
-from .admin import LockeradminResource,PersonadminResource
+# from .admin import LockeradminResource,PersonadminResource
 from .resources import LockerResource,PersonResource
+from django.contrib.auth.models import User
+
+class SignUpView(CreateView):
+    form_class = UserCreationForm
+    success_url = reverse_lazy("login")
+    template_name = "registration/signup.html"
 
 def loginPage(request):
     page = 'login'
@@ -69,54 +75,54 @@ def logoutUser(request):
     logout(request)
     return redirect('home')
 
-# def registerPage(request):
-#     # form = MyUserCreationForm()
-#     form=UserCreationForm
-#     pemail=request.POST.get('email')
-#     print(pemail)
-#     try:
-#         usr=User.objects.get(email=pemail)
-#     except:
-#         pass
-#     else:
-#         messages.error(request, 'User email already in use.')
-
-
-#     if request.method == 'POST':
-#         # form = MyUserCreationForm(request.POST)
-#         form = UserCreationForm(request.POST)
-#         if form.is_valid():
-#             user = form.save(commit=False)
-#             user.username = user.username.lower()
-#             print(user.username)
-#             user.save()
-#             login(request, user)
-#             return redirect('home')
-#         else:
-#             print('else')
-#             url='/berichten'
-#             messages.ERROR, ("3.An error occurred during registration")
-#             return HttpResponseRedirect(url)
-
-#     return render(request, 'base/login_register.html', {'form': form})
-
-
-
 def registerPage(request):
-    form = MyUserCreationForm()
+    # form = MyUserCreationForm()
+    form=UserCreationForm
+    pemail=request.POST.get('email')
+    print(pemail)
+    try:
+        usr=User.objects.get(email=pemail)
+    except:
+        pass
+    else:
+        messages.error(request, 'User email already in use.')
+
 
     if request.method == 'POST':
-        form = MyUserCreationForm(request.POST)
+        # form = MyUserCreationForm(request.POST)
+        form = UserCreationForm(request.POST)
         if form.is_valid():
             user = form.save(commit=False)
             user.username = user.username.lower()
+            print(user.username)
             user.save()
             login(request, user)
             return redirect('home')
         else:
-            messages.error(request, 'An error occurred during registration')
+            print('else')
+            url='/berichten'
+            messages.ERROR, ("3.An error occurred during registration")
+            return HttpResponseRedirect(url)
 
     return render(request, 'base/login_register.html', {'form': form})
+
+
+
+# def registerPage(request):
+#     form = MyUserCreationForm()
+
+#     if request.method == 'POST':
+#         form = MyUserCreationForm(request.POST)
+#         if form.is_valid():
+#             user = form.save(commit=False)
+#             user.username = user.username.lower()
+#             user.save()
+#             login(request, user)
+#             return redirect('home')
+#         else:
+#             messages.error(request, 'An error occurred during registration')
+
+#     return render(request, 'base/login_register.html', {'form': form})
 
 class HomeView(ListView):
     model=Locker
@@ -210,15 +216,15 @@ class HomeView(ListView):
 
         else:
             qs=qs_in
-        data_set=LockeradminResource().export(qs)
-        format=request.POST.get('format')
-        if format=='xls': ds=data_set.xls
-        elif format=='csv': ds=data_set.csv
-        else: 
-            ds=data_set.json
-        response=HttpResponse(ds,content_type=f"{format}")
-        response['Content-Disposition'] = f"attachment;filename=lockers.{format}"
-        return response
+        # data_set=LockeradminResource().export(qs)
+        # format=request.POST.get('format')
+        # if format=='xls': ds=data_set.xls
+        # elif format=='csv': ds=data_set.csv
+        # else: 
+        #     ds=data_set.json
+        # response=HttpResponse(ds,content_type=f"{format}")
+        # response['Content-Disposition'] = f"attachment;filename=lockers.{format}"
+        # return response
 # ---------------------------------------------------------------------------
 class LockerView (LoginRequiredMixin,ListView):
     login_url='login'

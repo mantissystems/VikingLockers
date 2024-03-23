@@ -5,12 +5,14 @@ from django.conf.urls.static import static
 from django.views.generic import TemplateView
 from django.views.static import serve 
 urlpatterns = [
-    # path('', TemplateView.as_view(template_name='main.html')),
     path('admin/', admin.site.urls),
     path('', include('base.urls')),
-    path('api/', include('api.urls')),
-    # path('__debug__/', include('debug_toolbar.urls')),        
- ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+    path("base/", include("django.contrib.auth.urls")),  # authentication still active
+    path('home/', TemplateView.as_view(template_name='home.html')),
+    path('__debug__/', include('debug_toolbar.urls')),        
+ ] # + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+
+    # path('api/', include('api.urls')),
 # from django.contrib.staticfiles.urls import staticfiles_urlpatterns
 
 # urlpatterns += staticfiles_urlpatterns()

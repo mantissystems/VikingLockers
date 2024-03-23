@@ -1,4 +1,4 @@
-from django.contrib import admin
+""" from django.contrib import admin
 # Register your models here.
 from .models import  Topic, Message,Locker,Ploeg,Helptekst,Bericht,Person,Facturatielijst
 # from base.models import User,AbstractUser
@@ -97,3 +97,4 @@ class PersonAdmin(ImportExportModelAdmin):
 #     list_filter = ('email','in_excel','is_registered')
 #     list_display = ('email','kluisnummer','in_excel','type')
 #     search_fields = ('email','type')
+ """
