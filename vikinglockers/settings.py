@@ -80,7 +80,7 @@ DATABASES = {
        'USER': env("PGUSER"),
        'PASSWORD':env("PGPASSWORD"),
        'HOST':env("PGHOST"),
-       'PORT': env("PGPORT")
+       'PORT':'58927' # env("PGPORT")
    }
 }
 # DATABASES = {
