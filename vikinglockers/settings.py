@@ -22,17 +22,18 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'base.apps.BaseConfig',    
+    'accounts.apps.AccountsConfig',    
     #  'api.apps.ApiConfig',
     'import_export',
-    'debug_toolbar',
+    # 'debug_toolbar',
     'rest_framework',
     'corsheaders',
 ]
 # AUTH_USER_MODEL = 'base.User'
-INTERNAL_IPS = ["127.0.0.1",] #debug toolbar
+# INTERNAL_IPS = ["127.0.0.1",] #debug toolbar
 
 MIDDLEWARE = [
-    'debug_toolbar.middleware.DebugToolbarMiddleware', ## tijdens debug 
+    # 'debug_toolbar.middleware.DebugToolbarMiddleware', ## tijdens debug 
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -151,10 +152,10 @@ MEDIA_URL='/images/'
 DEFAULT_AUTO_FIELD = 'django.db.models.AutoField'
 CORS_ALLOW_ALL_ORIGINS=True
 SECURE_CONTENT_TYPE_NOSNIFF=False
-LOGIN_REDIRECT_URL = "/"
-# LOGOUT_REDIRECT_URL = "/"  # new
+# LOGIN_REDIRECT_URL = "/"
+LOGOUT_REDIRECT_URL = "home"  # new
 # django_project/settings.py
-LOGIN_REDIRECT_URL = "home"
+# LOGIN_REDIRECT_URL = "login"
 
 # FIXTURE_DIRS = [BASE_DIR / 'static']
 # Default primary key field type

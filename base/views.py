@@ -11,11 +11,12 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.models import AnonymousUser
 from django.contrib.auth.hashers import make_password
-from django.contrib.auth.forms import UserCreationForm
+from django.contrib.auth.forms import UserCreationForm,UserChangeForm
+from django.contrib.auth.models import User
 from django.urls import reverse, reverse_lazy
 from base.models import Message,Topic,Locker,Ploeg,Helptekst,Bericht,Person,Facturatielijst,Room
 from django.db.models import Q
-from base.forms import RoomForm,LockerForm,WachtlijstForm,LockerFormAdmin,FormatForm
+from base.forms import RoomForm,LockerForm,WachtlijstForm,LockerFormAdmin,FormatForm,UserForm
 from django.views.generic import(TemplateView,ListView,FormView)
 from django.views.generic.detail import SingleObjectMixin
 from rest_framework.decorators import api_view, permission_classes
@@ -36,13 +37,44 @@ from django.conf import settings
 from django.template.loader import render_to_string  #for email use
 # from .admin import LockeradminResource,PersonadminResource
 from .resources import LockerResource,PersonResource
-from django.contrib.auth.models import User
 
 class SignUpView(CreateView):
     form_class = UserCreationForm
     success_url = reverse_lazy("login")
     template_name = "registration/signup.html"
+# --------------------------------------------
 
+def home(request):
+    q = request.GET.get('q') if request.GET.get('q') != None else ''
+    q=q.strip()
+    rooms = Room.objects.filter(
+        # Q(topic__name__icontains=q) |
+        Q(name__icontains=q) |
+        Q(description__icontains=q)
+    )
+    topics = Topic.objects.all()[0:5]
+    room_count = rooms.count()
+    room_messages = Message.objects.filter(
+        Q(body__icontains=q))[0:3]
+    qs_in =Locker.objects.filter(
+    Q(lockerlabel__icontains=q) |
+    Q(email__icontains=q)|
+    Q(tekst__icontains=q)&
+    Q(verhuurd=True)
+    ).order_by('locker')
+    if not q:
+        # qs = self.get_queryset()
+        qs_in=Locker.objects.all().filter(verhuurd=True).order_by('locker')
+    # else:
+    #     qs=qs_in
+    context = {
+        'rooms': rooms,
+        'lockers_in':qs_in,
+        'topics': topics,
+        'room_count': room_count, 
+        'room_messages': room_messages}
+    return render(request, 'base/home.html', context)
+    
 def loginPage(request):
     page = 'login'
     if request.user.is_authenticated:
@@ -304,7 +336,8 @@ def infoPage(request):
 def updateUser(request):
     user = request.user
     form = UserForm(instance=user)
-    berichten=Bericht.objects.all().filter(user=request.user.id)
+    fields=['username']
+    berichten=Bericht.objects.all() #.filter(user=request.user.id)
     team='nieuw'
     context = {
                 'berichten':berichten,
@@ -313,21 +346,21 @@ def updateUser(request):
     if request.method == 'POST':
         form = UserForm(request.POST, request.FILES, instance=user)
         if form.is_valid():
-            if user.locker == 'xx':
-                messages.success(request, f'Uw locker opheffen?: {user.locker}')
-                print('locker opheffen?')
-            ploeg, created = Ploeg.objects.get_or_create(name=team)
-            locker, created = Locker.objects.update_or_create(lockerlabel=user.locker,
-                                                           email=user.email,
-                                                           kluisje=user.locker)
-            try:
-                teambestaatal = Ploeg.objects.filter(name=user.ploeg)
-            except: 
-                Ploeg.DoesNotExist
-                url = reverse('update-user')
-                ploeg, created = Ploeg.objects.get_or_create(name=team)
+            # if user.locker == 'xx':
+            #     messages.success(request, f'Uw locker opheffen?: {user.locker}')
+            #     print('locker opheffen?')
+            # ploeg, created = Ploeg.objects.get_or_create(name=team)
+            # locker, created = Locker.objects.update_or_create(lockerlabel=user.locker,
+            #                                                email=user.email,
+            #                                                kluisje=user.locker)
+            # try:
+            #     teambestaatal = Ploeg.objects.filter(name=user.ploeg)
+            # except: 
+            #     Ploeg.DoesNotExist
+            # url = reverse('update-user')
+            #     ploeg, created = Ploeg.objects.get_or_create(name=team)
                 # messages.error(request, f'1 Teamleider per ploeg  {user.ploeg} wordt niet aangemaakt of was reeds aangemaakt tijdens registratie')
-                return HttpResponseRedirect(url)
+            # return HttpResponseRedirect(url)
             form.save()
             return redirect('user-profile', pk=user.id)
     return render(request, 'base/update-user.html', context)
@@ -342,34 +375,34 @@ def updateUser(request):
 #         messages.success(self.request, "Wijzigingen in user zijn opgeslagen.")
 #         return super(CreateUser,self).form_valid(form)
 
-# class EditUser( LoginRequiredMixin,UpdateView):
-#     login_url = '/login/'
-#     model = User
-#     form_class=UserForm
-#     template_name='base/user_form.html'
-#     # initial = {"key": "value"}
-#     print('in userupdate')
-#     success_url = reverse_lazy('users')
+class EditUser( LoginRequiredMixin,UpdateView):
+    login_url = '/login/'
+    model = User
+    form_class=UserForm
+    template_name='base/user_form.html'
+    # initial = {"key": "value"}
+    print('in userupdate')
+    success_url = reverse_lazy('users')
     
-#     def get_object(self):
-#         print('in get_object')
-#         _id = self.request.GET.get('pk') if self.request.GET.get('pk') != None else ''
-#         print(_id)
-#         obj = get_object_or_404(User, id=self.kwargs['pk'])
-#         return obj
+    def get_object(self):
+        print('in get_object')
+        _id = self.request.GET.get('pk') if self.request.GET.get('pk') != None else ''
+        print(_id)
+        obj = get_object_or_404(User, id=self.kwargs['pk'])
+        return obj
 
-#     def get_context_data(self, **kwargs):
-#         print('in get_context_data')
-#         context = super().get_context_data(**kwargs)
-#         context["lockers"] = User.objects.all()
-#         obj = super().get_object(**kwargs)
-#         return context
+    def get_context_data(self, **kwargs):
+        print('in get_context_data')
+        context = super().get_context_data(**kwargs)
+        context["lockers"] = User.objects.all()
+        obj = super().get_object(**kwargs)
+        return context
     
-#     def form_valid(self, form):
-#         print('in form_valid')
-#         messages.success(self.request, "The User was updated successfully.")
-#         success_url = reverse_lazy('users')
-#         return super(EditUser,self).form_valid(form)
+    def form_valid(self, form):
+        print('in form_valid')
+        messages.success(self.request, "The User was updated successfully.")
+        success_url = reverse_lazy('users')
+        return super(EditUser,self).form_valid(form)
 
 # class updateUser3(LoginRequiredMixin,UpdateView):
 #     login_url='login'
@@ -417,16 +450,16 @@ def updateUser(request):
 #         messages.success(self.request, "The locker was updated successfully.")
 #         return super(updateUser_email,self).form_valid(form)
 
-# def userProfile(request, pk):
-#     user = User.objects.get(id=pk)
-#     lockers = Locker.objects.all()
-#     topics = Topic.objects.all()
-#     context = {'user': user,
-#                'room_messages': topics,
-#                  'topics': topics,
-#                  'lockers':lockers,
-#                 }
-#     return render(request, 'base/profile.html', context)
+def userProfile(request, pk):
+    user = User.objects.get(id=pk)
+    lockers = Locker.objects.all()
+    topics = Topic.objects.all()
+    context = {'user': user,
+               'room_messages': topics,
+                 'topics': topics,
+                 'lockers':lockers,
+                }
+    return render(request, 'base/profile.html', context)
 
 # @login_required(login_url='login')
 # def myProfile(request):
@@ -1023,10 +1056,10 @@ class PersonDeleteView(DeleteView):
     success_url ="/"
     template_name = "base/delete.html"
 
-# class UserDeleteView(DeleteView):
-#     model = User
-#     success_url ="/"
-#     template_name = "base/delete.html"
+class UserDeleteView(DeleteView):
+    model = User
+    success_url ="/"
+    template_name = "base/delete.html"
 
 class LockerDeleteView(DeleteView):
     model = Locker

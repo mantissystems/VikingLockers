@@ -5,6 +5,8 @@ import io
 from django import forms
 import csv
 from django.core.exceptions import ValidationError
+from django.contrib.auth.models import User
+
 FORMAT_CHOICES=(
     ('xls','xls'),
     ('csv','csv'),
@@ -101,15 +103,15 @@ class LockerFormAdmin(ModelForm):
 
         }
 
-# class UserForm(ModelForm):
-#     class Meta:
-#         model = User
-#         fields= '__all__'
-#         # fields = ['avatar', 'username','locker', 'email']
-#         exclude = [ 'avatar','ploeg','bio','user_permissions','date_joined','groups','password','is_staff','is_superuser','is_active','last_name','last_login']
-#         labels = {
-#         "first_name": "Short Name",
-#         "username": "unieke naam",
-#         "locker" : "Huurder van:"
-#         }
+class UserForm(ModelForm):
+    class Meta:
+        model = User
+        fields= '__all__'
+        # fields = ['avatar', 'username','locker', 'email']
+        exclude = [ 'avatar','ploeg','bio','user_permissions','date_joined','groups','password','is_staff','is_superuser','is_active','last_name','last_login']
+        labels = {
+        "first_name": "Short Name",
+        "username": "unieke naam",
+        # "locker" : "Huurder van:"
+        }
 

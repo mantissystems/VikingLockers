@@ -3,20 +3,21 @@ from base import views
 from django.contrib.auth.decorators import login_required
 
 urlpatterns = [
-    # path('', views.home, name="home"),
-    path('home',views.HomeView.as_view(),name='home'),
+    path('', views.home, name="home"),
+    path('homeview',views.HomeView.as_view(),name='home'),
     path("signup/", views.SignUpView.as_view(), name="signup"),
     path('activity/', views.activityPage, name="activity"),
     path('info/', views.infoPage, name="info"),
-    path('login/', views.loginPage, name="login"),
+    # path('login/', views.loginPage, name="login"),
+    # path('login/', views.SignUpView.as_view(), name="login"),
     path('logout/', views.logoutUser, name="logout"),
     path('register/', views.registerPage, name="register"),
-    # path('delete-user/<str:pk>',views.UserDeleteView.as_view(),name='delete-user'),
+    path('delete-user/<str:pk>',views.UserDeleteView.as_view(),name='delete-user'),
     # path('update-usermail//<str:kluis>/', views.updateUser_email.as_view(), name="update-usermail"),
     path('update-user/', views.updateUser, name="update-user"),
-    # path('update-user2/<str:pk>', views.EditUser.as_view(), name="update-user2"),    #<==
+    path('update-user2/<str:pk>', views.EditUser.as_view(), name="update-user2"),    #<==
     path('update-person/<str:pk>', views.PersonUpdate_id.as_view(), name="update-person"),
-    # path('profile/<str:pk>/', views.userProfile, name="user-profile"),
+    path('profile/<str:pk>/', views.userProfile, name="user-profile"),
     # path('profile/', views.myProfile, name="profile"),
     path('topics/', views.topicsPage, name="topics"),
     # path('users/', views.MemberListView.as_view(), name="users"),
