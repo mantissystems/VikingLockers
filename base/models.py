@@ -174,8 +174,8 @@ class Message(models.Model):
         return self.body[0:50]
 
 class Bericht(models.Model):
-    # user = models.ForeignKey(User, on_delete=models.CASCADE)
-    locker = models.ForeignKey(Locker, on_delete=models.CASCADE)
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    # locker = models.ForeignKey(Locker, on_delete=models.CASCADE)
     body = models.TextField()
     updated = models.DateTimeField(auto_now=True)
     created = models.DateTimeField(auto_now_add=True)

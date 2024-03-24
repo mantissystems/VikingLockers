@@ -173,7 +173,7 @@ def registerPage(request):
 class HomeView(ListView):
     print('in HomeView')
     model=Locker
-    template_name='base/home.html'
+    template_name='base/facturatielijst_list.html'
     form_class=FormatForm
     initial = {"key": "value"}
     context_object_name = "object_list"
@@ -206,7 +206,7 @@ class HomeView(ListView):
         q=q.strip()
         print('in homeView get_context_data:',q)
         if not self.request.user.is_superuser:
-            messages.add_message(self.request, messages.INFO, "U bent niet ingelogd.")    
+            messages.add_message(self.request, messages.INFO, "U heeft onvoldoende rechten.")    
         s='base_locker';l=len(s)+1
         verh=Q(locker__icontains=q)
         headers=Locker.objects.all().query.get_meta().fields 
@@ -1381,7 +1381,7 @@ def all_entrantsPage(request):
 
     headers=Locker.objects.all().query.get_meta().fields 
     header=[]
-    fields=['lockerlabel','email','label','tekst']
+    fields=['lockerlabel','email','label','tekst','code']
     u=[]
     kols=[]
     s='base_locker';l=len(s)+1

@@ -9,12 +9,12 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include('base.urls')),
     path("accounts/", include("accounts.urls")),  # signup page loads first
+    path('api/', include('api.urls')),
+ ] # + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
     # path("accounts/", include("django.contrib.auth.urls")),  # authentication still active
     # path("base/", include("django.contrib.auth.urls")),  # authentication still active
-    path('home/', TemplateView.as_view(template_name='base/home')),
- ] # + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+    # path('home/', TemplateView.as_view(template_name='base/home')),
 
-    # path('api/', include('api.urls')),
 # from django.contrib.staticfiles.urls import staticfiles_urlpatterns
 
 # urlpatterns += staticfiles_urlpatterns()

@@ -23,13 +23,12 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'base.apps.BaseConfig',    
     'accounts.apps.AccountsConfig',    
-    #  'api.apps.ApiConfig',
+     'api.apps.ApiConfig',
     'import_export',
     # 'debug_toolbar',
     'rest_framework',
     'corsheaders',
 ]
-# AUTH_USER_MODEL = 'base.User'
 # INTERNAL_IPS = ["127.0.0.1",] #debug toolbar
 
 MIDDLEWARE = [
@@ -73,27 +72,16 @@ WSGI_APPLICATION = 'vikinglockers.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/4.1/ref/settings/#databases
 
-# DATABASES = {
-#    'default': {
-#        'ENGINE': 'django.db.backends.postgresql',
-#        'NAME':'railway', # env("PGDATABASE"), 
-#        'USER': env("PGUSER"),
-#        'PASSWORD':env("PGPASSWORD"),
-#        'HOST':env("PGHOST"),
-#        'PORT':'58927' # env("PGPORT")
-#    }
-# }
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'railway', 
-        'USER': 'postgres', 
-        'PASSWORD': 'jDrDmVWnNYVswUdhcDlskaiwPlkOiHGU',
-        'HOST': 'roundhouse.proxy.rlwy.net',
-        'PORT': '51623',
-    }
+   'default': {
+       'ENGINE': 'django.db.backends.postgresql',
+       'NAME':env("PGDATABASE"), 
+       'USER': env("PGUSER"),
+       'PASSWORD':env("PGPASSWORD"),
+       'HOST':env("PGHOST"),
+       'PORT':env("PGPORT")
+   }
 }
-
 # -------------------------------------
 # Password validation
 # https://docs.djangoproject.com/en/4.1/ref/settings/#auth-password-validators

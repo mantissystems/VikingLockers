@@ -17,20 +17,13 @@
 <!--  -->
 
 <!--  -->
-{%comment%}
-        <div class="form__group">
-            {% if request.user.is_superuser %}
-            <input class="btn btn--main btn--pill" type="submit" value="Confirm Selected In / Out " />
-            {%endif%}
-        </div>
-{%endcomment%}
           
    <table class="viking-table">
        <thead>
            <caption>  {{entrants_in.count}} LOCKERS IN </caption>
            <tr>
                <th>#</th>
-               {% for k in kols %}
+               {% for k in kolssss %}
                
                <th>{{k}}</th>
                {% endfor %}
@@ -38,7 +31,7 @@
         </thead>
         <tbody>
             
-            {% for rij in entrants_in %}
+            {% for rij in entrants_innnn %}
             <td> {{rij.id}}</td>
             <td> <a href="{% url 'update-locker' rij.id  %}">  {{rij.lockerlabel}} </td> 
                 <td> <a href="{% url 'update-locker' rij.id %}">   {{rij.email|slice:"0:12"}}...   </td> 
@@ -59,7 +52,6 @@
                                         
                                         <th>{{k}}</th>
                                         {% endfor %}
-                                        <th>#</th>
                                      </tr>
                                  </thead>
                                  <tbody>
@@ -71,6 +63,7 @@
                                             <td>{{rij.label}}</td>
                                                             {%comment%} <td> <a href="{% url 'update-locker' rij.id %}">   </td> <td><input type="checkbox" id="isin" name="isin" value={{rij.id}}></td> {%endcomment%}
                                                                 <td> {{ rij.tekst|wordwrap:20}} </td>
+                                                                <td>{{rij.code}}</td>
 
                                                                  </tr>
                                                              {% endfor %}
