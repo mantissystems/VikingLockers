@@ -16,7 +16,7 @@
         </div>
       </div>
       <div class="layout__body">
-        <h2 class="auth__tagline">Flexibel roeien</h2>
+        <h2 class="auth__tagline">LockerManager</h2>
 
         <form class="form" action="" method="POST">
           {% csrf_token %} {{form.as_p}}
@@ -58,11 +58,15 @@
 
             Login
           </button>
+          {%for message in messages %}
+<p>{{message}} </p>
+{% endfor %}
+
         </form>
 
         <div class="auth__action">
           <p>Nog niet geregistreerd?</p>
-          <a href="{% url 'register' %}" class="btn btn--link"
+          <a href="{% url 'signup' %}" class="btn btn--link"
             >Registreer</a
           >
         </div>
@@ -92,10 +96,10 @@
           {% csrf_token %} {{form.as_p}}
 
           <input type="submit" value="Register" />
+          {%for message in messages %}
+          <p>{{message}} </p>
+          {% endfor %}
         </form>
-{%for message in messages %}
-<p>{{message}} </p>
-{% endfor %}
         <div class="auth__action">
           <p>Already signed up yet?</p>
           <a href="{% url 'login' %}" class="btn btn--link">Login</a>

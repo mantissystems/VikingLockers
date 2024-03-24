@@ -42,6 +42,11 @@ class SignUpView(CreateView):
     form_class = UserCreationForm
     success_url = reverse_lazy("login")
     template_name = "registration/signup.html"
+    # fields = ['username', 'email', 'password1', 'password2']
+    labels = {
+    "username": "Your email address cq. username",
+        }
+
 # --------------------------------------------
 
 def home(request):
@@ -58,7 +63,7 @@ def home(request):
     s='base_locker';l=len(s)+1
     # verh=Q(locker__icontains=q)
     headers=Locker.objects.all().query.get_meta().fields 
-    fields=['id','lockerlabel','email','tekst','verhuurd','opgezegd','updated','code']
+    fields=['id','locker','email','tekst','verhuurd','opgezegd','updated','code','sleutels']
     header=[]
     for k in headers:
         if str(k)[l:] in fields:
@@ -141,7 +146,10 @@ def registerPage(request):
             user.username = user.username.lower()
             print(user.username)
             user.save()
+            # def qc3_approval_view(request):
+            # cn_data= cn_data_tables.objects.filter(sl_no=request.GET['key']).first()
             user=form.cleaned_data.get('username')
+            form = MyUserCreationForm( instance=user)
             messages.success(request,'Account was created for ' + user)
             login(request, user)
             return redirect('login')

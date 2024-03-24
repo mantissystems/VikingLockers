@@ -13,17 +13,6 @@ FORMAT_CHOICES=(
     ('csv','csv'),
     ('json','json'),
 )
-# class DataForm(forms.Form):
-#     data_file= forms.FileField()
-#     model=User
-#     def process_data(self):
-#         f=io.TextIOWrapper(self.changed_data['data_file'])
-#         reader=csv.DictReader(f)
-#         for user in reader:
-#             User.objects.update_or_create(
-#                 username=user['username'],
-#                 email=user['email']
-#             )
 
 class MyUserCreationForm(UserCreationForm):
     class Meta:
