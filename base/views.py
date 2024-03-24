@@ -53,7 +53,6 @@ def home(request):
     print('in home ')
 
     q = request.GET.get('q') if request.GET.get('q') != None else ''
-    print('q->:',q,request)
     q=q.strip()
     rooms = Room.objects.filter(
         # Q(topic__name__icontains=q) |
@@ -75,10 +74,15 @@ def home(request):
         Q(body__icontains=q))[0:3]
     qs_in =Locker.objects.filter(
     Q(lockerlabel__icontains=q) |
+    Q(label__icontains=q) |
+    Q(locker__icontains=q) |
+    Q(code__icontains=q) |
     Q(email__icontains=q)|
     Q(tekst__icontains=q)&
     Q(verhuurd=True)
     ).order_by('locker')
+    print('q->:',q,request)
+
     if not q:
         # qs = self.get_queryset()
         qs_in=Locker.objects.all().filter(verhuurd=True).order_by('locker')
