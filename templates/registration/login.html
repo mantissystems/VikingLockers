@@ -12,13 +12,13 @@
         </div>
       </div>
       <div class="layout__body">
-        <h2 class="auth__tagline">Lockermanager</h2>
+        <h2 class="auth__tagline">Find your locker login</h2>
 
         <form class="form" action="" method="POST">
           {% csrf_token %}
           <div class="form__group form__group">
             <label for="room_name">Email</label>
-            <input id="username" name="username" type="email" placeholder="e.g. dennis_ivy@email.com" />
+            <input id="email" name="email" type="text" placeholder="e.g. info@email.com" />
           </div>
           <div class=" form__group">
             <label for="password">Password</label>
@@ -43,12 +43,23 @@
 
         <div class="auth__action">
           <p>Haven't signed up yet?</p>
-          <a href="{% url 'signup' %}" class="btn btn--link">Sign Up</a>
+          <a href="{% url 'register' %}" class="btn btn--link">Sign Up (Registreer)</a>
         </div>
       </div>
     </div>
   </div>
   {% else %}
+{% comment %}
+  <div>
+    <form method="POST" action="">
+        {% csrf_token %}
+        {{form.as_p}}
+        <input type="submit" value="Register" />
+    </form>
+    <p>Already signed up yet?</p>
+    <a href="{% url 'login' %}">Login</a>
+</div>
+{% endcomment %}
   <div class="container">
     <div class="layout__box">
       <div class="layout__boxHeader">
@@ -57,7 +68,7 @@
         </div>
       </div>
       <div class="layout__body">
-        <h2 class="auth__tagline">Lockermanager</h2>
+        <h2 class="auth__tagline">Find your locker reg</h2>
 
         <form class="form" action="" method="POST">
           {% csrf_token %}
@@ -81,13 +92,13 @@
               </path>
             </svg>
 
-            Register
+            Login
           </button>
         </form>
 
         <div class="auth__action">
           <p>Already signed up yet?</p>
-          <a href="{% url 'signup' %}" class="btn btn--link">Sign Up</a>
+          <a href="{% url 'login' %}" class="btn btn--link">Sign Up (Registreer)</a>
         </div>
       </div>
     </div>

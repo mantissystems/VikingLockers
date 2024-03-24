@@ -48,6 +48,7 @@ def home(request):
     print('in home ')
 
     q = request.GET.get('q') if request.GET.get('q') != None else ''
+    print('q->:',q,request)
     q=q.strip()
     rooms = Room.objects.filter(
         # Q(topic__name__icontains=q) |
@@ -108,9 +109,9 @@ def loginPage(request):
             login(request, user)
             return redirect('home')
         else:
-            url = "/berichten/" + "?q=" + "'controleer  wachtwoord en/of het emailadres'"
-            return HttpResponseRedirect(url)
-            # messages.error(request, 'Username OR password does not exist')
+            # url = "/berichten/" + "?q=" + "'controleer  wachtwoord en/of het emailadres'"
+            # return HttpResponseRedirect(url)
+            messages.error(request, 'Username OR password does not exist')
 
     context = {'page': page}
     return render(request, 'base/login_register.html', context)
@@ -145,10 +146,10 @@ def registerPage(request):
             login(request, user)
             return redirect('login')
         else:
-            print('else')
-            url='/berichten'
+            # print('else')
+            # url='/berichten'
             messages.ERROR, ("3.An error occurred during registration")
-            return HttpResponseRedirect(url)
+            # return HttpResponseRedirect(url)
 
     return render(request, 'base/login_register.html', {'form': form})
 
@@ -179,38 +180,25 @@ class HomeView(ListView):
     context_object_name = "object_list"
     # object_list='locker_list'
 
-    # def get(self, request, *args, **kwargs):
-    #     form = self.form_class(initial=self.initial)
-    #     if not request.user.is_authenticated:
-    #         print('1.not-auth:', request.user)
-    #         messages.warning(request, f'U bent niet ingelogd. Svp Inloggen / Registreren')
-    #     # print('2.not-none-user:', request.user)
-    #         url = "/berichten/"        
-    #         return HttpResponseRedirect(url)
-        # q = self.request.GET.get('q') if self.request.GET.get('q') != None else ''
-        # q=q.strip()
-        # print('in homeView in get:',q)
-        # q = self.request.GET.get('q') if self.request.GET.get('q') != None else ''
-        # q=q.strip()
-    # print('in homeView get_context_data:',q)
-    # if not q: qs_in = self.get_queryset()
-    # context = super().get_context_data(**kwargs)
-
-    # return render(request, self.template_name, {"form": form,'context': context})
     def get_queryset(self) :
         queryset=Locker.objects.all().filter(verhuurd=True).order_by('locker')
         return queryset
     
     def get_context_data(self, **kwargs):
         q = self.request.GET.get('q') if self.request.GET.get('q') != None else ''
-        q=q.strip()
+        # q=q.strip()
+        print('q:->',q)
         print('in homeView get_context_data:',q)
         if not self.request.user.is_superuser:
             messages.add_message(self.request, messages.INFO, "U heeft onvoldoende rechten.")    
         s='base_locker';l=len(s)+1
         verh=Q(locker__icontains=q)
+        s='base_locker';l=len(s)+1
         headers=Locker.objects.all().query.get_meta().fields 
-        fields=['id','lockerlabel','email','tekst','verhuurd','opgezegd','updated','code']
+        fields=['id','lockerlabel','email','tekst','verhuurd','opgezegd','updated','code','type','sleutels']
+
+        # headers=Locker.objects.all().query.get_meta().fields 
+        # fields=['id','lockerlabel','email','tekst','verhuurd','opgezegd','updated','code']
         header=[]
         for k in headers:
             if str(k)[l:] in fields:

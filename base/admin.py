@@ -1,6 +1,6 @@
 from django.contrib import admin
 # Register your models here.
-from .models import  Topic, Message,Locker,Ploeg,Helptekst,Bericht,Person,Facturatielijst
+from .models import  Topic, Message,Locker,Ploeg,Helptekst,Bericht,Person,Facturatielijst,Areset,Tijdregel
 # from base.models import User,AbstractUser
 from import_export import resources
 from import_export.fields import Field 
@@ -36,7 +36,6 @@ class PersonadminResource(resources.ModelResource):
     #     return obj.updated.strftime("%d-%m-%Y %H:%M:%S")
 
 admin.site.register(Ploeg)
-# admin.site.register(Areset)
 admin.site.register(Topic)
 admin.site.register(Message)
 @admin.register(Helptekst)
@@ -45,24 +44,10 @@ class helpAdmin(admin.ModelAdmin):
     list_display = ('title','content','seq','publish')
     search_fields = ('title','content')
 @admin.register(Bericht)
-# class kluisAdmin(admin.ModelAdmin):
-#     list_filter = ('user','user')
-#     list_display = ('user','body')
-#     search_fields = ('user','body')
-# @admin.register(User)
-# class UserAdmin(admin.ModelAdmin):
-#     list_filter = ('is_active','is_staff')
-#     list_display = ('username','last_name','email','locker')
-#     search_fields = ('last_name','email','locker')
-# @admin.register(Person)
-# class UserAdmin(admin.ModelAdmin):
-#     list_filter = ('onderhuur','hoofdhuurder','wachtlijst')
-#     list_display = ('name','email','created')
-#     search_fields = ('name','email')
 
-# @admin.register(Tijdregel)
-# class TijdregelAdmin(ImportExportModelAdmin):
-#     pass
+@admin.register(Tijdregel)
+class TijdregelAdmin(ImportExportModelAdmin):
+    pass
 
 # @admin.register(User)
 # class UserAdmin(ImportExportModelAdmin):
@@ -75,25 +60,10 @@ class UserAdmin(ImportExportModelAdmin):
 class PersonAdmin(ImportExportModelAdmin):
     pass
 
-# @admin.register(Areset)
-# class AresetAdmin(ImportExportModelAdmin):
-#     pass
+@admin.register(Areset)
+class AresetAdmin(ImportExportModelAdmin):
+    pass
 
     @admin.register(Locker)
     class LockerAdmin(ImportExportModelAdmin):
         pass    
-# @admin.register(Locker)
-# class kluisAdmin(admin.ModelAdmin):
-#     list_filter = ('verhuurd','kluisnummer','obsolete')
-#     list_display = ('topic','kluisnummer','email','verhuurd','obsolete','sleutels')
-#     search_fields = ('topic','kluisnummer','email')
-# @admin.register(Excellijst)
-# class kluisAdmin(admin.ModelAdmin):
-#     list_filter = ('email','kluisnummer','excel')
-#     list_display = ('kluisnummer','excel','email')
-#     search_fields = ('kluisnummer','email','excel')
-# @admin.register(Facturatielijst)
-# class factuurAdmin(admin.ModelAdmin):
-#     list_filter = ('email','in_excel','is_registered')
-#     list_display = ('email','kluisnummer','in_excel','type')
-#     search_fields = ('email','type')

@@ -1,5 +1,6 @@
 from django.forms import ModelForm
 from django.contrib.auth.forms import UserCreationForm
+from django.contrib.auth import get_user_model
 from django.contrib.auth.models import User
 from .models import  Room,Ploeg,Locker,Person
 from django import forms
@@ -26,34 +27,13 @@ FORMAT_CHOICES=(
 
 class MyUserCreationForm(UserCreationForm):
     class Meta:
-        model = User
+        model = get_user_model()
+        # model = User
         # fields = '__all__'
         fields = ['username', 'email', 'password1', 'password2']
-
-# class MyUserCreationForm(UserCreationForm):
-#     class Meta:
-#         model = User
-#         # fields = ['first_name', 'username', 'email', 'password1', 'password2']
-#         fields = ['first_name',  'email', 'password1', 'password2']
-#         labels = {
-#         "email": "Your email. eg.: info@mail.nl",
-#         "password1": "wil in flexpoule",
-#         "Password2": "deel mij in als host",
-#         # "username": "Your app-username",
-#         "name": "Your name",
-#         }
-
-# class PersonForm(ModelForm):
-#     def __init__(self,*args,**kwargs):
-#         self.email = kwargs.pop('personmail')
-#         super(PersonForm,self).__init__(*args,**kwargs)
-#     class Meta:
-#         model = Person
-#         fields = '__all__'
-# class UserForm(ModelForm):
-#     class Meta:
-#         model = User
-#         fields = '__all__'
+        labels = {
+        "username": "Your email address cq. username",
+        }
 
 class WachtlijstForm(ModelForm):
     class Meta:

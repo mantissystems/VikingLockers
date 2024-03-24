@@ -31,7 +31,7 @@
                 <td> <a href="{% url 'update-locker' rij.id %}">   {{rij.email|slice:"0:12"}}...   </td> 
                     <td> {{ rij.verhuurd }} </td>
                     <td> {{ rij.opgezegd }} </td>
-                    <td> {{ rij.tekst|slice:"0:20"}}... </td>
+                    <td> {{ rij.tekst|slice:"0:15"}}... </td>
                     <td> {{ rij.code }} </td>
                     <td> {{ rij.sleutels }} </td>
                     <td> {{ rij.type }} </td>
@@ -64,7 +64,7 @@
                                          <td> <a href="{% url 'update-locker' rij.id %}">   {{rij.email|slice:"0:12"}}...   </td> 
                                              <td> {{ rij.verhuurd }} </td>
                                              <td> {{ rij.opgezegd }} </td>
-                                             <td> {{ rij.tekst|slice:"0:20"}}... </td>
+                                             <td> {{ rij.tekst|slice:"0:15"}}... </td>
                                              <td> {{ rij.code }} </td>
                                              <td> {{ rij.sleutels }} </td>
                                              <td> {{ rij.updated|date:"SHORT_DATE_FORMAT" }} </td>

@@ -86,9 +86,12 @@ DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
         'NAME': 'railway', 
-        'USER': 'postgres', 
-        'PASSWORD': 'jDrDmVWnNYVswUdhcDlskaiwPlkOiHGU',
-        'HOST': 'roundhouse.proxy.rlwy.net',
+        # 'USER': 'postgres', 
+        # 'PASSWORD': 'jDrDmVWnNYVswUdhcDlskaiwPlkOiHGU',
+        # 'HOST': 'roundhouse.proxy.rlwy.net',
+       'USER': env("PGUSER"),
+       'PASSWORD':env("PGPASSWORD"),
+       'HOST':env("PGHOST"),
         'PORT': '51623',
     }
 }
@@ -151,10 +154,10 @@ MEDIA_URL='/images/'
 DEFAULT_AUTO_FIELD = 'django.db.models.AutoField'
 CORS_ALLOW_ALL_ORIGINS=True
 SECURE_CONTENT_TYPE_NOSNIFF=False
-# LOGIN_REDIRECT_URL = "/"
-LOGOUT_REDIRECT_URL = "home"  # new
+LOGIN_REDIRECT_URL = "/"  # new
+LOGOUT_REDIRECT_URL = "/"  # new
+
 # django_project/settings.py
-# LOGIN_REDIRECT_URL = "login"
 
 # FIXTURE_DIRS = [BASE_DIR / 'static']
 # Default primary key field type
