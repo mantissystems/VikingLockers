@@ -72,16 +72,27 @@ WSGI_APPLICATION = 'vikinglockers.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/4.1/ref/settings/#databases
 
+# DATABASES = {
+#    'default': {
+#        'ENGINE': 'django.db.backends.postgresql',
+#        'NAME':'railway', # env("PGDATABASE"), 
+#        'USER': env("PGUSER"),
+#        'PASSWORD':env("PGPASSWORD"),
+#        'HOST':env("PGHOST"),
+#        'PORT':'58927' # env("PGPORT")
+#    }
+# }
 DATABASES = {
-   'default': {
-       'ENGINE': 'django.db.backends.postgresql',
-       'NAME':env("PGDATABASE"), 
-       'USER': env("PGUSER"),
-       'PASSWORD':env("PGPASSWORD"),
-       'HOST':env("PGHOST"),
-       'PORT':env("PGPORT")
-   }
+    'default': {
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': 'railway', 
+        'USER': 'postgres', 
+        'PASSWORD': 'jDrDmVWnNYVswUdhcDlskaiwPlkOiHGU',
+        'HOST': 'roundhouse.proxy.rlwy.net',
+        'PORT': '51623',
+    }
 }
+
 # -------------------------------------
 # Password validation
 # https://docs.djangoproject.com/en/4.1/ref/settings/#auth-password-validators
