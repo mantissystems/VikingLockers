@@ -34,8 +34,8 @@
             <button class="btn btn--main" type="submit">Update</button>
             {% if request.user.is_superuser %}
             <a class="btn btn--dark" href="{% url 'admin:index' %}">Admin</a>
-            <a href="/tools" class="btn btn-warning btn-sm">Tools</a>
             {% comment %}
+            <a href="/tools" class="btn btn-warning btn-sm">Tools</a>
             <a href="/hernummermatriks" class="btn btn-warning btn-sm">Hernummer</a>
             <a href="/create-room" class="btn btn-warning btn-sm">Create Room</a>
             {% endcomment %}

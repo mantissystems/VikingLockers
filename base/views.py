@@ -53,7 +53,56 @@ def home(request):
     print('in home ')
 
     q = request.GET.get('q') if request.GET.get('q') != None else ''
-    q=q.strip()
+    # q=q.strip()
+    rooms = Room.objects.filter(
+        # Q(topic__name__icontains=q) |
+        Q(name__icontains=q) |
+        Q(description__icontains=q)
+    )
+    s='base_locker';l=len(s)+1
+    # verh=Q(locker__icontains=q)
+    headers=Locker.objects.all().query.get_meta().fields 
+    fields=['id','locker','email','tekst','verhuurd','opgezegd','updated','code','sleutels']
+    header=[]
+    for k in headers:
+        if str(k)[l:] in fields:
+            header.append(str(k)[l:])              
+
+    # topics = Topic.objects.all()[0:5]
+    room_count = rooms.count()
+    room_messages = Message.objects.filter(
+        Q(body__icontains=q))[0:3]
+    print('qs_in:',q)
+    qs_in =Locker.objects.filter(
+    Q(lockerlabel__icontains=q) |
+    Q(label__icontains=q) |
+    Q(locker__icontains=q) |
+    Q(code__icontains=q) |
+    Q(email__icontains=q)|
+    Q(tekst__icontains=q)&
+    Q(verhuurd=True)
+    ).order_by('locker')
+    print('q->:',q,request)
+
+    if not q:
+        # qs = self.get_queryset()
+        qs_in=Locker.objects.all().filter(verhuurd=True).order_by('locker')
+    # else:
+    #     qs=qs_in
+    context = {
+        'rooms': rooms,
+        'lockers_in':qs_in,
+        # 'topics': topics,
+        'header':header,
+        'room_count': room_count, 
+        'room_messages': room_messages}
+    return render(request, 'base/home.html', context)
+# ----------------------------------------------------
+def home_old(request):
+    print('in home ')
+
+    q = request.GET.get('q') if request.GET.get('q') != None else ''
+    # q=q.strip()
     rooms = Room.objects.filter(
         # Q(topic__name__icontains=q) |
         Q(name__icontains=q) |
@@ -361,21 +410,6 @@ def updateUser(request):
     if request.method == 'POST':
         form = UserForm(request.POST, request.FILES, instance=user)
         if form.is_valid():
-            # if user.locker == 'xx':
-            #     messages.success(request, f'Uw locker opheffen?: {user.locker}')
-            #     print('locker opheffen?')
-            # ploeg, created = Ploeg.objects.get_or_create(name=team)
-            # locker, created = Locker.objects.update_or_create(lockerlabel=user.locker,
-            #                                                email=user.email,
-            #                                                kluisje=user.locker)
-            # try:
-            #     teambestaatal = Ploeg.objects.filter(name=user.ploeg)
-            # except: 
-            #     Ploeg.DoesNotExist
-            # url = reverse('update-user')
-            #     ploeg, created = Ploeg.objects.get_or_create(name=team)
-                # messages.error(request, f'1 Teamleider per ploeg  {user.ploeg} wordt niet aangemaakt of was reeds aangemaakt tijdens registratie')
-            # return HttpResponseRedirect(url)
             form.save()
             return redirect('user-profile', pk=user.id)
     return render(request, 'base/update-user.html', context)
@@ -523,28 +557,28 @@ def user_listPage(request):
     users = User.objects.filter(name__icontains=q)
     return render(request, 'base/user_list.html', {'users': users})
 
-def excelPage(request):
-    q = request.GET.get('q') if request.GET.get('q') != None else ''
-    lijst='excellijst'
-    menuoptie='bijwerken'
-    lockers = Excellijst.objects.filter(lockerlabel__icontains=q)
-    if request.method == 'POST':
-        qs=Facturatielijst.objects.all()
-        for f in qs:
-            if User.objects.filter(email=f.email).exists():
-                f.is_registered='registered'
-                f.save()
-            elif Excellijst.objects.filter(email=f.email).exists():
-                f.in_excel='in_excel'
-            elif  '--' in f.lockerlabel:
-                f.type='vrij'
-                f.save()
-            # else:
-            #     f.save()
+# def excelPage(request):
+#     q = request.GET.get('q') if request.GET.get('q') != None else ''
+#     lijst='excellijst'
+#     menuoptie='bijwerken'
+#     lockers = Excellijst.objects.filter(lockerlabel__icontains=q)
+#     if request.method == 'POST':
+#         qs=Facturatielijst.objects.all()
+#         for f in qs:
+#             if User.objects.filter(email=f.email).exists():
+#                 f.is_registered='registered'
+#                 f.save()
+#             elif Excellijst.objects.filter(email=f.email).exists():
+#                 f.in_excel='in_excel'
+#             elif  '--' in f.lockerlabel:
+#                 f.type='vrij'
+#                 f.save()
+#             # else:
+#             #     f.save()
             
-        lockers = Excellijst.objects.filter(lockerlabel__icontains=q)
-        return redirect('home')
-    return render(request, 'base/delete.html', {'lockers': lockers,'excellijst':lijst,'menuoptie':menuoptie})
+#         lockers = Excellijst.objects.filter(lockerlabel__icontains=q)
+#         return redirect('home')
+#     return render(request, 'base/delete.html', {'lockers': lockers,'excellijst':lijst,'menuoptie':menuoptie})
 
 def profilePage(request):
     q = request.GET.get('q') if request.GET.get('q') != None else ''
@@ -688,12 +722,11 @@ def createAreset(request):
     user=User.objects.get(is_superuser=True)
     if request.method == 'POST':
         topic_name = request.POST.get('topic') #het is default Autoreset
-        topic, created = Topic.objects.get_or_create(name=topic_name)
+        onderwerp=Topic.objects.all().first()
+        print(onderwerp.name)
+        topic, created = Topic.objects.get_or_create(name=onderwerp.name)
         Areset.objects.create(
-            # host=user,
-            topic=topic,
-            name=request.POST.get('name'),
-            description=request.POST.get('description'),
+            topic=onderwerp,
         )
         return redirect('t3')
     context = {'form': form, 'topics': topics,'werk':werk}
@@ -771,6 +804,26 @@ def room_start(request,pk):
         finally:
             print('aangemaakt',m)
     return HttpResponseRedirect(reverse('t2', args=(m.id,)))
+
+@login_required(login_url='login')
+def updateAreset(request, pk):
+    room = Areset.objects.get(id=pk)
+    form = RoomForm(instance=room)
+    onderwerpen = Topic.objects.all()
+    # if request.user != room.host:
+    #     return HttpResponse('Your are not allowed here!!')
+
+    if request.method == 'POST':
+        topic_name = request.POST.get('topic')
+        topic, created = Topic.objects.get_or_create(name=topic_name)
+        room.name = request.POST.get('name')
+        room.topic = topic
+        room.description = request.POST.get('description')
+        room.save()
+        return redirect('t3')
+
+    context = {'form': form, 'topics': onderwerpen, 'room': room}
+    return render(request, 'base/room_form.html', context)
 
 def vervolg(request):
     import datetime
@@ -1453,25 +1506,25 @@ def huuropzeggen(request, pk):
         # user hits the Back button.
     return HttpResponseRedirect(reverse('update-locker', args=(locker.id,)))
             
-def lockersPage3(request):
-    q = request.GET.get('q') if request.GET.get('q') != None else ''
-    kluisjes=Locker.objects.all().filter(verhuurd=False)     
-    allekluisjes=Locker.objects.all()     
-    A=Q(email__icontains='vrij')
-    B=Q(email__icontains='bekend')
-    C=Q(obsolete=True)
-    D=Q(opgezegd=True)
-    E=Q(email__icontains='--')
-    F=Q(email__icontains='==')
-    onverhuurd =Locker.objects.all().filter( A | B |  C | D | E | F ).order_by('topic')
-    lijst='onverhuurd'
-    context = {
-                'onverhuurd': onverhuurd,
-                    'lijst': lijst,
-                'kluisjes': kluisjes,
-                'allekluisjes': allekluisjes,
-            }
-    return render(request, 'base/kluisjes.html', context)
+# def lockersPage3(request):
+#     q = request.GET.get('q') if request.GET.get('q') != None else ''
+#     kluisjes=Locker.objects.all().filter(verhuurd=False)     
+#     allekluisjes=Locker.objects.all()     
+#     A=Q(email__icontains='vrij')
+#     B=Q(email__icontains='bekend')
+#     C=Q(obsolete=True)
+#     D=Q(opgezegd=True)
+#     E=Q(email__icontains='--')
+#     F=Q(email__icontains='==')
+#     onverhuurd =Locker.objects.all().filter( A | B |  C | D | E | F ).order_by('topic')
+#     lijst='onverhuurd'
+#     context = {
+#                 'onverhuurd': onverhuurd,
+#                     'lijst': lijst,
+#                 'kluisjes': kluisjes,
+#                 'allekluisjes': allekluisjes,
+#             }
+#     return render(request, 'base/kluisjes.html', context)
 
 def decodeer(regel,de_matriks_kolom,column,cellengte):
     begincell=(0+column)*column*cellengte

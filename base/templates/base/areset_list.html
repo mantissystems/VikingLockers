@@ -34,10 +34,8 @@
             
             {% for rij in timesheets %}
             <td></td>
-            <td> {{rij.id}}</td>
-            <td> {{ rij.host }} </td>
             <td>
-                <a href="{% url 't2'  rij.id %}">{{rij.name}} </span></a>        
+                <a href="{% url 't2'  rij.id %}">{{rij.id}} </span></a>        
               </td>        
                   <td> {{ rij.status }} </td>
                   <td> {{ rij.description }} </td>
