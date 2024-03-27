@@ -115,8 +115,8 @@ def createNote(request):
     data = request.data
     note = Bericht.objects.create(
         body=data['body'],
-        locker=loc,
         user=usr
+        # locker=loc,
     )
     serializer = NoteSerializer(note, many=False)
     return Response(serializer.data)
