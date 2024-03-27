@@ -27,8 +27,8 @@ urlpatterns = [
     path('verhuurd/', views.LockerView.as_view(), name="verhuurd"),
     path('create-person/', views.CreatePerson.as_view(), name="create-person"),          # <=================
     path('create-locker/', views.CreateLocker.as_view(), name="create-locker"),
-    path('<str:pk>/update-locker/',views.update_locker, name='update-locker'),  #        #<==================
-    path('<str:pk>/update-locker2/',views.LockerUpdate.as_view(), name='update-locker2'),  # <==== tweede stap
+    # path('<str:pk>/update-locker/',views.update_locker, name='update-locker'),  #        #<==================
+    path('<str:pk>/update-locker/',views.LockerUpdate.as_view(), name='update-locker'),  # <==== tweede stap
     path('delete-person/<str:pk>',views.PersonDeleteView.as_view(),name='delete-person'),
     path('delete-locker/<str:pk>',views.LockerDeleteView.as_view(),name='delete-locker'),
     path('delete-factuur/<str:pk>',views.FactuurDeleteView.as_view(),name='delete-factuur'),

@@ -511,6 +511,9 @@ a {
 
 .layout__body {
   margin: 3rem;
+  height: fit-content;
+  overflow-y: scroll;
+
 }
 
 @media screen and (max-width: 900px) {

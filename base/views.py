@@ -98,7 +98,7 @@ def home(request):
         'room_messages': room_messages}
     return render(request, 'base/home.html', context)
 # ----------------------------------------------------
-def home_old(request):
+""" def home_old(request):
     print('in home ')
 
     q = request.GET.get('q') if request.GET.get('q') != None else ''
@@ -145,7 +145,7 @@ def home_old(request):
         'room_count': room_count, 
         'room_messages': room_messages}
     return render(request, 'base/home.html', context)
-    
+ """    
 def loginPage(request):
     page = 'login'
     if request.user.is_authenticated:
@@ -1322,8 +1322,7 @@ def deleteBericht(request, pk):
         message.delete()
         return redirect('berichten')
     return render(request, 'base/delete.html', {'obj': message})
-
-
+# -------------------------------------------------------------
 class LockerUpdate( LoginRequiredMixin,UpdateView):
     login_url = '/login/'
     model = Locker
@@ -1340,16 +1339,25 @@ class LockerUpdate( LoginRequiredMixin,UpdateView):
         obj = get_object_or_404(Locker, id=self.kwargs['pk'])
         return obj
     def get_form_class(self):
-        if self.request.user.is_superuser:
-            return LockerFormAdmin
-        else:
-            return LockerForm
+        # if self.request.user.is_superuser:
+        #     return LockerFormAdmin
+        # else:
+        return LockerForm
     def get_context_data(self, **kwargs):
         print('in get_context_data')
-        context = super().get_context_data(**kwargs)
-        context["lockers"] = Locker.objects.all()
-        # obj = super().get_object(**kwargs)
+        #  def get_context_data(self,**kwargs):
+        locker=self.get_object()
+        print(locker)
+        form = LockerForm(instance=locker)
+        context = {
+         'form': form,
+         'lockers':Locker.objects.all()
+         }
         return context
+        # context = super().get_context_data(**kwargs)
+        # context["lockers"] = Locker.objects.all()
+        # obj = super().get_object(**kwargs)
+        # return context
     
     def form_valid(self, form):
         print('in form_valid')
@@ -1359,9 +1367,47 @@ class LockerUpdate( LoginRequiredMixin,UpdateView):
         messages.success(self.request, "The Locker was updated successfully.")
         success_url = reverse_lazy('lockers')
         return super(LockerUpdate,self).form_valid(form)
+    # ---------------------------------------------------
+
+# class LockerUpdate( LoginRequiredMixin,UpdateView):
+#     login_url = '/login/'
+#     model = Locker
+#     form_class=LockerForm
+#     template_name='base/locker_form.html'
+#     # initial = {"key": "value"}
+#     print('in lockerupdate')
+#     success_url = reverse_lazy('home')
+    
+#     def get_object(self):
+#         _id = self.request.GET.get('pk') if self.request.GET.get('pk') != None else ''
+#         print(_id)
+#         if self.request.user.is_superuser:
+#             print('in get_object updte locker')
+#         obj = get_object_or_404(Locker, id=self.kwargs['pk'])
+#         return obj
+#     def get_form_class(self):
+#         if self.request.user.is_superuser:
+#             return LockerFormAdmin
+#         else:
+#             return LockerForm
+#     def get_context_data(self, **kwargs):
+#         print('in get_context_data')
+#         context = super().get_context_data(**kwargs)
+#         context["lockers"] = Locker.objects.all()
+#         # obj = super().get_object(**kwargs)
+#         return context
+    
+#     def form_valid(self, form):
+#         print('in form_valid')
+#         # hoofdhuurder = form.cleaned_data['verhuurd']  
+#         name = form.cleaned_data['nieuwe_huurder']  
+#         tekst = form.cleaned_data['tekst']  
+#         messages.success(self.request, "The Locker was updated successfully.")
+#         success_url = reverse_lazy('lockers')
+#         return super(LockerUpdate,self).form_valid(form)
 
 @login_required(login_url='login') #nog als voorbeeeld voor veldbijwerken bewaren
-def update_locker(request,pk):
+def obsupdate_locker(request,pk):
     locker = Locker.objects.get(id=pk)
     form = LockerForm(instance=locker)
     vikingers=Person.objects.all().order_by('name')
@@ -1434,7 +1480,7 @@ def all_entrantsPage(request):
 
     headers=Locker.objects.all().query.get_meta().fields 
     header=[]
-    fields=['lockerlabel','email','label','tekst','code']
+    fields=['locker','email','label','tekst','code']
     u=[]
     kols=[]
     s='base_locker';l=len(s)+1
@@ -1467,7 +1513,7 @@ def all_entrantsPage(request):
     # entrants_in= Locker.objects.all().filter(verhuurd=True)
     # entrants_out= Locker.objects.all().filter(verhuurd=False)
     entrants_out =Locker.objects.filter(
-    (Q(lockerlabel__icontains=q) |
+    (Q(locker__icontains=q) |
     Q(email__icontains=q)|
     Q(tekst__icontains=q)|
     Q(locker__icontains=q)) & Q(verhuurd=False)
