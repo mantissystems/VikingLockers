@@ -22,7 +22,7 @@ def myProfile(request):
         if request.POST.get('locker'):
             print('requested', request.POST.get('locker'))            
             locker, created = Locker.objects.update_or_create(
-            lockerlabel=request.POST.get('locker'),
+            inspectie=request.POST.get('locker'),
             email=request.POST.get('locker'),
             verhuurd=False,
             kluisje=request.POST.get('locker'))
@@ -30,7 +30,7 @@ def myProfile(request):
             print('invalid')
         if form.is_valid():
             locker, created = Locker.objects.update_or_create(
-            lockerlabel=request.POST.get('locker'),
+            inspectie=request.POST.get('locker'),
             email=user.email,
             verhuurd=False,
             kluisje=request.POST.get('locker'))

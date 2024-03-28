@@ -19,20 +19,6 @@ KAMER = [
 #     USERNAME_FIELD = 'email'
 #     REQUIRED_FIELDS = ['first_name']
 
-
-
-# class User(AbstractUser):
-#     # name = models.CharField(max_length=200, null=True)
-#     email = models.EmailField(unique=True, null=True)
-#     # bio = models.TextField(null=True)
-
-#     # avatar = models.ImageField(null=True, default="avatar.svg")
-
-#     USERNAME_FIELD = 'email'
-#     REQUIRED_FIELDS = []
-
-
-
 SLOT = [
             ('--', '--'),
             ('H', 'hang'),      #gebruiker heeft hangslot
@@ -113,7 +99,7 @@ class Areset(models.Model):
         return self.name
     
 class Locker(models.Model):
-    lockerlabel = models.CharField(max_length=200)
+    inspectie = models.CharField(max_length=200)
     email = models.CharField(max_length=200,default='--')
     nieuwe_huurder = models.CharField(max_length=200,default='--')
     vorige_huurder = models.CharField(max_length=200,default='--')
@@ -132,9 +118,9 @@ class Locker(models.Model):
     updated = models.DateTimeField(auto_now=True)
 
     class Meta:
-        ordering = ['lockerlabel']
+        ordering = ['inspectie']
     def __str__(self):
-        return self.lockerlabel
+        return self.inspectie
     
     def get_next(self):
         next = Locker.objects.filter(id__gt=self.id).order_by('id').first()
@@ -145,7 +131,7 @@ class Locker(models.Model):
             return Locker.objects.all().order_by('id').first()     
         
 class Facturatielijst(models.Model):
-    lockerlabel = models.CharField(max_length=200)
+    inspectie = models.CharField(max_length=200)
     email = models.CharField(max_length=200)
     in_excel = models.CharField(max_length=200,default='----')     
     renum = models.CharField(max_length=200, null=True)

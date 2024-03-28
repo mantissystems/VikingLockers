@@ -74,7 +74,7 @@ def home(request):
         Q(body__icontains=q))[0:3]
     print('qs_in:',q)
     qs_in =Locker.objects.filter(
-    Q(lockerlabel__icontains=q) |
+    Q(inspectie__icontains=q) |
     Q(label__icontains=q) |
     Q(locker__icontains=q) |
     Q(code__icontains=q) |
@@ -122,7 +122,7 @@ def home(request):
     room_messages = Message.objects.filter(
         Q(body__icontains=q))[0:3]
     qs_in =Locker.objects.filter(
-    Q(lockerlabel__icontains=q) |
+    Q(inspectie__icontains=q) |
     Q(label__icontains=q) |
     Q(locker__icontains=q) |
     Q(code__icontains=q) |
@@ -256,10 +256,10 @@ class HomeView(ListView):
         verh=Q(locker__icontains=q)
         s='base_locker';l=len(s)+1
         headers=Locker.objects.all().query.get_meta().fields 
-        fields=['id','lockerlabel','email','tekst','verhuurd','opgezegd','updated','code','type','sleutels']
+        fields=['id','inspectie','email','tekst','verhuurd','opgezegd','updated','code','type','sleutels']
 
         # headers=Locker.objects.all().query.get_meta().fields 
-        # fields=['id','lockerlabel','email','tekst','verhuurd','opgezegd','updated','code']
+        # fields=['id','inspectie','email','tekst','verhuurd','opgezegd','updated','code']
         header=[]
         for k in headers:
             if str(k)[l:] in fields:
@@ -273,7 +273,7 @@ class HomeView(ListView):
             print('q:->',q)
             verh= Q(verhuurd=True)
         qs_in =Locker.objects.exclude(obs).filter(
-        (Q(lockerlabel__icontains=q) |
+        (Q(inspectie__icontains=q) |
         Q(vorige_huurder__icontains=q)|
         Q(nieuwe_huurder__icontains=q)|
         Q(email__icontains=q)|
@@ -301,7 +301,7 @@ class HomeView(ListView):
     def post(self,request,**kwargs):
         q = self.request.GET.get('q') if self.request.GET.get('q') != None else ''
         qs_in =Locker.objects.filter(
-        Q(lockerlabel__icontains=q) |
+        Q(inspectie__icontains=q) |
         Q(email__icontains=q)|
         Q(tekst__icontains=q)&
         Q(verhuurd=True)
@@ -349,8 +349,8 @@ def helpPage(request):
     q = request.GET.get('q') if request.GET.get('q') != None else ''
     aantalusers=User.objects.all()
     results = (Locker.objects
-    .values('lockerlabel')
-    .annotate(dcount=Count('lockerlabel'))
+    .values('inspectie')
+    .annotate(dcount=Count('inspectie'))
     .order_by()
     )   
     verhuurd =Locker.objects.filter(
@@ -460,7 +460,7 @@ class EditUser( LoginRequiredMixin,UpdateView):
 #     fields = ['username','first_name','email','locker']
 #     success_url = reverse_lazy('users')
 #     def get_object(self):
-#         # obj = get_object_or_404(Locker, lockerlabel__slug=self.kwargs['pk'], slug=self.kwargs['pk'] )
+#         # obj = get_object_or_404(Locker, inspectie__slug=self.kwargs['pk'], slug=self.kwargs['pk'] )
 #         obj = get_object_or_404(User, id=self.kwargs['pk'])
 #         return obj
 
@@ -478,7 +478,7 @@ class EditUser( LoginRequiredMixin,UpdateView):
 #     success_url = reverse_lazy('users')
 #     def get_object(self):
 #         print(self.kwargs['kluis'])
-#         obj = get_object_or_404(Locker, lockerlabel=self.kwargs['kluis'],)# slug=self.kwargs['kluis'] )
+#         obj = get_object_or_404(Locker, inspectie=self.kwargs['kluis'],)# slug=self.kwargs['kluis'] )
 #         return obj
 #     def get_context_data(self,**kwargs):
 #         locker=self.get_object()
@@ -490,7 +490,7 @@ class EditUser( LoginRequiredMixin,UpdateView):
 #         return context
 
 #     def form_valid(self, form):
-#         kluis = form.cleaned_data['lockerlabel']  
+#         kluis = form.cleaned_data['inspectie']  
 #         email = form.cleaned_data['email'] 
 #         if kluis:
 #             print(kluis)
@@ -531,7 +531,7 @@ def userProfile(request, pk):
 #         if request.POST.get('locker'):
 #             print('requested', request.POST.get('locker'))            
 #             locker, created = Locker.objects.update_or_create(
-#             lockerlabel=request.POST.get('locker'),
+#             inspectie=request.POST.get('locker'),
 #             email=request.POST.get('locker'),
 #             verhuurd=False,
 #             kluisje=request.POST.get('locker'))
@@ -539,7 +539,7 @@ def userProfile(request, pk):
 #             print('invalid')
 #         if form.is_valid():
 #             locker, created = Locker.objects.update_or_create(
-#             lockerlabel=request.POST.get('locker'),
+#             inspectie=request.POST.get('locker'),
 #             email=user.email,
 #             verhuurd=False,
 #             kluisje=request.POST.get('locker'))
@@ -561,7 +561,7 @@ def user_listPage(request):
 #     q = request.GET.get('q') if request.GET.get('q') != None else ''
 #     lijst='excellijst'
 #     menuoptie='bijwerken'
-#     lockers = Excellijst.objects.filter(lockerlabel__icontains=q)
+#     lockers = Excellijst.objects.filter(inspectie__icontains=q)
 #     if request.method == 'POST':
 #         qs=Facturatielijst.objects.all()
 #         for f in qs:
@@ -570,13 +570,13 @@ def user_listPage(request):
 #                 f.save()
 #             elif Excellijst.objects.filter(email=f.email).exists():
 #                 f.in_excel='in_excel'
-#             elif  '--' in f.lockerlabel:
+#             elif  '--' in f.inspectie:
 #                 f.type='vrij'
 #                 f.save()
 #             # else:
 #             #     f.save()
             
-#         lockers = Excellijst.objects.filter(lockerlabel__icontains=q)
+#         lockers = Excellijst.objects.filter(inspectie__icontains=q)
 #         return redirect('home')
 #     return render(request, 'base/delete.html', {'lockers': lockers,'excellijst':lijst,'menuoptie':menuoptie})
 
@@ -601,7 +601,7 @@ def excel_regelPage(request,pk):
         onderhuurder= request.POST.get('onderhuurder')
         slotcode= request.POST.get('code')
         type= request.POST.get('type')
-        kluis= request.POST.get('lockerlabel')
+        kluis= request.POST.get('inspectie')
         sleutels= request.POST.get('sleutels')
         huuropheffen= request.POST.get('huuropheffen')
         print('onderhuurder',kluis, onderhuurder,sleutels,slotcode)
@@ -1011,8 +1011,8 @@ class inspecties (LoginRequiredMixin, ListView):
             Q(email__icontains=query)|
             Q(type__icontains=query)|
             Q(excel__icontains=query)|
-            Q(lockerlabel__icontains=query)
-            ).order_by('lockerlabel')
+            Q(inspectie__icontains=query)
+            ).order_by('inspectie')
         context = {
             'query': query,
             'object_list' :queryset,
@@ -1034,7 +1034,7 @@ class inspecties (LoginRequiredMixin, ListView):
 #         queryset = Facturatielijst.objects.all().filter(
 #             Q(email__icontains=query)|
 #             Q(renum__icontains=query)|
-#             Q(lockerlabel__icontains=query)
+#             Q(inspectie__icontains=query)
 #             ).order_by('renum')
 #         # print(queryset.query)
 #         check=Facturatielijst.objects.all().exclude(type__icontains='--')
@@ -1071,7 +1071,7 @@ class EditFactuur( LoginRequiredMixin,UpdateView):
     login_url = '/login/'
     # redirect_field_name = 'redirect_to'
     model = Facturatielijst
-    fields = ['lockerlabel','email','in_excel','is_registered','sleutels','obsolete']
+    fields = ['inspectie','email','in_excel','is_registered','sleutels','obsolete']
     # fields = '__all__'
     success_url = reverse_lazy('facturatielijst')
     
@@ -1160,7 +1160,7 @@ class FactuurDeleteView(DeleteView):
 #                                                            is_active=True,
 #                                                            first_name=l.email,
 #                                                            last_name=l.email,
-#                                                            locker=l.lockerlabel,
+#                                                            locker=l.inspectie,
 #                                                            password=string,
 #                                                            )
 #                         print('created ',user)
@@ -1234,7 +1234,7 @@ def m4(request,):
 
 class CreateFactuur(CreateView):
     model = Facturatielijst
-    fields = ['lockerlabel','email',]
+    fields = ['inspectie','email',]
     # fields='__all__'
     success_url = reverse_lazy('facturatielijst')
     
@@ -1244,7 +1244,7 @@ class CreateFactuur(CreateView):
     
 class CreateLocker(CreateView):
     model = Locker
-    fields = ['lockerlabel','email','verhuurd']
+    fields = ['inspectie','email','verhuurd']
     # fields='__all__'
     success_url = reverse_lazy('facturatielijst')
     def __init__(self, **kwargs):
@@ -1280,7 +1280,7 @@ class CreatePerson(CreateView):
         name = form.cleaned_data['name']  
         email = form.cleaned_data['email'] 
         messages.success(self.request, "U bent op de wachtlijst geplaatst.")
-        # wachtlijst=Locker.objects.get(lockerlabel='wachtlijst')
+        # wachtlijst=Locker.objects.get(inspectie='wachtlijst')
         return super(CreatePerson,self).form_valid(form)
 
     def form_invalid(self, form):
@@ -1295,7 +1295,7 @@ def berichtenPage(request):
     messages.add_message(request, messages.INFO, "Welkom bij Viking Lockers.")    
     q = request.GET.get('q') if request.GET.get('q') != None else ''
     obs= Q(obsolete=True,tekst__icontains='gezaagd')
-    qs_out=Locker.objects.all().exclude(obs).filter(verhuurd=False).order_by('lockerlabel') #[0:15] #we laten 15 vrije lockers zien
+    qs_out=Locker.objects.all().exclude(obs).filter(verhuurd=False).order_by('inspectie') #[0:15] #we laten 15 vrije lockers zien
     return render(request, 'base/messages1.html', {'qq':q,'onverhuurd':qs_out})
 
 
@@ -1413,10 +1413,10 @@ def obsupdate_locker(request,pk):
     vikingers=Person.objects.all().order_by('name')
     url = "/berichten/"
     if request.user.email != locker.email and not request.user.is_superuser:
-        messages.add_message(request,messages.INFO, f'{locker.lockerlabel} : Is niet uw locker')
+        messages.add_message(request,messages.INFO, f'{locker.inspectie} : Is niet uw locker')
         if locker.opgezegd ==True: # and not request.user.is_superuser:
             opgezegd = formats.date_format(locker.opzegdatum, "SHORT_DATE_FORMAT")
-            messages.add_message(request,messages.INFO, f'{locker.lockerlabel} : Huur is opgezegd! per {opgezegd}')
+            messages.add_message(request,messages.INFO, f'{locker.inspectie} : Huur is opgezegd! per {opgezegd}')
         return HttpResponseRedirect(url)
         # return HttpResponseRedirect(url)
     else:
@@ -1433,7 +1433,7 @@ def lockersPage2(request):
     ).order_by('locker')# .exclude(id__in=onverhuurd_lijst)
     s='base_locker';l=len(s)+1
     headers=Locker.objects.all().query.get_meta().fields 
-    fields=['id','lockerlabel','email','tekst','verhuurd','opgezegd','updated','code','type','sleutels']
+    fields=['id','inspectie','email','tekst','verhuurd','opgezegd','updated','code','type','sleutels']
     header=[]
     for k in headers:
         if str(k)[l:] in fields:
@@ -1456,7 +1456,7 @@ def all_entrantsPage(request):
     q = request.GET.get('q') if request.GET.get('q') != None else ''
     print('entrants:',q)
     entrants_in =Locker.objects.filter(
-    (Q(lockerlabel__icontains=q) |
+    (Q(inspectie__icontains=q) |
     Q(email__icontains=q)|
     Q(tekst__icontains=q)|
     Q(locker__icontains=q)) & Q(verhuurd=True)
@@ -1469,7 +1469,7 @@ def all_entrantsPage(request):
         )   
     print('isin',isin.count())
     doubles = (Locker.objects
-        .values('lockerlabel')
+        .values('inspectie')
         .annotate(dcount=Count('id'))
         .order_by()
         )   

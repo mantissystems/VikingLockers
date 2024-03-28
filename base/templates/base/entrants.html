@@ -33,7 +33,7 @@
             
             {% for rij in entrants_innnn %}
             <td> {{rij.id}}</td>
-            <td> <a href="{% url 'update-locker' rij.id  %}">  {{rij.lockerlabel}} </td> 
+            <td> <a href="{% url 'update-locker' rij.id  %}">  {{rij.inspectie}} </td> 
                 <td> <a href="{% url 'update-locker' rij.id %}">   {{rij.email|slice:"0:12"}}...   </td> 
                     <td>{{rij.label}}</td>
                     <td> <a href="{% url 'update-locker' rij.id %}">   </td>
@@ -58,7 +58,7 @@
                                      
                                      {% for rij in entrants_out %}
                                      <td> {{rij.id}}</td>
-                                     <td> <a href="{% url 'update-locker' rij.id  %}">  {{rij.lockerlabel}} </td> 
+                                     <td> <a href="{% url 'update-locker' rij.id  %}">  {{rij.inspectie}} </td> 
                                          <td> <a href="{% url 'update-locker' rij.id %}">   {{rij.email|slice:"0:12"}}...   </td> 
                                             <td>{{rij.label}}</td>
                                                             {%comment%} <td> <a href="{% url 'update-locker' rij.id %}">   </td> <td><input type="checkbox" id="isin" name="isin" value={{rij.id}}></td> {%endcomment%}
